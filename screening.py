@@ -10,7 +10,7 @@ JQUANTS_PASSWORD = os.environ["JQUANTS_PASSWORD"]
 def get_token():
     # Step1: リフレッシュトークン取得
     res = requests.post(
-        "https://api.jquants.com/v1/token/auth_user",
+        "https://api.jquants.com/v2/token/auth_user",
         json={"mailaddress": JQUANTS_EMAIL, "password": JQUANTS_PASSWORD}
     )
     print("認証レスポンス:", res.status_code, res.text)  # デバッグ用
