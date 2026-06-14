@@ -8,36 +8,14 @@ JQUANTS_PASSWORD = os.environ["JQUANTS_PASSWORD"]
 
 # ===== J-Quants 認証 =====
 def get_token():
-    # Step1: リフレッシュトークン取得
-    res = requests.post(
-        "https://api.jquants.com/v2/token/auth_user",
-        json={"mailaddress": JQUANTS_EMAIL, "password": JQUANTS_PASSWORD}
+    JQUANTS_API_KEY = os.environ["JQUANTS_API_KEY"]  # ← 追記
+
+# ===== J-Quants 銘柄リスト取得（APIキー認証）=====
+def get_prime_codes():
+    res = requests.get(
+        "https://api.jquants.com/v2/listed/info",
+        headers={"x-api-key": JQUANTS_API_KEY}
     )
-    print("認証レスポンス:", res.status_code, res.text)  # デバッグ用
-    
-    body = res.json()
-    refresh_token = body.get("refreshToken") or body.get("refresh_token")
-    if not refresh_token:
-        raise Exception(f"リフレッシュトークン取得失敗: {body}")
-
-    # Step2: IDトークン取得
-    res2 = requests.post(
-        "https://api.jquants.com/v1/token/auth_refresh",
-        params={"refreshtoken": refresh_token}
-    )
-    print("トークンレスポンス:", res2.status_code, res2.text)  # デバッグ用
-
-    body2 = res2.json()
-    id_token = body2.get("idToken") or body2.get("id_token")
-    if not id_token:
-        raise Exception(f"IDトークン取得失敗: {body2}")
-    
-    return id_token
-
-# ===== プライム銘柄リストだけ取得 =====
-def get_prime_codes(token):
-    res = requests.get("https://api.jquants.com/v2/listed/info",
-        headers={"Authorization": f"Bearer {token}"})
     df = pd.DataFrame(res.json()["info"])
     prime = df[df["MarketCodeName"] == "プライム"]["Code"].tolist()
     return prime
