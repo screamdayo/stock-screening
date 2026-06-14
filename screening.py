@@ -1,5 +1,6 @@
 import os, requests, yfinance as yf
 from datetime import datetime
+from concurrent.futures import ThreadPoolExecutor, as_completed
 import pandas as pd
 
 DISCORD_WEBHOOK = os.environ["DISCORD_WEBHOOK_URL"]
@@ -28,34 +29,40 @@ def get_prices_yf(code):
 # ===== スクリーニング =====
 def screen(codes):
     results = []
-    for i, code in enumerate(codes):
-        if i % 100 == 0:
-            print(f"  {i}/{len(codes)}件処理中...")
+
+    def check(code):
         try:
             df = get_prices_yf(code)
             if df is None:
-                continue
-
+                return None
             latest = df.iloc[-1]
             open_  = latest["Open"]
             close  = latest["Close"]
-
             if close <= open_:
-                continue
-
+                return None
             ma5_today = df["Close"].iloc[-5:].mean()
             ma5_prev  = df["Close"].iloc[-6:-1].mean()
-
             if ma5_today > ma5_prev:
-                results.append({
+                return {
                     "code":      code,
                     "close":     round(close, 1),
                     "open":      round(open_, 1),
                     "ma5_today": round(ma5_today, 1),
                     "ma5_prev":  round(ma5_prev, 1),
-                })
+                }
         except Exception as e:
             print(f"{code} error: {e}")
+        return None
+
+    with ThreadPoolExecutor(max_workers=10) as executor:
+        futures = {executor.submit(check, code): code for code in codes}
+        for i, future in enumerate(as_completed(futures)):
+            if i % 100 == 0:
+                print(f"  {i}/{len(codes)}件処理中...")
+            result = future.result()
+            if result:
+                results.append(result)
+
     return results
 
 # ===== Discord通知 =====
