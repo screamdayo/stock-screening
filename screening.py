@@ -11,7 +11,11 @@ def get_prime_codes():
         "https://api.jquants.com/v2/listed/info",
         headers={"x-api-key": JQUANTS_API_KEY}
     )
-    df = pd.DataFrame(res.json()["info"])
+    print("ステータス:", res.status_code)
+    print("レスポンス:", res.text[:500])  # 最初の500文字だけ表示
+    
+    data = res.json()
+    df = pd.DataFrame(data["info"])
     prime = df[df["MarketCodeName"] == "プライム"]["Code"].tolist()
     return prime
 
