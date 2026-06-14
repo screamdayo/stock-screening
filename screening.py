@@ -8,14 +8,17 @@ JQUANTS_API_KEY = os.environ["JQUANTS_API_KEY"]
 # ===== プライム銘柄リスト取得 =====
 def get_prime_codes():
     res = requests.get(
-        "https://api.jquants.com/v2/listed/info",
+        "https://api.jquants.com/v2/equities/master",
         headers={"x-api-key": JQUANTS_API_KEY}
     )
     print("ステータス:", res.status_code)
-    print("レスポンス:", res.text[:500])  # 最初の500文字だけ表示
-    
     data = res.json()
-    df = pd.DataFrame(data["info"])
+    print("キー一覧:", list(data.keys()))
+    
+    # レスポンスのキー名を確認してから絞り込む
+    key = list(data.keys())[0]
+    df = pd.DataFrame(data[key])
+    print("カラム一覧:", df.columns.tolist())
     prime = df[df["MarketCodeName"] == "プライム"]["Code"].tolist()
     return prime
 
