@@ -22,7 +22,7 @@ jobs:
       - name: スクリーニング実行
         env:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
-          JQUANTS_EMAIL: ${{ secrets.JQUANTS_EMAIL }}
-          JQUANTS_PASSWORD: ${{ secrets.JQUANTS_PASSWORD }}
+          JQUANTS_API_KEY: ${{ secrets.JQUANTS_API_KEY }}
+
         run: python screening.py
         
