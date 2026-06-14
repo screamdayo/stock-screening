@@ -36,7 +36,7 @@ def get_token():
 
 # ===== プライム銘柄リストだけ取得 =====
 def get_prime_codes(token):
-    res = requests.get("https://api.jquants.com/v1/listed/info",
+    res = requests.get("https://api.jquants.com/v2/listed/info",
         headers={"Authorization": f"Bearer {token}"})
     df = pd.DataFrame(res.json()["info"])
     prime = df[df["MarketCodeName"] == "プライム"]["Code"].tolist()
