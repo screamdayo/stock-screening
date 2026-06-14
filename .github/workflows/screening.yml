@@ -2,8 +2,8 @@ name: 株スクリーニング
 
 on:
   schedule:
-    - cron: '30 6 * * 1-5'  # JST 15:30（UTC 6:30）平日のみ
-  workflow_dispatch:  # 手動実行ボタンも有効化
+    - cron: '30 6 * * 1-5'
+  workflow_dispatch:
 
 jobs:
   screen:
@@ -22,6 +22,7 @@ jobs:
       - name: スクリーニング実行
         env:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
-          JQUANTS_EMAIL:       ${{ secrets.JQUANTS_EMAIL }}
-          JQUANTS_PASSWORD:    ${{ secrets.JQUANTS_PASSWORD }}
+          JQUANTS_EMAIL: ${{ secrets.JQUANTS_EMAIL }}
+          JQUANTS_PASSWORD: ${{ secrets.JQUANTS_PASSWORD }}
         run: python screening.py
+        
