@@ -3,8 +3,6 @@ from datetime import datetime
 import pandas as pd
 
 DISCORD_WEBHOOK  = os.environ["DISCORD_WEBHOOK_URL"]
-JQUANTS_EMAIL    = os.environ["JQUANTS_EMAIL"]
-JQUANTS_PASSWORD = os.environ["JQUANTS_PASSWORD"]
 
 # ===== J-Quants 認証 =====
 def get_token():
