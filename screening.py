@@ -2,13 +2,10 @@ import os, requests, yfinance as yf
 from datetime import datetime
 import pandas as pd
 
-DISCORD_WEBHOOK  = os.environ["DISCORD_WEBHOOK_URL"]
+DISCORD_WEBHOOK = os.environ["DISCORD_WEBHOOK_URL"]
+JQUANTS_API_KEY = os.environ["JQUANTS_API_KEY"]
 
-# ===== J-Quants 認証 =====
-def get_token():
-    JQUANTS_API_KEY = os.environ["JQUANTS_API_KEY"]  # ← 追記
-
-# ===== J-Quants 銘柄リスト取得（APIキー認証）=====
+# ===== プライム銘柄リスト取得 =====
 def get_prime_codes():
     res = requests.get(
         "https://api.jquants.com/v2/listed/info",
@@ -29,7 +26,6 @@ def get_prices_yf(code):
 # ===== スクリーニング =====
 def screen(codes):
     results = []
-
     for i, code in enumerate(codes):
         if i % 100 == 0:
             print(f"  {i}/{len(codes)}件処理中...")
@@ -39,16 +35,12 @@ def screen(codes):
                 continue
 
             latest = df.iloc[-1]
-            prev5  = df.iloc[-6:-1]  # 前日までの5日分
-
             open_  = latest["Open"]
             close  = latest["Close"]
 
-            # 陽線チェック
             if close <= open_:
                 continue
 
-            # 5日MA上向きチェック
             ma5_today = df["Close"].iloc[-5:].mean()
             ma5_prev  = df["Close"].iloc[-6:-1].mean()
 
@@ -62,7 +54,6 @@ def screen(codes):
                 })
         except Exception as e:
             print(f"{code} error: {e}")
-
     return results
 
 # ===== Discord通知 =====
@@ -80,24 +71,16 @@ def notify(results):
     ]
     header = (f"📊 **株スクリーニング結果 {today}**\n"
               f"✅ 5日MA上向き & 陽線（{len(results)}件）\n")
-    if len(results) > 30:
-        footer = f"\n...他{len(results)-30}件"
-    else:
-        footer = ""
-
+    footer = f"\n...他{len(results)-30}件" if len(results) > 30 else ""
     msg = header + "\n".join(lines) + footer
 
-    # 2000文字制限で分割
     for i in range(0, len(msg), 1900):
         requests.post(DISCORD_WEBHOOK, json={"content": msg[i:i+1900]})
 
 # ===== 実行 =====
 if __name__ == "__main__":
-    print("トークン取得中...")
-    token = get_token()
-
     print("プライム銘柄リスト取得中...")
-    codes = get_prime_codes(token)
+    codes = get_prime_codes()
     print(f"対象銘柄数: {len(codes)}件")
 
     print("スクリーニング中...")
