@@ -11,15 +11,10 @@ def get_prime_codes():
         "https://api.jquants.com/v2/equities/master",
         headers={"x-api-key": JQUANTS_API_KEY}
     )
-    print("ステータス:", res.status_code)
     data = res.json()
-    print("キー一覧:", list(data.keys()))
-    
-    # レスポンスのキー名を確認してから絞り込む
-    key = list(data.keys())[0]
-    df = pd.DataFrame(data[key])
-    print("カラム一覧:", df.columns.tolist())
-    prime = df[df["MarketCodeName"] == "プライム"]["Code"].tolist()
+    df = pd.DataFrame(data["data"])
+    prime = df[df["MktNm"] == "プライム"]["Code"].tolist()
+    print(f"プライム銘柄数: {len(prime)}件")
     return prime
 
 # ===== yfinance で株価取得 =====
