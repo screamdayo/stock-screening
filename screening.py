@@ -1,4 +1,4 @@
-import os, requests, yfinance as yf
+import os, requests, yfinance as yf, time
 from datetime import datetime
 from concurrent.futures import ThreadPoolExecutor, as_completed
 import pandas as pd
