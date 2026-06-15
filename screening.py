@@ -31,34 +31,34 @@ def get_prices_yf(code):
     return df
 
 # ===== スクリーニング =====
+def check(code):
+    try:
+        time.sleep(0.1)
+        df = get_prices_yf(code)
+        if df is None:
+            return None
+        latest = df.iloc[-1]
+        open_  = latest["Open"]
+        close  = latest["Close"]
+        if close <= open_:
+            return None
+        ma5_today = df["Close"].iloc[-5:].mean()
+        ma5_prev  = df["Close"].iloc[-6:-1].mean()
+        if ma5_today > ma5_prev:
+            return {
+                "code":      code,
+                "close":     round(close, 1),
+                "open":      round(open_, 1),
+                "ma5_today": round(ma5_today, 1),
+                "ma5_prev":  round(ma5_prev, 1),
+            }
+    except Exception as e:
+        print(f"{code} error: {e}")
+    return None
+
 def screen(codes):
     results = []
-
-    def check(code):
-        try:
-            df = get_prices_yf(code)
-            if df is None:
-                return None
-            latest = df.iloc[-1]
-            open_  = latest["Open"]
-            close  = latest["Close"]
-            if close <= open_:
-                return None
-            ma5_today = df["Close"].iloc[-5:].mean()
-            ma5_prev  = df["Close"].iloc[-6:-1].mean()
-            if ma5_today > ma5_prev:
-                return {
-                    "code":      code,
-                    "close":     round(close, 1),
-                    "open":      round(open_, 1),
-                    "ma5_today": round(ma5_today, 1),
-                    "ma5_prev":  round(ma5_prev, 1),
-                }
-        except Exception as e:
-            print(f"{code} error: {e}")
-        return None
-
-    with ThreadPoolExecutor(max_workers=10) as executor:
+    with ThreadPoolExecutor(max_workers=3) as executor:
         futures = {executor.submit(check, code): code for code in codes}
         for i, future in enumerate(as_completed(futures)):
             if i % 100 == 0:
@@ -66,7 +66,6 @@ def screen(codes):
             result = future.result()
             if result:
                 results.append(result)
-
     return results
 
 # ===== Discord通知 =====
