@@ -24,6 +24,10 @@ def get_prices_yf(code):
     df = ticker.history(period="20d")
     if df.empty or len(df) < 6:
         return None
+    # 最初の1銘柄だけ中身を表示
+    if code == "7203":
+        print(f"7203 最新日付: {df.index[-1]}")
+        print(f"7203 最新データ: {df.iloc[-1]}")
     return df
 
 # ===== スクリーニング =====
