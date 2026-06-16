@@ -3,8 +3,8 @@ from datetime import datetime
 from concurrent.futures import ThreadPoolExecutor, as_completed
 import pandas as pd
 
-DISCORD_WEBHOOK = os.environ["DISCORD_WEBHOOK_URL"]
-JQUANTS_API_KEY = os.environ["JQUANTS_API_KEY"]
+DISCORD_WEBHOOK  = os.environ["DISCORD_WEBHOOK_URL"]
+JQUANTS_API_KEY  = os.environ["JQUANTS_API_KEY"]
 
 # ===== プライム銘柄リスト取得 =====
 def get_prime_codes():
@@ -18,54 +18,38 @@ def get_prime_codes():
     print(f"プライム銘柄数: {len(prime)}件")
     return prime
 
-# ===== yfinance で株価取得 =====
-def get_prices_yf(code):
-    ticker = yf.Ticker(f"{code}.T")
-    df = ticker.history(period="20d")
-    if df.empty or len(df) < 6:
-        return None
-    # 最初の1銘柄だけ中身を表示
-    if code == "7203":
-        print(f"7203 最新日付: {df.index[-1]}")
-        print(f"7203 最新データ: {df.iloc[-1]}")
-    return df
-
-# ===== スクリーニング =====
-def check(code):
-    try:
-        time.sleep(0.5)
-        df = get_prices_yf(code)
-        if df is None:
-            return None
-        latest = df.iloc[-1]
-        open_  = latest["Open"]
-        close  = latest["Close"]
-        if close <= open_:
-            return None
-        ma5_today = df["Close"].iloc[-5:].mean()
-        ma5_prev  = df["Close"].iloc[-6:-1].mean()
-        if ma5_today > ma5_prev:
-            return {
-                "code":      code,
-                "close":     round(close, 1),
-                "open":      round(open_, 1),
-                "ma5_today": round(ma5_today, 1),
-                "ma5_prev":  round(ma5_prev, 1),
-            }
-    except Exception as e:
-        print(f"{code} error: {e}")
-    return None
-
+# ===== スクリーニング（1件ずつ順番に処理）=====
 def screen(codes):
     results = []
-    with ThreadPoolExecutor(max_workers=2) as executor:
-        futures = {executor.submit(check, code): code for code in codes}
-        for i, future in enumerate(as_completed(futures)):
-            if i % 100 == 0:
-                print(f"  {i}/{len(codes)}件処理中...")
-            result = future.result()
-            if result:
-                results.append(result)
+    for i, code in enumerate(codes):
+        if i % 100 == 0:
+            print(f"  {i}/{len(codes)}件処理中...")
+        try:
+            time.sleep(0.5)
+            ticker = yf.Ticker(f"{code}.T")
+            df = ticker.history(period="20d")
+            if df.empty or len(df) < 6:
+                continue
+
+            latest = df.iloc[-1]
+            open_  = latest["Open"]
+            close  = latest["Close"]
+            if close <= open_:
+                continue
+
+            ma5_today = df["Close"].iloc[-5:].mean()
+            ma5_prev  = df["Close"].iloc[-6:-1].mean()
+
+            if ma5_today > ma5_prev:
+                results.append({
+                    "code":      code,
+                    "close":     round(close, 1),
+                    "open":      round(open_, 1),
+                    "ma5_today": round(ma5_today, 1),
+                    "ma5_prev":  round(ma5_prev, 1),
+                })
+        except Exception as e:
+            print(f"{code} error: {e}")
     return results
 
 # ===== Discord通知 =====
