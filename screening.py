@@ -33,7 +33,7 @@ def get_prices_yf(code):
 # ===== スクリーニング =====
 def check(code):
     try:
-        time.sleep(0.1)
+        time.sleep(0.5)
         df = get_prices_yf(code)
         if df is None:
             return None
@@ -58,7 +58,7 @@ def check(code):
 
 def screen(codes):
     results = []
-    with ThreadPoolExecutor(max_workers=3) as executor:
+    with ThreadPoolExecutor(max_workers=2) as executor:
         futures = {executor.submit(check, code): code for code in codes}
         for i, future in enumerate(as_completed(futures)):
             if i % 100 == 0:
