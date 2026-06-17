@@ -62,7 +62,7 @@ def notify(results):
         return
 
     lines = [
-        f"・**{r['code']}**｜終値 {r['close']}円｜5MA {r['ma5_prev']}→{r['ma5_today']}↑"
+        f"・**{r['code']}**｜終値 {r['close']}円｜5MA {r['ma5_prev']}→{r['ma5_today']}↑\n  https://kabutan.jp/stock/chart?code={r['code']}"
         for r in results[:30]
     ]
     header = (f"📊 **株スクリーニング結果 {today}**\n"
