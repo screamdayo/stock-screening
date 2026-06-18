@@ -38,6 +38,11 @@ def screen(codes):
             latest = df.iloc[-1]
             open_  = latest["Open"]
             close  = latest["Close"]
+            
+            # nan チェック追加
+            if pd.isna(close) or pd.isna(open_):
+                continue
+            
             if close <= open_:
                 continue
 
@@ -55,6 +60,7 @@ def screen(codes):
         except Exception as e:
             print(f"{code} error: {e}")
     return results
+
 
 # ===== Discord通知 =====
 def notify(results):
