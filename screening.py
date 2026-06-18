@@ -15,6 +15,10 @@ def get_prime_codes():
     data = res.json()
     df = pd.DataFrame(data["data"])
     prime = df[df["MktNm"] == "プライム"]["Code"].tolist()
+    
+    # 優先株式（末尾5,6）を除外
+    prime = [code for code in prime if not code.endswith(('5', '6'))]
+    
     print(f"プライム銘柄数: {len(prime)}件")
     return prime
 
