@@ -4,25 +4,35 @@ on:
   schedule:
     - cron: '30 6 * * 1-5'
   workflow_dispatch:
+    inputs:
+      mode:
+        description: '実行モード'
+        required: true
+        default: 'screen'
+        type: choice
+        options:
+          - screen
+          - diagnose
 
 jobs:
   screen:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
       - name: Python セットアップ
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-
       - name: ライブラリインストール
         run: pip install requests pandas yfinance
-
+      - name: 診断実行
+        if: github.event.inputs.mode == 'diagnose'
+        env:
+          JQUANTS_API_KEY: ${{ secrets.JQUANTS_API_KEY }}
+        run: python diagnose.py
       - name: スクリーニング実行
+        if: github.event.inputs.mode == 'screen'
         env:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
           JQUANTS_API_KEY: ${{ secrets.JQUANTS_API_KEY }}
-
         run: python screening.py
-        
