@@ -2,7 +2,7 @@ name: 株スクリーニング
 
 on:
   schedule:
-    - cron: '0 8 * * 1-5'
+    - cron: '0 7 * * 1-5'  # UTC 7:00 = JST 16:00
   workflow_dispatch:
     inputs:
       mode:
@@ -19,19 +19,23 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - name: Python セットアップ
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
+
       - name: ライブラリインストール
         run: pip install requests pandas yfinance
+
       - name: 診断実行
         if: github.event.inputs.mode == 'diagnose'
         env:
           JQUANTS_API_KEY: ${{ secrets.JQUANTS_API_KEY }}
         run: python diagnose.py
+
       - name: スクリーニング実行
-        if: github.event.inputs.mode == 'screen'
+        if: github.event.inputs.mode == 'screen' || github.event_name == 'schedule'
         env:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
           JQUANTS_API_KEY: ${{ secrets.JQUANTS_API_KEY }}
