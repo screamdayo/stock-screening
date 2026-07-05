@@ -40,6 +40,8 @@ def get_bars_for_date(date_str):
             headers=HEADERS,
             params=params
         )
+        if res.status_code != 200:
+            print(f"  APIエラー response: {res.status_code} {res.text}")
         res.raise_for_status()
         body = res.json()
 
@@ -61,7 +63,7 @@ def get_bars(target_business_days=8, max_lookback_days=25):
     lookback = 0
 
     while collected_days < target_business_days and lookback < max_lookback_days:
-        date_str = day.strftime("%Y-%m-%d")
+        date_str = day.strftime("%Y%m%d")  # YYYYMMDD形式（ハイフンなし）
         rows = get_bars_for_date(date_str)
         if rows:
             all_rows.extend(rows)
