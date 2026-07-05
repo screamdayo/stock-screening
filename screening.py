@@ -25,13 +25,13 @@ def get_prime_codes():
     return set(prime)
 
 
-# ===== 直近N営業日分の株価を全銘柄一括取得（ページング対応） =====
-def get_bars(from_date, to_date):
+# ===== 指定日の全銘柄分を1リクエストで取得（ページング対応） =====
+def get_bars_for_date(date_str):
     all_rows = []
     pagination_key = None
 
     while True:
-        params = {"from": from_date, "to": to_date}
+        params = {"date": date_str}
         if pagination_key:
             params["pagination_key"] = pagination_key
 
@@ -50,7 +50,29 @@ def get_bars(from_date, to_date):
         if not pagination_key:
             break
 
-    print(f"取得した株価レコード数: {len(all_rows)}件")
+    return all_rows
+
+
+# ===== 直近営業日を遡って必要日数分の全銘柄データを収集 =====
+def get_bars(target_business_days=8, max_lookback_days=25):
+    all_rows = []
+    collected_days = 0
+    day = datetime.now()
+    lookback = 0
+
+    while collected_days < target_business_days and lookback < max_lookback_days:
+        date_str = day.strftime("%Y-%m-%d")
+        rows = get_bars_for_date(date_str)
+        if rows:
+            all_rows.extend(rows)
+            collected_days += 1
+            print(f"  {date_str}: {len(rows)}件取得")
+        else:
+            print(f"  {date_str}: データなし（休日等）")
+        day -= timedelta(days=1)
+        lookback += 1
+
+    print(f"取得した株価レコード数（合計）: {len(all_rows)}件")
     return pd.DataFrame(all_rows)
 
 
@@ -142,11 +164,8 @@ if __name__ == "__main__":
     prime_codes = get_prime_codes()
     print(f"対象銘柄数: {len(prime_codes)}件")
 
-    to_date = datetime.now().strftime("%Y-%m-%d")
-    from_date = (datetime.now() - timedelta(days=30)).strftime("%Y-%m-%d")
-
-    print(f"株価データ取得中... ({from_date} 〜 {to_date})")
-    bars_df = get_bars(from_date, to_date)
+    print("株価データ取得中（直近8営業日分を日付ごとに取得）...")
+    bars_df = get_bars(target_business_days=8, max_lookback_days=25)
 
     print("スクリーニング中...")
     results = screen(bars_df, prime_codes)
