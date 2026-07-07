@@ -9,6 +9,21 @@ import os
 JQUANTS_API_KEY = os.environ.get("JQUANTS_API_KEY", "")
 DISCORD_WEBHOOK_URL = os.environ.get("DISCORD_WEBHOOK_URL", "")
 
+# ===== APIリクエストの共通設定（タイムアウト・リトライ） =====
+# 1リクエストあたりの最大待ち時間（秒）。
+# これがないと、J-Quants側が応答しない場合に処理が永遠に止まってしまう。
+API_REQUEST_TIMEOUT_SECONDS = 30
+
+# タイムアウトや502/503/504などの一時的なエラーが起きた場合の自動リトライ回数
+API_MAX_RETRIES = 3
+
+# リトライ時の待機時間（秒）。リトライのたびに増えていく（1回目1秒、2回目2秒、3回目4秒 等）
+API_RETRY_BACKOFF_SECONDS = 1
+
+# リトライ対象とするHTTPステータスコード
+# 502/503/504はサーバー側の一時的な障害でよく返ってくるコード
+API_RETRYABLE_STATUS_CODES = (502, 503, 504)
+
 # ===== フォルダパス =====
 DATA_DIR = "data"
 OUTPUT_DIR = "output"
