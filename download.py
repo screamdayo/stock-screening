@@ -33,18 +33,27 @@ def get_target_codes():
     """
     対象市場（デフォルト：プライム）の銘柄コード一覧を取得する。
     優先株式など、末尾が特定の数字の銘柄は除外する。
+
+    J-Quantsのマスターデータの銘柄コードは5桁（普通株は末尾に0を付加した形）で
+    返ってくる。優先株式などの判定はこの5桁のままの末尾で行う必要があるため、
+    「除外判定 → 4桁への変換」の順序で処理する
+    （先に4桁化してしまうと末尾の判定基準が変わってしまうため注意）。
     """
     res = requests.get(f"{BASE_URL}/equities/master", headers=HEADERS)
     res.raise_for_status()
     data = res.json()
 
     df = pd.DataFrame(data["data"])
-    target = df[df["MktNm"] == config.TARGET_MARKET]["Code"].tolist()
+    target = df[df["MktNm"] == config.TARGET_MARKET]["Code"].astype(str).tolist()
 
+    # 除外判定は5桁のままの末尾で行う（優先株式は末尾が0以外になる）
     target = [
         code for code in target
         if not code.endswith(config.EXCLUDED_CODE_SUFFIXES)
     ]
+
+    # 除外後に、価格データ側と一致するよう4桁表記へ変換する
+    target = [_normalize_code(code) for code in target]
 
     print(f"[download] {config.TARGET_MARKET}銘柄数: {len(target)}件")
     return set(target)
@@ -298,6 +307,22 @@ def _save_cache(df, cache_filename):
 def _finalize_df(all_rows):
     df = pd.DataFrame(all_rows)
     if not df.empty:
+        df["Code"] = df["Code"].astype(str).apply(_normalize_code)
         df["Date"] = pd.to_datetime(df["Date"])
         df = df.sort_values(["Code", "Date"])
     return df
+
+
+def _normalize_code(code):
+    """
+    J-Quantsの銘柄コードは仕様上5桁（普通株は末尾に0を付加した形）で返ってくる。
+    例: トヨタ自動車 "72030" -> 一般的な4桁表記 "7203"
+
+    末尾が"0"の5桁コードのみ4桁に変換する。
+    優先株式などは末尾が0以外の5桁になることがあり、その場合はそのまま5桁で扱う
+    （config.EXCLUDED_CODE_SUFFIXESで別途除外される想定）。
+    """
+    code = str(code)
+    if len(code) == 5 and code.endswith("0"):
+        return code[:-1]
+    return code
