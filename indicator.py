@@ -64,3 +64,46 @@ def is_ma_rising_at(df_with_ma, idx):
 def is_ma_rising(df_with_ma):
     """直近日（最終行）について is_ma_rising_at を呼ぶショートカット。"""
     return is_ma_rising_at(df_with_ma, len(df_with_ma) - 1)
+
+
+def is_ma_turning_up_at(df_with_ma, idx):
+    """
+    指定インデックス idx の時点で、短期移動平均線が
+    「昨日まで下向き（または横ばい） → 今日はっきり上向きに転換した」かどうかを判定する。
+
+    is_ma_rising_at() が「今日が前日より高いか」だけを見るのに対し、
+    こちらは「傾きの向きが変わった瞬間（反転）」を捉える。
+
+    判定の流れ（3日前・2日前・昨日・今日の4点、傾きは3つ）:
+        slope_2days_ago = MA[idx-2] - MA[idx-3]   （参考: ノイズ除外の判断に使う）
+        slope_yesterday  = MA[idx-1] - MA[idx-2]
+        slope_today      = MA[idx]   - MA[idx-1]
+
+    条件:
+        1. 昨日の傾き（slope_yesterday）が 0 以下 = 下向き or 横ばいだった
+        2. 今日の傾き（slope_today）が MA_TURNING_MIN_SLOPE より大きい
+           = はっきりと上向きに転じた（小さすぎる傾きはノイズとして除外）
+
+    config.MA_TURNING_MIN_SLOPE で「はっきり上向き」とみなす傾きの最小値を調整できる。
+    デフォルトは0（=0より大きければOK）だが、横ばいノイズを除外したい場合は
+    もう少し大きい値（例: 0.05や0.1など、株価水準に応じて調整）を設定するとよい。
+    """
+    if idx < 2 or idx >= len(df_with_ma):
+        return False
+
+    ma = df_with_ma["MA_SHORT"]
+
+    today_ma = ma.iloc[idx]
+    yesterday_ma = ma.iloc[idx - 1]
+    two_days_ago_ma = ma.iloc[idx - 2]
+
+    if pd.isna(today_ma) or pd.isna(yesterday_ma) or pd.isna(two_days_ago_ma):
+        return False
+
+    slope_yesterday = yesterday_ma - two_days_ago_ma
+    slope_today = today_ma - yesterday_ma
+
+    was_falling_or_flat = slope_yesterday <= 0
+    is_now_clearly_rising = slope_today > config.MA_TURNING_MIN_SLOPE
+
+    return was_falling_or_flat and is_now_clearly_rising
