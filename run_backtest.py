@@ -45,10 +45,43 @@ def parse_args():
         help=f"使用する戦略名（デフォルト: {DEFAULT_STRATEGY}）。"
              f"利用可能な戦略は strategies/registry.py を参照。",
     )
+    parser.add_argument(
+        "--condition",
+        choices=["config", "rising", "turning"],
+        default="config",
+        help="MAの上向き判定方式を一時的に切り替える。"
+             " 'config'（デフォルト）はconfig.pyの設定をそのまま使う。"
+             " 'rising'はREQUIRE_MA_RISING=True/REQUIRE_MA_TURNING=Falseに強制。"
+             " 'turning'はREQUIRE_MA_RISING=False/REQUIRE_MA_TURNING=Trueに強制。"
+             " rising/turningを両方実行して結果を見比べることで、"
+             " どちらの判定方式が成績が良いか比較できる。",
+    )
     return parser.parse_args()
 
 
-def run(strategy_name):
+def _apply_condition_override(condition):
+    """
+    --condition の指定に応じて、config.py のMA判定フラグを一時的に上書きする。
+    'config' の場合は何もしない（config.py の値をそのまま使う）。
+    """
+    if condition == "rising":
+        config.REQUIRE_MA_RISING = True
+        config.REQUIRE_MA_TURNING = False
+        print("[main] --condition rising: REQUIRE_MA_RISING=True, REQUIRE_MA_TURNING=False に上書き")
+    elif condition == "turning":
+        config.REQUIRE_MA_RISING = False
+        config.REQUIRE_MA_TURNING = True
+        print("[main] --condition turning: REQUIRE_MA_RISING=False, REQUIRE_MA_TURNING=True に上書き")
+    else:
+        print(f"[main] --condition config: config.pyの設定をそのまま使用 "
+              f"(REQUIRE_MA_RISING={config.REQUIRE_MA_RISING}, "
+              f"REQUIRE_MA_TURNING={config.REQUIRE_MA_TURNING})")
+
+
+def run(strategy_name, run_label=None):
+    if run_label is None:
+        run_label = strategy_name
+
     strategy_fn = registry.get_strategy(strategy_name)
 
     cache_filename = f"backtest_prices_{config.TARGET_MARKET}_{config.BACKTEST_YEARS}y.csv"
@@ -57,6 +90,8 @@ def run(strategy_name):
     print(f"[設定] 戦略: {strategy_name}")
     print(f"[設定] 対象市場: {config.TARGET_MARKET}")
     print(f"[設定] 対象期間: 過去{config.BACKTEST_YEARS}年")
+    print(f"[設定] MA上向き判定: REQUIRE_MA_RISING={config.REQUIRE_MA_RISING}, "
+          f"REQUIRE_MA_TURNING={config.REQUIRE_MA_TURNING}")
     print(f"[設定] 保有日数: {config.BACKTEST_HOLD_DAYS}日 "
           f"/ 利確: +{config.BACKTEST_TAKE_PROFIT_PCT}% "
           f"/ 損切り: -{config.BACKTEST_STOP_LOSS_PCT}%")
@@ -80,7 +115,7 @@ def run(strategy_name):
     summary = backtest.summarize_trades(trades)
     backtest.print_summary(summary)
 
-    _save_results(trades, summary, strategy_name)
+    _save_results(trades, summary, run_label)
 
     print("\n=== バックテスト完了 ===")
 
@@ -88,6 +123,7 @@ def run(strategy_name):
 def main():
     args = parse_args()
     strategy_name = args.strategy
+    condition = args.condition
 
     # 戦略名が未登録の場合は、通知するまでもない設定ミスなので早期に終了する
     try:
@@ -96,24 +132,30 @@ def main():
         print(f"[エラー] {e}")
         sys.exit(1)
 
+    _apply_condition_override(condition)
+
+    # rising/turningを切り替えて比較したい場合、出力ファイルが上書きされて
+    # 比較できなくなると困るため、conditionを明示指定した場合はラベルとして使う
+    run_label = f"{strategy_name}_{condition}" if condition != "config" else strategy_name
+
     start = time.time()
     try:
-        run(strategy_name)
+        run(strategy_name, run_label)
     except Exception as e:
         print(f"エラー: {e}")
-        notifier.notify_error(e, context=f"run_backtest.py（戦略: {strategy_name}）実行中")
+        notifier.notify_error(e, context=f"run_backtest.py（戦略: {strategy_name}, 条件: {condition}）実行中")
         raise
     finally:
         print(f"実行時間: {time.time() - start:.1f}秒")
 
 
-def _save_results(trades, summary, strategy_name):
+def _save_results(trades, summary, run_label):
     os.makedirs(config.OUTPUT_DIR, exist_ok=True)
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
 
     # ---- summary.json（固定ファイル名、常に最新で上書き） ----
     summary_with_meta = {
-        "strategy": strategy_name,
+        "run_label": run_label,
         "generated_at": timestamp,
         **summary,
     }
