@@ -16,7 +16,7 @@ import indicator
 def _passes_conditions(g, idx):
     """
     1銘柄の時系列DataFrame g の idx番目の行が、
-    「くいっと」の条件（陽線・MA上向き）を満たすかどうかを判定する。
+    「くいっと」の条件（陽線・MA上向き・MA反転上向き）を満たすかどうかを判定する。
     """
     latest = g.iloc[idx]
 
@@ -24,6 +24,9 @@ def _passes_conditions(g, idx):
         return False
 
     if config.REQUIRE_MA_RISING and not indicator.is_ma_rising_at(g, idx):
+        return False
+
+    if config.REQUIRE_MA_TURNING and not indicator.is_ma_turning_up_at(g, idx):
         return False
 
     return True
@@ -94,6 +97,7 @@ def find_latest_signals(price_df, target_codes):
     cnt_no_data = 0
     cnt_not_bullish = 0
     cnt_ma_not_rising = 0
+    cnt_ma_not_turning = 0
     cnt_pass = 0
 
     df = price_df[price_df["Code"].isin(target_codes)].copy()
@@ -127,6 +131,11 @@ def find_latest_signals(price_df, target_codes):
             cnt_ma_not_rising += 1
             continue
 
+        ma_turning = indicator.is_ma_turning_up_at(g, idx)
+        if config.REQUIRE_MA_TURNING and not ma_turning:
+            cnt_ma_not_turning += 1
+            continue
+
         cnt_pass += 1
         results.append({
             "code": code,
@@ -140,6 +149,7 @@ def find_latest_signals(price_df, target_codes):
     print(f"[kuitto] データ不足で除外: {cnt_no_data}件")
     print(f"[kuitto] 陽線条件で除外: {cnt_not_bullish}件")
     print(f"[kuitto] MA上向き条件で除外: {cnt_ma_not_rising}件")
+    print(f"[kuitto] MA反転条件で除外: {cnt_ma_not_turning}件")
     print(f"[kuitto] 両条件通過: {cnt_pass}件")
     print("[kuitto] =====================")
 
