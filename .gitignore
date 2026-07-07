@@ -1,0 +1,23 @@
+# データキャッシュ（容量が大きく、再取得可能なため追跡しない）
+data/*.csv
+
+# スクリーニング・バックテスト結果（再生成可能）
+output/*.json
+output/*.csv
+
+# ログ
+logs/*.log
+
+# フォルダ自体は残すため .gitkeep は追跡する
+!data/.gitkeep
+!output/.gitkeep
+!logs/.gitkeep
+
+# Python関連
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# OS関連
+.DS_Store
