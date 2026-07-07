@@ -48,6 +48,17 @@ REQUIRE_BULLISH_CANDLE = True
 # 当日の短期MA が 前日の短期MA より大きければ上向きとみなす
 REQUIRE_MA_RISING = True
 
+# 短期移動平均線が「昨日まで下向き（または横ばい）→今日はっきり上向きに転換」した
+# 瞬間だけを検出する条件（REQUIRE_MA_RISINGとは別軸。両方Trueにもできるが、
+# 通常はどちらか一方をTrueにしてバックテストで比較する使い方を想定）
+REQUIRE_MA_TURNING = False
+
+# is_ma_turning_up_at() で「はっきり上向きに転じた」とみなす傾きの最小値。
+# 0だと「0より大きければOK」になり、+0.01のような微小な傾きも拾ってしまう。
+# 横ばいのノイズを除外したい場合はもう少し大きい値にする
+# （株価水準やMA_SHORT_PERIODに応じて、実際のトレードデータを見ながら調整するとよい）
+MA_TURNING_MIN_SLOPE = 0.0
+
 # RSIを使う場合の設定（現時点では未使用、拡張用）
 RSI_PERIOD = 14
 RSI_LOWER_BOUND = None   # 例: 30 に設定するとRSI30以上のみ対象
