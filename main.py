@@ -16,28 +16,31 @@ import config
 import download
 import notifier
 from strategies import registry
+from logger import get_logger
+
+logger = get_logger(__name__)
 
 
 def run():
-    print("=== 株スクリーニング開始 ===")
-    print(f"[main] 使用する戦略: {config.ACTIVE_STRATEGY}")
+    logger.info("=== 株スクリーニング開始 ===")
+    logger.info(f"使用する戦略: {config.ACTIVE_STRATEGY}")
 
     screener_fn = registry.get_latest_screener(config.ACTIVE_STRATEGY)
 
-    print("[main] 対象銘柄リスト取得中...")
+    logger.info("対象銘柄リスト取得中...")
     target_codes = download.get_target_codes()
 
-    print("[main] 株価データ取得中...")
+    logger.info("株価データ取得中...")
     price_df = download.get_price_history()
 
-    print("[main] スクリーニング中...")
+    logger.info("スクリーニング中...")
     results = screener_fn(price_df, target_codes)
-    print(f"[main] 該当: {len(results)}件")
+    logger.info(f"該当: {len(results)}件")
 
-    print("[main] Discord通知中...")
+    logger.info("Discord通知中...")
     notifier.notify(results)
 
-    print("=== 完了 ===")
+    logger.info("=== 完了 ===")
 
 
 def main():
@@ -45,11 +48,11 @@ def main():
     try:
         run()
     except Exception as e:
-        print(f"エラー: {e}")
+        logger.error(f"エラー: {e}", exc_info=True)
         notifier.notify_error(e, context="main.py（日次スクリーニング）実行中")
         raise
     finally:
-        print(f"実行時間: {time.time() - start:.1f}秒")
+        logger.info(f"実行時間: {time.time() - start:.1f}秒")
 
 
 if __name__ == "__main__":
