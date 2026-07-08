@@ -26,10 +26,13 @@ def notify(results):
     lines = []
     for r in results[:config.MAX_RESULTS_TO_SHOW]:
         url = config.KABUTAN_CHART_URL_TEMPLATE.format(code=r["code"])
+        # URLを < > で囲むとDiscordが埋め込みカード（OGP画像等）を表示しなくなる。
+        # 銘柄数が多いと埋め込みでチャットが縦に長くなりすぎるため無効化している。
+        name = f"（{r['name']}）" if r.get("name") else ""
         lines.append(
-            f"・**{r['code']}**｜終値 {r['close']}円｜"
-            f"MA{cfg['MA_SHORT_PERIOD']} {r['ma_short_prev']}→{r['ma_short_today']}↑\n"
-            f"  {url}"
+            f"・**{r['code']}**{name}｜終値 {r['close']}円｜"
+            f"MA{cfg['MA_SHORT_PERIOD']} {r['ma_short_prev']}→{r['ma_short_today']}↑｜"
+            f"<{url}>"
         )
 
     header = (
