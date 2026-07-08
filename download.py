@@ -94,7 +94,7 @@ def _fetch_master_df():
     get_target_codes() と get_code_to_name_map() で同じデータを2回取得しないよう、
     共通処理としてここに切り出している。
 
-    列名 "CompanyName" に会社名が入っている想定
+    列名 "CoName" に会社名が入っている想定
     （J-QuantsのAPI仕様変更で列名が変わった場合はここだけ直せばよい）。
     """
     res = _request_with_retry(f"{BASE_URL}/equities/master")
@@ -146,8 +146,8 @@ def get_code_to_name_map():
     """
     df = _fetch_master_df()
 
-    if "CompanyName" not in df.columns:
-        logger.warning("マスターデータにCompanyName列が見つかりません。"
+    if "CoName" not in df.columns:
+        logger.warning("マスターデータにCoName列が見つかりません。"
                         "会社名なしで処理を続行します（J-Quantsの仕様変更の可能性）。")
         return {}
 
@@ -155,7 +155,7 @@ def get_code_to_name_map():
     df = df[~df["Code"].str.endswith(config.EXCLUDED_CODE_SUFFIXES)].copy()
     df["Code"] = df["Code"].apply(_normalize_code)
 
-    return dict(zip(df["Code"], df["CompanyName"]))
+    return dict(zip(df["Code"], df["CoName"]))
 
 
 def get_target_codes_and_names():
@@ -166,10 +166,10 @@ def get_target_codes_and_names():
     戻り値: (target_codes: set, code_to_name: dict) のタプル
     """
     df = _fetch_master_df()
-    has_name_column = "CompanyName" in df.columns
+    has_name_column = "CoName" in df.columns
 
     if not has_name_column:
-        logger.warning("マスターデータにCompanyName列が見つかりません。"
+        logger.warning("マスターデータにCoName列が見つかりません。"
                         "会社名なしで処理を続行します（J-Quantsの仕様変更の可能性）。")
 
     filtered = df[~df["Code"].str.endswith(config.EXCLUDED_CODE_SUFFIXES)].copy()
@@ -177,7 +177,7 @@ def get_target_codes_and_names():
 
     target_codes = set(filtered["Code"].tolist())
     code_to_name = (
-        dict(zip(filtered["Code"], filtered["CompanyName"]))
+        dict(zip(filtered["Code"], filtered["CoName"]))
         if has_name_column else {}
     )
 
