@@ -25,6 +25,9 @@ import pandas as pd
 from datetime import datetime, timedelta
 
 import config
+from logger import get_logger
+
+logger = get_logger(__name__)
 
 HEADERS = {"x-api-key": config.JQUANTS_API_KEY}
 BASE_URL = "https://api.jquants.com/v2"
@@ -55,7 +58,7 @@ def _request_with_retry(url, params=None):
             )
 
             if res.status_code in config.API_RETRYABLE_STATUS_CODES:
-                print(f"[download] リトライ対象のステータス {res.status_code} "
+                logger.warning(f"リトライ対象のステータス {res.status_code} "
                       f"({attempt}/{config.API_MAX_RETRIES}回目): {url}")
                 last_exception = requests.exceptions.HTTPError(
                     f"{res.status_code} Server Error: {res.text}"
@@ -68,14 +71,14 @@ def _request_with_retry(url, params=None):
             return res
 
         except (requests.exceptions.Timeout, requests.exceptions.ConnectionError) as e:
-            print(f"[download] タイムアウト/接続エラー "
+            logger.warning(f"タイムアウト/接続エラー "
                   f"({attempt}/{config.API_MAX_RETRIES}回目): {e}")
             last_exception = e
             _wait_before_retry(attempt)
             continue
 
     # 全リトライを使い切っても失敗した場合はここに来る
-    print(f"[download] {config.API_MAX_RETRIES}回リトライしましたが失敗しました: {url}")
+    logger.warning(f"{config.API_MAX_RETRIES}回リトライしましたが失敗しました: {url}")
     raise last_exception
 
 
@@ -111,7 +114,7 @@ def get_target_codes():
     # 除外後に、価格データ側と一致するよう4桁表記へ変換する
     target = [_normalize_code(code) for code in target]
 
-    print(f"[download] {config.TARGET_MARKET}銘柄数: {len(target)}件")
+    logger.info(f"{config.TARGET_MARKET}銘柄数: {len(target)}件")
     return set(target)
 
 
@@ -134,7 +137,7 @@ def _get_bars_for_date(date_str):
             params=params
         )
         if res.status_code != 200:
-            print(f"[download] APIエラー ({date_str}): {res.status_code} {res.text}")
+            logger.warning(f"APIエラー ({date_str}): {res.status_code} {res.text}")
         res.raise_for_status()
         body = res.json()
 
@@ -168,14 +171,14 @@ def get_price_history():
         if rows:
             all_rows.extend(rows)
             collected_days += 1
-            print(f"[download]  {date_str}: {len(rows)}件取得")
+            logger.info(f" {date_str}: {len(rows)}件取得")
         else:
-            print(f"[download]  {date_str}: データなし（休日等）")
+            logger.info(f" {date_str}: データなし（休日等）")
 
         day -= timedelta(days=1)
         lookback += 1
 
-    print(f"[download] 取得した株価レコード数（合計）: {len(all_rows)}件")
+    logger.info(f"取得した株価レコード数（合計）: {len(all_rows)}件")
     return _finalize_df(all_rows)
 
 
@@ -210,7 +213,7 @@ def _get_bars_for_code(code, from_date=None, to_date=None):
             params=params
         )
         if res.status_code != 200:
-            print(f"[download] APIエラー (code={code}): {res.status_code} {res.text}")
+            logger.warning(f"APIエラー (code={code}): {res.status_code} {res.text}")
         res.raise_for_status()
         body = res.json()
 
@@ -243,7 +246,7 @@ def get_price_history_range(years=None, cache_filename=None):
     if cache_filename:
         cache_path = os.path.join(config.DATA_DIR, cache_filename)
         if os.path.exists(cache_path):
-            print(f"[download] キャッシュを読み込みます: {cache_path}")
+            logger.info(f"キャッシュを読み込みます: {cache_path}")
             df = pd.read_csv(cache_path, parse_dates=["Date"])
             return df
 
@@ -263,9 +266,9 @@ def get_price_history_range(years=None, cache_filename=None):
         all_rows.extend(rows)
 
         if i % 50 == 0 or i == total:
-            print(f"[download] 進捗: {i}/{total}銘柄 取得済み（累計{len(all_rows)}件）")
+            logger.info(f"進捗: {i}/{total}銘柄 取得済み（累計{len(all_rows)}件）")
 
-    print(f"[download] 取得した株価レコード数（合計）: {len(all_rows)}件")
+    logger.info(f"取得した株価レコード数（合計）: {len(all_rows)}件")
     df = _finalize_df(all_rows)
 
     if cache_filename:
@@ -296,14 +299,14 @@ def get_price_history_incremental(cache_filename, years=None):
     cache_path = os.path.join(config.DATA_DIR, cache_filename)
 
     if not os.path.exists(cache_path):
-        print(f"[download] キャッシュが存在しないため、初回一括取得を行います: {cache_path}")
+        logger.info(f"キャッシュが存在しないため、初回一括取得を行います: {cache_path}")
         return get_price_history_range(years=years, cache_filename=cache_filename)
 
-    print(f"[download] 既存キャッシュを読み込みます: {cache_path}")
+    logger.info(f"既存キャッシュを読み込みます: {cache_path}")
     existing_df = pd.read_csv(cache_path, parse_dates=["Date"])
 
     if existing_df.empty:
-        print("[download] キャッシュが空のため、初回一括取得を行います。")
+        logger.info("キャッシュが空のため、初回一括取得を行います。")
         return get_price_history_range(years=years, cache_filename=cache_filename)
 
     latest_cached_date = existing_df["Date"].max()
@@ -311,14 +314,14 @@ def get_price_history_incremental(cache_filename, years=None):
     to_date = datetime.now()
 
     if from_date.date() > to_date.date():
-        print(f"[download] キャッシュは既に最新（{latest_cached_date.date()}）です。"
+        logger.info(f"キャッシュは既に最新（{latest_cached_date.date()}）です。"
               f"追加取得は不要です。")
         return existing_df
 
     from_str = from_date.strftime("%Y%m%d")
     to_str = to_date.strftime("%Y%m%d")
 
-    print(f"[download] 差分取得します: {from_str} 〜 {to_str}")
+    logger.info(f"差分取得します: {from_str} 〜 {to_str}")
 
     target_codes = get_target_codes()
 
@@ -330,10 +333,10 @@ def get_price_history_incremental(cache_filename, years=None):
         new_rows.extend(rows)
 
         if i % 50 == 0 or i == total:
-            print(f"[download] 差分取得 進捗: {i}/{total}銘柄（累計{len(new_rows)}件）")
+            logger.info(f"差分取得 進捗: {i}/{total}銘柄（累計{len(new_rows)}件）")
 
     if not new_rows:
-        print("[download] 新しいデータはありませんでした（休日のみ等）。")
+        logger.info("新しいデータはありませんでした（休日のみ等）。")
         return existing_df
 
     new_df = _finalize_df(new_rows)
@@ -343,7 +346,7 @@ def get_price_history_incremental(cache_filename, years=None):
     combined_df = combined_df.drop_duplicates(subset=["Code", "Date"], keep="last")
     combined_df = combined_df.sort_values(["Code", "Date"]).reset_index(drop=True)
 
-    print(f"[download] 差分取得件数: {len(new_df)}件 / "
+    logger.info(f"差分取得件数: {len(new_df)}件 / "
           f"更新後の合計件数: {len(combined_df)}件")
 
     _save_cache(combined_df, cache_filename)
@@ -355,7 +358,7 @@ def _save_cache(df, cache_filename):
     os.makedirs(config.DATA_DIR, exist_ok=True)
     cache_path = os.path.join(config.DATA_DIR, cache_filename)
     df.to_csv(cache_path, index=False)
-    print(f"[download] キャッシュを保存しました: {cache_path}")
+    logger.info(f"キャッシュを保存しました: {cache_path}")
 
 
 def _finalize_df(all_rows):
