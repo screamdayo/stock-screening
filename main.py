@@ -28,13 +28,18 @@ def run():
     screener_fn = registry.get_latest_screener(config.ACTIVE_STRATEGY)
 
     logger.info("対象銘柄リスト取得中...")
-    target_codes = download.get_target_codes()
+    target_codes, code_to_name = download.get_target_codes_and_names()
 
     logger.info("株価データ取得中...")
     price_df = download.get_price_history()
 
     logger.info("スクリーニング中...")
     results = screener_fn(price_df, target_codes)
+
+    # 会社名を各結果に付与する（見つからない場合は空文字のままにしておく）
+    for r in results:
+        r["name"] = code_to_name.get(r["code"], "")
+
     logger.info(f"該当: {len(results)}件")
 
     logger.info("Discord通知中...")
