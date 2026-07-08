@@ -9,10 +9,14 @@ import requests
 from datetime import datetime
 
 import config
+from logger import get_logger
+
+logger = get_logger(__name__)
 
 
 def notify(results):
     today = datetime.now().strftime("%Y/%m/%d")
+    cfg = config.get_strategy_config()  # ACTIVE_STRATEGYの設定を使う
 
     if not results:
         msg = f"📊 **株スクリーニング結果 {today}**\n該当銘柄なし"
@@ -24,14 +28,14 @@ def notify(results):
         url = config.KABUTAN_CHART_URL_TEMPLATE.format(code=r["code"])
         lines.append(
             f"・**{r['code']}**｜終値 {r['close']}円｜"
-            f"MA{config.MA_SHORT_PERIOD} {r['ma_short_prev']}→{r['ma_short_today']}↑\n"
+            f"MA{cfg['MA_SHORT_PERIOD']} {r['ma_short_prev']}→{r['ma_short_today']}↑\n"
             f"  {url}"
         )
 
     header = (
         f"📊 **株スクリーニング結果 {today}**\n"
-        f"✅ {config.MA_SHORT_PERIOD}日MA上向き"
-        + ("＆陽線" if config.REQUIRE_BULLISH_CANDLE else "")
+        f"✅ {cfg['MA_SHORT_PERIOD']}日MA上向き"
+        + ("＆陽線" if cfg["REQUIRE_BULLISH_CANDLE"] else "")
         + f"（{len(results)}件）\n"
     )
 
@@ -71,7 +75,7 @@ def notify_error(error, context=""):
 
 def _post(msg):
     if not config.DISCORD_WEBHOOK_URL:
-        print("[notifier] DISCORD_WEBHOOK_URLが未設定のため通知をスキップします。")
+        logger.warning("DISCORD_WEBHOOK_URLが未設定のため通知をスキップします。")
         return
     requests.post(config.DISCORD_WEBHOOK_URL, json={"content": msg})
 
