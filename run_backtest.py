@@ -6,6 +6,8 @@ run_backtest.py
     python run_backtest.py                  # デフォルト戦略（kuitto）で実行
     python run_backtest.py --strategy kuitto
     python run_backtest.py --strategy golden_cross   # 新しい戦略を追加した場合
+    python run_backtest.py --condition rising        # MA上向き判定方式を強制指定して比較
+    python run_backtest.py --condition turning
 
 新しい戦略を追加する手順:
     1. strategies/ 以下に新しいファイルを作り、find_signals(price_df, target_codes) を実装する
@@ -33,6 +35,9 @@ import download
 import backtest
 import notifier
 from strategies import registry
+from logger import get_logger
+
+logger = get_logger(__name__)
 
 DEFAULT_STRATEGY = "kuitto"
 
@@ -59,23 +64,28 @@ def parse_args():
     return parser.parse_args()
 
 
-def _apply_condition_override(condition):
+def _apply_condition_override(condition, strategy_name):
     """
-    --condition の指定に応じて、config.py のMA判定フラグを一時的に上書きする。
+    --condition の指定に応じて、config.STRATEGY_CONFIG[strategy_name] の
+    MA判定フラグを一時的に上書きする。
     'config' の場合は何もしない（config.py の値をそのまま使う）。
     """
+    cfg = config.get_strategy_config(strategy_name)
+
     if condition == "rising":
-        config.REQUIRE_MA_RISING = True
-        config.REQUIRE_MA_TURNING = False
-        print("[main] --condition rising: REQUIRE_MA_RISING=True, REQUIRE_MA_TURNING=False に上書き")
+        cfg["REQUIRE_MA_RISING"] = True
+        cfg["REQUIRE_MA_TURNING"] = False
+        logger.info(f"--condition rising: STRATEGY_CONFIG['{strategy_name}'] の "
+                     f"REQUIRE_MA_RISING=True, REQUIRE_MA_TURNING=False に上書き")
     elif condition == "turning":
-        config.REQUIRE_MA_RISING = False
-        config.REQUIRE_MA_TURNING = True
-        print("[main] --condition turning: REQUIRE_MA_RISING=False, REQUIRE_MA_TURNING=True に上書き")
+        cfg["REQUIRE_MA_RISING"] = False
+        cfg["REQUIRE_MA_TURNING"] = True
+        logger.info(f"--condition turning: STRATEGY_CONFIG['{strategy_name}'] の "
+                     f"REQUIRE_MA_RISING=False, REQUIRE_MA_TURNING=True に上書き")
     else:
-        print(f"[main] --condition config: config.pyの設定をそのまま使用 "
-              f"(REQUIRE_MA_RISING={config.REQUIRE_MA_RISING}, "
-              f"REQUIRE_MA_TURNING={config.REQUIRE_MA_TURNING})")
+        logger.info(f"--condition config: STRATEGY_CONFIG['{strategy_name}']の設定をそのまま使用 "
+                     f"(REQUIRE_MA_RISING={cfg['REQUIRE_MA_RISING']}, "
+                     f"REQUIRE_MA_TURNING={cfg['REQUIRE_MA_TURNING']})")
 
 
 def run(strategy_name, run_label=None):
@@ -86,38 +96,39 @@ def run(strategy_name, run_label=None):
 
     cache_filename = f"backtest_prices_{config.TARGET_MARKET}_{config.BACKTEST_YEARS}y.csv"
 
-    print("=== バックテスト開始 ===")
-    print(f"[設定] 戦略: {strategy_name}")
-    print(f"[設定] 対象市場: {config.TARGET_MARKET}")
-    print(f"[設定] 対象期間: 過去{config.BACKTEST_YEARS}年")
-    print(f"[設定] MA上向き判定: REQUIRE_MA_RISING={config.REQUIRE_MA_RISING}, "
-          f"REQUIRE_MA_TURNING={config.REQUIRE_MA_TURNING}")
-    print(f"[設定] 保有日数: {config.BACKTEST_HOLD_DAYS}日 "
-          f"/ 利確: +{config.BACKTEST_TAKE_PROFIT_PCT}% "
-          f"/ 損切り: -{config.BACKTEST_STOP_LOSS_PCT}%")
+    logger.info("=== バックテスト開始 ===")
+    logger.info(f"[設定] 戦略: {strategy_name}")
+    logger.info(f"[設定] 対象市場: {config.TARGET_MARKET}")
+    logger.info(f"[設定] 対象期間: 過去{config.BACKTEST_YEARS}年")
+    cfg = config.get_strategy_config(strategy_name)
+    logger.info(f"[設定] MA上向き判定: REQUIRE_MA_RISING={cfg['REQUIRE_MA_RISING']}, "
+                f"REQUIRE_MA_TURNING={cfg['REQUIRE_MA_TURNING']}")
+    logger.info(f"[設定] 保有日数: {config.BACKTEST_HOLD_DAYS}日 "
+                f"/ 利確: +{config.BACKTEST_TAKE_PROFIT_PCT}% "
+                f"/ 損切り: -{config.BACKTEST_STOP_LOSS_PCT}%")
 
-    print("\n[main] 対象銘柄リスト取得中...")
+    logger.info("対象銘柄リスト取得中...")
     target_codes = download.get_target_codes()
 
-    print("\n[main] 株価データ取得中（キャッシュがあれば差分だけ取得）...")
+    logger.info("株価データ取得中（キャッシュがあれば差分だけ取得）...")
     price_df = download.get_price_history_incremental(
         cache_filename=cache_filename,
         years=config.BACKTEST_YEARS,
     )
 
-    print(f"\n[main] 戦略「{strategy_name}」でシグナル検出中...")
+    logger.info(f"戦略「{strategy_name}」でシグナル検出中...")
     signals, price_data_by_code = strategy_fn(price_df, target_codes)
 
-    print("\n[main] バックテスト実行中...")
+    logger.info("バックテスト実行中...")
     trades = backtest.run_backtest(signals, price_data_by_code)
 
-    print("\n[main] 結果集計中...")
+    logger.info("結果集計中...")
     summary = backtest.summarize_trades(trades)
     backtest.print_summary(summary)
 
     _save_results(trades, summary, run_label)
 
-    print("\n=== バックテスト完了 ===")
+    logger.info("=== バックテスト完了 ===")
 
 
 def main():
@@ -129,10 +140,10 @@ def main():
     try:
         registry.get_strategy(strategy_name)
     except ValueError as e:
-        print(f"[エラー] {e}")
+        logger.error(f"[エラー] {e}")
         sys.exit(1)
 
-    _apply_condition_override(condition)
+    _apply_condition_override(condition, strategy_name)
 
     # rising/turningを切り替えて比較したい場合、出力ファイルが上書きされて
     # 比較できなくなると困るため、conditionを明示指定した場合はラベルとして使う
@@ -142,11 +153,11 @@ def main():
     try:
         run(strategy_name, run_label)
     except Exception as e:
-        print(f"エラー: {e}")
+        logger.error(f"エラー: {e}", exc_info=True)
         notifier.notify_error(e, context=f"run_backtest.py（戦略: {strategy_name}, 条件: {condition}）実行中")
         raise
     finally:
-        print(f"実行時間: {time.time() - start:.1f}秒")
+        logger.info(f"実行時間: {time.time() - start:.1f}秒")
 
 
 def _save_results(trades, summary, run_label):
@@ -162,10 +173,10 @@ def _save_results(trades, summary, run_label):
     summary_path = os.path.join(config.OUTPUT_DIR, "summary.json")
     with open(summary_path, "w", encoding="utf-8") as f:
         json.dump(summary_with_meta, f, ensure_ascii=False, indent=2, default=str)
-    print(f"[main] サマリーを保存しました: {summary_path}")
+    logger.info(f"サマリーを保存しました: {summary_path}")
 
     if not trades:
-        print("[main] トレードが0件のため、trades.csv以降の出力はスキップします。")
+        logger.info("トレードが0件のため、trades.csv以降の出力はスキップします。")
         return
 
     # ---- trades.csv（固定ファイル名、個別トレード明細） ----
@@ -182,33 +193,30 @@ def _save_results(trades, summary, run_label):
 
     trades_path = os.path.join(config.OUTPUT_DIR, "trades.csv")
     df.to_csv(trades_path, index=False, encoding="utf-8-sig")
-    print(f"[main] 個別トレード結果を保存しました: {trades_path}")
+    logger.info(f"個別トレード結果を保存しました: {trades_path}")
 
     # ---- losing_trades.csv（負けトレードのみ、敗因分析用） ----
     losses_df = df[df["result"] == "loss"].copy()
     if not losses_df.empty:
         losses_path = os.path.join(config.OUTPUT_DIR, "losing_trades.csv")
         losses_df.to_csv(losses_path, index=False, encoding="utf-8-sig")
-        print(f"[main] 負けトレードのみ抽出したファイルを保存しました: {losses_path}")
-
-        print("\n[main] 負けトレードの内訳:")
-        print(losses_df["exit_reason"].value_counts().to_string())
+        logger.info(f"負けトレードのみ抽出したファイルを保存しました: {losses_path}")
+        logger.info("負けトレードの内訳:\n" + losses_df["exit_reason"].value_counts().to_string())
 
     # ---- monthly.csv（月別成績） ----
     monthly_df = backtest.build_monthly_summary(trades)
     if not monthly_df.empty:
         monthly_path = os.path.join(config.OUTPUT_DIR, "monthly.csv")
         monthly_df.to_csv(monthly_path, index=False, encoding="utf-8-sig")
-        print(f"[main] 月別成績を保存しました: {monthly_path}")
+        logger.info(f"月別成績を保存しました: {monthly_path}")
 
     # ---- yearly.csv（年別成績） ----
     yearly_df = backtest.build_yearly_summary(trades)
     if not yearly_df.empty:
         yearly_path = os.path.join(config.OUTPUT_DIR, "yearly.csv")
         yearly_df.to_csv(yearly_path, index=False, encoding="utf-8-sig")
-        print(f"[main] 年別成績を保存しました: {yearly_path}")
-        print("\n[main] 年別成績:")
-        print(yearly_df.to_string(index=False))
+        logger.info(f"年別成績を保存しました: {yearly_path}")
+        logger.info("年別成績:\n" + yearly_df.to_string(index=False))
 
     # ---- equity_curve.csv（資産推移） ----
     equity_df = backtest.build_equity_curve(
@@ -219,12 +227,12 @@ def _save_results(trades, summary, run_label):
     if not equity_df.empty:
         equity_path = os.path.join(config.OUTPUT_DIR, "equity_curve.csv")
         equity_df.to_csv(equity_path, index=False, encoding="utf-8-sig")
-        print(f"[main] 資産推移を保存しました: {equity_path}")
         final_capital = equity_df["capital"].iloc[-1]
         total_return_pct = (final_capital / config.BACKTEST_INITIAL_CAPITAL - 1) * 100
-        print(f"[main] 初期資金 {config.BACKTEST_INITIAL_CAPITAL:,.0f}円 → "
-              f"最終資金 {final_capital:,.0f}円 "
-              f"（トータルリターン: {total_return_pct:+.2f}%）")
+        logger.info(f"資産推移を保存しました: {equity_path}")
+        logger.info(f"初期資金 {config.BACKTEST_INITIAL_CAPITAL:,.0f}円 → "
+                     f"最終資金 {final_capital:,.0f}円 "
+                     f"（トータルリターン: {total_return_pct:+.2f}%）")
 
 
 if __name__ == "__main__":
