@@ -88,6 +88,26 @@ def _wait_before_retry(attempt):
     time.sleep(wait_seconds)
 
 
+def _fetch_master_df():
+    """
+    J-Quantsのマスターデータ（銘柄一覧）を取得し、対象市場のみに絞ったDataFrameを返す。
+    get_target_codes() と get_code_to_name_map() で同じデータを2回取得しないよう、
+    共通処理としてここに切り出している。
+
+    列名 "CompanyName" に会社名が入っている想定
+    （J-QuantsのAPI仕様変更で列名が変わった場合はここだけ直せばよい）。
+    """
+    res = _request_with_retry(f"{BASE_URL}/equities/master")
+    res.raise_for_status()
+    data = res.json()
+
+    df = pd.DataFrame(data["data"])
+    df = df[df["MktNm"] == config.TARGET_MARKET].copy()
+    df["Code"] = df["Code"].astype(str)
+
+    return df
+
+
 def get_target_codes():
     """
     対象市場（デフォルト：プライム）の銘柄コード一覧を取得する。
@@ -98,12 +118,8 @@ def get_target_codes():
     「除外判定 → 4桁への変換」の順序で処理する
     （先に4桁化してしまうと末尾の判定基準が変わってしまうため注意）。
     """
-    res = _request_with_retry(f"{BASE_URL}/equities/master")
-    res.raise_for_status()
-    data = res.json()
-
-    df = pd.DataFrame(data["data"])
-    target = df[df["MktNm"] == config.TARGET_MARKET]["Code"].astype(str).tolist()
+    df = _fetch_master_df()
+    target = df["Code"].tolist()
 
     # 除外判定は5桁のままの末尾で行う（優先株式は末尾が0以外になる）
     target = [
@@ -116,6 +132,57 @@ def get_target_codes():
 
     logger.info(f"{config.TARGET_MARKET}銘柄数: {len(target)}件")
     return set(target)
+
+
+def get_code_to_name_map():
+    """
+    対象市場の {4桁銘柄コード: 会社名} の辞書を取得する。
+    Discord通知などで、コードだけでなく会社名も表示したい場合に使う。
+
+    get_target_codes() と同じマスターデータを使うため、
+    このためだけに追加のAPIリクエストは発生しない
+    （_fetch_master_df のキャッシュは行っていないので、両方呼ぶ場合は
+    2回リクエストが飛ぶ。両方必要な場合は get_target_codes_and_names() を使うこと）。
+    """
+    df = _fetch_master_df()
+
+    if "CompanyName" not in df.columns:
+        logger.warning("マスターデータにCompanyName列が見つかりません。"
+                        "会社名なしで処理を続行します（J-Quantsの仕様変更の可能性）。")
+        return {}
+
+    # 優先株式などは除外し、4桁表記に変換してからマッピングを作る
+    df = df[~df["Code"].str.endswith(config.EXCLUDED_CODE_SUFFIXES)].copy()
+    df["Code"] = df["Code"].apply(_normalize_code)
+
+    return dict(zip(df["Code"], df["CompanyName"]))
+
+
+def get_target_codes_and_names():
+    """
+    get_target_codes() と get_code_to_name_map() の両方が必要な場合に、
+    マスターデータの取得を1回で済ませるための関数。
+
+    戻り値: (target_codes: set, code_to_name: dict) のタプル
+    """
+    df = _fetch_master_df()
+    has_name_column = "CompanyName" in df.columns
+
+    if not has_name_column:
+        logger.warning("マスターデータにCompanyName列が見つかりません。"
+                        "会社名なしで処理を続行します（J-Quantsの仕様変更の可能性）。")
+
+    filtered = df[~df["Code"].str.endswith(config.EXCLUDED_CODE_SUFFIXES)].copy()
+    filtered["Code"] = filtered["Code"].apply(_normalize_code)
+
+    target_codes = set(filtered["Code"].tolist())
+    code_to_name = (
+        dict(zip(filtered["Code"], filtered["CompanyName"]))
+        if has_name_column else {}
+    )
+
+    logger.info(f"{config.TARGET_MARKET}銘柄数: {len(target_codes)}件")
+    return target_codes, code_to_name
 
 
 # =====================================================================
