@@ -26,6 +26,9 @@ backtest.py
 import pandas as pd
 
 import config
+from logger import get_logger
+
+logger = get_logger(__name__)
 
 
 def _simulate_one_trade(g, signal_idx):
@@ -136,10 +139,10 @@ def run_backtest(signals, price_data_by_code):
         trades.append(result)
 
     if skipped_missing_code > 0:
-        print(f"[backtest] 警告: price_data_by_codeに存在しない銘柄コードのシグナルを "
-              f"{skipped_missing_code}件スキップしました。")
+        logger.warning(f"price_data_by_codeに存在しない銘柄コードのシグナルを "
+                        f"{skipped_missing_code}件スキップしました。")
 
-    print(f"[backtest] シミュレートしたトレード数: {len(trades)}件")
+    logger.info(f"シミュレートしたトレード数: {len(trades)}件")
     return trades
 
 
@@ -195,27 +198,30 @@ def summarize_trades(trades):
 
 
 def print_summary(summary):
-    print("=" * 40)
-    print("バックテスト結果サマリー")
-    print("=" * 40)
-    print(f"総トレード数       : {summary['total_trades']}件")
-
     if summary["total_trades"] == 0:
-        print("トレードがありませんでした。")
+        logger.info("バックテスト結果サマリー: トレードがありませんでした。")
         return
 
-    print(f"勝ちトレード数      : {summary['win_count']}件")
-    print(f"負けトレード数      : {summary['loss_count']}件")
-    print(f"勝率               : {summary['win_rate']}%")
-    print(f"平均利益（勝ち時）   : +{summary['avg_profit_pct']}%")
-    print(f"平均損失（負け時）   : {summary['avg_loss_pct']}%")
-    print(f"プロフィットファクター: {summary['profit_factor']}")
-    print(f"平均保有日数        : {summary['avg_holding_days']}日")
-    print("-" * 40)
-    print(f"利確決済    : {summary['take_profit_count']}件")
-    print(f"損切り決済  : {summary['stop_loss_count']}件")
-    print(f"期日決済    : {summary['time_exit_count']}件")
-    print("=" * 40)
+    report_lines = [
+        "",
+        "=" * 40,
+        "バックテスト結果サマリー",
+        "=" * 40,
+        f"総トレード数       : {summary['total_trades']}件",
+        f"勝ちトレード数      : {summary['win_count']}件",
+        f"負けトレード数      : {summary['loss_count']}件",
+        f"勝率               : {summary['win_rate']}%",
+        f"平均利益（勝ち時）   : +{summary['avg_profit_pct']}%",
+        f"平均損失（負け時）   : {summary['avg_loss_pct']}%",
+        f"プロフィットファクター: {summary['profit_factor']}",
+        f"平均保有日数        : {summary['avg_holding_days']}日",
+        "-" * 40,
+        f"利確決済    : {summary['take_profit_count']}件",
+        f"損切り決済  : {summary['stop_loss_count']}件",
+        f"期日決済    : {summary['time_exit_count']}件",
+        "=" * 40,
+    ]
+    logger.info("\n".join(report_lines))
 
 
 def _summarize_group(group_df):
