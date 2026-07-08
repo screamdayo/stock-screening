@@ -49,35 +49,66 @@ EXCLUDED_CODE_SUFFIXES = ("5", "6")
 ACTIVE_STRATEGY = "kuitto"
 
 
-# ===== スクリーニング条件（「くいっと」戦略の定義） =====
-# 他の戦略を追加した場合、それぞれの戦略ファイル内で
-# 同様に「その戦略専用の設定値」をこのファイルに追記していく想定。
-# 移動平均線の期間設定
-MA_SHORT_PERIOD = 5     # 短期移動平均（例：5日線）
-MA_LONG_PERIOD = 25     # 長期移動平均（例：25日線、使う場合）
+# ===== 戦略ごとの設定 =====
+# 戦略名 -> その戦略専用の設定値の辞書。
+# 新しい戦略を追加する場合は、ここに同じ形で1ブロック追記するだけでよい
+# （例: STRATEGY_CONFIG["golden_cross"] = {...}）。
+#
+# 各戦略ファイル（strategies/*.py）は、自分の戦略名に対応する設定を
+# config.STRATEGY_CONFIG["戦略名"] から参照する。
+STRATEGY_CONFIG = {
+    "kuitto": {
+        # 移動平均線の期間設定
+        "MA_SHORT_PERIOD": 5,     # 短期移動平均（例：5日線）
+        "MA_LONG_PERIOD": 25,     # 長期移動平均（例：25日線、使う場合）
 
-# 陽線判定を有効にするか（終値 > 始値）
-REQUIRE_BULLISH_CANDLE = True
+        # 陽線判定を有効にするか（終値 > 始値）
+        "REQUIRE_BULLISH_CANDLE": True,
 
-# 短期移動平均線が「上向き」と判定する条件
-# 当日の短期MA が 前日の短期MA より大きければ上向きとみなす
-REQUIRE_MA_RISING = True
+        # 短期移動平均線が「上向き」と判定する条件
+        # 当日の短期MA が 前日の短期MA より大きければ上向きとみなす
+        "REQUIRE_MA_RISING": True,
 
-# 短期移動平均線が「昨日まで下向き（または横ばい）→今日はっきり上向きに転換」した
-# 瞬間だけを検出する条件（REQUIRE_MA_RISINGとは別軸。両方Trueにもできるが、
-# 通常はどちらか一方をTrueにしてバックテストで比較する使い方を想定）
-REQUIRE_MA_TURNING = False
+        # 短期移動平均線が「昨日まで下向き（または横ばい）→今日はっきり上向きに転換」した
+        # 瞬間だけを検出する条件（REQUIRE_MA_RISINGとは別軸。両方Trueにもできるが、
+        # 通常はどちらか一方をTrueにしてバックテストで比較する使い方を想定）
+        "REQUIRE_MA_TURNING": False,
 
-# is_ma_turning_up_at() で「はっきり上向きに転じた」とみなす傾きの最小値。
-# 0だと「0より大きければOK」になり、+0.01のような微小な傾きも拾ってしまう。
-# 横ばいのノイズを除外したい場合はもう少し大きい値にする
-# （株価水準やMA_SHORT_PERIODに応じて、実際のトレードデータを見ながら調整するとよい）
-MA_TURNING_MIN_SLOPE = 0.0
+        # is_ma_turning_up_at() で「はっきり上向きに転じた」とみなす傾きの最小値。
+        # 0だと「0より大きければOK」になり、+0.01のような微小な傾きも拾ってしまう。
+        # 横ばいのノイズを除外したい場合はもう少し大きい値にする
+        "MA_TURNING_MIN_SLOPE": 0.0,
 
-# RSIを使う場合の設定（現時点では未使用、拡張用）
-RSI_PERIOD = 14
-RSI_LOWER_BOUND = None   # 例: 30 に設定するとRSI30以上のみ対象
-RSI_UPPER_BOUND = None   # 例: 70 に設定するとRSI70以下のみ対象
+        # RSIを使う場合の設定（現時点では未使用、拡張用）
+        "RSI_PERIOD": 14,
+        "RSI_LOWER_BOUND": None,   # 例: 30 に設定するとRSI30以上のみ対象
+        "RSI_UPPER_BOUND": None,   # 例: 70 に設定するとRSI70以下のみ対象
+    },
+
+    # 新しい戦略を追加する場合はここに追記する。例:
+    # "golden_cross": {
+    #     "MA_SHORT_PERIOD": 5,
+    #     "MA_LONG_PERIOD": 25,
+    #     ...
+    # },
+}
+
+
+def get_strategy_config(strategy_name=None):
+    """
+    指定した戦略名の設定辞書を取得するヘルパー。
+    strategy_name を省略した場合は ACTIVE_STRATEGY の設定を返す。
+
+    使い方（各戦略ファイル内）:
+        import config
+        cfg = config.get_strategy_config("kuitto")
+        ma_short = cfg["MA_SHORT_PERIOD"]
+    """
+    name = strategy_name or ACTIVE_STRATEGY
+    if name not in STRATEGY_CONFIG:
+        available = ", ".join(STRATEGY_CONFIG.keys())
+        raise ValueError(f"STRATEGY_CONFIGに未登録の戦略です: '{name}'（登録済み: {available}）")
+    return STRATEGY_CONFIG[name]
 
 
 # ===== バックテスト設定 =====
