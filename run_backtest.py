@@ -126,7 +126,10 @@ def run(strategy_name, run_label=None):
     summary = backtest.summarize_trades(trades)
     backtest.print_summary(summary)
 
-    _save_results(trades, summary, run_label)
+    equity_summary = _save_results(trades, summary, run_label)
+
+    logger.info("Discord通知中...")
+    notifier.notify_backtest_result(summary, run_label, equity_summary=equity_summary)
 
     logger.info("=== バックテスト完了 ===")
 
@@ -164,6 +167,8 @@ def _save_results(trades, summary, run_label):
     os.makedirs(config.OUTPUT_DIR, exist_ok=True)
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
 
+    equity_summary = None
+
     # ---- summary.json（固定ファイル名、常に最新で上書き） ----
     summary_with_meta = {
         "run_label": run_label,
@@ -177,7 +182,7 @@ def _save_results(trades, summary, run_label):
 
     if not trades:
         logger.info("トレードが0件のため、trades.csv以降の出力はスキップします。")
-        return
+        return equity_summary
 
     # ---- trades.csv（固定ファイル名、個別トレード明細） ----
     df = pd.DataFrame(trades)
@@ -233,6 +238,14 @@ def _save_results(trades, summary, run_label):
         logger.info(f"初期資金 {config.BACKTEST_INITIAL_CAPITAL:,.0f}円 → "
                      f"最終資金 {final_capital:,.0f}円 "
                      f"（トータルリターン: {total_return_pct:+.2f}%）")
+
+        equity_summary = {
+            "initial_capital": config.BACKTEST_INITIAL_CAPITAL,
+            "final_capital": final_capital,
+            "total_return_pct": total_return_pct,
+        }
+
+    return equity_summary
 
 
 if __name__ == "__main__":
