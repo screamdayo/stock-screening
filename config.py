@@ -79,6 +79,46 @@ STRATEGY_CONFIG = {
         # 横ばいのノイズを除外したい場合はもう少し大きい値にする
         "MA_TURNING_MIN_SLOPE": 0.0,
 
+        # 「くいっと」の完全な形（下落トレンド→傾きが徐々に緩やかに→底固め→反転上向き）
+        # を判定する条件。REQUIRE_MA_RISING/REQUIRE_MA_TURNINGよりも厳密で、
+        # 検出件数を絞り込みたい場合に使う（3つとも独立したON/OFFなので、
+        # 通常はこれか他の2つのどれか1つだけをTrueにして比較する）。
+        "REQUIRE_KUITTO_PATTERN": False,
+
+        # is_kuitto_pattern_at() のパラメータ。
+        # 傾きは「前日のMA値に対する変化率（%）」で判定する
+        # （円ベースの絶対値だと値がさが違う銘柄ごとに閾値を変える必要が出るため、
+        # %ベースにして株価水準に依存しないようにしている）。
+        #
+        # 判定する条件はシンプルに2つ:
+        #   1. 観測期間（LOOKBACK_DAYS日）内に、はっきりした下落が1回でもあったこと
+        #   2. 今日、はっきり反転上向きになること
+        # （「傾きが徐々に緩やかになる」という単調性は判定しない。実際の株価は
+        #   ノイズが多く、完全な単調推移になることは稀なため）
+        #
+        # KUITTO_PATTERN_LOOKBACK_DAYS: 下落の有無を何日分の傾きで見るか。
+        #   4なら、直近5点のMA値から4つの傾きを算出して判定する。
+        "KUITTO_PATTERN_LOOKBACK_DAYS": 4,
+
+        # KUITTO_PATTERN_DOWNTREND_MIN_SLOPE_PCT: 観測期間内の傾き（%）が
+        #   「明確な下落」とみなす上限（この値以下の傾きが1つでもあればOK）。
+        #   -0.3なら、前日比-0.3%以下の下落が期間内に1回はあることを要求する。
+        "KUITTO_PATTERN_DOWNTREND_MIN_SLOPE_PCT": -0.3,
+
+        # KUITTO_PATTERN_TURN_MIN_SLOPE_PCT: 今日の傾き（%）が
+        #   「はっきり反転上向き」とみなす下限。0.05なら前日比+0.05%を超えないと
+        #   反転と認めない。
+        "KUITTO_PATTERN_TURN_MIN_SLOPE_PCT": 0.05,
+
+        # KUITTO_PATTERN_REQUIRE_FLAT: Trueにすると、反転直前（今日の一つ前）の
+        #   傾きが「ほぼ水平（底固め）」であることも追加で要求する。
+        #   デフォルトはFalse（水平は必須にしない、下落→反転の2条件のみで判定）。
+        "KUITTO_PATTERN_REQUIRE_FLAT": False,
+
+        # KUITTO_PATTERN_FLAT_MAX_ABS_SLOPE_PCT: REQUIRE_FLAT=True の場合に
+        #   「ほぼ水平」とみなす絶対値の上限。0.1なら前日比±0.1%以内ならOK。
+        "KUITTO_PATTERN_FLAT_MAX_ABS_SLOPE_PCT": 0.1,
+
         # RSIを使う場合の設定（現時点では未使用、拡張用）
         "RSI_PERIOD": 14,
         "RSI_LOWER_BOUND": None,   # 例: 30 に設定するとRSI30以上のみ対象
