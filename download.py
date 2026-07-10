@@ -253,13 +253,19 @@ def get_price_history():
 # 銘柄ベースの取得（1銘柄・期間指定。バックテスト向け）
 # =====================================================================
 
-def _get_bars_for_code(code, from_date=None, to_date=None):
+def _get_bars_for_code(code, from_date=None, to_date=None, _is_fallback_retry=False):
     """
     指定銘柄コードの株価データを、期間指定（from/to）でまとめて取得する。
     from_date, to_date: "YYYYMMDD"形式の文字列。省略時はプランで取得可能な最大範囲になる。
 
     J-Quantsの仕様: codeを指定した場合、from/toで期間をまとめて指定できる
     （dateのように1日ずつループする必要がない）。
+
+    契約プランがカバーしていない古い日付をfromに指定すると400エラーになる
+    （例: 「Your subscription covers the following dates: 2021-07-10 ~」）。
+    この場合は致命的なエラーとして処理全体を止めるのではなく、fromを外して
+    「プランがカバーする最大範囲」で再取得を試みる
+    （＝取れる範囲だけでバックテストを継続できるようにする）。
     """
     all_rows = []
     pagination_key = None
@@ -279,6 +285,16 @@ def _get_bars_for_code(code, from_date=None, to_date=None):
             f"{BASE_URL}/equities/bars/daily",
             params=params
         )
+
+        if res.status_code == 400 and from_date and not _is_fallback_retry:
+            # 契約プランの対象期間外である可能性が高いので、fromを外して
+            # 「取得可能な最大範囲」で一度だけ再取得を試みる
+            logger.warning(
+                f"code={code}: from={from_date}が契約プランの対象期間外の可能性があります。"
+                f"fromを外して取得可能な範囲で再取得します。"
+            )
+            return _get_bars_for_code(code, from_date=None, to_date=to_date, _is_fallback_retry=True)
+
         if res.status_code != 200:
             logger.warning(f"APIエラー (code={code}): {res.status_code} {res.text}")
         res.raise_for_status()
