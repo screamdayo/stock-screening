@@ -39,7 +39,7 @@ def _request_with_retry(url, params=None):
     以下の一時的な障害に対して自動リトライする:
     - タイムアウト（サーバーが応答しない）
     - 接続エラー（ネットワークが一瞬切れた等）
-    - 502 / 503 / 504（サーバー側の一時的な障害でよく返るステータス）
+    - 429（レート制限超過）、502 / 503 / 504（サーバー側の一時的な障害）
 
     リトライしても解決しない障害（401認証エラー、400不正リクエストなど）は
     リトライせずそのまま例外を送出する。
@@ -63,7 +63,11 @@ def _request_with_retry(url, params=None):
                 last_exception = requests.exceptions.HTTPError(
                     f"{res.status_code} Server Error: {res.text}"
                 )
-                _wait_before_retry(attempt)
+                if res.status_code == 429:
+                    # レート制限は502/503/504よりも長めに待った方が解消しやすい
+                    time.sleep(config.API_RATE_LIMIT_BACKOFF_SECONDS * attempt)
+                else:
+                    _wait_before_retry(attempt)
                 continue
 
             # リトライ対象外のステータス（400, 401, 404など）はそのまま返す。
@@ -351,6 +355,9 @@ def get_price_history_range(years=None, cache_filename=None):
         if i % 50 == 0 or i == total:
             logger.info(f"進捗: {i}/{total}銘柄 取得済み（累計{len(all_rows)}件）")
 
+        # 連続リクエストによるレート制限（429）を避けるため、一定間隔を空ける
+        time.sleep(config.API_REQUEST_INTERVAL_SECONDS)
+
     logger.info(f"取得した株価レコード数（合計）: {len(all_rows)}件")
     df = _finalize_df(all_rows)
 
@@ -417,6 +424,9 @@ def get_price_history_incremental(cache_filename, years=None):
 
         if i % 50 == 0 or i == total:
             logger.info(f"差分取得 進捗: {i}/{total}銘柄（累計{len(new_rows)}件）")
+
+        # 連続リクエストによるレート制限（429）を避けるため、一定間隔を空ける
+        time.sleep(config.API_REQUEST_INTERVAL_SECONDS)
 
     if not new_rows:
         logger.info("新しいデータはありませんでした（休日のみ等）。")
