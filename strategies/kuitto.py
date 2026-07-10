@@ -30,7 +30,7 @@ def _get_cfg():
 def _passes_conditions(g, idx, cfg):
     """
     1銘柄の時系列DataFrame g の idx番目の行が、
-    「くいっと」の条件（陽線・MA上向き・MA反転上向き）を満たすかどうかを判定する。
+    「くいっと」の条件（陽線・MA上向き・MA反転上向き・パターン全体）を満たすかどうかを判定する。
     """
     latest = g.iloc[idx]
 
@@ -42,6 +42,16 @@ def _passes_conditions(g, idx, cfg):
 
     if cfg["REQUIRE_MA_TURNING"] and not indicator.is_ma_turning_up_at(
         g, idx, min_slope=cfg["MA_TURNING_MIN_SLOPE"]
+    ):
+        return False
+
+    if cfg["REQUIRE_KUITTO_PATTERN"] and not indicator.is_kuitto_pattern_at(
+        g, idx,
+        lookback_days=cfg["KUITTO_PATTERN_LOOKBACK_DAYS"],
+        downtrend_min_slope_pct=cfg["KUITTO_PATTERN_DOWNTREND_MIN_SLOPE_PCT"],
+        turn_min_slope_pct=cfg["KUITTO_PATTERN_TURN_MIN_SLOPE_PCT"],
+        require_flat=cfg["KUITTO_PATTERN_REQUIRE_FLAT"],
+        flat_max_abs_slope_pct=cfg["KUITTO_PATTERN_FLAT_MAX_ABS_SLOPE_PCT"],
     ):
         return False
 
@@ -72,7 +82,10 @@ def find_signals(price_df, target_codes):
         logger.warning("対象データが空です。")
         return signals, price_data_by_code
 
-    min_required_rows = max(cfg["MA_LONG_PERIOD"], cfg["MA_SHORT_PERIOD"]) + 1
+    min_required_rows = max(cfg["MA_LONG_PERIOD"], cfg["MA_SHORT_PERIOD"])
+    if cfg["REQUIRE_KUITTO_PATTERN"]:
+        min_required_rows = max(min_required_rows, cfg["MA_SHORT_PERIOD"] + cfg["KUITTO_PATTERN_LOOKBACK_DAYS"])
+    min_required_rows += 1
     code_count = 0
 
     for code, group in df.groupby("Code"):
@@ -118,6 +131,7 @@ def find_latest_signals(price_df, target_codes):
     cnt_not_bullish = 0
     cnt_ma_not_rising = 0
     cnt_ma_not_turning = 0
+    cnt_not_kuitto_pattern = 0
     cnt_pass = 0
 
     df = price_df[price_df["Code"].isin(target_codes)].copy()
@@ -128,7 +142,12 @@ def find_latest_signals(price_df, target_codes):
     latest_date = df["Date"].max()
     logger.info(f"データ最新日付: {latest_date.date()}")
 
-    min_required_rows = max(cfg["MA_LONG_PERIOD"], cfg["MA_SHORT_PERIOD"]) + 1
+    # REQUIRE_KUITTO_PATTERN使用時は、傾き算出のために追加でlookback_days分の
+    # データが必要になるため、必要行数に加味しておく
+    min_required_rows = max(cfg["MA_LONG_PERIOD"], cfg["MA_SHORT_PERIOD"])
+    if cfg["REQUIRE_KUITTO_PATTERN"]:
+        min_required_rows = max(min_required_rows, cfg["MA_SHORT_PERIOD"] + cfg["KUITTO_PATTERN_LOOKBACK_DAYS"])
+    min_required_rows += 1
 
     for code, group in df.groupby("Code"):
         g = group.dropna(subset=["C", "O"]).sort_values("Date").reset_index(drop=True)
@@ -158,6 +177,18 @@ def find_latest_signals(price_df, target_codes):
             cnt_ma_not_turning += 1
             continue
 
+        kuitto_pattern = indicator.is_kuitto_pattern_at(
+            g, idx,
+            lookback_days=cfg["KUITTO_PATTERN_LOOKBACK_DAYS"],
+            downtrend_min_slope_pct=cfg["KUITTO_PATTERN_DOWNTREND_MIN_SLOPE_PCT"],
+            turn_min_slope_pct=cfg["KUITTO_PATTERN_TURN_MIN_SLOPE_PCT"],
+            require_flat=cfg["KUITTO_PATTERN_REQUIRE_FLAT"],
+            flat_max_abs_slope_pct=cfg["KUITTO_PATTERN_FLAT_MAX_ABS_SLOPE_PCT"],
+        )
+        if cfg["REQUIRE_KUITTO_PATTERN"] and not kuitto_pattern:
+            cnt_not_kuitto_pattern += 1
+            continue
+
         cnt_pass += 1
         results.append({
             "code": code,
@@ -173,6 +204,7 @@ def find_latest_signals(price_df, target_codes):
         f"陽線条件で除外: {cnt_not_bullish}件",
         f"MA上向き条件で除外: {cnt_ma_not_rising}件",
         f"MA反転条件で除外: {cnt_ma_not_turning}件",
+        f"くいっとパターン条件で除外: {cnt_not_kuitto_pattern}件",
         f"両条件通過: {cnt_pass}件",
         "=====================",
     ]
