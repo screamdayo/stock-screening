@@ -52,14 +52,23 @@ def parse_args():
     )
     parser.add_argument(
         "--condition",
-        choices=["config", "rising", "turning"],
+        choices=["config", "rising", "turning", "pattern"],
         default="config",
         help="MAの上向き判定方式を一時的に切り替える。"
              " 'config'（デフォルト）はconfig.pyの設定をそのまま使う。"
-             " 'rising'はREQUIRE_MA_RISING=True/REQUIRE_MA_TURNING=Falseに強制。"
-             " 'turning'はREQUIRE_MA_RISING=False/REQUIRE_MA_TURNING=Trueに強制。"
-             " rising/turningを両方実行して結果を見比べることで、"
-             " どちらの判定方式が成績が良いか比較できる。",
+             " 'rising'はREQUIRE_MA_RISING=True、他はFalseに強制。"
+             " 'turning'はREQUIRE_MA_TURNING=True、他はFalseに強制。"
+             " 'pattern'はREQUIRE_KUITTO_PATTERN=True、他はFalseに強制。"
+             " それぞれ実行して結果を見比べることで、"
+             " どの判定方式が成績が良いか比較できる。",
+    )
+    parser.add_argument(
+        "--sweep-pattern",
+        action="store_true",
+        help="REQUIRE_KUITTO_PATTERNのパラメータ（lookback_daysとdowntrend閾値）を"
+             " 複数パターン一括で試し、結果を1つのDiscordメッセージにまとめて通知する。"
+             " ローカル環境がなくGitHub Actions上でしか試行錯誤できない場合に、"
+             " 実行回数を減らすためのモード。株価データの取得は1回だけで済む。",
     )
     return parser.parse_args()
 
@@ -69,23 +78,34 @@ def _apply_condition_override(condition, strategy_name):
     --condition の指定に応じて、config.STRATEGY_CONFIG[strategy_name] の
     MA判定フラグを一時的に上書きする。
     'config' の場合は何もしない（config.py の値をそのまま使う）。
+    3つの条件（RISING/TURNING/KUITTO_PATTERN）は互いに独立フラグなので、
+    比較実験のためにここでは指定した条件だけをTrue、他はFalseに強制する。
     """
     cfg = config.get_strategy_config(strategy_name)
 
     if condition == "rising":
         cfg["REQUIRE_MA_RISING"] = True
         cfg["REQUIRE_MA_TURNING"] = False
+        cfg["REQUIRE_KUITTO_PATTERN"] = False
         logger.info(f"--condition rising: STRATEGY_CONFIG['{strategy_name}'] の "
-                     f"REQUIRE_MA_RISING=True, REQUIRE_MA_TURNING=False に上書き")
+                     f"REQUIRE_MA_RISING=True、他はFalseに上書き")
     elif condition == "turning":
         cfg["REQUIRE_MA_RISING"] = False
         cfg["REQUIRE_MA_TURNING"] = True
+        cfg["REQUIRE_KUITTO_PATTERN"] = False
         logger.info(f"--condition turning: STRATEGY_CONFIG['{strategy_name}'] の "
-                     f"REQUIRE_MA_RISING=False, REQUIRE_MA_TURNING=True に上書き")
+                     f"REQUIRE_MA_TURNING=True、他はFalseに上書き")
+    elif condition == "pattern":
+        cfg["REQUIRE_MA_RISING"] = False
+        cfg["REQUIRE_MA_TURNING"] = False
+        cfg["REQUIRE_KUITTO_PATTERN"] = True
+        logger.info(f"--condition pattern: STRATEGY_CONFIG['{strategy_name}'] の "
+                     f"REQUIRE_KUITTO_PATTERN=True、他はFalseに上書き")
     else:
         logger.info(f"--condition config: STRATEGY_CONFIG['{strategy_name}']の設定をそのまま使用 "
                      f"(REQUIRE_MA_RISING={cfg['REQUIRE_MA_RISING']}, "
-                     f"REQUIRE_MA_TURNING={cfg['REQUIRE_MA_TURNING']})")
+                     f"REQUIRE_MA_TURNING={cfg['REQUIRE_MA_TURNING']}, "
+                     f"REQUIRE_KUITTO_PATTERN={cfg['REQUIRE_KUITTO_PATTERN']})")
 
 
 def run(strategy_name, run_label=None):
@@ -134,6 +154,71 @@ def run(strategy_name, run_label=None):
     logger.info("=== バックテスト完了 ===")
 
 
+def run_pattern_sweep(strategy_name="kuitto"):
+    """
+    REQUIRE_KUITTO_PATTERNのパラメータ（lookback_daysとdowntrend閾値）を
+    複数パターン一括で試し、結果を1つのDiscordメッセージにまとめて通知する。
+
+    株価データのダウンロードとシグナル計算用のMA算出は各パラメータ組み合わせで
+    共通して使えるものは使い回し、無駄なAPIリクエストを避ける
+    （ただしMAの期間自体は変えていないので、指標計算は1回で済む）。
+
+    ローカル環境がなくGitHub Actions上でしか試行錯誤できない場合に、
+    「1回の実行で複数パラメータを試す」ことで実行回数を減らす目的で用意している。
+    """
+    strategy_fn = registry.get_strategy(strategy_name)
+    cache_filename = f"backtest_prices_{config.TARGET_MARKET}_{config.BACKTEST_YEARS}y.csv"
+
+    logger.info("=== パラメータスイープ開始（REQUIRE_KUITTO_PATTERN） ===")
+
+    logger.info("対象銘柄リスト取得中...")
+    target_codes = download.get_target_codes()
+
+    logger.info("株価データ取得中（キャッシュがあれば差分だけ取得）...")
+    price_df = download.get_price_history_incremental(
+        cache_filename=cache_filename,
+        years=config.BACKTEST_YEARS,
+    )
+
+    # 試すパラメータの組み合わせ。必要に応じてここを直接編集して調整してよい。
+    lookback_days_list = [4, 10, 20, 30]
+    downtrend_slope_list = [-0.1, -0.2, -0.3]
+
+    cfg = config.get_strategy_config(strategy_name)
+    cfg["REQUIRE_BULLISH_CANDLE"] = True
+    cfg["REQUIRE_MA_RISING"] = False
+    cfg["REQUIRE_MA_TURNING"] = False
+    cfg["REQUIRE_KUITTO_PATTERN"] = True
+    cfg["KUITTO_PATTERN_REQUIRE_FLAT"] = False
+
+    sweep_results = []
+
+    for lookback_days in lookback_days_list:
+        for downtrend_slope in downtrend_slope_list:
+            cfg["KUITTO_PATTERN_LOOKBACK_DAYS"] = lookback_days
+            cfg["KUITTO_PATTERN_DOWNTREND_MIN_SLOPE_PCT"] = downtrend_slope
+
+            label = f"lookback={lookback_days}, downtrend={downtrend_slope}%"
+            logger.info(f"試行中: {label}")
+
+            signals, price_data_by_code = strategy_fn(price_df, target_codes)
+            trades = backtest.run_backtest(signals, price_data_by_code)
+            summary = backtest.summarize_trades(trades)
+
+            sweep_results.append({
+                "lookback_days": lookback_days,
+                "downtrend_slope_pct": downtrend_slope,
+                "summary": summary,
+            })
+
+            logger.info(f"  -> {summary['total_trades']}件、勝率{summary.get('win_rate')}%")
+
+    logger.info("Discord通知中（スイープ結果一覧）...")
+    notifier.notify_pattern_sweep_result(sweep_results)
+
+    logger.info("=== パラメータスイープ完了 ===")
+
+
 def main():
     args = parse_args()
     strategy_name = args.strategy
@@ -146,13 +231,25 @@ def main():
         logger.error(f"[エラー] {e}")
         sys.exit(1)
 
+    start = time.time()
+
+    if args.sweep_pattern:
+        try:
+            run_pattern_sweep(strategy_name)
+        except Exception as e:
+            logger.error(f"エラー: {e}", exc_info=True)
+            notifier.notify_error(e, context=f"run_backtest.py --sweep-pattern（戦略: {strategy_name}）実行中")
+            raise
+        finally:
+            logger.info(f"実行時間: {time.time() - start:.1f}秒")
+        return
+
     _apply_condition_override(condition, strategy_name)
 
-    # rising/turningを切り替えて比較したい場合、出力ファイルが上書きされて
+    # rising/turning/patternを切り替えて比較したい場合、出力ファイルが上書きされて
     # 比較できなくなると困るため、conditionを明示指定した場合はラベルとして使う
     run_label = f"{strategy_name}_{condition}" if condition != "config" else strategy_name
 
-    start = time.time()
     try:
         run(strategy_name, run_label)
     except Exception as e:
