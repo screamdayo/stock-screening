@@ -110,3 +110,89 @@ def is_ma_turning_up_at(df_with_ma, idx, min_slope=0.0):
     is_now_clearly_rising = slope_today > min_slope
 
     return was_falling_or_flat and is_now_clearly_rising
+
+
+def is_kuitto_pattern_at(
+    df_with_ma,
+    idx,
+    lookback_days=4,
+    downtrend_min_slope_pct=-0.3,
+    turn_min_slope_pct=0.05,
+    require_flat=False,
+    flat_max_abs_slope_pct=0.1,
+):
+    """
+    「くいっと」のシンプルな形（下落があった後の反転）を判定する。
+
+    is_ma_turning_up_at() が「前日→今日で傾きがプラスに転じたか」だけを見るのに対し、
+    こちらは「直近のlookback_days日以内に、はっきりした下落があったかどうか」も
+    合わせて確認する。これにより、ずっと上昇が続いている銘柄がたまたま1日
+    傾きを緩めてまた上昇したようなケース（下落トレンドを経ていない）を除外できる。
+
+    判定する条件（デフォルトはシンプルな2条件のみ）:
+        1. 観測期間（lookback_days日）の中に、はっきりした下落（マイナスの傾き）が
+           少なくとも1つあったこと
+        2. 今日、はっきり上向きに転換すること（今日の傾きが閾値を超えてプラス）
+
+        require_flat=True にした場合はオプションで以下も追加される:
+        3. 今日の一つ前（反転直前）の傾きがほぼ水平であること（底固め）
+
+    「傾きが徐々に緩やかになっていく」という単調性は判定しない
+    （実際の株価はノイズが多く、完全な単調推移になることは稀で、
+    条件を満たす銘柄がほぼ無くなってしまうため）。
+
+    傾きは「MAの値そのものの差分（円）」ではなく、「前日のMA値に対する変化率（%）」で
+    判定する。株価が100円の銘柄と10000円の銘柄で同じ閾値を使い回せるようにするため。
+
+    df_with_ma: add_moving_averages() 済みのDataFrame（日付昇順、reset_index済み推奨）
+    idx: 判定したい行のインデックス（0始まり、「今日」に相当する）
+    lookback_days: 下落の有無を何日分の傾きで見るか（デフォルト4 = 傾き4つ分 = MAの値5点分）
+    downtrend_min_slope_pct: 観測期間内の傾きが「明確な下落」とみなす上限
+        （この値以下の傾きが1つでもあればOK。例えば-0.3なら前日比-0.3%以下）
+    turn_min_slope_pct: 今日の傾き（%）が「はっきり反転上向き」とみなす下限
+        （例えば0.05なら、前日比+0.05%を超えないと反転と認めない）
+    require_flat: Trueにすると、反転直前の傾きが「ほぼ水平」であることも追加で要求する
+    flat_max_abs_slope_pct: require_flat=True の場合に「ほぼ水平」とみなす絶対値の上限
+
+    戻り値: 条件を満たせばTrue
+    """
+    start_idx = idx - lookback_days
+    if start_idx < 0 or idx >= len(df_with_ma):
+        return False
+
+    ma = df_with_ma["MA_SHORT"]
+    ma_window = ma.iloc[start_idx: idx + 1]
+
+    if ma_window.isna().any() or (ma_window == 0).any():
+        return False
+
+    # 傾きを「前日のMA値に対する変化率（%）」として算出する
+    ma_values = ma_window.tolist()
+    slopes_pct = [
+        (ma_values[i] - ma_values[i - 1]) / ma_values[i - 1] * 100
+        for i in range(1, len(ma_values))
+    ]
+    # slopes_pct[-1] が「今日」の傾き、それ以外（slopes_pct[:-1]）が観測期間の過去分
+
+    if len(slopes_pct) < 2:
+        return False
+
+    past_slopes = slopes_pct[:-1]
+    today_slope = slopes_pct[-1]
+
+    # ---- 条件1: 観測期間内に、はっきりした下落が少なくとも1つあったこと ----
+    had_downtrend = any(s <= downtrend_min_slope_pct for s in past_slopes)
+    if not had_downtrend:
+        return False
+
+    # ---- 条件3（オプション）: 反転直前の傾きがほぼ水平であること ----
+    if require_flat:
+        flat_slope = slopes_pct[-2]
+        if abs(flat_slope) > flat_max_abs_slope_pct:
+            return False
+
+    # ---- 条件2: 今日、はっきり反転上向きであること ----
+    if today_slope <= turn_min_slope_pct:
+        return False
+
+    return True
