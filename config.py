@@ -135,22 +135,31 @@ STRATEGY_CONFIG = {
     },
 
     # 「5日MAブレイクアウト」戦略:
-    #   直近MA5_BREAKOUT_LOOKBACK_DAYS日間ずっと5日MAが下向き・水平で、
-    #   当日初めて上向きに転じた ＆ 当日が陽線、を検出する。
+    #   ① 過去MA5_DECLINE_LOOKBACK_DAYS日間で5日MAがMA5_DECLINE_MAX_PCT(%)以上下落
+    #   ② シグナル当日、5日MAが25日MA以下（位置条件）
+    #   ③ シグナル当日、5日MAが初めて上向きに転じた
+    #   ④ シグナル当日が陽線
+    # を検出する。
     "ma5_breakout": {
         # 移動平均線の期間設定
         "MA_SHORT_PERIOD": 5,     # 短期移動平均（5日線）
-        "MA_LONG_PERIOD": 25,     # 長期移動平均（現状は判定に未使用、拡張用に保持）
+        "MA_LONG_PERIOD": 25,     # 長期移動平均（25日線、位置条件の判定に使用）
 
         # 陽線判定を有効にするか（終値 > 始値）
         "REQUIRE_BULLISH_CANDLE": True,
+
+        # ①下落実体の判定パラメータ
+        # ma_decline_pct = (MA5[前日] / MA5[前日から MA5_DECLINE_LOOKBACK_DAYS日前] - 1) * 100
+        # これが MA5_DECLINE_MAX_PCT 以下であることを要求する。
+        # 例: LOOKBACK_DAYS=5, MAX_PCT=-0.5 なら、
+        #     「直近5日間で5日MAが0.5%以上下落していた」ことを要求する。
+        "MA5_DECLINE_LOOKBACK_DAYS": 5,
+        "MA5_DECLINE_MAX_PCT": -0.5,
 
         # 「直近MA5_BREAKOUT_LOOKBACK_DAYS日間ずっと下向き・水平だったMA5が、
         #  当日初めて上向きに転じた」を判定する日数。
         #   2なら、前日・2日前の2日分の傾きがともに0以下（下向き・水平）で、
         #   当日の傾きが初めて0より大きくなった日を検出する。
-        #   3にすると、前日・2日前・3日前の3日分を確認するようになり、
-        #   より厳格な「初めての転換」を要求する（検出件数は減る）。
         "MA5_BREAKOUT_LOOKBACK_DAYS": 2,
     },
 
