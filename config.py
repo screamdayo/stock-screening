@@ -55,7 +55,7 @@ EXCLUDED_CODE_SUFFIXES = ("5", "6")
 # ===== 使用する戦略 =====
 # strategies/registry.py に登録されている戦略名を指定する。
 # 新しい戦略を追加したら、ここを変えるだけで日次実行・バックテスト両方に反映される。
-ACTIVE_STRATEGY = "kuitto"
+ACTIVE_STRATEGY = "ma5_breakout"
 
 
 # ===== 戦略ごとの設定 =====
@@ -132,6 +132,26 @@ STRATEGY_CONFIG = {
         "RSI_PERIOD": 14,
         "RSI_LOWER_BOUND": None,   # 例: 30 に設定するとRSI30以上のみ対象
         "RSI_UPPER_BOUND": None,   # 例: 70 に設定するとRSI70以下のみ対象
+    },
+
+    # 「5日MAブレイクアウト」戦略:
+    #   直近MA5_BREAKOUT_LOOKBACK_DAYS日間ずっと5日MAが下向き・水平で、
+    #   当日初めて上向きに転じた ＆ 当日が陽線、を検出する。
+    "ma5_breakout": {
+        # 移動平均線の期間設定
+        "MA_SHORT_PERIOD": 5,     # 短期移動平均（5日線）
+        "MA_LONG_PERIOD": 25,     # 長期移動平均（現状は判定に未使用、拡張用に保持）
+
+        # 陽線判定を有効にするか（終値 > 始値）
+        "REQUIRE_BULLISH_CANDLE": True,
+
+        # 「直近MA5_BREAKOUT_LOOKBACK_DAYS日間ずっと下向き・水平だったMA5が、
+        #  当日初めて上向きに転じた」を判定する日数。
+        #   2なら、前日・2日前の2日分の傾きがともに0以下（下向き・水平）で、
+        #   当日の傾きが初めて0より大きくなった日を検出する。
+        #   3にすると、前日・2日前・3日前の3日分を確認するようになり、
+        #   より厳格な「初めての転換」を要求する（検出件数は減る）。
+        "MA5_BREAKOUT_LOOKBACK_DAYS": 2,
     },
 
     # 新しい戦略を追加する場合はここに追記する。例:
