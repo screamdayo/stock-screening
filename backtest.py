@@ -329,7 +329,7 @@ def build_equity_curve(trades, initial_capital=1_000_000, position_size_pct=100)
     return df[["exit_date", "code", "profit_pct", "capital"]]
 
 
-def build_equity_curve_limited(trades, initial_capital=1_000_000, max_positions=8):
+def build_equity_curve_limited(trades, initial_capital=1_000_000, max_positions=5):
     """
     同時保有数を max_positions に制限したエクイティカーブを計算する。
 
@@ -377,19 +377,44 @@ def build_equity_curve_limited(trades, initial_capital=1_000_000, max_positions=
     history_rows = []
     skipped_count = 0
 
-    # 全トレードをエントリーイベントとエグジットイベントに分解し、日付順に処理する
+    # 全トレードをエントリーイベントとエグジットイベントに分解し、日付順に処理する。
+    #
+    # 注意（重要なバグ修正）:
+    #   以前は「同日なら exit を entry より先に処理する」という単純なルールで
+    #   ソートしていた。これは「他のトレードの決済で空いた枠に、同日の新規
+    #   シグナルが入れるようにする」という意図だったが、保有1日（entry_date ==
+    #   exit_date）のトレード自身の exit も同時に entry より先に来てしまい、
+    #   「まだ open_slots に入っていない自分自身を pop しようとして無視される」
+    #   → entry だけが処理されて open_slots に残り続ける、という不具合を生んでいた。
+    #   実データでは保有1日のトレードが多数あったため、最初に埋まった数枠が
+    #   二度と空かず、5年間ずっとロックされたままになっていた。
+    #
+    #   対策として、entry_date == exit_date のトレードは「同日中に entry→exit の
+    #   順で処理する」必要がある。そこで安全のため、同一トレードの exit が
+    #   その entry より前に来ないよう、ソートキーに trade_idx を含めて
+    #   「同日・同種イベントなら trade_idx 順」を保証しつつ、
+    #   同日異種イベントの優劣は「他トレードの決済を先に処理して枠を空ける」
+    #   という当初の意図を保ちながら、自分自身の entry/exit の順序は
+    #   常に entry が先になるよう明示的に扱う。
     events = []
     for idx, row in df.iterrows():
-        events.append((row["entry_date"], "entry", idx))
-        events.append((row["exit_date"], "exit", idx))
+        entry_date = row["entry_date"]
+        exit_date = row["exit_date"]
+        events.append((entry_date, 1, idx, "entry"))
+        # 保有1日（entry_date == exit_date）の場合、自分自身の exit が
+        # 自分の entry より前に来ないよう、同日同トレードでは entry(1) より
+        # 後に来る扱いにする（ここでは "exit" 用の第2キーを 2 にする）。
+        events.append((exit_date, 2 if entry_date == exit_date else 0, idx, "exit"))
 
-    # 同日であれば exit を entry より先に処理する
-    # （decision: ポジションが空いてから新規エントリー可能にする）
-    events.sort(key=lambda e: (e[0], 0 if e[1] == "exit" else 1))
+    # ソートキー: (日付, 同日内の優先度, trade_idx)
+    #   優先度 0: 他トレードの決済（枠を空けるため最優先）
+    #   優先度 1: 新規エントリー
+    #   優先度 2: 保有1日で当日中に決済される自分自身の決済（entryの直後）
+    events.sort(key=lambda e: (e[0], e[1], e[2]))
 
     entered = set()  # 実際にエントリーが成立したトレードidx
 
-    for date, kind, idx in events:
+    for date, _priority, idx, kind in events:
         row = df.loc[idx]
 
         if kind == "entry":
