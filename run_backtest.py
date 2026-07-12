@@ -297,6 +297,32 @@ def _save_results(trades, summary, run_label):
     df.to_csv(trades_path, index=False, encoding="utf-8-sig")
     logger.info(f"個別トレード結果を保存しました: {trades_path}")
 
+    # ---- entry_date集中度の分析 ----
+    # max_positions（同時保有数制限）が実際に機能しているか確認するため、
+    # 1日あたりのシグナル発生数の分布を見る。
+    # 特定の日に大量集中していると、少ないmax_positionsではスロットが
+    # 埋まったまま長期間空かず、後続シグナルの大半を取りこぼす可能性がある。
+    entry_dates = pd.to_datetime(df["entry_date"]).dt.date
+    daily_counts = entry_dates.value_counts().sort_values(ascending=False)
+
+    concentration_lines = [
+        "",
+        "=" * 40,
+        "エントリー日ごとのシグナル集中度",
+        "=" * 40,
+        f"シグナルが発生した日数     : {len(daily_counts)}日",
+        f"1日あたり平均シグナル数    : {daily_counts.mean():.1f}件",
+        f"1日あたり最大シグナル数    : {daily_counts.max()}件",
+        f"1日あたり中央値           : {daily_counts.median():.1f}件",
+        "-" * 40,
+        "上位10日:",
+    ]
+    for date, count in daily_counts.head(10).items():
+        concentration_lines.append(f"  {date}: {count}件")
+    concentration_lines.append("=" * 40)
+
+    logger.info("\n".join(concentration_lines))
+
     # ---- losing_trades.csv（負けトレードのみ、敗因分析用） ----
     losses_df = df[df["result"] == "loss"].copy()
     if not losses_df.empty:
