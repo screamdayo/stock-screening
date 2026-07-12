@@ -321,25 +321,39 @@ def _save_results(trades, summary, run_label):
         logger.info("年別成績:\n" + yearly_df.to_string(index=False))
 
     # ---- equity_curve.csv（資産推移） ----
-    equity_df = backtest.build_equity_curve(
+    # 注意: 同時に大量のシグナルが出る戦略では、旧来の build_equity_curve
+    # （1トレードごとに全資金を投入して複利計算する簡略モデル）は
+    # 資産が非現実的に爆発するバグを引き起こすため、
+    # 同時保有数を制限する build_equity_curve_limited を使用する。
+    max_positions = getattr(config, "BACKTEST_MAX_POSITIONS", 8)
+    equity_df = backtest.build_equity_curve_limited(
         trades,
         initial_capital=config.BACKTEST_INITIAL_CAPITAL,
-        position_size_pct=config.BACKTEST_POSITION_SIZE_PCT,
+        max_positions=max_positions,
     )
     if not equity_df.empty:
         equity_path = os.path.join(config.OUTPUT_DIR, "equity_curve.csv")
         equity_df.to_csv(equity_path, index=False, encoding="utf-8-sig")
-        final_capital = equity_df["capital"].iloc[-1]
-        total_return_pct = (final_capital / config.BACKTEST_INITIAL_CAPITAL - 1) * 100
+
+        backtest.print_equity_summary(equity_df, initial_capital=config.BACKTEST_INITIAL_CAPITAL)
+
+        final_capital = equity_df.attrs["final_capital"]
+        total_return_pct = equity_df.attrs["total_return_pct"]
         logger.info(f"資産推移を保存しました: {equity_path}")
         logger.info(f"初期資金 {config.BACKTEST_INITIAL_CAPITAL:,.0f}円 → "
                      f"最終資金 {final_capital:,.0f}円 "
-                     f"（トータルリターン: {total_return_pct:+.2f}%）")
+                     f"（トータルリターン: {total_return_pct:+.2f}%、"
+                     f"同時保有上限: {max_positions}銘柄、"
+                     f"エントリー成立: {equity_df.attrs['entered_trades']}件、"
+                     f"上限超過スキップ: {equity_df.attrs['skipped_trades']}件）")
 
         equity_summary = {
             "initial_capital": config.BACKTEST_INITIAL_CAPITAL,
             "final_capital": final_capital,
             "total_return_pct": total_return_pct,
+            "max_positions": max_positions,
+            "entered_trades": equity_df.attrs["entered_trades"],
+            "skipped_trades": equity_df.attrs["skipped_trades"],
         }
 
     return equity_summary
