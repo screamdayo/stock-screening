@@ -112,6 +112,59 @@ def is_ma_turning_up_at(df_with_ma, idx, min_slope=0.0):
     return was_falling_or_flat and is_now_clearly_rising
 
 
+def is_ma_breakout_at(df_with_ma, idx, lookback_days=2):
+    """
+    指定インデックス idx の時点で、短期移動平均線が
+    「直近 lookback_days 日間ずっと下向き（または横ばい） →
+      今日初めて上向きに転じた」かどうかを判定する。
+
+    is_ma_turning_up_at() が「昨日1日分の傾きが下向き・横ばいだったか」しか
+    見ないのに対し、こちらは過去 lookback_days 日分の傾きすべてが
+    下向き・横ばいだったことを要求する（より厳格な「初めての転換」判定）。
+
+    判定の流れ（lookback_days=2の場合、3日前・2日前・昨日・今日の4点、傾きは3つ使う）:
+        slope[-2] = MA[idx-2] - MA[idx-3]   （観測期間1日目の傾き）
+        slope[-1] = MA[idx-1] - MA[idx-2]   （観測期間2日目=昨日の傾き）
+        slope[0]  = MA[idx]   - MA[idx-1]   （今日の傾き）
+
+    条件:
+        1. 観測期間（lookback_days日）の傾きが、すべて0以下（下向き or 横ばい）だった
+        2. 今日の傾きが0より大きい（はっきり上向きに転じた）
+
+    df_with_ma: add_moving_averages() 済みのDataFrame（日付昇順、reset_index済み推奨）
+    idx: 判定したい行のインデックス（0始まり、「今日」に相当する）
+    lookback_days: 「下向き・横ばいが続いていたか」を何日分さかのぼって確認するか
+        （config.pyで調整可能にする想定。例えば2なら、前日・2日前の2日分を確認する）
+
+    戻り値: 条件を満たせばTrue
+    """
+    # 判定に必要な行数: 今日(idx) + 観測期間(lookback_days) + 傾き算出用に1日分余分に必要
+    required_start_idx = idx - lookback_days - 1
+    if required_start_idx < 0 or idx >= len(df_with_ma):
+        return False
+
+    ma = df_with_ma["MA_SHORT"]
+    ma_window = ma.iloc[required_start_idx: idx + 1]
+
+    if ma_window.isna().any():
+        return False
+
+    ma_values = ma_window.tolist()
+    # slopes[i] = ma_values[i+1] - ma_values[i]。末尾が「今日」の傾きになる。
+    slopes = [ma_values[i] - ma_values[i - 1] for i in range(1, len(ma_values))]
+
+    today_slope = slopes[-1]
+    past_slopes = slopes[:-1]  # 直近lookback_days日分の傾き
+
+    if len(past_slopes) < lookback_days:
+        return False
+
+    was_falling_or_flat_all_days = all(s <= 0 for s in past_slopes)
+    is_now_rising = today_slope > 0
+
+    return was_falling_or_flat_all_days and is_now_rising
+
+
 def is_kuitto_pattern_at(
     df_with_ma,
     idx,
