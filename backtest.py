@@ -329,7 +329,7 @@ def build_equity_curve(trades, initial_capital=1_000_000, position_size_pct=100)
     return df[["exit_date", "code", "profit_pct", "capital"]]
 
 
-def build_equity_curve_limited(trades, initial_capital=1_000_000, max_positions=5):
+def build_equity_curve_limited(trades, initial_capital=1_000_000, max_positions=8):
     """
     同時保有数を max_positions に制限したエクイティカーブを計算する。
 
