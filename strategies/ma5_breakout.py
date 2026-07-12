@@ -2,15 +2,15 @@
 strategies/ma5_breakout.py
 
 「5日MAブレイクアウト」戦略:
-    直近 MA5_BREAKOUT_LOOKBACK_DAYS 日間、5日移動平均線がずっと下向き・水平で、
-    当日初めて上向きに転じた ＆ 当日が陽線、の銘柄を検出する。
+    ① 過去5日間で5日移動平均線が MA5_DECLINE_MAX_PCT(%) 以上下落していた
+       （下落の実体があったことを要求する）
+    ② シグナル当日、5日移動平均線が25日移動平均線以下にある
+       （まだ大きな上昇トレンドに転換していない、下位にいる状態に絞る）
+    ③ シグナル当日、5日移動平均線が初めて上向きに転じた
+    ④ シグナル当日が陽線（終値 > 始値）
+の全てを満たす銘柄を検出する。
 
-kuitto戦略との違い:
-    kuitto の REQUIRE_MA_TURNING は「前日1日分だけ」下向き・水平だったかを見るが、
-    こちらは「直近lookback_days日間ずっと」下向き・水平が続いていたことを要求する、
-    より厳格な「初めての転換」判定。
-
-条件の中身（日数など）は config.STRATEGY_CONFIG["ma5_breakout"] で調整する。
+条件の中身（下落率の閾値など）は config.STRATEGY_CONFIG["ma5_breakout"] で調整する。
 
 この戦略単体で完結しており、backtest.py はこのファイルの中身を知らない。
 """
@@ -35,13 +35,26 @@ def _get_cfg():
 def _passes_conditions(g, idx, cfg):
     """
     1銘柄の時系列DataFrame g の idx番目の行が、
-    「5日MAブレイクアウト」の条件（陽線・MAブレイクアウト）を満たすかどうかを判定する。
+    「5日MAブレイクアウト」の条件（下落実体・位置・転換・陽線）を満たすかどうかを判定する。
     """
     latest = g.iloc[idx]
 
     if cfg["REQUIRE_BULLISH_CANDLE"] and not indicator.is_bullish_candle(latest):
         return False
 
+    # ① 過去MA5_DECLINE_LOOKBACK_DAYS日間で5日MAが十分下落していたか（転換前日を基準に判定）
+    if not indicator.is_ma_decline_before_turn_at(
+        g, idx,
+        decline_lookback_days=cfg["MA5_DECLINE_LOOKBACK_DAYS"],
+        decline_max_pct=cfg["MA5_DECLINE_MAX_PCT"],
+    ):
+        return False
+
+    # ② シグナル当日、5日MAが25日MA以下にあるか（位置条件）
+    if not indicator.is_ma_short_below_long_at(g, idx):
+        return False
+
+    # ③ シグナル当日、5日MAが初めて上向きに転じたか
     if not indicator.is_ma_breakout_at(
         g, idx, lookback_days=cfg["MA5_BREAKOUT_LOOKBACK_DAYS"]
     ):
@@ -71,9 +84,13 @@ def find_signals(price_df, target_codes):
         logger.warning("対象データが空です。")
         return signals, price_data_by_code
 
-    # MA5算出に short_period 分、さらにブレイクアウト判定に
-    # lookback_days + 1 日分の傾き計算が必要になる
+    # 必要行数: 25日MA算出分、下落率判定（前日基準でさらにdecline_lookback_days日分）、
+    # ブレイクアウト判定（lookback_days+1日分の傾き計算）のうち最大のものを満たす必要がある
     min_required_rows = max(cfg["MA_LONG_PERIOD"], cfg["MA_SHORT_PERIOD"])
+    min_required_rows = max(
+        min_required_rows,
+        cfg["MA_SHORT_PERIOD"] + cfg["MA5_DECLINE_LOOKBACK_DAYS"] + 1,
+    )
     min_required_rows = max(
         min_required_rows,
         cfg["MA_SHORT_PERIOD"] + cfg["MA5_BREAKOUT_LOOKBACK_DAYS"] + 1,
@@ -114,13 +131,15 @@ def find_latest_signals(price_df, target_codes):
     最新日についてのみ「5日MAブレイクアウト」条件を判定し、該当銘柄を返す。
     main.py（日次実行、毎日16時想定）から呼ばれる。
 
-    戻り値: dictのリスト（code, close, open, ma_short_today, ma_short_prevを含む）
+    戻り値: dictのリスト（code, close, open, ma_short_today, ma_short_prev, ma_long_todayを含む）
     """
     cfg = _get_cfg()
     results = []
 
     cnt_no_data = 0
     cnt_not_bullish = 0
+    cnt_not_decline = 0
+    cnt_not_below_long = 0
     cnt_not_breakout = 0
     cnt_pass = 0
 
@@ -133,6 +152,10 @@ def find_latest_signals(price_df, target_codes):
     logger.info(f"データ最新日付: {latest_date.date()}")
 
     min_required_rows = max(cfg["MA_LONG_PERIOD"], cfg["MA_SHORT_PERIOD"])
+    min_required_rows = max(
+        min_required_rows,
+        cfg["MA_SHORT_PERIOD"] + cfg["MA5_DECLINE_LOOKBACK_DAYS"] + 1,
+    )
     min_required_rows = max(
         min_required_rows,
         cfg["MA_SHORT_PERIOD"] + cfg["MA5_BREAKOUT_LOOKBACK_DAYS"] + 1,
@@ -157,6 +180,20 @@ def find_latest_signals(price_df, target_codes):
             cnt_not_bullish += 1
             continue
 
+        declined = indicator.is_ma_decline_before_turn_at(
+            g, idx,
+            decline_lookback_days=cfg["MA5_DECLINE_LOOKBACK_DAYS"],
+            decline_max_pct=cfg["MA5_DECLINE_MAX_PCT"],
+        )
+        if not declined:
+            cnt_not_decline += 1
+            continue
+
+        below_long = indicator.is_ma_short_below_long_at(g, idx)
+        if not below_long:
+            cnt_not_below_long += 1
+            continue
+
         breakout = indicator.is_ma_breakout_at(
             g, idx, lookback_days=cfg["MA5_BREAKOUT_LOOKBACK_DAYS"]
         )
@@ -171,12 +208,15 @@ def find_latest_signals(price_df, target_codes):
             "open": round(latest["O"], 1),
             "ma_short_today": round(g["MA_SHORT"].iloc[-1], 1),
             "ma_short_prev": round(g["MA_SHORT"].iloc[-2], 1),
+            "ma_long_today": round(g["MA_LONG"].iloc[-1], 1),
         })
 
     diagnostic_lines = [
         "===== 診断結果 =====",
         f"データ不足で除外: {cnt_no_data}件",
         f"陽線条件で除外: {cnt_not_bullish}件",
+        f"下落実体条件で除外: {cnt_not_decline}件",
+        f"位置条件（5日MA<=25日MA）で除外: {cnt_not_below_long}件",
         f"MAブレイクアウト条件で除外: {cnt_not_breakout}件",
         f"条件通過: {cnt_pass}件",
         "=====================",
