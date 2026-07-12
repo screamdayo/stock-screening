@@ -165,6 +165,70 @@ def is_ma_breakout_at(df_with_ma, idx, lookback_days=2):
     return was_falling_or_flat_all_days and is_now_rising
 
 
+def is_ma_decline_before_turn_at(df_with_ma, idx, decline_lookback_days=5, decline_max_pct=-0.5):
+    """
+    指定インデックス idx（シグナル当日）の「前日」を基準に、
+    直近 decline_lookback_days 日間で5日MAが decline_max_pct(%) 以上
+    下落していたかどうかを判定する。
+
+    「今日初めて上向きに転じた」瞬間を検出する前段階として、
+    転換前にちゃんと下落の実体があったかを見るための条件。
+    （転換直前の判定に today=idx を使わないのは、当日はすでに
+     上向きに転じているため、下落の有無を測るには前日を基準にする必要があるため）
+
+    判定式:
+        ma_decline_pct = (MA[idx-1] / MA[idx-1-decline_lookback_days] - 1) * 100
+        ma_decline_pct <= decline_max_pct であればTrue
+
+    df_with_ma: add_moving_averages() 済みのDataFrame（日付昇順、reset_index済み推奨）
+    idx: 判定したい行のインデックス（0始まり、「今日」に相当する）
+    decline_lookback_days: 下落率を測る期間（日数）。デフォルト5。
+    decline_max_pct: 「下落した」とみなす変化率の上限（この値以下ならOK）。
+        デフォルト-0.5なら、直近5日間で5日MAが0.5%以上下落していたことを要求する。
+
+    戻り値: 条件を満たせばTrue
+    """
+    base_idx = idx - 1
+    past_idx = base_idx - decline_lookback_days
+
+    if past_idx < 0 or base_idx >= len(df_with_ma):
+        return False
+
+    ma = df_with_ma["MA_SHORT"]
+    base_ma = ma.iloc[base_idx]
+    past_ma = ma.iloc[past_idx]
+
+    if pd.isna(base_ma) or pd.isna(past_ma) or past_ma == 0:
+        return False
+
+    ma_decline_pct = (base_ma / past_ma - 1) * 100
+
+    return ma_decline_pct <= decline_max_pct
+
+
+def is_ma_short_below_long_at(df_with_ma, idx):
+    """
+    指定インデックス idx の時点で、短期移動平均線（MA_SHORT）が
+    長期移動平均線（MA_LONG）以下にあるかどうかを判定する
+    （まだ大きな上昇トレンドに転換していない、下位にいる状態に絞るための位置条件）。
+
+    df_with_ma: add_moving_averages() 済みのDataFrame（日付昇順、reset_index済み推奨）
+    idx: 判定したい行のインデックス（0始まり）
+
+    戻り値: MA_SHORT <= MA_LONG であればTrue
+    """
+    if idx < 0 or idx >= len(df_with_ma):
+        return False
+
+    ma_short = df_with_ma["MA_SHORT"].iloc[idx]
+    ma_long = df_with_ma["MA_LONG"].iloc[idx]
+
+    if pd.isna(ma_short) or pd.isna(ma_long):
+        return False
+
+    return ma_short <= ma_long
+
+
 def is_kuitto_pattern_at(
     df_with_ma,
     idx,
