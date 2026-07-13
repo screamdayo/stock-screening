@@ -222,19 +222,29 @@ def _get_bars_for_date(date_str):
     return all_rows
 
 
-def get_price_history():
+def get_price_history(target_business_days=None, max_lookback_days=None):
     """
-    【日次スクリーニング用】
     直近の営業日を遡りながら、必要な日数分の全銘柄株価データをまとめて取得する。
     戻り値: pandas.DataFrame（列: Code, Date, O, C, H, L ... など）
+
+    target_business_days, max_lookback_days: 省略時はそれぞれ
+    config.TARGET_BUSINESS_DAYS / config.MAX_LOOKBACK_DAYS を使う
+    （日次スクリーニング用のデフォルト）。
+    export_docs_prices.py のようにチャート表示用の長い期間を取りたい場合は、
+    ここに config.CHART_BUSINESS_DAYS 等を渡して上書きする。
     """
+    if target_business_days is None:
+        target_business_days = config.TARGET_BUSINESS_DAYS
+    if max_lookback_days is None:
+        max_lookback_days = config.MAX_LOOKBACK_DAYS
+
     all_rows = []
     collected_days = 0
     day = datetime.now()
     lookback = 0
 
-    while (collected_days < config.TARGET_BUSINESS_DAYS
-           and lookback < config.MAX_LOOKBACK_DAYS):
+    while (collected_days < target_business_days
+           and lookback < max_lookback_days):
 
         date_str = day.strftime("%Y%m%d")
         rows = _get_bars_for_date(date_str)

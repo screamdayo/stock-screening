@@ -10,7 +10,12 @@
 stock-screening/
 ├── .github/
 │   └── workflows/
-│       └── stock_screening.yml   # 日次自動実行の設定（GitHub Actions）
+│       ├── stock_screening.yml   # 日次自動実行の設定（GitHub Actions）
+│       └── export_prices.yml     # GitHub Pages用の株価データ自動更新
+│
+├── docs/                # GitHub Pages公開ルート（保有ポジション利確チャート）
+│   ├── index.html       # SBI証券CSVをブラウザ内だけで解析・チャート表示する静的サイト
+│   └── prices/           # 銘柄コード→株価のJSON（GitHub Actionsが自動生成、公開情報のみ）
 │
 ├── data/                # ダウンロードした株価データのCSVキャッシュ（.gitignore対象）
 ├── output/              # スクリーニング・バックテストの結果（.gitignore対象）
@@ -28,6 +33,7 @@ stock-screening/
 ├── notifier.py          # Discord通知
 ├── main.py              # 日次スクリーニングの実行エントリーポイント
 ├── run_backtest.py       # バックテストの実行エントリーポイント
+├── export_docs_prices.py # docs/prices/への株価データエクスポート（GitHub Pages用）
 │
 ├── requirements.txt
 ├── README.md
@@ -134,6 +140,61 @@ python run_backtest.py --strategy kuitto   # 戦略を明示的に指定
 
 データを完全に作り直したい場合（欠損の疑いがある場合など）は、
 `data/` 内の該当CSVを削除してから再実行すると、初回一括取得からやり直される。
+
+## 保有ポジションの利確チャート表示（GitHub Pages）
+
+現在保有中のポジションを、エントリー価格・利確ライン・損切りラインを重ねた
+インタラクティブなローソク足チャートで確認できる。**保有ポジションの情報（SBI証券の
+約定履歴CSV）は一切リポジトリに保存されず、ブラウザ内の処理だけで完結する**設計。
+
+### 仕組み
+
+```
+GitHub Actions（サーバー側）
+  └ export_docs_prices.py が毎日J-Quantsから株価を取得し、
+    docs/prices/<銘柄コード>.json として自動commit
+    （銘柄コード→株価という公開情報のみ。個人の保有情報は含まない）
+
+GitHub Pages（docs/index.html、静的サイト）
+  └ SBI証券からダウンロードした約定履歴CSVを、ファイル選択ボタンで読み込む
+  └ FileReaderでブラウザ内だけ解析（Shift_JISデコード→CSVパース→
+    保有ポジション計算）。サーバーへの送信は一切なし
+  └ 算出した保有銘柄コードをキーに docs/prices/<コード>.json をfetch
+  └ Plotly（CDN）でローソク足＋エントリー/利確/損切りラインを描画
+```
+
+### 使い方
+
+1. **GitHub Pagesを有効化**: リポジトリの Settings → Pages → Source を
+   「Deploy from a branch」、フォルダを `/docs` に設定する
+2. スマホのブラウザで `https://<ユーザー名>.github.io/<リポジトリ名>/` を開く
+3. SBI証券に **PCブラウザ or スマホブラウザ** でログインし、
+   「口座管理」→「取引履歴」から**約定履歴CSV**をダウンロードする
+   （投資信託の取引も含まれるが自動的に無視される。信用取引にも対応）
+4. 上記ページの「CSVファイルを選択」からダウンロードしたCSVを選ぶ
+   → その場で保有ポジション一覧とチャートが表示される
+5. 利確/損切りラインの%は、ページ内で銘柄ごとに調整可能
+   （初期値は共通のデフォルト%。設定はその端末のlocalStorageにのみ保存される）
+
+### ポジション計算のロジック
+
+約定履歴（買い・売りの記録）から、移動平均法で現在の保有数量・平均取得単価を算出する。
+
+- 現物取引（株式現物買/売）、信用取引（信用新規買/返済売＝買い建て、
+  信用新規売/返済買＝売り建て）をそれぞれ別のポジションとして扱う
+- 保有数量が一度0になった時点で「連続保有期間」がリセットされ、
+  そこから先の買いだけで平均取得単価とエントリー日を再計算する
+- 投資信託（銘柄コードを持たない取引）は自動的に除外される
+
+### 株価データの更新
+
+`.github/workflows/export_prices.yml` が平日16:30（JST）ごろに自動実行され、
+対象市場全銘柄の直近`config.CHART_BUSINESS_DAYS`営業日分の株価を
+`docs/prices/`以下にJSONとして出力・commitする。ローカルで手動実行する場合:
+
+```bash
+python export_docs_prices.py
+```
 
 ## 免責事項
 
