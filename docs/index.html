@@ -317,7 +317,8 @@
         lastPositions = positions;
         dropLabel.textContent = "別のCSVを選択";
         fileStatus.style.display = "flex";
-        fileStatusText.textContent = `${file.name}（${positions.length}件の保有ポジションを検出）`;
+        fileStatusText.textContent =
+          `${file.name}（保有中 ${positions.open.length}件 / 決済済み ${positions.closed.length}件）`;
 
         render(positions);
       }catch(err){
@@ -394,11 +395,20 @@
         name: cells[col["銘柄"]],
         code: cells[col["銘柄コード"]],
         type: cells[col["取引"]],
-        quantity: parseFloat(cells[col["約定数量"]]) || 0,
-        price: parseFloat(cells[col["約定単価"]]) || 0,
+        quantity: toNumber(cells[col["約定数量"]]),
+        price: toNumber(cells[col["約定単価"]]),
       });
     }
     return rows;
+  }
+
+  // 数量・単価セルは "1,000" のように桁区切りカンマが入る場合があるため、
+  // parseFloatの前に除去する（"--" 等の非数値は0扱い）。
+  function toNumber(cell){
+    if (!cell) return 0;
+    const cleaned = String(cell).replace(/,/g, "").trim();
+    const n = parseFloat(cleaned);
+    return isNaN(n) ? 0 : n;
   }
 
   // =====================================================================
@@ -441,32 +451,50 @@
   function buildPositions(rows){
     const groups = {}; // groupId -> { code, name, kind, txs: [] }
 
-    for (const r of rows){
+    rows.forEach((r, seq) => {
       const cls = classify(r.type, r.code);
-      if (!cls) continue; // 未知の取引種別はスキップ
+      if (!cls) return; // 未知の取引種別（投資信託等）はスキップ
 
       const groupId = `${r.code}__${cls.kind}`;
       if (!groups[groupId]){
         groups[groupId] = { code: r.code, name: r.name, kind: cls.kind, txs: [] };
       }
-      groups[groupId].txs.push({ date: r.date, action: cls.action, qty: r.quantity, price: r.price });
+      // seq: CSV内の元の行順。同日約定が複数ある場合、日付だけでは順序が
+      // 一意に決まらないため、元の行順を明示的なタイブレークとして保持する
+      // （Array.sortの安定性に暗黙的に依存しない）。
+      groups[groupId].txs.push({ date: r.date, action: cls.action, qty: r.quantity, price: r.price, seq });
       if (r.name) groups[groupId].name = r.name; // 最新の表記を使う
-    }
+    });
 
-    const positions = [];
+    const open = [];
+    const closed = [];
 
     for (const groupId in groups){
       const g = groups[groupId];
-      g.txs.sort((a, b) => a.date < b.date ? -1 : (a.date > b.date ? 1 : 0));
+      g.txs.sort((a, b) => {
+        if (a.date < b.date) return -1;
+        if (a.date > b.date) return 1;
+        return a.seq - b.seq; // 同日約定はCSV上の元の順序を保持
+      });
 
       // 移動平均法で平均取得単価を計算する:
       // 買い増しのたびに保有数量とコストベースを加重平均で更新し、
       // 売却時は平均単価はそのまま・数量だけを減らす（既存の保有分の
       // 単価は売却によって変わらないため）。数量が0まで減ったら
-      // 「連続保有期間」がリセットされ、次の買いから新しいエントリー日として扱う。
+      // 一連の保有期間（ロット）が確定し、決済済みポジションとして記録した上で
+      // 次の買いから新しいロット（新しいエントリー日）として扱う。
       let qty = 0;
       let avgPrice = 0;
       let lotStartDate = null;
+      let lotTxs = [];       // このロットに属する売買（チャートの買い/売りマーカー用）
+      let sellQty = 0;       // このロットで売却した数量の合計
+      let sellCost = 0;      // このロットで売却した金額の合計（加重平均決済単価の算出用）
+      let lastSellDate = null;
+
+      const resetLot = () => {
+        qty = 0; avgPrice = 0; lotStartDate = null; lotTxs = [];
+        sellQty = 0; sellCost = 0; lastSellDate = null;
+      };
 
       for (const tx of g.txs){
         if (tx.action === "increase"){
@@ -479,18 +507,41 @@
             avgPrice = (qty * avgPrice + tx.qty * tx.price) / newQty;
             qty = newQty;
           }
+          lotTxs.push({ date: tx.date, action: "buy", qty: tx.qty, price: tx.price });
         } else {
           qty -= tx.qty;
+          sellQty += tx.qty;
+          sellCost += tx.qty * tx.price;
+          lastSellDate = tx.date;
+          lotTxs.push({ date: tx.date, action: "sell", qty: tx.qty, price: tx.price });
+
           if (qty <= 0){
-            qty = 0;
-            avgPrice = 0;
-            lotStartDate = null;
+            // ロットが決済済みになった時点で記録してから次のロットへ。
+            // ただしこのロットの買いが一度も観測されていない場合（＝CSVの
+            // 収集期間より前から保有していた建玉をこの期間内で売却したケース）は、
+            // 正しいエントリー価格が分からないため決済済みポジションとして記録しない。
+            if (lotStartDate){
+              closed.push({
+                groupId: `${groupId}__${lotStartDate}`,
+                code: g.code,
+                name: g.name,
+                kind: g.kind,
+                kindLabel: KIND_LABEL[g.kind] || g.kind,
+                quantity: sellQty,
+                entryDate: lotStartDate,
+                entryPrice: avgPrice,
+                exitDate: lastSellDate,
+                exitPrice: sellQty > 0 ? sellCost / sellQty : null,
+                txs: lotTxs.slice(),
+              });
+            }
+            resetLot();
           }
         }
       }
 
       if (qty > 0 && lotStartDate){
-        positions.push({
+        open.push({
           groupId,
           code: g.code,
           name: g.name,
@@ -499,12 +550,15 @@
           quantity: qty,
           entryDate: lotStartDate,
           entryPrice: avgPrice,
+          txs: lotTxs.slice(),
         });
       }
     }
 
-    positions.sort((a, b) => a.code.localeCompare(b.code));
-    return positions;
+    open.sort((a, b) => a.code.localeCompare(b.code));
+    closed.sort((a, b) => b.exitDate.localeCompare(a.exitDate)); // 直近の決済を上に
+
+    return { open, closed };
   }
 
   // =====================================================================
@@ -563,24 +617,57 @@
   }
 
   async function render(positions){
-    if (!positions.length){
-      resultHeading.textContent = "保有ポジション";
-      resultsEl.innerHTML = '<div class="empty">保有中のポジションが検出されませんでした。<br>（すべて決済済み、または対応していない取引種別の可能性があります）</div>';
-      return;
-    }
+    const { open, closed } = positions;
 
-    resultHeading.textContent = `保有ポジション（${positions.length}件）`;
+    resultHeading.textContent = open.length ? `保有ポジション（${open.length}件）` : "保有ポジション";
     resultsEl.innerHTML = "";
 
-    for (const pos of positions){
-      const card = document.createElement("div");
-      card.className = "card";
-      card.innerHTML = renderCardSkeleton(pos);
-      resultsEl.appendChild(card);
+    if (!open.length){
+      resultsEl.innerHTML = '<div class="empty">保有中のポジションが検出されませんでした。<br>（すべて決済済み、または対応していない取引種別の可能性があります）</div>';
+    } else {
+      for (const pos of open){
+        const card = document.createElement("div");
+        card.className = "card";
+        card.innerHTML = renderCardSkeleton(pos);
+        resultsEl.appendChild(card);
 
-      wireCardInteractions(card, pos);
-      loadCardData(card, pos); // 非同期で株価取得・チャート描画
+        wireCardInteractions(card, pos);
+        loadCardData(card, pos); // 非同期で株価取得・チャート描画
+      }
     }
+
+    renderClosedSection(closed);
+  }
+
+  function renderClosedSection(closed){
+    let section = document.getElementById("closedSection");
+    if (section) section.remove();
+
+    section = document.createElement("section");
+    section.id = "closedSection";
+
+    const heading = document.createElement("div");
+    heading.className = "status-line";
+    heading.style.marginTop = "34px";
+    heading.innerHTML = `<h2>決済済み${closed.length ? `（${closed.length}件）` : ""}</h2>`;
+    section.appendChild(heading);
+
+    if (!closed.length){
+      const empty = document.createElement("div");
+      empty.className = "empty";
+      empty.textContent = "決済済みのポジションはありません。";
+      section.appendChild(empty);
+    } else {
+      for (const pos of closed){
+        const card = document.createElement("div");
+        card.className = "card";
+        card.innerHTML = renderClosedCardSkeleton(pos);
+        section.appendChild(card);
+        wireClosedCardInteractions(card, pos);
+      }
+    }
+
+    resultsEl.after(section);
   }
 
   function renderCardSkeleton(pos){
@@ -641,21 +728,21 @@
 
     function onChange(){
       setOverride(pos.groupId, { tp: tpInput.value, sl: slInput.value });
-      updateCardMetrics(card, pos);
+      updateCardMetrics(card, pos, card._bars);
+      if (card._chartRendered) renderChart(card.querySelector('[data-role="chart-box"]'), pos, { mode: "open" });
     }
     tpInput.addEventListener("change", onChange);
     slInput.addEventListener("change", onChange);
 
     const toggleBtn = card.querySelector('[data-role="chart-toggle"]');
     const chartBox = card.querySelector('[data-role="chart-box"]');
-    let chartRendered = false;
     toggleBtn.addEventListener("click", async () => {
       const willOpen = !chartBox.classList.contains("open");
       chartBox.classList.toggle("open");
       toggleBtn.textContent = willOpen ? "📉 チャートを閉じる" : "📈 チャートを表示";
-      if (willOpen && !chartRendered){
-        chartRendered = true;
-        await renderChart(chartBox, pos);
+      if (willOpen && !card._chartRendered){
+        card._chartRendered = true;
+        await renderChart(chartBox, pos, { mode: "open" });
       }
     });
   }
@@ -705,7 +792,62 @@
     }
   }
 
-  async function renderChart(chartBox, pos){
+  // ---- 決済済みポジションのカード ----
+  function renderClosedCardSkeleton(pos){
+    const isShort = pos.kind === "margin_short";
+    const realizedPct = isShort
+      ? (pos.entryPrice / pos.exitPrice - 1) * 100
+      : (pos.exitPrice / pos.entryPrice - 1) * 100;
+    const realizedYen = isShort
+      ? (pos.entryPrice - pos.exitPrice) * pos.quantity
+      : (pos.exitPrice - pos.entryPrice) * pos.quantity;
+    const cls = realizedPct >= 0 ? "gain" : "loss";
+
+    return `
+      <div class="card-head">
+        <div class="card-title">
+          <span class="card-code">${pos.code}</span>
+          <span class="card-name">${escapeHtml(pos.name || pos.code)}</span>
+          <span class="card-tag">${pos.kindLabel}</span>
+        </div>
+        <div class="card-pl">
+          <div class="pct mono ${cls}">${fmtPct(realizedPct)}</div>
+          <div class="yen mono">${realizedYen >= 0 ? "+" : ""}${fmtYen(realizedYen)}円</div>
+        </div>
+      </div>
+
+      <div class="stat-grid">
+        <div class="stat"><div class="k">数量</div><div class="v">${pos.quantity.toLocaleString()}株</div></div>
+        <div class="stat"><div class="k">エントリー</div><div class="v">${pos.entryDate}<br>${fmtYen(pos.entryPrice)}円</div></div>
+        <div class="stat"><div class="k">決済</div><div class="v">${pos.exitDate}<br>${fmtYen(pos.exitPrice)}円</div></div>
+      </div>
+
+      <button class="chart-toggle" data-role="chart-toggle">📈 チャートを表示</button>
+      <div class="chart-box" data-role="chart-box"></div>
+    `;
+  }
+
+  function wireClosedCardInteractions(card, pos){
+    const toggleBtn = card.querySelector('[data-role="chart-toggle"]');
+    const chartBox = card.querySelector('[data-role="chart-box"]');
+    let chartRendered = false;
+    toggleBtn.addEventListener("click", async () => {
+      const willOpen = !chartBox.classList.contains("open");
+      chartBox.classList.toggle("open");
+      toggleBtn.textContent = willOpen ? "📉 チャートを閉じる" : "📈 チャートを表示";
+      if (willOpen && !chartRendered){
+        chartRendered = true;
+        await renderChart(chartBox, pos, { mode: "closed" });
+      }
+    });
+  }
+
+  // =====================================================================
+  // チャート描画（保有中/決済済み共通）
+  // 買い/売りの約定はマーカーとして重ねて表示する。
+  // =====================================================================
+  async function renderChart(chartBox, pos, opts){
+    opts = opts || { mode: "open" };
     let bars;
     try{
       bars = await fetchPrices(pos.code);
@@ -718,14 +860,14 @@
       return;
     }
 
-    const { tpPrice, slPrice } = resolveTpSl(pos);
+    chartBox.innerHTML = "";
     const dates = bars.map(b => b.t);
     const el = document.createElement("div");
     el.style.width = "100%";
     el.style.height = "320px";
     chartBox.appendChild(el);
 
-    const trace = {
+    const candleTrace = {
       x: dates,
       open: bars.map(b => b.o),
       high: bars.map(b => b.h),
@@ -737,17 +879,33 @@
       decreasing: { line: { color: "#4d8cff" } }, // 陰線=青
     };
 
-    const shapes = [
-      hline(pos.entryPrice, "#8993ac", "dot"),
-      hline(tpPrice, "#35d68c", "dash"),
-      hline(slPrice, "#ff5d6c", "dash"),
-    ];
-    if (dates.includes(pos.entryDate)){
-      shapes.push({
-        type: "line", xref: "x", yref: "paper",
-        x0: pos.entryDate, x1: pos.entryDate, y0: 0, y1: 1,
-        line: { color: "#8993ac", width: 1, dash: "dot" },
-      });
+    const traces = [candleTrace, ...buildMarkerTraces(pos.txs)];
+
+    const shapes = [];
+    const annotations = [];
+
+    if (opts.mode === "open"){
+      const { tpPrice, slPrice } = resolveTpSl(pos);
+      shapes.push(
+        hline(pos.entryPrice, "#8993ac", "dot"),
+        hline(tpPrice, "#35d68c", "dash"),
+        hline(slPrice, "#ff5d6c", "dash"),
+      );
+      annotations.push(
+        annot(tpPrice, `利確 ${fmtYen(tpPrice)}円`, "#35d68c"),
+        annot(slPrice, `損切 ${fmtYen(slPrice)}円`, "#ff5d6c"),
+      );
+      if (dates.includes(pos.entryDate)) shapes.push(vline(pos.entryDate, "#8993ac"));
+    } else {
+      shapes.push(
+        hline(pos.entryPrice, "#8993ac", "dot"),
+        hline(pos.exitPrice, "#f2b134", "solid"),
+      );
+      annotations.push(
+        annot(pos.exitPrice, `決済 ${fmtYen(pos.exitPrice)}円`, "#f2b134"),
+      );
+      if (dates.includes(pos.entryDate)) shapes.push(vline(pos.entryDate, "#8993ac"));
+      if (dates.includes(pos.exitDate)) shapes.push(vline(pos.exitDate, "#f2b134"));
     }
 
     const layout = {
@@ -758,17 +916,55 @@
       xaxis: { rangeslider: { visible: false }, gridcolor: "#263252", showgrid: false },
       yaxis: { gridcolor: "#263252", tickformat: ",.0f" },
       shapes: shapes,
-      annotations: [
-        annot(tpPrice, `利確 ${fmtYen(tpPrice)}円`, "#35d68c"),
-        annot(slPrice, `損切 ${fmtYen(slPrice)}円`, "#ff5d6c"),
-      ],
+      annotations: annotations,
       showlegend: false,
     };
 
-    Plotly.newPlot(el, [trace], layout, {
+    Plotly.newPlot(el, traces, layout, {
       displayModeBar: false,
       responsive: true,
     });
+
+    if (!bars.some(b => pos.txs.some(t => t.date === b.t))){
+      const note = document.createElement("div");
+      note.className = "chart-note";
+      note.textContent = "※ 表示期間内に売買日を含む株価データがありません（取得可能な範囲は直近のみ）";
+      chartBox.appendChild(note);
+    }
+  }
+
+  // 買い/売りの約定をチャート上のマーカーとして描画するためのPlotlyトレースを作る
+  function buildMarkerTraces(txs){
+    if (!txs || !txs.length) return [];
+    const buys = txs.filter(t => t.action === "buy");
+    const sells = txs.filter(t => t.action === "sell");
+    const traces = [];
+
+    if (buys.length){
+      traces.push({
+        x: buys.map(t => t.date),
+        y: buys.map(t => t.price),
+        mode: "markers",
+        type: "scatter",
+        name: "買い",
+        marker: { symbol: "triangle-up", size: 11, color: "#35d68c", line: { color: "#0a0f1c", width: 1 } },
+        text: buys.map(t => `買 ${t.qty.toLocaleString()}株 @ ${t.price.toLocaleString()}円`),
+        hoverinfo: "text",
+      });
+    }
+    if (sells.length){
+      traces.push({
+        x: sells.map(t => t.date),
+        y: sells.map(t => t.price),
+        mode: "markers",
+        type: "scatter",
+        name: "売り",
+        marker: { symbol: "triangle-down", size: 11, color: "#ff5d6c", line: { color: "#0a0f1c", width: 1 } },
+        text: sells.map(t => `売 ${t.qty.toLocaleString()}株 @ ${t.price.toLocaleString()}円`),
+        hoverinfo: "text",
+      });
+    }
+    return traces;
   }
 
   function hline(y, color, dash){
@@ -776,6 +972,13 @@
       type: "line", xref: "paper", yref: "y",
       x0: 0, x1: 1, y0: y, y1: y,
       line: { color: color, width: 1.5, dash: dash },
+    };
+  }
+  function vline(x, color){
+    return {
+      type: "line", xref: "x", yref: "paper",
+      x0: x, x1: x, y0: 0, y1: 1,
+      line: { color: color, width: 1, dash: "dot" },
     };
   }
   function annot(y, text, color){
