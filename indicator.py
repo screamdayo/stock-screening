@@ -165,6 +165,30 @@ def is_ma_breakout_at(df_with_ma, idx, lookback_days=2):
     return was_falling_or_flat_all_days and is_now_rising
 
 
+def is_strong_bullish_candle(row, min_gain_pct=1.5):
+    """
+    当日の陽線の「強さ」を判定する: 終値が始値から min_gain_pct(%) 以上
+    上昇しているかどうか。
+
+    is_bullish_candle() が「終値 > 始値」という陽線の有無だけを見るのに対し、
+    こちらは上昇の大きさ（勢い）を要求する、より厳格な条件。
+
+    row: O（始値）, C（終値）を持つ1行のデータ（Series）
+    min_gain_pct: 「強い陽線」とみなす上昇率の下限（%）。デフォルト1.5。
+
+    戻り値: (C / O - 1) * 100 >= min_gain_pct であればTrue
+    """
+    open_price = row["O"]
+    close_price = row["C"]
+
+    if pd.isna(open_price) or pd.isna(close_price) or open_price <= 0:
+        return False
+
+    gain_pct = (close_price / open_price - 1) * 100
+
+    return gain_pct >= min_gain_pct
+
+
 def is_ma_decline_before_turn_at(df_with_ma, idx, decline_lookback_days=5, decline_max_pct=-0.5):
     """
     指定インデックス idx（シグナル当日）の「前日」を基準に、
