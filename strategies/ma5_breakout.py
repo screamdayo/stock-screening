@@ -42,6 +42,11 @@ def _passes_conditions(g, idx, cfg):
     if cfg["REQUIRE_BULLISH_CANDLE"] and not indicator.is_bullish_candle(latest):
         return False
 
+    if cfg["REQUIRE_STRONG_BULLISH_CANDLE"] and not indicator.is_strong_bullish_candle(
+        latest, min_gain_pct=cfg["MA5_STRONG_CANDLE_MIN_GAIN_PCT"]
+    ):
+        return False
+
     # ① 過去MA5_DECLINE_LOOKBACK_DAYS日間で5日MAが十分下落していたか（転換前日を基準に判定）
     if not indicator.is_ma_decline_before_turn_at(
         g, idx,
@@ -138,6 +143,7 @@ def find_latest_signals(price_df, target_codes):
 
     cnt_no_data = 0
     cnt_not_bullish = 0
+    cnt_not_strong_bullish = 0
     cnt_not_decline = 0
     cnt_not_below_long = 0
     cnt_not_breakout = 0
@@ -180,6 +186,13 @@ def find_latest_signals(price_df, target_codes):
             cnt_not_bullish += 1
             continue
 
+        strong_bullish = indicator.is_strong_bullish_candle(
+            latest, min_gain_pct=cfg["MA5_STRONG_CANDLE_MIN_GAIN_PCT"]
+        )
+        if cfg["REQUIRE_STRONG_BULLISH_CANDLE"] and not strong_bullish:
+            cnt_not_strong_bullish += 1
+            continue
+
         declined = indicator.is_ma_decline_before_turn_at(
             g, idx,
             decline_lookback_days=cfg["MA5_DECLINE_LOOKBACK_DAYS"],
@@ -215,6 +228,7 @@ def find_latest_signals(price_df, target_codes):
         "===== 診断結果 =====",
         f"データ不足で除外: {cnt_no_data}件",
         f"陽線条件で除外: {cnt_not_bullish}件",
+        f"陽線の強さ条件で除外: {cnt_not_strong_bullish}件",
         f"下落実体条件で除外: {cnt_not_decline}件",
         f"位置条件（5日MA<=25日MA）で除外: {cnt_not_below_long}件",
         f"MAブレイクアウト条件で除外: {cnt_not_breakout}件",
