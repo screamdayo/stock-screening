@@ -148,6 +148,11 @@ STRATEGY_CONFIG = {
         # 陽線判定を有効にするか（終値 > 始値）
         "REQUIRE_BULLISH_CANDLE": True,
 
+        # 陽線の「強さ」も要求するか。Trueにすると、単なる陽線（終値>始値）だけでなく、
+        # 始値から MA5_STRONG_CANDLE_MIN_GAIN_PCT(%) 以上の上昇があったことも要求する。
+        "REQUIRE_STRONG_BULLISH_CANDLE": True,
+        "MA5_STRONG_CANDLE_MIN_GAIN_PCT": 1.5,
+
         # ①下落実体の判定パラメータ
         # ma_decline_pct = (MA5[前日] / MA5[前日から MA5_DECLINE_LOOKBACK_DAYS日前] - 1) * 100
         # これが MA5_DECLINE_MAX_PCT 以下であることを要求する。
@@ -214,28 +219,6 @@ BACKTEST_INITIAL_CAPITAL = 1_000_000
 
 # 1トレードにつき資産の何%を投じるか（100なら全額を毎回投じる想定）
 BACKTEST_POSITION_SIZE_PCT = 100
-
-
-# ===== 保有ポジション利確チャート（GitHub Pages）設定 =====
-# 保有ポジションの実データ（銘柄・株数・取得単価）はSBI証券のCSVから
-# ブラウザ側（docs/index.html）でその場で計算する。リポジトリには一切保存しない
-# （個人の建玉情報のため）。
-#
-# ここで管理するのはあくまで「株価データ（ローソク足用、誰が見ても問題ない公開情報）」。
-# GitHub Actionsが定期的にJ-Quantsから取得し、docs/prices/以下にJSONとして出力・commitする。
-# docs/ フォルダをGitHub Pagesの公開ルートに設定すると、
-# docs/index.html からdocs/prices/<銘柄コード>.json を直接fetchできる。
-
-# 出力先フォルダ（docs/以下、GitHub Pagesでそのまま公開される）
-DOCS_PRICES_DIR = "docs/prices"
-
-# チャートに表示する期間（営業日数）。日次スクリーニング用のTARGET_BUSINESS_DAYSとは
-# 別に、チャート表示用は少し長めの期間を確保する。
-CHART_BUSINESS_DAYS = 90
-
-# 上記を集める際に遡ってよい最大日数（休日・データ欠損時のセーフティ）。
-# 90営業日だと土日・祝日を考えると実質130日前後になるため、余裕を持たせる。
-CHART_MAX_LOOKBACK_DAYS = 150
 
 
 # ===== Discord通知設定 =====
