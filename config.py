@@ -226,3 +226,24 @@ MAX_RESULTS_TO_SHOW = 30          # 通知に表示する最大銘柄数
 DISCORD_MESSAGE_CHUNK_SIZE = 1900  # Discordの1メッセージあたり文字数上限対策
 
 KABUTAN_CHART_URL_TEMPLATE = "https://kabutan.jp/stock/chart?code={code}"
+
+# ===== 保有ポジション利確チャート（GitHub Pages）設定 =====
+# 保有ポジションの実データ（銘柄・株数・取得単価）はSBI証券のCSVから
+# ブラウザ側（docs/index.html）でその場で計算する。リポジトリには一切保存しない
+# （個人の建玉情報のため）。
+#
+# ここで管理するのはあくまで「株価データ（ローソク足用、誰が見ても問題ない公開情報）」。
+# GitHub Actionsが定期的にJ-Quantsから取得し、docs/prices/以下にJSONとして出力・commitする。
+# docs/ フォルダをGitHub Pagesの公開ルートに設定すると、
+# docs/index.html からdocs/prices/<銘柄コード>.json を直接fetchできる。
+
+# 出力先フォルダ（docs/以下、GitHub Pagesでそのまま公開される）
+DOCS_PRICES_DIR = "docs/prices"
+
+# チャートに表示する期間（営業日数）。日次スクリーニング用のTARGET_BUSINESS_DAYSとは
+# 別に、チャート表示用は少し長めの期間を確保する。
+CHART_BUSINESS_DAYS = 90
+
+# 上記を集める際に遡ってよい最大日数（休日・データ欠損時のセーフティ）。
+# 90営業日だと土日・祝日を考えると実質130日前後になるため、余裕を持たせる。
+CHART_MAX_LOOKBACK_DAYS = 150
