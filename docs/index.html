@@ -135,7 +135,7 @@
   }
   .card-pl{ text-align:right; }
   .card-pl .pct{ font-size:20px; font-weight:900; font-family: ui-monospace, "SF Mono", Menlo, monospace; }
-  .card-pl .yen{ font-size:11px; color:var(--ink-dim); font-family: ui-monospace, "SF Mono", Menlo, monospace; }
+  .card-pl .yen{ font-size:12px; color:var(--ink-dim); font-family: ui-monospace, "SF Mono", Menlo, monospace; margin-top:3px; }
   .gain{ color:var(--gain); } .loss{ color:var(--loss); }
 
   .progress-wrap{ margin: 16px 0 6px; }
@@ -181,6 +181,62 @@
   .chart-box{ margin-top:10px; border-radius:10px; overflow:hidden; display:none; }
   .chart-box.open{ display:block; }
   .chart-note{ font-size:11px; color:var(--ink-dim); text-align:center; padding:14px; }
+
+  .trade-history{
+    margin-top:14px; border:1px solid var(--line); border-radius:10px;
+    overflow:hidden; background:var(--bg);
+  }
+  .trade-history-title{
+    display:flex; justify-content:space-between; align-items:center;
+    padding:9px 11px; color:var(--ink-dim); font-size:10.5px;
+    border-bottom:1px solid var(--line);
+  }
+  .trade-row{
+    display:grid; grid-template-columns:72px 38px 1fr 1fr;
+    align-items:center; gap:6px; padding:9px 10px;
+    border-bottom:1px solid rgba(38,50,82,.7); font-size:11px;
+  }
+  .trade-row:last-child{ border-bottom:none; }
+  .trade-row .date{ color:var(--ink-dim); }
+  .trade-row .num{ text-align:right; font-family:ui-monospace,"SF Mono",Menlo,monospace; }
+  .trade-side{
+    display:inline-flex; justify-content:center; padding:2px 5px;
+    border-radius:4px; font-size:10px; font-weight:800;
+  }
+  .trade-side.buy{ color:var(--gain); background:rgba(53,214,140,.12); }
+  .trade-side.sell{ color:var(--loss); background:rgba(255,93,108,.12); }
+  .trade-amount{ color:var(--ink-dim); font-size:9px; display:block; margin-top:2px; }
+
+  .chart-toolbar{
+    display:flex; align-items:center; justify-content:space-between; gap:10px;
+    padding:10px 6px 8px;
+  }
+  .chart-legend{ display:flex; gap:9px; color:var(--ink-dim); font-size:9.5px; }
+  .chart-legend span::before{
+    content:""; display:inline-block; width:7px; height:7px;
+    border-radius:2px; margin-right:3px;
+  }
+  .chart-legend .up::before{ background:#ff5d6c; }
+  .chart-legend .down::before{ background:#4d8cff; }
+  .range-buttons{ display:flex; padding:2px; border:1px solid var(--line); border-radius:7px; }
+  .range-button{
+    border:0; background:transparent; color:var(--ink-dim); padding:5px 8px;
+    border-radius:5px; font-size:10px; font-family:inherit;
+  }
+  .range-button.active{ background:var(--panel-2); color:var(--ink); }
+  .plot-wrap{
+    width:calc(100% + 20px); margin-left:-10px; min-height:390px;
+  }
+
+  @media (max-width:420px){
+    body{ padding-left:10px; padding-right:10px; }
+    .card{ padding-left:13px; padding-right:13px; }
+    .stat-grid{ grid-template-columns:1fr 1fr; }
+    .stat-grid .stat:first-child{ grid-column:1 / -1; }
+    .trade-row{ grid-template-columns:68px 34px 1fr 1fr; gap:4px; padding-left:8px; padding-right:8px; }
+    .chart-box{ margin-left:-6px; margin-right:-6px; }
+    .chart-toolbar{ padding-left:4px; padding-right:4px; }
+  }
 
   footer{
     text-align:center; color:var(--ink-dim); font-size:11px;
@@ -713,6 +769,8 @@
         </div>
       </div>
 
+      ${renderTradeHistory(pos.txs)}
+
       <button class="chart-toggle" data-role="chart-toggle">📈 チャートを表示</button>
       <div class="chart-box" data-role="chart-box"></div>
     `;
@@ -764,7 +822,7 @@
     plPctEl.textContent = fmtPct(plPct);
     plPctEl.className = "pct mono " + (plPct >= 0 ? "gain" : "loss");
     card.querySelector('[data-role="pl-yen"]').textContent =
-      `${fmtYen(latest)}円 / ${plYen >= 0 ? "+" : ""}${fmtYen(plYen)}円`;
+      `現在 ${fmtYen(latest)}円 ｜ ${plYen >= 0 ? "+" : ""}${fmtYen(plYen)}円`;
 
     // 進捗バー: SL側=0%、TP側=100%として、エントリー・現在値の位置を割り出す
     const lo = isShort ? tpPrice : slPrice;
@@ -821,6 +879,8 @@
         <div class="stat"><div class="k">決済</div><div class="v">${pos.exitDate}<br>${fmtYen(pos.exitPrice)}円</div></div>
       </div>
 
+      ${renderTradeHistory(pos.txs)}
+
       <button class="chart-toggle" data-role="chart-toggle">📈 チャートを表示</button>
       <div class="chart-box" data-role="chart-box"></div>
     `;
@@ -839,6 +899,27 @@
         await renderChart(chartBox, pos, { mode: "closed" });
       }
     });
+  }
+
+  function renderTradeHistory(txs){
+    if (!txs || !txs.length) return "";
+    const rows = txs.map(tx => {
+      const isBuy = tx.action === "buy";
+      const side = isBuy ? "買" : "売";
+      const amount = tx.qty * tx.price;
+      return `
+        <div class="trade-row">
+          <span class="date mono">${tx.date.slice(5).replace("-", "/")}</span>
+          <span class="trade-side ${isBuy ? "buy" : "sell"}">${side}</span>
+          <span class="num">${tx.qty.toLocaleString()}株</span>
+          <span class="num">${fmtYen(tx.price)}円<span class="trade-amount">${Math.round(amount).toLocaleString()}円</span></span>
+        </div>`;
+    }).join("");
+    return `
+      <div class="trade-history">
+        <div class="trade-history-title"><span>約定履歴</span><span>${txs.length}件</span></div>
+        ${rows}
+      </div>`;
   }
 
   // =====================================================================
@@ -862,9 +943,18 @@
     chartBox.innerHTML = "";
     const dates = bars.map(b => b.t);
     const dateSet = new Set(dates);
+    const toolbar = document.createElement("div");
+    toolbar.className = "chart-toolbar";
+    toolbar.innerHTML = `
+      <div class="chart-legend"><span class="up">陽線</span><span class="down">陰線</span></div>
+      <div class="range-buttons" aria-label="チャート表示期間">
+        <button class="range-button active" data-bars="25">1か月</button>
+        <button class="range-button" data-bars="60">3か月</button>
+        <button class="range-button" data-bars="all">全期間</button>
+      </div>`;
+    chartBox.appendChild(toolbar);
     const el = document.createElement("div");
-    el.style.width = "100%";
-    el.style.height = "320px";
+    el.className = "plot-wrap";
     chartBox.appendChild(el);
 
     const candleTrace = {
@@ -877,6 +967,7 @@
       name: pos.code,
       increasing: { line: { color: "#ff5d6c" } }, // 陽線=赤（日本式）
       decreasing: { line: { color: "#4d8cff" } }, // 陰線=青
+      whiskerwidth: 0.35,
     };
 
     // 表示中の株価データの期間より古い/新しい売買は、軸を大きく引き伸ばして
@@ -896,6 +987,7 @@
         hline(slPrice, "#ff5d6c", "dash"),
       );
       annotations.push(
+        annot(pos.entryPrice, `取得 ${fmtYen(pos.entryPrice)}円`, "#b7bfd2"),
         annot(tpPrice, `利確 ${fmtYen(tpPrice)}円`, "#35d68c"),
         annot(slPrice, `損切 ${fmtYen(slPrice)}円`, "#ff5d6c"),
       );
@@ -906,24 +998,53 @@
         hline(pos.exitPrice, "#f2b134", "solid"),
       );
       annotations.push(
+        annot(pos.entryPrice, `取得 ${fmtYen(pos.entryPrice)}円`, "#b7bfd2"),
         annot(pos.exitPrice, `決済 ${fmtYen(pos.exitPrice)}円`, "#f2b134"),
       );
       if (dateSet.has(pos.entryDate)) shapes.push(vline(pos.entryDate, "#8993ac"));
       if (dateSet.has(pos.exitDate)) shapes.push(vline(pos.exitDate, "#f2b134"));
     }
 
+    function visibleYRange(count){
+      const slice = bars.slice(Math.max(0, bars.length - count));
+      const values = slice.flatMap(b => [b.l, b.h]);
+      // 売買ラインが表示中の値動きから少し外れていても見失わないように含める。
+      shapes.forEach(s => {
+        if (s.yref === "y" && s.y0 !== undefined && typeof s.y0 === "number") values.push(s.y0);
+      });
+      const min = Math.min(...values);
+      const max = Math.max(...values);
+      const pad = Math.max((max - min) * 0.08, max * 0.005);
+      return [min - pad, max + pad];
+    }
+    function visibleDateRange(count){
+      const start = Math.max(0, dates.length - count);
+      const from = new Date(dates[start] + "T00:00:00");
+      const to = new Date(dates[dates.length - 1] + "T00:00:00");
+      from.setHours(from.getHours() - 12);
+      to.setHours(to.getHours() + 12);
+      return [from.toISOString(), to.toISOString()];
+    }
+
+    const initialCount = Math.min(25, dates.length);
     const layout = {
       paper_bgcolor: "#121a2b",
       plot_bgcolor: "#121a2b",
       font: { color: "#e9edf6", size: 11, family: "ui-monospace, SF Mono, Menlo, monospace" },
-      margin: { l: 44, r: 12, t: 10, b: 30 },
+      height: 390,
+      margin: { l: 52, r: 8, t: 12, b: 38 },
       // fixedrange: trueでピンチ/ドラッグによるズーム・パンを無効化する。
       // スマホでチャートに軽く触れただけで意図せず拡大されてしまう問題への対処。
       xaxis: {
-        rangeslider: { visible: false }, gridcolor: "#263252", showgrid: false,
-        range: [dates[0], dates[dates.length - 1]], fixedrange: true,
+        type: "date", rangeslider: { visible: false }, gridcolor: "#263252", showgrid: false,
+        range: visibleDateRange(initialCount), fixedrange: true,
+        rangebreaks: [{ bounds: ["sat", "mon"] }],
+        tickformat: "%m/%d", nticks: 6, tickfont: { color: "#8993ac", size: 10 },
       },
-      yaxis: { gridcolor: "#263252", tickformat: ",.0f", fixedrange: true },
+      yaxis: {
+        side: "left", gridcolor: "#263252", tickformat: ",.0f", fixedrange: true,
+        range: visibleYRange(initialCount), nticks: 6, tickfont: { color: "#8993ac", size: 10 },
+      },
       dragmode: false,
       shapes: shapes,
       annotations: annotations,
@@ -935,6 +1056,18 @@
       responsive: true,
       scrollZoom: false,
       doubleClick: false,
+    });
+
+    toolbar.querySelectorAll(".range-button").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const count = btn.dataset.bars === "all" ? dates.length : Number(btn.dataset.bars);
+        Plotly.relayout(el, {
+          "xaxis.range": visibleDateRange(count),
+          "yaxis.range": visibleYRange(count),
+        });
+        toolbar.querySelectorAll(".range-button").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+      });
     });
 
     if (!visibleTxs.length && pos.txs && pos.txs.length){
