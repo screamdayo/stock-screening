@@ -1,0 +1,61 @@
+{
+  "generated_at": "2026-08-13T12:17:48",
+  "strategy": "ma5_breakout",
+  "count": 6,
+  "items": [
+    {
+      "code": "1780",
+      "close": 1466.0,
+      "open": 1438.0,
+      "ma_short_today": 1434.4,
+      "ma_short_prev": 1427.0,
+      "ma_long_today": 1487.3,
+      "name": "ヤマウラ"
+    },
+    {
+      "code": "2791",
+      "close": 4465.0,
+      "open": 4375.0,
+      "ma_short_today": 4389.0,
+      "ma_short_prev": 4355.0,
+      "ma_long_today": 4489.8,
+      "name": "大黒天物産"
+    },
+    {
+      "code": "4718",
+      "close": 2367.0,
+      "open": 2309.0,
+      "ma_short_today": 2340.0,
+      "ma_short_prev": 2338.8,
+      "ma_long_today": 2433.3,
+      "name": "早稲田アカデミー"
+    },
+    {
+      "code": "8200",
+      "close": 2307.0,
+      "open": 2269.0,
+      "ma_short_today": 2287.0,
+      "ma_short_prev": 2283.6,
+      "ma_long_today": 2306.2,
+      "name": "リンガーハット"
+    },
+    {
+      "code": "8818",
+      "close": 1093.0,
+      "open": 1067.0,
+      "ma_short_today": 1064.2,
+      "ma_short_prev": 1061.4,
+      "ma_long_today": 1102.5,
+      "name": "京阪神ビルディング"
+    },
+    {
+      "code": "9519",
+      "close": 944.0,
+      "open": 921.0,
+      "ma_short_today": 914.0,
+      "ma_short_prev": 910.8,
+      "ma_long_today": 954.1,
+      "name": "レノバ"
+    }
+  ]
+}
