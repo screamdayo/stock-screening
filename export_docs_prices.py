@@ -1,22 +1,7 @@
 """
 export_docs_prices.py
-GitHub Pages（docs/index.html）で使う「保有ポジションの利確チャート」用に、
-対象市場全銘柄の直近株価データ（ローソク足用）を docs/prices/ 以下にJSONで出力する。
-
-重要: ここで出力するのは銘柄コード→株価という「誰が見ても問題ない公開情報」のみ。
-実際の保有ポジション（どの銘柄をいくらで何株持っているか）はSBI証券の約定履歴CSVから
-ブラウザ側（docs/index.html）でその場で計算する設計になっており、
-このリポジトリには一切含まれない・送信されない。
-
-出力先: docs/prices/<銘柄コード>.json
-形式: [{"t": "2026-06-01", "o": 2500.0, "h": 2520.0, "l": 2490.0, "c": 2510.0}, ...]
-（キー名はファイルサイズ削減のため短縮している）
-
-GitHub Actionsから平日の夜間などに自動実行される想定
-（.github/workflows/export_prices.yml）。
-
-使い方（ローカルで試す場合）:
-    python export_docs_prices.py
+GitHub Pages用に対象市場全銘柄の直近日足を docs/prices/ に出力し、
+同じ株価データを使って最新のスクリーニング結果を docs/screening.json に保存する。
 """
 
 import os
@@ -26,16 +11,29 @@ from datetime import datetime
 
 import config
 import download
+from strategies import registry
 from logger import get_logger
 
 logger = get_logger(__name__)
 
 
+def _json_safe(value):
+    if value is None:
+        return None
+    if hasattr(value, "isoformat"):
+        return value.isoformat()
+    if hasattr(value, "item"):
+        value = value.item()
+    if isinstance(value, float):
+        return round(value, 4)
+    return value
+
+
 def run():
-    logger.info("=== docs/prices/ 株価データエクスポート開始 ===")
+    logger.info("=== GitHub Pages用データエクスポート開始 ===")
     start = time.time()
 
-    target_codes = download.get_target_codes()
+    target_codes, code_to_name = download.get_target_codes_and_names()
 
     logger.info(
         f"株価データ取得中（直近{config.CHART_BUSINESS_DAYS}営業日、"
@@ -50,32 +48,34 @@ def run():
         logger.warning("株価データが空でした。エクスポートをスキップします。")
         return
 
-    # 対象市場の銘柄のみに絞る（他市場の銘柄が混ざらないようにする）
     price_df = price_df[price_df["Code"].isin(target_codes)]
-
     os.makedirs(config.DOCS_PRICES_DIR, exist_ok=True)
 
     exported = 0
     for code, group in price_df.groupby("Code"):
         group = group.sort_values("Date")
-        bars = [
-            {
+        bars = []
+        for _, row in group.iterrows():
+            bar = {
                 "t": row["Date"].strftime("%Y-%m-%d"),
                 "o": round(float(row["O"]), 2),
                 "h": round(float(row["H"]), 2),
                 "l": round(float(row["L"]), 2),
                 "c": round(float(row["C"]), 2),
             }
-            for _, row in group.iterrows()
-        ]
+            if "Vo" in group.columns:
+                try:
+                    if row["Vo"] == row["Vo"]:
+                        bar["v"] = int(row["Vo"])
+                except Exception:
+                    pass
+            bars.append(bar)
 
         path = os.path.join(config.DOCS_PRICES_DIR, f"{code}.json")
         with open(path, "w", encoding="utf-8") as f:
             json.dump(bars, f, separators=(",", ":"))
         exported += 1
 
-    # 生成日時・対象銘柄数のメタ情報。
-    # docs/index.html側で「データがどれだけ新しいか」を表示するのに使う。
     meta_path = os.path.join(config.DOCS_PRICES_DIR, "_meta.json")
     with open(meta_path, "w", encoding="utf-8") as f:
         json.dump({
@@ -84,8 +84,29 @@ def run():
             "business_days": config.CHART_BUSINESS_DAYS,
         }, f, ensure_ascii=False, indent=2)
 
-    logger.info(f"エクスポート完了: {exported}銘柄 → {config.DOCS_PRICES_DIR} "
-                f"（{time.time() - start:.1f}秒）")
+    screener_fn = registry.get_latest_screener(config.ACTIVE_STRATEGY)
+    results = screener_fn(price_df, target_codes)
+
+    screening_items = []
+    for r in results:
+        item = {k: _json_safe(v) for k, v in r.items()}
+        item["name"] = code_to_name.get(r["code"], "")
+        screening_items.append(item)
+
+    screening_path = os.path.join("docs", "screening.json")
+    with open(screening_path, "w", encoding="utf-8") as f:
+        json.dump({
+            "generated_at": datetime.now().isoformat(timespec="seconds"),
+            "strategy": config.ACTIVE_STRATEGY,
+            "count": len(screening_items),
+            "items": screening_items,
+        }, f, ensure_ascii=False, indent=2)
+
+    logger.info(
+        f"エクスポート完了: 株価{exported}銘柄 / "
+        f"スクリーニング{len(screening_items)}件 "
+        f"（{time.time() - start:.1f}秒）"
+    )
 
 
 if __name__ == "__main__":

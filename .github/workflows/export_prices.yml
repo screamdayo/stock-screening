@@ -1,13 +1,8 @@
 name: 株価データ更新（GitHub Pages用）
 
-# ポジション利確チャート（docs/index.html）が使う株価データ（docs/prices/）を
-# 毎日自動更新してcommitする。ここでcommitされるのは「銘柄コード→株価」のみで、
-# 保有ポジションなどの個人情報は一切含まない
-# （保有ポジションはSBI証券CSVからブラウザ側でその場で計算し、リポジトリには含めない設計）。
-
 on:
   schedule:
-    - cron: '30 7 * * 1-5'  # UTC 7:30 = JST 16:30（平日、株スクリーニングの少し後）
+    - cron: '30 7 * * 1-5'
   workflow_dispatch: {}
 
 permissions:
@@ -27,15 +22,15 @@ jobs:
       - name: ライブラリインストール
         run: pip install -r requirements.txt
 
-      - name: 株価データをdocs/prices/へエクスポート
+      - name: 株価・スクリーニングデータをGitHub Pages用に出力
         env:
           JQUANTS_API_KEY: ${{ secrets.JQUANTS_API_KEY }}
         run: python export_docs_prices.py
 
-      - name: docs/prices/ をcommit
+      - name: GitHub Pages用データをcommit
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add docs/prices/
-          git diff --cached --quiet && echo "変更なし" || git commit -m "chore: docs/prices/ を更新"
+          git add docs/prices/ docs/screening.json
+          git diff --cached --quiet && echo "変更なし" || git commit -m "chore: docsデータを更新"
           git push
