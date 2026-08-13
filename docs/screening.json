@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-08-13T12:17:48",
+  "generated_at": "2026-08-13T19:03:44",
   "strategy": "ma5_breakout",
-  "count": 6,
+  "count": 9,
   "items": [
     {
       "code": "1780",
@@ -10,7 +10,20 @@
       "ma_short_today": 1434.4,
       "ma_short_prev": 1427.0,
       "ma_long_today": 1487.3,
+      "signal_type": "bottom_reversal",
+      "signal_label": "大底反転",
       "name": "ヤマウラ"
+    },
+    {
+      "code": "1813",
+      "close": 2811.0,
+      "open": 2751.0,
+      "ma_short_today": 2757.4,
+      "ma_short_prev": 2747.6,
+      "ma_long_today": 2713.8,
+      "signal_type": "pullback_reacceleration",
+      "signal_label": "押し目再上昇",
+      "name": "不動テトラ"
     },
     {
       "code": "2791",
@@ -19,7 +32,20 @@
       "ma_short_today": 4389.0,
       "ma_short_prev": 4355.0,
       "ma_long_today": 4489.8,
+      "signal_type": "bottom_reversal",
+      "signal_label": "大底反転",
       "name": "大黒天物産"
+    },
+    {
+      "code": "3091",
+      "close": 2632.0,
+      "open": 2551.0,
+      "ma_short_today": 2574.6,
+      "ma_short_prev": 2563.0,
+      "ma_long_today": 2505.5,
+      "signal_type": "pullback_reacceleration",
+      "signal_label": "押し目再上昇",
+      "name": "ブロンコビリー"
     },
     {
       "code": "4718",
@@ -28,7 +54,20 @@
       "ma_short_today": 2340.0,
       "ma_short_prev": 2338.8,
       "ma_long_today": 2433.3,
+      "signal_type": "bottom_reversal",
+      "signal_label": "大底反転",
       "name": "早稲田アカデミー"
+    },
+    {
+      "code": "7575",
+      "close": 1538.0,
+      "open": 1501.0,
+      "ma_short_today": 1519.2,
+      "ma_short_prev": 1514.2,
+      "ma_long_today": 1439.4,
+      "signal_type": "pullback_reacceleration",
+      "signal_label": "押し目再上昇",
+      "name": "日本ライフライン"
     },
     {
       "code": "8200",
@@ -37,6 +76,8 @@
       "ma_short_today": 2287.0,
       "ma_short_prev": 2283.6,
       "ma_long_today": 2306.2,
+      "signal_type": "bottom_reversal",
+      "signal_label": "大底反転",
       "name": "リンガーハット"
     },
     {
@@ -46,6 +87,8 @@
       "ma_short_today": 1064.2,
       "ma_short_prev": 1061.4,
       "ma_long_today": 1102.5,
+      "signal_type": "bottom_reversal",
+      "signal_label": "大底反転",
       "name": "京阪神ビルディング"
     },
     {
@@ -55,6 +98,8 @@
       "ma_short_today": 914.0,
       "ma_short_prev": 910.8,
       "ma_long_today": 954.1,
+      "signal_type": "bottom_reversal",
+      "signal_label": "大底反転",
       "name": "レノバ"
     }
   ]
