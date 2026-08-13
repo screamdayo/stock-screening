@@ -17,22 +17,28 @@ SCREENING_VIEW_URL = "https://screamdayo.github.io/stock-screening/screening.htm
 
 def notify(results):
     today = datetime.now().strftime("%Y/%m/%d")
-    cfg = config.get_strategy_config()
 
     if not results:
         _post(f"📊 **株スクリーニング結果 {today}**\n該当銘柄なし\n{SCREENING_VIEW_URL}")
         return
 
+    bottom = [r for r in results if r.get("signal_type") == "bottom_reversal"]
+    pullback = [r for r in results if r.get("signal_type") == "pullback_reacceleration"]
+
     preview_limit = 15
-    names = [f"・{(r.get('name') or r['code'])}" for r in results[:preview_limit]]
+    names = []
+    for r in results[:preview_limit]:
+        icon = "🔵" if r.get("signal_type") == "bottom_reversal" else "🟠"
+        label = r.get("name") or r["code"]
+        names.append(f"{icon} {label}")
+
     remaining = len(results) - preview_limit
     footer = f"\n…他{remaining}件" if remaining > 0 else ""
 
     header = (
         f"📊 **株スクリーニング結果 {today}**\n"
-        f"✅ {cfg['MA_SHORT_PERIOD']}日MA上向き"
-        + ("＆陽線" if cfg["REQUIRE_BULLISH_CANDLE"] else "")
-        + f"（{len(results)}件）\n\n"
+        f"🔵 大底反転 {len(bottom)}件 / 🟠 押し目再上昇 {len(pullback)}件\n"
+        f"合計 {len(results)}件\n\n"
     )
 
     msg = header + "\n".join(names) + footer + f"\n\n📈 **チャートで確認**\n{SCREENING_VIEW_URL}"
