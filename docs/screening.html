@@ -7,37 +7,184 @@
 <script src="https://cdn.plot.ly/plotly-2.32.0.min.js"></script>
 <style>
 :root{--bg:#0a0f1c;--panel:#121a2b;--panel2:#182339;--line:#263252;--ink:#eef2fb;--dim:#8e98b2;--accent:#f2b134;--up:#ff5d6c;--down:#4d8cff;--a:#35d68c;--b:#f2b134;--skip:#8993ac}
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}html,body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}body{max-width:720px;margin:0 auto;padding:max(14px,env(safe-area-inset-top)) 10px max(28px,env(safe-area-inset-bottom))}
-header{display:flex;align-items:flex-end;justify-content:space-between;gap:10px;padding:8px 4px 14px}.eyebrow{font-size:10px;letter-spacing:.13em;color:var(--accent);font-family:ui-monospace,SFMono-Regular,Menlo,monospace}h1{font-size:20px;margin:3px 0 0}.meta{font-size:11px;color:var(--dim);text-align:right;line-height:1.5}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+body{max-width:720px;margin:0 auto;padding:max(14px,env(safe-area-inset-top)) 10px max(28px,env(safe-area-inset-bottom))}
+button{font:inherit}
+header{display:flex;align-items:flex-end;justify-content:space-between;gap:10px;padding:8px 4px 12px}
+.eyebrow{font-size:10px;letter-spacing:.13em;color:var(--accent);font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+h1{font-size:20px;margin:3px 0 0}.meta{font-size:11px;color:var(--dim);text-align:right;line-height:1.5}
+.viewbar{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin:0 2px 9px}.viewbtn{border:1px solid var(--line);background:var(--panel);color:var(--dim);border-radius:10px;padding:9px;font-weight:800}.viewbtn.active{border-color:var(--accent);color:var(--ink);background:rgba(242,177,52,.11)}
 .toolbar{display:flex;gap:6px;overflow:auto;padding:0 2px 10px;scrollbar-width:none}.toolbar::-webkit-scrollbar{display:none}.chip{white-space:nowrap;border:1px solid var(--line);background:var(--panel);color:var(--dim);border-radius:999px;padding:7px 10px;font-size:11px}.chip.active{color:var(--ink);border-color:var(--accent);background:rgba(242,177,52,.11)}
 .card{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:15px;overflow:hidden}.head{display:flex;justify-content:space-between;gap:12px;padding:14px 14px 10px}.code{font:11px ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--dim);letter-spacing:.06em}.name{font-size:19px;font-weight:800;margin-top:2px}.count{font:12px ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--dim)}.close{font-size:19px;font-weight:900;text-align:right}.change{font-size:12px;text-align:right;margin-top:2px}.up{color:var(--up)}.down{color:var(--down)}
+.signal{display:inline-block;margin-top:5px;border:1px solid var(--line);border-radius:999px;padding:3px 7px;font-size:10px;color:var(--dim)}
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;padding:0 10px 9px}.stat{background:var(--bg);border:1px solid var(--line);border-radius:9px;padding:7px 8px;min-width:0}.stat .k{font-size:9px;color:var(--dim);margin-bottom:2px}.stat .v{font:11px ui-monospace,SFMono-Regular,Menlo,monospace;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .chart-toolbar{display:flex;justify-content:space-between;align-items:center;padding:6px 10px 0;gap:8px}.legend{font-size:9px;color:var(--dim);white-space:nowrap}.ranges{display:flex;border:1px solid var(--line);border-radius:7px;padding:2px}.range{border:0;background:transparent;color:var(--dim);padding:5px 8px;border-radius:5px;font-size:10px}.range.active{background:var(--panel2);color:var(--ink)}
 #chart{height:500px;width:100%}.judge{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;padding:10px}.judge button{border:1px solid var(--line);border-radius:11px;padding:12px 4px;background:var(--bg);color:var(--ink);font-weight:800;font-size:14px}.judge .sel-a{border-color:var(--a);background:rgba(53,214,140,.13);color:var(--a)}.judge .sel-b{border-color:var(--b);background:rgba(242,177,52,.13);color:var(--b)}.judge .sel-skip{border-color:var(--skip);background:rgba(137,147,172,.13);color:#c5ccda}
-.nav{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:0 10px 10px}.nav button,.link{border:1px solid var(--line);background:var(--panel2);color:var(--ink);border-radius:10px;padding:11px;text-decoration:none;text-align:center;font-size:12px}.links{display:flex;gap:8px;padding:0 10px 12px}.links .link{flex:1;color:var(--accent)}.empty,.error{text-align:center;padding:50px 20px;color:var(--dim);line-height:1.8}.help{text-align:center;color:var(--dim);font-size:10px;padding:12px 8px 2px}@media(max-width:420px){#chart{height:480px}.stats{grid-template-columns:repeat(2,1fr)}}
+.nav{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:0 10px 10px}.nav button,.link{border:1px solid var(--line);background:var(--panel2);color:var(--ink);border-radius:10px;padding:11px;text-decoration:none;text-align:center;font-size:12px}.links{display:flex;gap:8px;padding:0 10px 12px}.links .link{flex:1;color:var(--accent)}
+.history-head{display:flex;justify-content:space-between;align-items:center;padding:4px 2px 10px;color:var(--dim);font-size:11px}.backup{border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:8px;padding:7px 9px;font-size:10px}
+.history-list{display:grid;gap:8px}.hcard{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:11px}.hrow{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}.hdate{font:10px ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--dim)}.hname{font-size:15px;font-weight:800;margin-top:2px}.badge{border-radius:999px;padding:4px 8px;font-weight:900;font-size:11px}.badge-A{color:var(--a);background:rgba(53,214,140,.13);border:1px solid var(--a)}.badge-B{color:var(--b);background:rgba(242,177,52,.13);border:1px solid var(--b)}.badge-skip{color:#c5ccda;background:rgba(137,147,172,.13);border:1px solid var(--skip)}
+.perf{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:9px}.perfbox{background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:7px}.perfbox .k{font-size:9px;color:var(--dim)}.perfbox .v{font-size:12px;font-weight:800;margin-top:2px}.hactions{display:flex;gap:6px;margin-top:8px}.hactions a,.hactions button{flex:1;border:1px solid var(--line);background:var(--panel2);color:var(--ink);border-radius:8px;padding:8px;text-decoration:none;text-align:center;font-size:10px}.hactions .delete{color:var(--skip)}
+.empty,.error{text-align:center;padding:50px 20px;color:var(--dim);line-height:1.8}.help{text-align:center;color:var(--dim);font-size:10px;padding:12px 8px 2px}
+@media(max-width:420px){#chart{height:480px}.stats{grid-template-columns:repeat(2,1fr)}.perf{grid-template-columns:1fr 1fr 1fr}}
 </style>
 </head>
 <body>
 <header><div><div class="eyebrow">SCREENING REVIEW</div><h1>スクリーニング結果</h1></div><div class="meta" id="meta">読み込み中…</div></header>
+<div class="viewbar"><button class="viewbtn active" data-mode="today">今日の判定</button><button class="viewbtn" data-mode="history">判定履歴</button></div>
 <div class="toolbar" id="filters"><button class="chip active" data-filter="all">すべて</button><button class="chip" data-filter="unrated">未判定</button><button class="chip" data-filter="A">A</button><button class="chip" data-filter="B">B</button><button class="chip" data-filter="skip">見送り</button></div>
 <div id="root"><div class="empty">データを読み込んでいます…</div></div>
-<div class="help">左右スワイプでも前後の銘柄へ移動できます。A/B/見送りはこの端末のブラウザ内に保存されます。</div>
+<div class="help" id="help">左右スワイプでも前後の銘柄へ移動できます。判定は日付・終値と一緒に履歴へ保存されます。</div>
 <script>
-const state={data:null,items:[],filtered:[],index:0,filter:"all",range:"3m"};
-const ratingKey=()=>`screening-ratings:${state.data?.generated_at?.slice(0,10)||"unknown"}`;
-const ratings=()=>{try{return JSON.parse(localStorage.getItem(ratingKey())||"{}")}catch{return {}}};
-function setRating(code,val){const r=ratings();if(r[code]===val)delete r[code];else r[code]=val;localStorage.setItem(ratingKey(),JSON.stringify(r));applyFilter(false);render()}
-function getRating(code){return ratings()[code]||""}
+const HISTORY_KEY="screening-judgement-history:v1";
+const state={data:null,items:[],filtered:[],index:0,filter:"all",range:"3m",mode:"today"};
+
+function currentDate(){return state.data?.generated_at?.slice(0,10)||new Date().toISOString().slice(0,10)}
+function loadHistory(){try{const v=JSON.parse(localStorage.getItem(HISTORY_KEY)||"[]");return Array.isArray(v)?v:[]}catch{return []}}
+function saveHistory(v){localStorage.setItem(HISTORY_KEY,JSON.stringify(v))}
+function historyId(date,code){return `${date}:${code}`}
+function getCurrentEntry(code){const id=historyId(currentDate(),code);return loadHistory().find(x=>x.id===id)||null}
+function getRating(code){return getCurrentEntry(code)?.rating||""}
+
+function migrateLegacy(){
+  const date=currentDate();
+  const legacyKey=`screening-ratings:${date}`;
+  let old={};
+  try{old=JSON.parse(localStorage.getItem(legacyKey)||"{}")}catch{}
+  if(!old||!Object.keys(old).length)return;
+  const hist=loadHistory();
+  let changed=false;
+  for(const [code,rating] of Object.entries(old)){
+    const id=historyId(date,code);
+    if(hist.some(x=>x.id===id))continue;
+    const item=state.items.find(x=>x.code===code)||{};
+    hist.push({id,date,code,name:item.name||code,rating,close:Number(item.close)||null,signal_type:item.signal_type||"",signal_label:item.signal_label||"",judged_at:new Date().toISOString()});
+    changed=true;
+  }
+  if(changed)saveHistory(hist);
+}
+
+function setRating(item,val){
+  const hist=loadHistory();
+  const id=historyId(currentDate(),item.code);
+  const idx=hist.findIndex(x=>x.id===id);
+  if(idx>=0 && hist[idx].rating===val){hist.splice(idx,1)}
+  else{
+    const entry={id,date:currentDate(),code:item.code,name:item.name||item.code,rating:val,close:Number(item.close)||null,signal_type:item.signal_type||"",signal_label:item.signal_label||"",judged_at:new Date().toISOString()};
+    if(idx>=0)hist[idx]=entry;else hist.push(entry);
+  }
+  saveHistory(hist);
+  applyFilter(false);
+  render();
+}
+
 function fmt(n,d=0){return n==null||Number.isNaN(Number(n))?"—":Number(n).toLocaleString("ja-JP",{maximumFractionDigits:d})}
 function fmtVolume(n){if(n==null||Number.isNaN(Number(n)))return "—";n=Number(n);if(n>=100000000)return `${(n/100000000).toFixed(1)}億`;if(n>=10000)return `${(n/10000).toFixed(0)}万`;return n.toLocaleString("ja-JP")}
 function ma(values,n){return values.map((_,i)=>i<n-1?null:values.slice(i-n+1,i+1).reduce((a,b)=>a+b,0)/n)}
-function applyFilter(reset=true){const r=ratings();state.filtered=state.items.filter(x=>{const v=r[x.code]||"";return state.filter==="all"||(state.filter==="unrated"&&!v)||v===state.filter});if(reset)state.index=0;if(state.index>=state.filtered.length)state.index=Math.max(0,state.filtered.length-1);document.querySelectorAll(".chip").forEach(b=>b.classList.toggle("active",b.dataset.filter===state.filter))}
-async function load(){try{const res=await fetch(`screening.json?v=${Date.now()}`,{cache:"no-store"});if(!res.ok)throw new Error(`screening.json ${res.status}`);state.data=await res.json();state.items=state.data.items||[];applyFilter();const d=new Date(state.data.generated_at);document.getElementById("meta").innerHTML=`${state.data.count}件<br>${d.toLocaleString("ja-JP")}`;render()}catch(e){document.getElementById("root").innerHTML=`<div class="error">スクリーニング結果を読み込めませんでした。<br><small>${e.message}</small></div>`}}
-async function render(){const root=document.getElementById("root");if(!state.filtered.length){root.innerHTML='<div class="empty">この条件の銘柄はありません。</div>';return}const item=state.filtered[state.index];root.innerHTML=`<section class="card"><div class="head"><div><div class="code">${item.code}</div><div class="name">${item.name||item.code}</div></div><div><div class="count">${state.index+1} / ${state.filtered.length}</div><div class="close">${fmt(item.close)}円</div><div class="change" id="change">—</div></div></div><div class="stats"><div class="stat"><div class="k">MA5</div><div class="v" id="ma5">—</div></div><div class="stat"><div class="k">MA25</div><div class="v" id="ma25">—</div></div><div class="stat"><div class="k">MA75</div><div class="v" id="ma75">—</div></div><div class="stat"><div class="k">出来高</div><div class="v" id="volume">—</div></div></div><div class="chart-toolbar"><div class="legend">ローソク + MA5 / 25 / 75 + 出来高</div><div class="ranges"><button class="range ${state.range==="1m"?"active":""}" data-range="1m">1か月</button><button class="range ${state.range==="3m"?"active":""}" data-range="3m">3か月</button><button class="range ${state.range==="all"?"active":""}" data-range="all">全期間</button></div></div><div id="chart"></div><div class="judge"><button data-judge="A">A</button><button data-judge="B">B</button><button data-judge="skip">見送り</button></div><div class="nav"><button id="prev">← 前へ</button><button id="next">次へ →</button></div><div class="links"><a class="link" target="_blank" rel="noopener" href="https://kabutan.jp/stock/chart?code=${item.code}">かぶたん</a><a class="link" target="_blank" rel="noopener" href="https://finance.yahoo.co.jp/quote/${item.code}.T">Yahoo!ファイナンス</a></div></section>`;const current=getRating(item.code);document.querySelectorAll("[data-judge]").forEach(b=>{b.classList.toggle("sel-a",current==="A"&&b.dataset.judge==="A");b.classList.toggle("sel-b",current==="B"&&b.dataset.judge==="B");b.classList.toggle("sel-skip",current==="skip"&&b.dataset.judge==="skip");b.onclick=()=>setRating(item.code,b.dataset.judge)});document.getElementById("prev").onclick=()=>move(-1);document.getElementById("next").onclick=()=>move(1);document.querySelectorAll("[data-range]").forEach(b=>b.onclick=()=>{state.range=b.dataset.range;render()});await drawChart(item)}
-function move(delta){if(!state.filtered.length)return;state.index=(state.index+delta+state.filtered.length)%state.filtered.length;render();window.scrollTo({top:0,behavior:"smooth"})}
-async function drawChart(item){const el=document.getElementById("chart");try{const res=await fetch(`prices/${item.code}.json?v=${Date.now()}`,{cache:"no-store"});if(!res.ok)throw new Error(`price ${res.status}`);const bars=await res.json();const x=bars.map(b=>b.t),c=bars.map(b=>Number(b.c)),o=bars.map(b=>Number(b.o)),v=bars.map(b=>b.v==null?null:Number(b.v));const m5=ma(c,5),m25=ma(c,25),m75=ma(c,75);const last=bars.length-1;if(last>=0){const pct=(c[last]/o[last]-1)*100;const ch=document.getElementById("change");ch.textContent=`${pct>=0?"+":""}${pct.toFixed(2)}%`;ch.className=`change ${pct>=0?"up":"down"}`;document.getElementById("ma5").textContent=fmt(m5[last],1);document.getElementById("ma25").textContent=fmt(m25[last],1);document.getElementById("ma75").textContent=fmt(m75[last],1);document.getElementById("volume").textContent=fmtVolume(v[last])}let start=0;if(state.range==="1m")start=Math.max(0,bars.length-22);if(state.range==="3m")start=Math.max(0,bars.length-66);const sl=a=>a.slice(start);const volColors=sl(bars).map(b=>Number(b.c)>=Number(b.o)?"rgba(255,93,108,.55)":"rgba(77,140,255,.55)");const traces=[{type:"candlestick",x:sl(x),open:sl(bars.map(b=>b.o)),high:sl(bars.map(b=>b.h)),low:sl(bars.map(b=>b.l)),close:sl(c),name:"株価",increasing:{line:{color:"#ff5d6c"}},decreasing:{line:{color:"#4d8cff"}},yaxis:"y"},{type:"scatter",mode:"lines",x:sl(x),y:sl(m5),name:"MA5",line:{width:1.6},yaxis:"y"},{type:"scatter",mode:"lines",x:sl(x),y:sl(m25),name:"MA25",line:{width:1.6},yaxis:"y"},{type:"scatter",mode:"lines",x:sl(x),y:sl(m75),name:"MA75",line:{width:1.5},yaxis:"y"},{type:"bar",x:sl(x),y:sl(v),name:"出来高",marker:{color:volColors},yaxis:"y2",hovertemplate:"%{x}<br>出来高 %{y:,}<extra></extra>"}];Plotly.newPlot(el,traces,{paper_bgcolor:"#121a2b",plot_bgcolor:"#121a2b",font:{color:"#8e98b2",size:10},margin:{l:42,r:10,t:8,b:34},showlegend:true,legend:{orientation:"h",x:0,y:1.03,font:{size:9}},xaxis:{rangeslider:{visible:false},type:"category",showgrid:false,nticks:6},yaxis:{gridcolor:"#263252",fixedrange:true,side:"right",domain:[.28,1]},yaxis2:{gridcolor:"#1d2740",fixedrange:true,side:"right",domain:[0,.18],rangemode:"tozero",tickformat:"~s",title:{text:"出来高",font:{size:9,color:"#8e98b2"}}},bargap:.18,dragmode:false},{responsive:true,displayModeBar:false,scrollZoom:false})}catch(e){el.innerHTML=`<div class="error">チャートを読み込めませんでした。<br><small>${e.message}</small></div>`}}
+function ratingLabel(v){return v==="skip"?"見送り":v}
+function signalLabel(item){return item.signal_label||(item.signal_type==="bottom_reversal"?"大底反転":item.signal_type==="pullback_reacceleration"?"押し目再上昇":"")}
+
+function applyFilter(reset=true){
+  if(state.mode==="today"){
+    state.filtered=state.items.filter(x=>{const v=getRating(x.code);return state.filter==="all"||(state.filter==="unrated"&&!v)||v===state.filter});
+    if(reset)state.index=0;
+    if(state.index>=state.filtered.length)state.index=Math.max(0,state.filtered.length-1);
+  }
+  document.querySelectorAll(".chip").forEach(b=>b.classList.toggle("active",b.dataset.filter===state.filter));
+}
+
+async function load(){
+  try{
+    const res=await fetch(`screening.json?v=${Date.now()}`,{cache:"no-store"});
+    if(!res.ok)throw new Error(`screening.json ${res.status}`);
+    state.data=await res.json();
+    state.items=state.data.items||[];
+    migrateLegacy();
+    applyFilter();
+    const d=new Date(state.data.generated_at);
+    document.getElementById("meta").innerHTML=`${state.data.count}件<br>${d.toLocaleString("ja-JP")}`;
+    render();
+  }catch(e){document.getElementById("root").innerHTML=`<div class="error">スクリーニング結果を読み込めませんでした。<br><small>${e.message}</small></div>`}
+}
+
+async function render(){
+  document.querySelectorAll(".viewbtn").forEach(b=>b.classList.toggle("active",b.dataset.mode===state.mode));
+  document.getElementById("help").textContent=state.mode==="today"?"左右スワイプでも前後の銘柄へ移動できます。判定は日付・終値と一緒に履歴へ保存されます。":"履歴はこの端末のブラウザに保存。現在値との騰落率は毎日の株価JSONから自動計算します。";
+  if(state.mode==="history")return renderHistory();
+  return renderToday();
+}
+
+async function renderToday(){
+  const root=document.getElementById("root");
+  if(!state.filtered.length){root.innerHTML='<div class="empty">この条件の銘柄はありません。</div>';return}
+  const item=state.filtered[state.index];
+  const sig=signalLabel(item);
+  root.innerHTML=`<section class="card"><div class="head"><div><div class="code">${item.code}</div><div class="name">${item.name||item.code}</div>${sig?`<span class="signal">${sig}</span>`:""}</div><div><div class="count">${state.index+1} / ${state.filtered.length}</div><div class="close">${fmt(item.close)}円</div><div class="change" id="change">—</div></div></div><div class="stats"><div class="stat"><div class="k">MA5</div><div class="v" id="ma5">—</div></div><div class="stat"><div class="k">MA25</div><div class="v" id="ma25">—</div></div><div class="stat"><div class="k">MA75</div><div class="v" id="ma75">—</div></div><div class="stat"><div class="k">出来高</div><div class="v" id="volume">—</div></div></div><div class="chart-toolbar"><div class="legend">ローソク + MA5 / 25 / 75 + 出来高</div><div class="ranges"><button class="range ${state.range==="1m"?"active":""}" data-range="1m">1か月</button><button class="range ${state.range==="3m"?"active":""}" data-range="3m">3か月</button><button class="range ${state.range==="all"?"active":""}" data-range="all">全期間</button></div></div><div id="chart"></div><div class="judge"><button data-judge="A">A</button><button data-judge="B">B</button><button data-judge="skip">見送り</button></div><div class="nav"><button id="prev">← 前へ</button><button id="next">次へ →</button></div><div class="links"><a class="link" target="_blank" rel="noopener" href="https://kabutan.jp/stock/chart?code=${item.code}">かぶたん</a><a class="link" target="_blank" rel="noopener" href="https://finance.yahoo.co.jp/quote/${item.code}.T">Yahoo!ファイナンス</a></div></section>`;
+  const current=getRating(item.code);
+  document.querySelectorAll("[data-judge]").forEach(b=>{b.classList.toggle("sel-a",current==="A"&&b.dataset.judge==="A");b.classList.toggle("sel-b",current==="B"&&b.dataset.judge==="B");b.classList.toggle("sel-skip",current==="skip"&&b.dataset.judge==="skip");b.onclick=()=>setRating(item,b.dataset.judge)});
+  document.getElementById("prev").onclick=()=>move(-1);document.getElementById("next").onclick=()=>move(1);
+  document.querySelectorAll("[data-range]").forEach(b=>b.onclick=()=>{state.range=b.dataset.range;render()});
+  await drawChart(item);
+}
+
+function historyFiltered(){
+  let h=loadHistory().sort((a,b)=>(b.date||"").localeCompare(a.date||"")||(b.judged_at||"").localeCompare(a.judged_at||""));
+  if(state.filter==="A"||state.filter==="B"||state.filter==="skip")h=h.filter(x=>x.rating===state.filter);
+  if(state.filter==="unrated")h=[];
+  return h;
+}
+
+function renderHistory(){
+  const root=document.getElementById("root");
+  const entries=historyFiltered();
+  if(!entries.length){root.innerHTML='<div class="empty">この条件の判定履歴はありません。</div>';return}
+  root.innerHTML=`<div class="history-head"><span>${entries.length}件の判定履歴</span><button class="backup" id="backup">履歴をバックアップ</button></div><div class="history-list">${entries.map(e=>historyCard(e)).join("")}</div>`;
+  document.getElementById("backup").onclick=backupHistory;
+  root.querySelectorAll("[data-delete]").forEach(b=>b.onclick=()=>deleteHistory(b.dataset.delete));
+  hydrateHistoryPrices(entries);
+}
+
+function historyCard(e){
+  const sig=e.signal_label||signalLabel(e);
+  return `<article class="hcard" data-history-id="${e.id}"><div class="hrow"><div><div class="hdate">${e.date} · ${e.code}</div><div class="hname">${e.name||e.code}</div>${sig?`<span class="signal">${sig}</span>`:""}</div><span class="badge badge-${e.rating}">${ratingLabel(e.rating)}</span></div><div class="perf"><div class="perfbox"><div class="k">判定時終値</div><div class="v">${fmt(e.close)}円</div></div><div class="perfbox"><div class="k">現在値</div><div class="v" id="now-${cssId(e.id)}">読込中</div></div><div class="perfbox"><div class="k">判定後</div><div class="v" id="ret-${cssId(e.id)}">—</div></div></div><div class="hactions"><a target="_blank" rel="noopener" href="https://kabutan.jp/stock/chart?code=${e.code}">チャート</a><button class="delete" data-delete="${e.id}">履歴削除</button></div></article>`;
+}
+
+function cssId(s){return s.replace(/[^a-zA-Z0-9_-]/g,"_")}
+async function hydrateHistoryPrices(entries){
+  await Promise.all(entries.map(async e=>{
+    const nowEl=document.getElementById(`now-${cssId(e.id)}`);const retEl=document.getElementById(`ret-${cssId(e.id)}`);
+    try{
+      const res=await fetch(`prices/${e.code}.json?v=${Date.now()}`,{cache:"no-store"});if(!res.ok)throw new Error();
+      const bars=await res.json();const last=bars[bars.length-1];if(!last)throw new Error();
+      const now=Number(last.c);nowEl.textContent=`${fmt(now)}円`;
+      if(e.close){const pct=(now/Number(e.close)-1)*100;retEl.textContent=`${pct>=0?"+":""}${pct.toFixed(2)}%`;retEl.className=`v ${pct>=0?"up":"down"}`}
+    }catch{if(nowEl)nowEl.textContent="—"}
+  }))
+}
+
+function deleteHistory(id){const h=loadHistory().filter(x=>x.id!==id);saveHistory(h);render()}
+function backupHistory(){
+  const blob=new Blob([JSON.stringify({exported_at:new Date().toISOString(),history:loadHistory()},null,2)],{type:"application/json"});
+  const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download=`screening-history-${new Date().toISOString().slice(0,10)}.json`;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
+}
+
+function move(delta){if(!state.filtered.length||state.mode!=="today")return;state.index=(state.index+delta+state.filtered.length)%state.filtered.length;render();window.scrollTo({top:0,behavior:"smooth"})}
+
+async function drawChart(item){
+  const el=document.getElementById("chart");
+  try{
+    const res=await fetch(`prices/${item.code}.json?v=${Date.now()}`,{cache:"no-store"});if(!res.ok)throw new Error(`price ${res.status}`);
+    const bars=await res.json();const x=bars.map(b=>b.t),c=bars.map(b=>Number(b.c)),o=bars.map(b=>Number(b.o)),v=bars.map(b=>b.v==null?null:Number(b.v));const m5=ma(c,5),m25=ma(c,25),m75=ma(c,75);const last=bars.length-1;
+    if(last>=0){const pct=(c[last]/o[last]-1)*100;const ch=document.getElementById("change");ch.textContent=`${pct>=0?"+":""}${pct.toFixed(2)}%`;ch.className=`change ${pct>=0?"up":"down"}`;document.getElementById("ma5").textContent=fmt(m5[last],1);document.getElementById("ma25").textContent=fmt(m25[last],1);document.getElementById("ma75").textContent=fmt(m75[last],1);document.getElementById("volume").textContent=fmtVolume(v[last])}
+    let start=0;if(state.range==="1m")start=Math.max(0,bars.length-22);if(state.range==="3m")start=Math.max(0,bars.length-66);const sl=a=>a.slice(start);const volColors=sl(bars).map(b=>Number(b.c)>=Number(b.o)?"rgba(255,93,108,.55)":"rgba(77,140,255,.55)");
+    const traces=[{type:"candlestick",x:sl(x),open:sl(bars.map(b=>b.o)),high:sl(bars.map(b=>b.h)),low:sl(bars.map(b=>b.l)),close:sl(c),name:"株価",increasing:{line:{color:"#ff5d6c"}},decreasing:{line:{color:"#4d8cff"}},yaxis:"y"},{type:"scatter",mode:"lines",x:sl(x),y:sl(m5),name:"MA5",line:{width:1.6},yaxis:"y"},{type:"scatter",mode:"lines",x:sl(x),y:sl(m25),name:"MA25",line:{width:1.6},yaxis:"y"},{type:"scatter",mode:"lines",x:sl(x),y:sl(m75),name:"MA75",line:{width:1.5},yaxis:"y"},{type:"bar",x:sl(x),y:sl(v),name:"出来高",marker:{color:volColors},yaxis:"y2",hovertemplate:"%{x}<br>出来高 %{y:,}<extra></extra>"}];
+    Plotly.newPlot(el,traces,{paper_bgcolor:"#121a2b",plot_bgcolor:"#121a2b",font:{color:"#8e98b2",size:10},margin:{l:42,r:10,t:8,b:34},showlegend:true,legend:{orientation:"h",x:0,y:1.03,font:{size:9}},xaxis:{rangeslider:{visible:false},type:"category",showgrid:false,nticks:6},yaxis:{gridcolor:"#263252",fixedrange:true,side:"right",domain:[.28,1]},yaxis2:{gridcolor:"#1d2740",fixedrange:true,side:"right",domain:[0,.18],rangemode:"tozero",tickformat:"~s",title:{text:"出来高",font:{size:9,color:"#8e98b2"}}},bargap:.18,dragmode:false},{responsive:true,displayModeBar:false,scrollZoom:false});
+  }catch(e){el.innerHTML=`<div class="error">チャートを読み込めませんでした。<br><small>${e.message}</small></div>`}
+}
+
+document.querySelector(".viewbar").addEventListener("click",e=>{const b=e.target.closest("[data-mode]");if(!b)return;state.mode=b.dataset.mode;if(state.mode==="history"&&state.filter==="unrated")state.filter="all";applyFilter();render()});
 document.getElementById("filters").addEventListener("click",e=>{const b=e.target.closest("[data-filter]");if(!b)return;state.filter=b.dataset.filter;applyFilter();render()});
-let touchX=null;document.addEventListener("touchstart",e=>{touchX=e.changedTouches[0].clientX},{passive:true});document.addEventListener("touchend",e=>{if(touchX==null)return;const dx=e.changedTouches[0].clientX-touchX;touchX=null;if(Math.abs(dx)>70)move(dx>0?-1:1)},{passive:true});
+let touchX=null;document.addEventListener("touchstart",e=>{if(state.mode!=="today")return;touchX=e.changedTouches[0].clientX},{passive:true});document.addEventListener("touchend",e=>{if(touchX==null||state.mode!=="today")return;const dx=e.changedTouches[0].clientX-touchX;touchX=null;if(Math.abs(dx)>70)move(dx>0?-1:1)},{passive:true});
 load();
 </script>
 </body>
