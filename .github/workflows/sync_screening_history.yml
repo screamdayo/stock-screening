@@ -1,0 +1,85 @@
+name: スクリーニング判定履歴を同期
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  sync:
+    if: startsWith(github.event.issue.title, '[screening-history-sync]')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: 判定履歴をマージ
+        env:
+          ISSUE_BODY: ${{ github.event.issue.body }}
+        run: |
+          python - <<'PY'
+          import json, os, re
+          from pathlib import Path
+
+          body = os.environ.get('ISSUE_BODY', '')
+          m = re.search(r'SCREENING_HISTORY_JSON\s*```json\s*(\[.*?\])\s*```', body, re.S)
+          if not m:
+              raise SystemExit('SCREENING_HISTORY_JSON が見つかりません')
+
+          incoming = json.loads(m.group(1))
+          if not isinstance(incoming, list):
+              raise SystemExit('履歴データが配列ではありません')
+
+          allowed_ratings = {'A', 'B', 'skip'}
+          cleaned = []
+          for x in incoming:
+              if not isinstance(x, dict):
+                  continue
+              if not x.get('id') or not x.get('date') or not x.get('code'):
+                  continue
+              if x.get('rating') not in allowed_ratings:
+                  continue
+              cleaned.append({
+                  'id': str(x['id']),
+                  'date': str(x['date']),
+                  'code': str(x['code']),
+                  'name': str(x.get('name') or x['code']),
+                  'rating': x['rating'],
+                  'close': x.get('close'),
+                  'signal_type': str(x.get('signal_type') or ''),
+                  'signal_label': str(x.get('signal_label') or ''),
+                  'judged_at': str(x.get('judged_at') or ''),
+              })
+
+          path = Path('docs/judgement_history.json')
+          current = []
+          if path.exists():
+              try:
+                  current = json.loads(path.read_text(encoding='utf-8'))
+              except Exception:
+                  current = []
+
+          merged = {x['id']: x for x in current if isinstance(x, dict) and x.get('id')}
+          for x in cleaned:
+              merged[x['id']] = x
+
+          rows = sorted(merged.values(), key=lambda x: (x.get('date',''), x.get('judged_at',''), x.get('code','')))
+          path.write_text(json.dumps(rows, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+          print(f'{len(cleaned)}件受信 / 合計{len(rows)}件')
+          PY
+      - name: GitHubへ保存
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/judgement_history.json
+          git diff --cached --quiet && echo "変更なし" || git commit -m "chore: screening judgement history を同期"
+          git push
+      - name: Issueを閉じる
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh issue comment ${{ github.event.issue.number }} --body "✅ 判定履歴を docs/judgement_history.json に保存しました。"
+          gh issue close ${{ github.event.issue.number }}
