@@ -1,0 +1,37 @@
+name: Fix candlestick hover labels
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/fix_candlestick_hover.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Force Japanese candlestick hover text
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path('docs/screening.html')
+          s = path.read_text(encoding='utf-8')
+          old = "hovertemplate:'%{x}<br>始値 %{customdata[0]:,.1f}<br>高値 %{customdata[1]:,.1f}<br>安値 %{customdata[2]:,.1f}<br>終値 %{customdata[3]:,.1f}<br>出来高 %{customdata[4]:,}<extra></extra>'"
+          new = "hovertext:bb.map(z=>`${z.t}<br>始値 ${fmt(z.o,1)}<br>高値 ${fmt(z.h,1)}<br>安値 ${fmt(z.l,1)}<br>終値 ${fmt(z.c,1)}<br>出来高 ${fmt(z.v,0)}`),hoverinfo:'text'"
+          count = s.count(old)
+          if count != 2:
+              raise SystemExit(f'expected 2 candlestick hover templates, found {count}')
+          path.write_text(s.replace(old, new), encoding='utf-8')
+          PY
+      - name: Commit fix
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add docs/screening.html
+          git commit -m 'fix: force Japanese candlestick hover labels'
+          git push
