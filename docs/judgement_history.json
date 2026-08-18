@@ -691,5 +691,181 @@
     "signal_type": "pullback_reacceleration",
     "signal_label": "押し目再上昇",
     "judged_at": "2026-08-17T08:21:08.575Z"
+  },
+  {
+    "id": "2026-08-18:4053",
+    "date": "2026-08-18",
+    "code": "4053",
+    "name": "Ｓｕｎ　Ａｓｔｅｒｉｓｋ",
+    "rating": "skip",
+    "close": 469,
+    "signal_type": "bottom_reversal",
+    "signal_label": "大底反転",
+    "judged_at": "2026-08-18T12:23:45.057Z"
+  },
+  {
+    "id": "2026-08-18:4092",
+    "date": "2026-08-18",
+    "code": "4092",
+    "name": "日本化学工業",
+    "rating": "B",
+    "close": 5800,
+    "signal_type": "pullback_reacceleration",
+    "signal_label": "押し目再上昇",
+    "judged_at": "2026-08-18T12:24:06.242Z"
+  },
+  {
+    "id": "2026-08-18:4553",
+    "date": "2026-08-18",
+    "code": "4553",
+    "name": "東和薬品",
+    "rating": "B",
+    "close": 3830,
+    "signal_type": "bottom_reversal",
+    "signal_label": "大底反転",
+    "judged_at": "2026-08-18T12:24:19.642Z"
+  },
+  {
+    "id": "2026-08-18:5020",
+    "date": "2026-08-18",
+    "code": "5020",
+    "name": "ＥＮＥＯＳホールディングス",
+    "rating": "skip",
+    "close": 1318.5,
+    "signal_type": "bottom_reversal",
+    "signal_label": "大底反転",
+    "judged_at": "2026-08-18T12:24:44.435Z"
+  },
+  {
+    "id": "2026-08-18:5122",
+    "date": "2026-08-18",
+    "code": "5122",
+    "name": "オカモト",
+    "rating": "skip",
+    "close": 6400,
+    "signal_type": "pullback_reacceleration",
+    "signal_label": "押し目再上昇",
+    "judged_at": "2026-08-18T12:25:01.083Z"
+  },
+  {
+    "id": "2026-08-18:5401",
+    "date": "2026-08-18",
+    "code": "5401",
+    "name": "日本製鉄",
+    "rating": "B",
+    "close": 693.6,
+    "signal_type": "pullback_reacceleration",
+    "signal_label": "押し目再上昇",
+    "judged_at": "2026-08-18T12:25:18.414Z"
+  },
+  {
+    "id": "2026-08-18:5406",
+    "date": "2026-08-18",
+    "code": "5406",
+    "name": "神戸製鋼所",
+    "rating": "skip",
+    "close": 2050,
+    "signal_type": "pullback_reacceleration",
+    "signal_label": "押し目再上昇",
+    "judged_at": "2026-08-18T12:25:24.491Z"
+  },
+  {
+    "id": "2026-08-18:5408",
+    "date": "2026-08-18",
+    "code": "5408",
+    "name": "中山製鋼所",
+    "rating": "skip",
+    "close": 645,
+    "signal_type": "bottom_reversal",
+    "signal_label": "大底反転",
+    "judged_at": "2026-08-18T12:25:29.036Z"
+  },
+  {
+    "id": "2026-08-18:544A",
+    "date": "2026-08-18",
+    "code": "544A",
+    "name": "ＧＭＳグループ",
+    "rating": "skip",
+    "close": 376,
+    "signal_type": "bottom_reversal",
+    "signal_label": "大底反転",
+    "judged_at": "2026-08-18T12:25:33.914Z"
+  },
+  {
+    "id": "2026-08-18:5757",
+    "date": "2026-08-18",
+    "code": "5757",
+    "name": "ＣＫサンエツ",
+    "rating": "skip",
+    "close": 5180,
+    "signal_type": "bottom_reversal",
+    "signal_label": "大底反転",
+    "judged_at": "2026-08-18T12:25:37.578Z"
+  },
+  {
+    "id": "2026-08-18:6118",
+    "date": "2026-08-18",
+    "code": "6118",
+    "name": "アイダエンジニアリング",
+    "rating": "B",
+    "close": 1287,
+    "signal_type": "pullback_reacceleration",
+    "signal_label": "押し目再上昇",
+    "judged_at": "2026-08-18T12:25:46.951Z"
+  },
+  {
+    "id": "2026-08-18:6238",
+    "date": "2026-08-18",
+    "code": "6238",
+    "name": "フリュー",
+    "rating": "skip",
+    "close": 1401,
+    "signal_type": "bottom_reversal",
+    "signal_label": "大底反転",
+    "judged_at": "2026-08-18T12:25:50.348Z"
+  },
+  {
+    "id": "2026-08-18:6333",
+    "date": "2026-08-18",
+    "code": "6333",
+    "name": "ＴＥＩＫＯＫＵ",
+    "rating": "A",
+    "close": 3370,
+    "signal_type": "bottom_reversal",
+    "signal_label": "大底反転",
+    "judged_at": "2026-08-18T12:26:05.847Z"
+  },
+  {
+    "id": "2026-08-18:8163",
+    "date": "2026-08-18",
+    "code": "8163",
+    "name": "ＳＲＳホールディングス",
+    "rating": "B",
+    "close": 1494,
+    "signal_type": "pullback_reacceleration",
+    "signal_label": "押し目再上昇",
+    "judged_at": "2026-08-18T12:26:22.794Z"
+  },
+  {
+    "id": "2026-08-18:9065",
+    "date": "2026-08-18",
+    "code": "9065",
+    "name": "山九",
+    "rating": "skip",
+    "close": 8615,
+    "signal_type": "bottom_reversal",
+    "signal_label": "大底反転",
+    "judged_at": "2026-08-18T12:26:30.137Z"
+  },
+  {
+    "id": "2026-08-18:9267",
+    "date": "2026-08-18",
+    "code": "9267",
+    "name": "Ｇｅｎｋｙ　ＤｒｕｇＳｔｏｒｅｓ",
+    "rating": "skip",
+    "close": 3595,
+    "signal_type": "bottom_reversal",
+    "signal_label": "大底反転",
+    "judged_at": "2026-08-18T12:26:35.397Z"
   }
 ]
