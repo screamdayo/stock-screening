@@ -867,5 +867,93 @@
     "signal_type": "bottom_reversal",
     "signal_label": "大底反転",
     "judged_at": "2026-08-18T12:26:35.397Z"
+  },
+  {
+    "id": "2026-08-19:2170",
+    "date": "2026-08-19",
+    "code": "2170",
+    "name": "リンクアンドモチベーション",
+    "rating": "skip",
+    "close": 687,
+    "signal_type": "pullback_reacceleration",
+    "signal_label": "押し目再上昇",
+    "judged_at": "2026-08-19T08:20:07.934Z"
+  },
+  {
+    "id": "2026-08-19:3397",
+    "date": "2026-08-19",
+    "code": "3397",
+    "name": "トリドールホールディングス",
+    "rating": "skip",
+    "close": 4289,
+    "signal_type": "pullback_reacceleration",
+    "signal_label": "押し目再上昇",
+    "judged_at": "2026-08-19T08:22:29.472Z"
+  },
+  {
+    "id": "2026-08-19:4385",
+    "date": "2026-08-19",
+    "code": "4385",
+    "name": "メルカリ",
+    "rating": "B",
+    "close": 4750,
+    "signal_type": "pullback_reacceleration",
+    "signal_label": "押し目再上昇",
+    "judged_at": "2026-08-19T08:22:46.119Z"
+  },
+  {
+    "id": "2026-08-19:4911",
+    "date": "2026-08-19",
+    "code": "4911",
+    "name": "資生堂",
+    "rating": "skip",
+    "close": 3503,
+    "signal_type": "pullback_reacceleration",
+    "signal_label": "押し目再上昇",
+    "judged_at": "2026-08-19T08:22:49.330Z"
+  },
+  {
+    "id": "2026-08-19:6464",
+    "date": "2026-08-19",
+    "code": "6464",
+    "name": "ツバキ・ナカシマ",
+    "rating": "B",
+    "close": 360,
+    "signal_type": "bottom_reversal",
+    "signal_label": "大底反転",
+    "judged_at": "2026-08-19T08:23:04.393Z"
+  },
+  {
+    "id": "2026-08-19:7606",
+    "date": "2026-08-19",
+    "code": "7606",
+    "name": "ユナイテッドアローズ",
+    "rating": "skip",
+    "close": 2594,
+    "signal_type": "pullback_reacceleration",
+    "signal_label": "押し目再上昇",
+    "judged_at": "2026-08-19T08:23:11.717Z"
+  },
+  {
+    "id": "2026-08-19:8237",
+    "date": "2026-08-19",
+    "code": "8237",
+    "name": "松屋",
+    "rating": "skip",
+    "close": 2122,
+    "signal_type": "pullback_reacceleration",
+    "signal_label": "押し目再上昇",
+    "judged_at": "2026-08-19T08:23:17.958Z"
+  },
+  {
+    "id": "2026-08-19:8609",
+    "date": "2026-08-19",
+    "code": "8609",
+    "name": "岡三証券グループ",
+    "rating": "skip",
+    "close": 1102,
+    "signal_type": "pullback_reacceleration",
+    "signal_label": "押し目再上昇",
+    "judged_at": "2026-08-19T08:23:22.819Z"
   }
 ]
