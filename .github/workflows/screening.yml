@@ -5,6 +5,9 @@ on:
     - cron: '0 7 * * 1-5'  # UTC 7:00 = JST 16:00（平日のみ）
   workflow_dispatch: {}
 
+permissions:
+  contents: write
+
 jobs:
   screen:
     runs-on: ubuntu-latest
@@ -19,9 +22,18 @@ jobs:
       - name: ライブラリインストール
         run: pip install -r requirements.txt
 
-      - name: スクリーニング実行
+      - name: スクリーニング実行（Discord通知 + GitHub Pages用データ出力）
         env:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
           JQUANTS_API_KEY: ${{ secrets.JQUANTS_API_KEY }}
         # 使用する戦略は config.py の ACTIVE_STRATEGY で切り替える
+        # 株価取得・シグナル判定・Discord通知・docs/への出力を1回の実行でまとめて行う
         run: python main.py
+
+      - name: GitHub Pages用データをcommit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add docs/prices/ docs/screening.json
+          git diff --cached --quiet && echo "変更なし" || git commit -m "chore: docsデータを更新"
+          git push
