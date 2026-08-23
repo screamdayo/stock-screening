@@ -10,7 +10,11 @@ permissions:
 
 jobs:
   sync:
-    if: startsWith(github.event.issue.title, '[screening-history-sync]')
+    # 第三者が同じタイトルでIssueを立てても同期が走らないよう、
+    # 投稿者が本人（screamdayo）であることも条件に加える。
+    if: |
+      startsWith(github.event.issue.title, '[screening-history-sync]') &&
+      github.event.issue.user.login == 'screamdayo'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -83,3 +87,20 @@ jobs:
         run: |
           gh issue comment ${{ github.event.issue.number }} --body "✅ 判定履歴を docs/judgement_history.json に保存しました。"
           gh issue close ${{ github.event.issue.number }}
+
+  reject:
+    # タイトルは一致するが本人以外が開いたIssueは、同期せずクローズしてスパムが残らないようにする
+    if: |
+      startsWith(github.event.issue.title, '[screening-history-sync]') &&
+      github.event.issue.user.login != 'screamdayo'
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+      - name: 本人以外のIssueをクローズ
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh issue comment ${{ github.event.issue.number }} --repo ${{ github.repository }} \
+            --body "このIssueは同期対象として処理されませんでした（投稿者が管理者と一致しません）。"
+          gh issue close ${{ github.event.issue.number }} --repo ${{ github.repository }}
