@@ -1857,5 +1857,192 @@
     "signal_type": "bottom_reversal",
     "signal_label": "大底反転",
     "judged_at": "2026-08-24T10:08:17.305Z"
+  },
+  {
+    "id": "2026-08-25:2737",
+    "date": "2026-08-25",
+    "code": "2737",
+    "name": "トーメンデバイス",
+    "rating": "B",
+    "close": 31950,
+    "signal_type": "pullback_reacceleration",
+    "signal_label": "押し目再上昇",
+    "judged_at": "2026-08-25T08:17:10.473Z"
+  },
+  {
+    "id": "2026-08-25:3853",
+    "date": "2026-08-25",
+    "code": "3853",
+    "name": "アステリア",
+    "rating": "A",
+    "close": 1196,
+    "signal_type": "pullback_reacceleration",
+    "signal_label": "押し目再上昇",
+    "judged_at": "2026-08-25T08:25:13.936Z"
+  },
+  {
+    "id": "2026-08-25:4082",
+    "date": "2026-08-25",
+    "code": "4082",
+    "name": "第一稀元素化学工業",
+    "rating": "skip",
+    "close": 2091,
+    "signal_type": "pullback_reacceleration",
+    "signal_label": "押し目再上昇",
+    "judged_at": "2026-08-25T08:25:18.244Z"
+  },
+  {
+    "id": "2026-08-25:5016",
+    "date": "2026-08-25",
+    "code": "5016",
+    "name": "ＪＸ金属",
+    "rating": "skip",
+    "close": 3820,
+    "signal_type": "bottom_reversal",
+    "signal_label": "大底反転",
+    "judged_at": "2026-08-25T08:25:28.779Z"
+  },
+  {
+    "id": "2026-08-25:5074",
+    "date": "2026-08-25",
+    "code": "5074",
+    "name": "テスホールディングス",
+    "rating": "skip",
+    "close": 629,
+    "signal_type": "bottom_reversal",
+    "signal_label": "大底反転",
+    "judged_at": "2026-08-25T08:25:37.149Z"
+  },
+  {
+    "id": "2026-08-25:6287",
+    "date": "2026-08-25",
+    "code": "6287",
+    "name": "サトー",
+    "rating": "skip",
+    "close": 2824,
+    "signal_type": "pullback_reacceleration",
+    "signal_label": "押し目再上昇",
+    "judged_at": "2026-08-25T08:25:40.826Z"
+  },
+  {
+    "id": "2026-08-25:6351",
+    "date": "2026-08-25",
+    "code": "6351",
+    "name": "鶴見製作所",
+    "rating": "B",
+    "close": 2399,
+    "signal_type": "pullback_reacceleration",
+    "signal_label": "押し目再上昇",
+    "judged_at": "2026-08-25T08:25:55.388Z"
+  },
+  {
+    "id": "2026-08-25:6440",
+    "date": "2026-08-25",
+    "code": "6440",
+    "name": "ＪＵＫＩ",
+    "rating": "skip",
+    "close": 641,
+    "signal_type": "pullback_reacceleration",
+    "signal_label": "押し目再上昇",
+    "judged_at": "2026-08-25T08:25:57.818Z"
+  },
+  {
+    "id": "2026-08-25:6454",
+    "date": "2026-08-25",
+    "code": "6454",
+    "name": "マックス",
+    "rating": "B",
+    "close": 1817,
+    "signal_type": "bottom_reversal",
+    "signal_label": "大底反転",
+    "judged_at": "2026-08-25T08:26:14.109Z"
+  },
+  {
+    "id": "2026-08-25:6638",
+    "date": "2026-08-25",
+    "code": "6638",
+    "name": "ミマキエンジニアリング",
+    "rating": "skip",
+    "close": 1981,
+    "signal_type": "bottom_reversal",
+    "signal_label": "大底反転",
+    "judged_at": "2026-08-25T08:26:19.035Z"
+  },
+  {
+    "id": "2026-08-25:6810",
+    "date": "2026-08-25",
+    "code": "6810",
+    "name": "マクセル",
+    "rating": "skip",
+    "close": 2397,
+    "signal_type": "pullback_reacceleration",
+    "signal_label": "押し目再上昇",
+    "judged_at": "2026-08-25T08:26:22.697Z"
+  },
+  {
+    "id": "2026-08-25:7740",
+    "date": "2026-08-25",
+    "code": "7740",
+    "name": "タムロン",
+    "rating": "skip",
+    "close": 1383,
+    "signal_type": "pullback_reacceleration",
+    "signal_label": "押し目再上昇",
+    "judged_at": "2026-08-25T08:26:26.507Z"
+  },
+  {
+    "id": "2026-08-25:7762",
+    "date": "2026-08-25",
+    "code": "7762",
+    "name": "シチズン時計",
+    "rating": "skip",
+    "close": 2705,
+    "signal_type": "pullback_reacceleration",
+    "signal_label": "押し目再上昇",
+    "judged_at": "2026-08-25T08:26:35.277Z"
+  },
+  {
+    "id": "2026-08-25:7826",
+    "date": "2026-08-25",
+    "code": "7826",
+    "name": "フルヤ金属",
+    "rating": "skip",
+    "close": 8900,
+    "signal_type": "pullback_reacceleration",
+    "signal_label": "押し目再上昇",
+    "judged_at": "2026-08-25T08:26:42.500Z"
+  },
+  {
+    "id": "2026-08-25:8015",
+    "date": "2026-08-25",
+    "code": "8015",
+    "name": "豊田通商",
+    "rating": "skip",
+    "close": 7484,
+    "signal_type": "pullback_reacceleration",
+    "signal_label": "押し目再上昇",
+    "judged_at": "2026-08-25T08:26:48.407Z"
+  },
+  {
+    "id": "2026-08-25:3034",
+    "date": "2026-08-25",
+    "code": "3034",
+    "name": "クオールホールディングス",
+    "rating": "skip",
+    "close": 2620,
+    "signal_type": "pullback_reacceleration",
+    "signal_label": "押し目再上昇",
+    "judged_at": "2026-08-25T08:30:18.618Z"
+  },
+  {
+    "id": "2026-08-25:4933",
+    "date": "2026-08-25",
+    "code": "4933",
+    "name": "Ｉ−ｎｅ",
+    "rating": "skip",
+    "close": 1477,
+    "signal_type": "pullback_reacceleration",
+    "signal_label": "押し目再上昇",
+    "judged_at": "2026-08-25T08:30:35.026Z"
   }
 ]
