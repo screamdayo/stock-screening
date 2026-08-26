@@ -467,6 +467,27 @@ def _save_cache(df, cache_filename):
 def _finalize_df(all_rows):
     df = pd.DataFrame(all_rows)
     if not df.empty:
+        # 株式分割・併合をまたいでも価格系列が連続するよう、J-Quantsが返す
+        # 調整済み四本値・出来高を日次処理とバックテストの共通列へ反映する。
+        # 調整済み列が存在しない古いキャッシュ形式や、個別値が欠損している
+        # レコードでは調整前の値をそのまま使う。
+        adjusted_columns = {
+            "O": "AdjO",
+            "H": "AdjH",
+            "L": "AdjL",
+            "C": "AdjC",
+            "Vo": "AdjVo",
+        }
+        for raw_column, adjusted_column in adjusted_columns.items():
+            if adjusted_column in df.columns:
+                if raw_column in df.columns:
+                    df[raw_column] = df[adjusted_column].where(
+                        df[adjusted_column].notna(),
+                        df[raw_column],
+                    )
+                else:
+                    df[raw_column] = df[adjusted_column]
+
         df["Code"] = df["Code"].astype(str).apply(_normalize_code)
         df["Date"] = pd.to_datetime(df["Date"])
         df = df.sort_values(["Code", "Date"])
