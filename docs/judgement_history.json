@@ -2847,5 +2847,82 @@
     "signal_type": "bottom_reversal",
     "signal_label": "大底反転",
     "judged_at": "2026-08-26T09:22:22.746Z"
+  },
+  {
+    "id": "2026-08-27:2326",
+    "date": "2026-08-27",
+    "code": "2326",
+    "name": "デジタルアーツ",
+    "rating": "skip",
+    "close": 4520,
+    "signal_type": "pullback_reacceleration",
+    "signal_label": "押し目再上昇",
+    "judged_at": "2026-08-27T09:02:09.821Z"
+  },
+  {
+    "id": "2026-08-27:3778",
+    "date": "2026-08-27",
+    "code": "3778",
+    "name": "さくらインターネット",
+    "rating": "B",
+    "close": 3655,
+    "signal_type": "pullback_reacceleration",
+    "signal_label": "押し目再上昇",
+    "judged_at": "2026-08-27T09:02:25.825Z"
+  },
+  {
+    "id": "2026-08-27:4091",
+    "date": "2026-08-27",
+    "code": "4091",
+    "name": "日本酸素ホールディングス",
+    "rating": "skip",
+    "close": 5687,
+    "signal_type": "bottom_reversal",
+    "signal_label": "大底反転",
+    "judged_at": "2026-08-27T09:02:31.535Z"
+  },
+  {
+    "id": "2026-08-27:5302",
+    "date": "2026-08-27",
+    "code": "5302",
+    "name": "日本カーボン",
+    "rating": "skip",
+    "close": 5020,
+    "signal_type": "pullback_reacceleration",
+    "signal_label": "押し目再上昇",
+    "judged_at": "2026-08-27T09:02:36.962Z"
+  },
+  {
+    "id": "2026-08-27:6055",
+    "date": "2026-08-27",
+    "code": "6055",
+    "name": "ジャパンマテリアル",
+    "rating": "A",
+    "close": 2215,
+    "signal_type": "bottom_reversal",
+    "signal_label": "大底反転",
+    "judged_at": "2026-08-27T09:02:57.350Z"
+  },
+  {
+    "id": "2026-08-27:6768",
+    "date": "2026-08-27",
+    "code": "6768",
+    "name": "タムラ製作所",
+    "rating": "skip",
+    "close": 823,
+    "signal_type": "bottom_reversal",
+    "signal_label": "大底反転",
+    "judged_at": "2026-08-27T09:03:03.143Z"
+  },
+  {
+    "id": "2026-08-27:8060",
+    "date": "2026-08-27",
+    "code": "8060",
+    "name": "キヤノンマーケティングジャパン",
+    "rating": "skip",
+    "close": 3578,
+    "signal_type": "bottom_reversal",
+    "signal_label": "大底反転",
+    "judged_at": "2026-08-27T09:03:10.483Z"
   }
 ]
