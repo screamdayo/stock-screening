@@ -2924,5 +2924,203 @@
     "signal_type": "bottom_reversal",
     "signal_label": "大底反転",
     "judged_at": "2026-08-27T09:03:10.483Z"
+  },
+  {
+    "id": "2026-08-28:3034",
+    "date": "2026-08-28",
+    "code": "3034",
+    "name": "クオールホールディングス",
+    "rating": "skip",
+    "close": 2527,
+    "signal_type": "pullback_reacceleration",
+    "signal_label": "押し目再上昇",
+    "judged_at": "2026-08-28T10:29:44.871Z"
+  },
+  {
+    "id": "2026-08-28:3040",
+    "date": "2026-08-28",
+    "code": "3040",
+    "name": "ソリトンシステムズ",
+    "rating": "skip",
+    "close": 2400,
+    "signal_type": "pullback_reacceleration",
+    "signal_label": "押し目再上昇",
+    "judged_at": "2026-08-28T10:29:48.750Z"
+  },
+  {
+    "id": "2026-08-28:3097",
+    "date": "2026-08-28",
+    "code": "3097",
+    "name": "物語コーポレーション",
+    "rating": "B",
+    "close": 5890,
+    "signal_type": "pullback_reacceleration",
+    "signal_label": "押し目再上昇",
+    "judged_at": "2026-08-28T10:29:55.043Z"
+  },
+  {
+    "id": "2026-08-28:3180",
+    "date": "2026-08-28",
+    "code": "3180",
+    "name": "ビューティガレージ",
+    "rating": "skip",
+    "close": 1560,
+    "signal_type": "pullback_reacceleration",
+    "signal_label": "押し目再上昇",
+    "judged_at": "2026-08-28T10:29:58.786Z"
+  },
+  {
+    "id": "2026-08-28:3741",
+    "date": "2026-08-28",
+    "code": "3741",
+    "name": "セック",
+    "rating": "skip",
+    "close": 3215,
+    "signal_type": "pullback_reacceleration",
+    "signal_label": "押し目再上昇",
+    "judged_at": "2026-08-28T10:30:02.833Z"
+  },
+  {
+    "id": "2026-08-28:3854",
+    "date": "2026-08-28",
+    "code": "3854",
+    "name": "アイル",
+    "rating": "skip",
+    "close": 2483,
+    "signal_type": "pullback_reacceleration",
+    "signal_label": "押し目再上昇",
+    "judged_at": "2026-08-28T10:30:07.012Z"
+  },
+  {
+    "id": "2026-08-28:4151",
+    "date": "2026-08-28",
+    "code": "4151",
+    "name": "協和キリン",
+    "rating": "B",
+    "close": 2663.5,
+    "signal_type": "pullback_reacceleration",
+    "signal_label": "押し目再上昇",
+    "judged_at": "2026-08-28T10:30:11.124Z"
+  },
+  {
+    "id": "2026-08-28:4396",
+    "date": "2026-08-28",
+    "code": "4396",
+    "name": "システムサポートホールディングス",
+    "rating": "skip",
+    "close": 1412,
+    "signal_type": "pullback_reacceleration",
+    "signal_label": "押し目再上昇",
+    "judged_at": "2026-08-28T10:30:30.648Z"
+  },
+  {
+    "id": "2026-08-28:4828",
+    "date": "2026-08-28",
+    "code": "4828",
+    "name": "ビジネスエンジニアリング",
+    "rating": "skip",
+    "close": 1453,
+    "signal_type": "pullback_reacceleration",
+    "signal_label": "押し目再上昇",
+    "judged_at": "2026-08-28T10:30:34.960Z"
+  },
+  {
+    "id": "2026-08-28:5631",
+    "date": "2026-08-28",
+    "code": "5631",
+    "name": "日本製鋼所",
+    "rating": "A",
+    "close": 7819,
+    "signal_type": "bottom_reversal",
+    "signal_label": "大底反転",
+    "judged_at": "2026-08-28T10:30:53.753Z"
+  },
+  {
+    "id": "2026-08-28:7013",
+    "date": "2026-08-28",
+    "code": "7013",
+    "name": "ＩＨＩ",
+    "rating": "B",
+    "close": 2766,
+    "signal_type": "bottom_reversal",
+    "signal_label": "大底反転",
+    "judged_at": "2026-08-28T10:31:03.541Z"
+  },
+  {
+    "id": "2026-08-28:7613",
+    "date": "2026-08-28",
+    "code": "7613",
+    "name": "シークス",
+    "rating": "skip",
+    "close": 1645,
+    "signal_type": "pullback_reacceleration",
+    "signal_label": "押し目再上昇",
+    "judged_at": "2026-08-28T10:31:07.920Z"
+  },
+  {
+    "id": "2026-08-28:7780",
+    "date": "2026-08-28",
+    "code": "7780",
+    "name": "メニコン",
+    "rating": "skip",
+    "close": 1926,
+    "signal_type": "pullback_reacceleration",
+    "signal_label": "押し目再上昇",
+    "judged_at": "2026-08-28T10:31:20.737Z"
+  },
+  {
+    "id": "2026-08-28:8558",
+    "date": "2026-08-28",
+    "code": "8558",
+    "name": "東和銀行",
+    "rating": "skip",
+    "close": 1496,
+    "signal_type": "pullback_reacceleration",
+    "signal_label": "押し目再上昇",
+    "judged_at": "2026-08-28T10:31:25.797Z"
+  },
+  {
+    "id": "2026-08-28:9310",
+    "date": "2026-08-28",
+    "code": "9310",
+    "name": "日本トランスシティ",
+    "rating": "skip",
+    "close": 1422,
+    "signal_type": "pullback_reacceleration",
+    "signal_label": "押し目再上昇",
+    "judged_at": "2026-08-28T10:31:49.601Z"
+  },
+  {
+    "id": "2026-08-28:9644",
+    "date": "2026-08-28",
+    "code": "9644",
+    "name": "タナベコンサルティンググループ",
+    "rating": "skip",
+    "close": 782,
+    "signal_type": "pullback_reacceleration",
+    "signal_label": "押し目再上昇",
+    "judged_at": "2026-08-28T10:31:56.885Z"
+  },
+  {
+    "id": "2026-08-28:9702",
+    "date": "2026-08-28",
+    "code": "9702",
+    "name": "アイ・エス・ビー",
+    "rating": "skip",
+    "close": 2486,
+    "signal_type": "pullback_reacceleration",
+    "signal_label": "押し目再上昇",
+    "judged_at": "2026-08-28T10:34:52.274Z"
+  },
+  {
+    "id": "2026-08-28:9987",
+    "date": "2026-08-28",
+    "code": "9987",
+    "name": "スズケン",
+    "rating": "skip",
+    "close": 5172,
+    "signal_type": "pullback_reacceleration",
+    "signal_label": "押し目再上昇",
+    "judged_at": "2026-08-28T10:37:06.440Z"
   }
 ]
