@@ -4046,5 +4046,38 @@
     "signal_type": "pullback_reacceleration",
     "signal_label": "押し目再上昇",
     "judged_at": "2026-09-01T10:27:30.764Z"
+  },
+  {
+    "id": "2026-09-02:285A",
+    "date": "2026-09-02",
+    "code": "285A",
+    "name": "キオクシアホールディングス",
+    "rating": "B",
+    "close": 51000,
+    "signal_type": "pullback_reacceleration",
+    "signal_label": "押し目再上昇",
+    "judged_at": "2026-09-02T08:38:08.260Z"
+  },
+  {
+    "id": "2026-09-02:5726",
+    "date": "2026-09-02",
+    "code": "5726",
+    "name": "大阪チタニウムテクノロジーズ",
+    "rating": "skip",
+    "close": 2720,
+    "signal_type": "bottom_reversal",
+    "signal_label": "大底反転",
+    "judged_at": "2026-09-02T08:38:11.334Z"
+  },
+  {
+    "id": "2026-09-02:6745",
+    "date": "2026-09-02",
+    "code": "6745",
+    "name": "ホーチキ",
+    "rating": "skip",
+    "close": 2018,
+    "signal_type": "bottom_reversal",
+    "signal_label": "大底反転",
+    "judged_at": "2026-09-02T08:38:15.529Z"
   }
 ]
