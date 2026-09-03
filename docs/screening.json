@@ -1,40 +1,106 @@
 {
-  "generated_at": "2026-09-02T12:14:05",
+  "generated_at": "2026-09-03T08:40:23",
   "strategy": "ma5_breakout",
-  "count": 3,
+  "count": 9,
   "items": [
     {
-      "code": "285A",
-      "close": 51000.0,
-      "open": 50000.0,
-      "ma_short_today": 50478.0,
-      "ma_short_prev": 50278.0,
-      "ma_long_today": 50424.4,
+      "code": "2674",
+      "close": 2699.0,
+      "open": 2633.0,
+      "ma_short_today": 2682.2,
+      "ma_short_prev": 2676.8,
+      "ma_long_today": 2777.4,
+      "signal_type": "bottom_reversal",
+      "signal_label": "大底反転",
+      "name": "ハードオフコーポレーション"
+    },
+    {
+      "code": "3038",
+      "close": 2900.0,
+      "open": 2810.0,
+      "ma_short_today": 2844.1,
+      "ma_short_prev": 2827.6,
+      "ma_long_today": 2813.7,
       "signal_type": "pullback_reacceleration",
       "signal_label": "押し目再上昇",
-      "name": "キオクシアホールディングス"
+      "name": "神戸物産"
     },
     {
-      "code": "5726",
-      "close": 2720.0,
-      "open": 2650.0,
-      "ma_short_today": 2679.4,
-      "ma_short_prev": 2664.0,
-      "ma_long_today": 2852.7,
-      "signal_type": "bottom_reversal",
-      "signal_label": "大底反転",
-      "name": "大阪チタニウムテクノロジーズ"
+      "code": "3349",
+      "close": 6672.0,
+      "open": 6514.0,
+      "ma_short_today": 6518.8,
+      "ma_short_prev": 6498.2,
+      "ma_long_today": 6475.6,
+      "signal_type": "pullback_reacceleration",
+      "signal_label": "押し目再上昇",
+      "name": "コスモス薬品"
     },
     {
-      "code": "6745",
-      "close": 2018.0,
-      "open": 1932.0,
-      "ma_short_today": 1982.2,
-      "ma_short_prev": 1975.0,
-      "ma_long_today": 1998.2,
+      "code": "6305",
+      "close": 6030.0,
+      "open": 5900.0,
+      "ma_short_today": 5867.4,
+      "ma_short_prev": 5825.2,
+      "ma_long_today": 5647.5,
+      "signal_type": "pullback_reacceleration",
+      "signal_label": "押し目再上昇",
+      "name": "日立建機"
+    },
+    {
+      "code": "7911",
+      "close": 5046.0,
+      "open": 4948.0,
+      "ma_short_today": 5004.8,
+      "ma_short_prev": 4995.8,
+      "ma_long_today": 4935.8,
+      "signal_type": "pullback_reacceleration",
+      "signal_label": "押し目再上昇",
+      "name": "ＴＯＰＰＡＮホールディングス"
+    },
+    {
+      "code": "8014",
+      "close": 4340.0,
+      "open": 4230.0,
+      "ma_short_today": 4286.0,
+      "ma_short_prev": 4273.0,
+      "ma_long_today": 4154.8,
+      "signal_type": "pullback_reacceleration",
+      "signal_label": "押し目再上昇",
+      "name": "蝶理"
+    },
+    {
+      "code": "8267",
+      "close": 1390.5,
+      "open": 1356.5,
+      "ma_short_today": 1364.8,
+      "ma_short_prev": 1357.5,
+      "ma_long_today": 1371.0,
       "signal_type": "bottom_reversal",
       "signal_label": "大底反転",
-      "name": "ホーチキ"
+      "name": "イオン"
+    },
+    {
+      "code": "8729",
+      "close": 163.6,
+      "open": 159.4,
+      "ma_short_today": 161.6,
+      "ma_short_prev": 161.4,
+      "ma_long_today": 157.7,
+      "signal_type": "pullback_reacceleration",
+      "signal_label": "押し目再上昇",
+      "name": "ソニーフィナンシャルグループ"
+    },
+    {
+      "code": "9843",
+      "close": 3275.0,
+      "open": 3200.0,
+      "ma_short_today": 3088.4,
+      "ma_short_prev": 3046.2,
+      "ma_long_today": 2924.6,
+      "signal_type": "pullback_reacceleration",
+      "signal_label": "押し目再上昇",
+      "name": "ニトリホールディングス"
     }
   ]
 }
