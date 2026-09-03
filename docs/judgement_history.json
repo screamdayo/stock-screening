@@ -4079,5 +4079,104 @@
     "signal_type": "bottom_reversal",
     "signal_label": "大底反転",
     "judged_at": "2026-09-02T08:38:15.529Z"
+  },
+  {
+    "id": "2026-09-03:2674",
+    "date": "2026-09-03",
+    "code": "2674",
+    "name": "ハードオフコーポレーション",
+    "rating": "skip",
+    "close": 2699,
+    "signal_type": "bottom_reversal",
+    "signal_label": "大底反転",
+    "judged_at": "2026-09-03T08:54:34.789Z"
+  },
+  {
+    "id": "2026-09-03:3038",
+    "date": "2026-09-03",
+    "code": "3038",
+    "name": "神戸物産",
+    "rating": "B",
+    "close": 2900,
+    "signal_type": "pullback_reacceleration",
+    "signal_label": "押し目再上昇",
+    "judged_at": "2026-09-03T08:54:43.546Z"
+  },
+  {
+    "id": "2026-09-03:3349",
+    "date": "2026-09-03",
+    "code": "3349",
+    "name": "コスモス薬品",
+    "rating": "B",
+    "close": 6672,
+    "signal_type": "pullback_reacceleration",
+    "signal_label": "押し目再上昇",
+    "judged_at": "2026-09-03T08:54:55.154Z"
+  },
+  {
+    "id": "2026-09-03:6305",
+    "date": "2026-09-03",
+    "code": "6305",
+    "name": "日立建機",
+    "rating": "skip",
+    "close": 6030,
+    "signal_type": "pullback_reacceleration",
+    "signal_label": "押し目再上昇",
+    "judged_at": "2026-09-03T08:55:04.091Z"
+  },
+  {
+    "id": "2026-09-03:7911",
+    "date": "2026-09-03",
+    "code": "7911",
+    "name": "ＴＯＰＰＡＮホールディングス",
+    "rating": "skip",
+    "close": 5046,
+    "signal_type": "pullback_reacceleration",
+    "signal_label": "押し目再上昇",
+    "judged_at": "2026-09-03T08:55:12.628Z"
+  },
+  {
+    "id": "2026-09-03:8014",
+    "date": "2026-09-03",
+    "code": "8014",
+    "name": "蝶理",
+    "rating": "skip",
+    "close": 4340,
+    "signal_type": "pullback_reacceleration",
+    "signal_label": "押し目再上昇",
+    "judged_at": "2026-09-03T08:55:16.736Z"
+  },
+  {
+    "id": "2026-09-03:8267",
+    "date": "2026-09-03",
+    "code": "8267",
+    "name": "イオン",
+    "rating": "A",
+    "close": 1390.5,
+    "signal_type": "bottom_reversal",
+    "signal_label": "大底反転",
+    "judged_at": "2026-09-03T08:57:01.765Z"
+  },
+  {
+    "id": "2026-09-03:8729",
+    "date": "2026-09-03",
+    "code": "8729",
+    "name": "ソニーフィナンシャルグループ",
+    "rating": "skip",
+    "close": 163.6,
+    "signal_type": "pullback_reacceleration",
+    "signal_label": "押し目再上昇",
+    "judged_at": "2026-09-03T08:57:10.435Z"
+  },
+  {
+    "id": "2026-09-03:9843",
+    "date": "2026-09-03",
+    "code": "9843",
+    "name": "ニトリホールディングス",
+    "rating": "skip",
+    "close": 3275,
+    "signal_type": "pullback_reacceleration",
+    "signal_label": "押し目再上昇",
+    "judged_at": "2026-09-03T08:57:17.856Z"
   }
 ]
