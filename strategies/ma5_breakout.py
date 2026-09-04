@@ -14,8 +14,18 @@ strategies/ma5_breakout.py
    - MA5 > MA25
    - 直近2日までMA5が下向き/横ばいで、当日初めて上向き
 
-後者は、任天堂のように25日線より上でいったん押してから再加速する形を拾うための分類。
+通常シグナルとは別に、バックテストで検証した限定救済シグナルも日次表示できる。
+救済条件:
+- 通常条件では非該当
+- 直近2日のMA5傾きのうち正の傾きは1回だけ
+- その微上昇は +0.1% 以下
+- もう1回は 0% 以下
+- 当日のMA5は上向き
+- 当日の出来高が前日の1.5倍以上
+- 強陽線など既存条件はそのまま必要
 """
+
+import pandas as pd
 
 import config
 import indicator
@@ -26,35 +36,36 @@ logger = get_logger(__name__)
 STRATEGY_NAME = "ma5_breakout"
 TYPE_BOTTOM = "bottom_reversal"
 TYPE_PULLBACK = "pullback_reacceleration"
+TYPE_RESCUE = "rescue"
 LABEL_BOTTOM = "大底反転"
 LABEL_PULLBACK = "押し目再上昇"
+LABEL_RESCUE_BOTTOM = "救済候補（大底反転）"
+LABEL_RESCUE_PULLBACK = "救済候補（押し目再上昇）"
+RESCUE_MICRO_RISE_MAX_PCT = 0.1
+RESCUE_VOLUME_RATIO_MIN = 1.5
 
 
 def _get_cfg():
     return config.get_strategy_config(STRATEGY_NAME)
 
 
-def _classify_signal(g, idx, cfg):
-    """条件通過なら (signal_type, signal_label)、非該当なら None を返す。"""
+def _passes_common_candle_conditions(g, idx, cfg):
     latest = g.iloc[idx]
 
     if cfg["REQUIRE_BULLISH_CANDLE"] and not indicator.is_bullish_candle(latest):
-        return None
+        return False
 
     if cfg["REQUIRE_STRONG_BULLISH_CANDLE"] and not indicator.is_strong_bullish_candle(
         latest, min_gain_pct=cfg["MA5_STRONG_CANDLE_MIN_GAIN_PCT"]
     ):
-        return None
+        return False
 
-    # 両分類共通: 直近2日まで下向き/横ばい → 当日初めて上向き。
-    if not indicator.is_ma_breakout_at(
-        g, idx, lookback_days=cfg["MA5_BREAKOUT_LOOKBACK_DAYS"]
-    ):
-        return None
+    return True
 
+
+def _classify_after_breakout(g, idx, cfg):
     below_long = indicator.is_ma_short_below_long_at(g, idx)
 
-    # 1) 大底反転: 従来条件をそのまま維持。
     if below_long:
         declined = indicator.is_ma_decline_before_turn_at(
             g, idx,
@@ -65,9 +76,91 @@ def _classify_signal(g, idx, cfg):
             return TYPE_BOTTOM, LABEL_BOTTOM
         return None
 
-    # 2) 押し目再上昇: MA5 > MA25 の上昇トレンド側。
-    # 下落率-0.5%条件は要求しない。短い押し目からの再加速も拾う。
     return TYPE_PULLBACK, LABEL_PULLBACK
+
+
+def _classify_signal(g, idx, cfg):
+    """通常条件通過なら (signal_type, signal_label)、非該当なら None を返す。"""
+    if not _passes_common_candle_conditions(g, idx, cfg):
+        return None
+
+    if not indicator.is_ma_breakout_at(
+        g, idx, lookback_days=cfg["MA5_BREAKOUT_LOOKBACK_DAYS"]
+    ):
+        return None
+
+    return _classify_after_breakout(g, idx, cfg)
+
+
+def _matches_rescue_ma_pattern(g, idx, lookback_days):
+    """通常の厳密MA判定から外れたものだけ、限定救済パターンを判定する。"""
+    required_start_idx = idx - lookback_days - 1
+    if required_start_idx < 0 or idx >= len(g):
+        return False
+
+    ma_window = g["MA_SHORT"].iloc[required_start_idx: idx + 1]
+    if ma_window.isna().any():
+        return False
+
+    values = ma_window.tolist()
+    today_prev = values[-2]
+    today = values[-1]
+    if today_prev == 0 or today <= today_prev:
+        return False
+
+    past_values = values[:-1]
+    past_changes_pct = []
+    for i in range(1, len(past_values)):
+        prev = past_values[i - 1]
+        curr = past_values[i]
+        if prev == 0:
+            return False
+        past_changes_pct.append((curr / prev - 1) * 100)
+
+    recent = past_changes_pct[-lookback_days:]
+    if len(recent) != lookback_days:
+        return False
+
+    positive = [change for change in recent if change > 0]
+    non_positive = [change for change in recent if change <= 0]
+
+    if len(positive) != 1 or len(non_positive) != lookback_days - 1:
+        return False
+    if positive[0] > RESCUE_MICRO_RISE_MAX_PCT:
+        return False
+
+    if "Vo" not in g.columns or idx - 1 < 0:
+        return False
+    prev_volume = g["Vo"].iloc[idx - 1]
+    today_volume = g["Vo"].iloc[idx]
+    if pd.isna(prev_volume) or pd.isna(today_volume) or prev_volume <= 0:
+        return False
+    if today_volume < prev_volume * RESCUE_VOLUME_RATIO_MIN:
+        return False
+
+    return True
+
+
+def _classify_rescue_signal(g, idx, cfg):
+    """通常シグナルではないものだけを、救済候補として分類する。"""
+    if _classify_signal(g, idx, cfg):
+        return None
+
+    if not _passes_common_candle_conditions(g, idx, cfg):
+        return None
+
+    lookback_days = cfg["MA5_BREAKOUT_LOOKBACK_DAYS"]
+    if not _matches_rescue_ma_pattern(g, idx, lookback_days):
+        return None
+
+    classified = _classify_after_breakout(g, idx, cfg)
+    if not classified:
+        return None
+
+    base_type, _ = classified
+    if base_type == TYPE_BOTTOM:
+        return TYPE_RESCUE, LABEL_RESCUE_BOTTOM, TYPE_BOTTOM
+    return TYPE_RESCUE, LABEL_RESCUE_PULLBACK, TYPE_PULLBACK
 
 
 def _min_required_rows(cfg):
@@ -84,7 +177,7 @@ def _min_required_rows(cfg):
 
 
 def find_signals(price_df, target_codes):
-    """バックテスト用: 全銘柄・全日付のシグナルを返す。"""
+    """バックテスト用: 通常条件の全銘柄・全日付シグナルを返す。"""
     cfg = _get_cfg()
     signals = []
     price_data_by_code = {}
@@ -128,8 +221,26 @@ def find_signals(price_df, target_codes):
     return signals, price_data_by_code
 
 
+def _build_latest_result(code, g, idx, signal_type, signal_label, rescue_base_type=None):
+    latest = g.iloc[idx]
+    result = {
+        "code": code,
+        "close": round(latest["C"], 1),
+        "open": round(latest["O"], 1),
+        "ma_short_today": round(g["MA_SHORT"].iloc[-1], 1),
+        "ma_short_prev": round(g["MA_SHORT"].iloc[-2], 1),
+        "ma_long_today": round(g["MA_LONG"].iloc[-1], 1),
+        "signal_type": signal_type,
+        "signal_label": signal_label,
+    }
+    if rescue_base_type:
+        result["rescue_base_type"] = rescue_base_type
+        result["rescue_volume_ratio_min"] = RESCUE_VOLUME_RATIO_MIN
+    return result
+
+
 def find_latest_signals(price_df, target_codes):
-    """日次スクリーニング用: 最新日の2分類シグナルを返す。"""
+    """日次スクリーニング用: 最新日の通常2分類シグナルを返す。"""
     cfg = _get_cfg()
     results = []
 
@@ -159,7 +270,6 @@ def find_latest_signals(price_df, target_codes):
             long_period=cfg["MA_LONG_PERIOD"],
         )
         idx = len(g) - 1
-        latest = g.iloc[idx]
 
         classified = _classify_signal(g, idx, cfg)
         if not classified:
@@ -171,16 +281,7 @@ def find_latest_signals(price_df, target_codes):
         else:
             cnt_pullback += 1
 
-        results.append({
-            "code": code,
-            "close": round(latest["C"], 1),
-            "open": round(latest["O"], 1),
-            "ma_short_today": round(g["MA_SHORT"].iloc[-1], 1),
-            "ma_short_prev": round(g["MA_SHORT"].iloc[-2], 1),
-            "ma_long_today": round(g["MA_LONG"].iloc[-1], 1),
-            "signal_type": signal_type,
-            "signal_label": signal_label,
-        })
+        results.append(_build_latest_result(code, g, idx, signal_type, signal_label))
 
     logger.info(
         "\n".join([
@@ -193,4 +294,46 @@ def find_latest_signals(price_df, target_codes):
         ])
     )
 
+    return results
+
+
+def find_latest_rescue_signals(price_df, target_codes):
+    """日次表示用: 通常条件から漏れた限定救済候補だけを返す。"""
+    cfg = _get_cfg()
+    results = []
+
+    df = price_df[price_df["Code"].isin(target_codes)].copy()
+    if df.empty:
+        return results
+
+    min_rows = _min_required_rows(cfg)
+
+    for code, group in df.groupby("Code"):
+        g = group.dropna(subset=["C", "O"]).sort_values("Date").reset_index(drop=True)
+        if len(g) < min_rows:
+            continue
+
+        g = indicator.add_moving_averages(
+            g,
+            short_period=cfg["MA_SHORT_PERIOD"],
+            long_period=cfg["MA_LONG_PERIOD"],
+        )
+        idx = len(g) - 1
+
+        classified = _classify_rescue_signal(g, idx, cfg)
+        if not classified:
+            continue
+
+        signal_type, signal_label, rescue_base_type = classified
+        results.append(
+            _build_latest_result(
+                code, g, idx, signal_type, signal_label,
+                rescue_base_type=rescue_base_type,
+            )
+        )
+
+    logger.info(
+        f"限定救済候補: {len(results)}件 "
+        f"（微上昇+0.1%以下 / 出来高前日比{RESCUE_VOLUME_RATIO_MIN:.1f}倍以上）"
+    )
     return results
