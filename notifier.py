@@ -15,10 +15,11 @@ logger = get_logger(__name__)
 SCREENING_VIEW_URL = "https://screamdayo.github.io/stock-screening/screening.html"
 
 
-def notify(results):
+def notify(results, rescue_results=None):
     today = datetime.now().strftime("%Y/%m/%d")
+    rescue_results = rescue_results or []
 
-    if not results:
+    if not results and not rescue_results:
         _post(f"📊 **株スクリーニング結果 {today}**\n該当銘柄なし\n{SCREENING_VIEW_URL}")
         return
 
@@ -38,11 +39,35 @@ def notify(results):
     header = (
         f"📊 **株スクリーニング結果 {today}**\n"
         f"🔵 大底反転 {len(bottom)}件 / 🟠 押し目再上昇 {len(pullback)}件\n"
-        f"合計 {len(results)}件\n\n"
+        f"通常シグナル 合計 {len(results)}件\n"
     )
 
-    msg = header + "\n".join(names) + footer + f"\n\n📈 **チャートで確認**\n{SCREENING_VIEW_URL}"
-    _post_long(msg)
+    parts = [header]
+    if names:
+        parts.append("\n".join(names) + footer)
+    elif results == []:
+        parts.append("通常シグナルなし")
+
+    if rescue_results:
+        rescue_preview_limit = 10
+        rescue_names = []
+        for r in rescue_results[:rescue_preview_limit]:
+            label = r.get("name") or r["code"]
+            detail = r.get("signal_label") or "救済候補"
+            rescue_names.append(f"🟣 {label} — {detail}")
+
+        rescue_remaining = len(rescue_results) - rescue_preview_limit
+        rescue_footer = f"\n…他{rescue_remaining}件" if rescue_remaining > 0 else ""
+        parts.append(
+            f"🟣 **救済シグナル（参考枠） {len(rescue_results)}件**\n"
+            + "\n".join(rescue_names)
+            + rescue_footer
+        )
+    else:
+        parts.append("🟣 **救済シグナル（参考枠） 0件**")
+
+    parts.append(f"📈 **チャートで確認**\n{SCREENING_VIEW_URL}")
+    _post_long("\n\n".join(parts))
 
 
 def notify_error(error, context=""):
