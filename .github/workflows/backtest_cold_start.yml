@@ -1,0 +1,54 @@
+name: キャッシュなし速度テスト
+
+on:
+  workflow_dispatch:
+
+jobs:
+  cold-start-backtest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Python セットアップ
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: ライブラリインストール
+        run: pip install -r requirements.txt
+
+      # 通常バックテスト用のActionsキャッシュは一切復元しない。
+      # checkout時にdata/が存在していた場合も削除し、毎回完全なコールドスタートにする。
+      - name: キャッシュなし状態を作成
+        run: |
+          rm -rf data
+          mkdir -p data
+          echo "=== cold start: data/ を空にしました ==="
+          ls -la data
+
+      - name: キャッシュなしバックテスト実行
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          JQUANTS_API_KEY: ${{ secrets.JQUANTS_API_KEY }}
+        run: |
+          echo "=== cold start backtest started at $(date -u '+%Y-%m-%dT%H:%M:%SZ') ==="
+          START_TIME=$(date +%s)
+          python run_backtest.py --strategy "ma5_breakout" --condition "config"
+          END_TIME=$(date +%s)
+          ELAPSED=$((END_TIME - START_TIME))
+          echo "=== cold start elapsed: ${ELAPSED} seconds ==="
+
+      # 通常のbacktest-price-cache-v1-*には保存しない。
+      # このテストで作られたdata/はジョブ終了時に破棄されるため、通常運用へ影響しない。
+      - name: 結果ファイルをアーティファクトとして保存
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cold-start-backtest-output-${{ github.run_id }}
+          path: |
+            output/
+            logs/
+          retention-days: 14
+          if-no-files-found: ignore
