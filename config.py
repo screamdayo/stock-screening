@@ -148,6 +148,12 @@ STRATEGY_CONFIG = {
         # 陽線判定を有効にするか（終値 > 始値）
         "REQUIRE_BULLISH_CANDLE": True,
 
+        # run_backtest.py の共通ログ/condition切替との互換用。
+        # ma5_breakout本体の判定では使用しないため、売買条件には影響しない。
+        "REQUIRE_MA_RISING": False,
+        "REQUIRE_MA_TURNING": False,
+        "REQUIRE_KUITTO_PATTERN": False,
+
         # 陽線の「強さ」も要求するか。Trueにすると、単なる陽線（終値>始値）だけでなく、
         # 始値から MA5_STRONG_CANDLE_MIN_GAIN_PCT(%) 以上の上昇があったことも要求する。
         "REQUIRE_STRONG_BULLISH_CANDLE": True,
