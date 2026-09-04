@@ -19,6 +19,7 @@ J-Quants APIからプライム銘柄リストと日足株価データを取得�
 """
 
 import os
+import re
 import time
 import requests
 import pandas as pd
@@ -31,6 +32,28 @@ logger = get_logger(__name__)
 
 HEADERS = {"x-api-key": config.JQUANTS_API_KEY}
 BASE_URL = "https://api.jquants.com/v2"
+
+# 初回バックテスト取得時、指定したfromが契約範囲より古い場合にJ-Quantsが返す
+# 「取得可能な最古日」を、このPythonプロセス中だけ記憶する。
+# 1銘柄目で判明した後は、残りの銘柄で同じ400エラーを繰り返さないために使う。
+_JQUANTS_SUBSCRIPTION_START = None
+
+
+def _extract_subscription_start(response_text):
+    """J-Quantsの400レスポンスから契約上の取得可能開始日をYYYYMMDDで抽出する。"""
+    if not response_text:
+        return None
+
+    text = str(response_text)
+    lower = text.lower()
+    if "subscription" not in lower or "cover" not in lower:
+        return None
+
+    match = re.search(r"(\d{4}-\d{2}-\d{2})\s*~", text)
+    if not match:
+        return None
+
+    return match.group(1).replace("-", "")
 
 
 def _request_with_retry(url, params=None):
@@ -269,15 +292,25 @@ def _get_bars_for_code(code, from_date=None, to_date=None, _is_fallback_retry=Fa
     （dateのように1日ずつループする必要がない）。
 
     契約プランがカバーしていない古い日付をfromに指定すると400エラーになる。
-    この場合は致命的なエラーとして処理全体を止めるのではなく、fromを外して
-    「プランがカバーする最大範囲」で再取得を試みる。
+    最初の400レスポンスから取得可能開始日を読み取れた場合はその日を記憶し、
+    以降の銘柄では最初から契約範囲内のfromを使って無駄な400を避ける。
     """
+    global _JQUANTS_SUBSCRIPTION_START
+
     all_rows = []
     pagination_key = None
 
+    effective_from_date = from_date
+    if (
+        effective_from_date
+        and _JQUANTS_SUBSCRIPTION_START
+        and effective_from_date < _JQUANTS_SUBSCRIPTION_START
+    ):
+        effective_from_date = _JQUANTS_SUBSCRIPTION_START
+
     params_base = {"code": code}
-    if from_date:
-        params_base["from"] = from_date
+    if effective_from_date:
+        params_base["from"] = effective_from_date
     if to_date:
         params_base["to"] = to_date
 
@@ -291,12 +324,33 @@ def _get_bars_for_code(code, from_date=None, to_date=None, _is_fallback_retry=Fa
             params=params
         )
 
-        if res.status_code == 400 and from_date and not _is_fallback_retry:
+        if res.status_code == 400 and effective_from_date and not _is_fallback_retry:
+            subscription_start = _extract_subscription_start(res.text)
+            if subscription_start:
+                if _JQUANTS_SUBSCRIPTION_START != subscription_start:
+                    _JQUANTS_SUBSCRIPTION_START = subscription_start
+                    logger.info(
+                        "J-Quants契約の取得可能開始日を検出: %s。"
+                        "以降の銘柄はこの日付から取得します。",
+                        subscription_start,
+                    )
+                return _get_bars_for_code(
+                    code,
+                    from_date=subscription_start,
+                    to_date=to_date,
+                    _is_fallback_retry=True,
+                )
+
             logger.warning(
-                f"code={code}: from={from_date}が契約プランの対象期間外の可能性があります。"
-                f"fromを外して取得可能な範囲で再取得します。"
+                f"code={code}: from={effective_from_date}が契約プランの対象期間外の可能性があります。"
+                f"取得可能開始日を判定できないため、fromを外して一度だけ再取得します。"
             )
-            return _get_bars_for_code(code, from_date=None, to_date=to_date, _is_fallback_retry=True)
+            return _get_bars_for_code(
+                code,
+                from_date=None,
+                to_date=to_date,
+                _is_fallback_retry=True,
+            )
 
         if res.status_code != 200:
             logger.warning(f"APIエラー (code={code}): {res.status_code} {res.text}")
