@@ -64,14 +64,11 @@ def _request_with_retry(url, params=None):
                     f"{res.status_code} Server Error: {res.text}"
                 )
                 if res.status_code == 429:
-                    # レート制限は502/503/504よりも長めに待った方が解消しやすい
                     time.sleep(config.API_RATE_LIMIT_BACKOFF_SECONDS * attempt)
                 else:
                     _wait_before_retry(attempt)
                 continue
 
-            # リトライ対象外のステータス（400, 401, 404など）はそのまま返す。
-            # 呼び出し側で res.raise_for_status() 等の判定を行う想定。
             return res
 
         except (requests.exceptions.Timeout, requests.exceptions.ConnectionError) as e:
@@ -81,7 +78,6 @@ def _request_with_retry(url, params=None):
             _wait_before_retry(attempt)
             continue
 
-    # 全リトライを使い切っても失敗した場合はここに来る
     logger.warning(f"{config.API_MAX_RETRIES}回リトライしましたが失敗しました: {url}")
     raise last_exception
 
@@ -125,13 +121,11 @@ def get_target_codes():
     df = _fetch_master_df()
     target = df["Code"].tolist()
 
-    # 除外判定は5桁のままの末尾で行う（優先株式は末尾が0以外になる）
     target = [
         code for code in target
         if not code.endswith(config.EXCLUDED_CODE_SUFFIXES)
     ]
 
-    # 除外後に、価格データ側と一致するよう4桁表記へ変換する
     target = [_normalize_code(code) for code in target]
 
     logger.info(f"{config.TARGET_MARKET}銘柄数: {len(target)}件")
@@ -155,7 +149,6 @@ def get_code_to_name_map():
                         "会社名なしで処理を続行します（J-Quantsの仕様変更の可能性）。")
         return {}
 
-    # 優先株式などは除外し、4桁表記に変換してからマッピングを作る
     df = df[~df["Code"].str.endswith(config.EXCLUDED_CODE_SUFFIXES)].copy()
     df["Code"] = df["Code"].apply(_normalize_code)
 
@@ -275,11 +268,9 @@ def _get_bars_for_code(code, from_date=None, to_date=None, _is_fallback_retry=Fa
     J-Quantsの仕様: codeを指定した場合、from/toで期間をまとめて指定できる
     （dateのように1日ずつループする必要がない）。
 
-    契約プランがカバーしていない古い日付をfromに指定すると400エラーになる
-    （例: 「Your subscription covers the following dates: 2021-07-10 ~」）。
+    契約プランがカバーしていない古い日付をfromに指定すると400エラーになる。
     この場合は致命的なエラーとして処理全体を止めるのではなく、fromを外して
-    「プランがカバーする最大範囲」で再取得を試みる
-    （＝取れる範囲だけでバックテストを継続できるようにする）。
+    「プランがカバーする最大範囲」で再取得を試みる。
     """
     all_rows = []
     pagination_key = None
@@ -301,8 +292,6 @@ def _get_bars_for_code(code, from_date=None, to_date=None, _is_fallback_retry=Fa
         )
 
         if res.status_code == 400 and from_date and not _is_fallback_retry:
-            # 契約プランの対象期間外である可能性が高いので、fromを外して
-            # 「取得可能な最大範囲」で一度だけ再取得を試みる
             logger.warning(
                 f"code={code}: from={from_date}が契約プランの対象期間外の可能性があります。"
                 f"fromを外して取得可能な範囲で再取得します。"
@@ -344,13 +333,18 @@ def get_price_history_range(years=None, cache_filename=None):
         cache_path = os.path.join(config.DATA_DIR, cache_filename)
         if os.path.exists(cache_path):
             logger.info(f"キャッシュを読み込みます: {cache_path}")
-            df = pd.read_csv(cache_path, parse_dates=["Date"])
+            df = pd.read_csv(
+                cache_path,
+                parse_dates=["Date"],
+                dtype={"Code": str},
+            )
+            df["Code"] = df["Code"].apply(_normalize_code)
             return df
 
     target_codes = get_target_codes()
 
     end_date = datetime.now()
-    start_date = end_date - timedelta(days=365 * years + 30)  # 少し余裕を持たせる
+    start_date = end_date - timedelta(days=365 * years + 30)
 
     from_str = start_date.strftime("%Y%m%d")
     to_str = end_date.strftime("%Y%m%d")
@@ -365,7 +359,6 @@ def get_price_history_range(years=None, cache_filename=None):
         if i % 50 == 0 or i == total:
             logger.info(f"進捗: {i}/{total}銘柄 取得済み（累計{len(all_rows)}件）")
 
-        # 連続リクエストによるレート制限（429）を避けるため、一定間隔を空ける
         time.sleep(config.API_REQUEST_INTERVAL_SECONDS)
 
     logger.info(f"取得した株価レコード数（合計）: {len(all_rows)}件")
@@ -403,7 +396,12 @@ def get_price_history_incremental(cache_filename, years=None):
         return get_price_history_range(years=years, cache_filename=cache_filename)
 
     logger.info(f"既存キャッシュを読み込みます: {cache_path}")
-    existing_df = pd.read_csv(cache_path, parse_dates=["Date"])
+    existing_df = pd.read_csv(
+        cache_path,
+        parse_dates=["Date"],
+        dtype={"Code": str},
+    )
+    existing_df["Code"] = existing_df["Code"].apply(_normalize_code)
 
     if existing_df.empty:
         logger.info("キャッシュが空のため、初回一括取得を行います。")
@@ -435,7 +433,6 @@ def get_price_history_incremental(cache_filename, years=None):
         if i % 50 == 0 or i == total:
             logger.info(f"差分取得 進捗: {i}/{total}銘柄（累計{len(new_rows)}件）")
 
-        # 連続リクエストによるレート制限（429）を避けるため、一定間隔を空ける
         time.sleep(config.API_REQUEST_INTERVAL_SECONDS)
 
     if not new_rows:
@@ -444,7 +441,6 @@ def get_price_history_incremental(cache_filename, years=None):
 
     new_df = _finalize_df(new_rows)
 
-    # 既存データと結合し、重複（同一Code・同一Date）があれば新しい方を優先して排除
     combined_df = pd.concat([existing_df, new_df], ignore_index=True)
     combined_df = combined_df.drop_duplicates(subset=["Code", "Date"], keep="last")
     combined_df = combined_df.sort_values(["Code", "Date"]).reset_index(drop=True)
@@ -467,10 +463,6 @@ def _save_cache(df, cache_filename):
 def _finalize_df(all_rows):
     df = pd.DataFrame(all_rows)
     if not df.empty:
-        # 株式分割・併合をまたいでも価格系列が連続するよう、J-Quantsが返す
-        # 調整済み四本値・出来高を日次処理とバックテストの共通列へ反映する。
-        # 調整済み列が存在しない古いキャッシュ形式や、個別値が欠損している
-        # レコードでは調整前の値をそのまま使う。
         adjusted_columns = {
             "O": "AdjO",
             "H": "AdjH",
