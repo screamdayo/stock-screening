@@ -14,6 +14,9 @@ GitHub Pages用のエクスポート（docs/prices/, docs/screening.json）の
 使用する戦略は config.py の ACTIVE_STRATEGY で指定する。
 過去検証（バックテスト）をしたい場合は run_backtest.py を使う。
 
+ma5_breakoutでは通常シグナルとは別に、検証済みの限定救済候補を
+参考枠として別表示する。通常シグナルの判定ロジック自体は変更しない。
+
 エラーが発生した場合はDiscordに通知してから例外を再送出する
 （GitHub Actions側でも失敗として検知できるように raise は残す）。
 """
@@ -51,17 +54,27 @@ def run():
     logger.info("スクリーニング中...")
     results = screener_fn(price_df, target_codes)
 
-    # 会社名を各結果に付与する（見つからない場合は空文字のままにしておく）
-    for r in results:
+    rescue_results = []
+    if config.ACTIVE_STRATEGY == "ma5_breakout":
+        from strategies import ma5_breakout
+        rescue_results = ma5_breakout.find_latest_rescue_signals(price_df, target_codes)
+
+    for r in results + rescue_results:
         r["name"] = code_to_name.get(r["code"], "")
 
-    logger.info(f"該当: {len(results)}件")
+    logger.info(f"通常シグナル: {len(results)}件")
+    logger.info(f"救済シグナル: {len(rescue_results)}件")
 
     logger.info("Discord通知中...")
-    notifier.notify(results)
+    notifier.notify(results, rescue_results=rescue_results)
 
     logger.info("GitHub Pages用データを出力中...")
-    export_docs_prices.export_docs(price_df, target_codes, code_to_name, results)
+    export_docs_prices.export_docs(
+        price_df,
+        target_codes,
+        code_to_name,
+        results + rescue_results,
+    )
 
     logger.info("=== 完了 ===")
 
