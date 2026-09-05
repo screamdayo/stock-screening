@@ -1,15 +1,21 @@
-"""MA5ブレイクアウトの各指標を単独で区切り、PF・勝率・件数を比較する実験。
+"""MA5ブレイクアウトの2条件組み合わせ性能を比較する実験。
 
 本番スクリーニング条件は変更しない。
-現行 ma5_breakout が出した全シグナルについて、以下6指標をそれぞれ単独でビン分けする。
+現行 ma5_breakout が出した全シグナルについて、単独性能で強かった
+MA25乖離率の2帯を軸に、他の指標を1つずつ組み合わせる。
+
+軸:
+- MA25乖離率 < -10%
+- MA25乖離率 -10%〜-5%
+
+組み合わせる指標:
 - RSI(14)
 - 出来高倍率（前日比）
 - 当日上昇率
 - MA5上昇率
-- MA25乖離率
 - 終値位置（当日レンジ内。100%に近いほど上ヒゲが短い）
 
-各ビンについて全期間と直近2025-2026の件数・勝率・PFを表示する。
+各組み合わせについて全期間と直近2025-2026の件数・勝率・PFを表示する。
 ランキングや上位8件選択は行わない。
 """
 
@@ -26,6 +32,8 @@ from strategies import registry
 
 logger = get_logger(__name__)
 RSI_PERIOD = 14
+MIN_FULL_TRADES_FOR_TOP = 100
+MIN_RECENT_TRADES_FOR_TOP = 30
 
 
 def _rsi_series(close, period=14):
@@ -89,19 +97,39 @@ def _feature_row(g, idx):
     }
 
 
-BIN_SPECS = {
-    "RSI14": ("rsi14", [-float("inf"), 30, 40, 50, 60, 70, float("inf")],
-              ["<30", "30-40", "40-50", "50-60", "60-70", ">=70"]),
-    "出来高倍率": ("volume_ratio", [-float("inf"), 1.0, 1.2, 1.5, 2.0, 3.0, float("inf")],
-               ["<1.0x", "1.0-1.2x", "1.2-1.5x", "1.5-2.0x", "2.0-3.0x", ">=3.0x"]),
-    "当日上昇率": ("gain_pct", [-float("inf"), 2.0, 3.0, 5.0, 8.0, float("inf")],
-               ["<2%", "2-3%", "3-5%", "5-8%", ">=8%"]),
-    "MA5上昇率": ("ma5_rise_pct", [-float("inf"), 0.1, 0.3, 0.6, 1.0, float("inf")],
-                ["<0.1%", "0.1-0.3%", "0.3-0.6%", "0.6-1.0%", ">=1.0%"]),
-    "MA25乖離率": ("ma25_dev_pct", [-float("inf"), -10, -5, 0, 5, 10, float("inf")],
-                 ["<-10%", "-10--5%", "-5-0%", "0-5%", "5-10%", ">=10%"]),
-    "終値位置": ("close_position_pct", [-float("inf"), 60, 75, 85, 95, float("inf")],
-              ["<60%", "60-75%", "75-85%", "85-95%", ">=95%"]),
+SECONDARY_BIN_SPECS = {
+    "RSI14": (
+        "rsi14",
+        [-float("inf"), 30, 40, 50, 60, 70, float("inf")],
+        ["<30", "30-40", "40-50", "50-60", "60-70", ">=70"],
+    ),
+    "出来高倍率": (
+        "volume_ratio",
+        [-float("inf"), 1.0, 1.2, 1.5, 2.0, 3.0, float("inf")],
+        ["<1.0x", "1.0-1.2x", "1.2-1.5x", "1.5-2.0x", "2.0-3.0x", ">=3.0x"],
+    ),
+    "当日上昇率": (
+        "gain_pct",
+        [-float("inf"), 2.0, 3.0, 5.0, 8.0, float("inf")],
+        ["<2%", "2-3%", "3-5%", "5-8%", ">=8%"],
+    ),
+    "MA5上昇率": (
+        "ma5_rise_pct",
+        [-float("inf"), 0.1, 0.3, 0.6, 1.0, float("inf")],
+        ["<0.1%", "0.1-0.3%", "0.3-0.6%", "0.6-1.0%", ">=1.0%"],
+    ),
+    "終値位置": (
+        "close_position_pct",
+        [-float("inf"), 60, 75, 85, 95, float("inf")],
+        ["<60%", "60-75%", "75-85%", "85-95%", ">=95%"],
+    ),
+}
+
+ANCHORS = {
+    "MA25乖離<-10%": lambda r: pd.notna(r["ma25_dev_pct"]) and r["ma25_dev_pct"] < -10,
+    "MA25乖離-10〜-5%": lambda r: (
+        pd.notna(r["ma25_dev_pct"]) and -10 <= r["ma25_dev_pct"] < -5
+    ),
 }
 
 
@@ -110,8 +138,7 @@ def _trade_key(x):
 
 
 def _summarize(rows):
-    trades = [r["trade"] for r in rows]
-    return backtest.summarize_trades(trades)
+    return backtest.summarize_trades([r["trade"] for r in rows])
 
 
 def _summarize_recent(rows):
@@ -126,9 +153,14 @@ def _fmt(s):
     return f"{s.get('total_trades', 0)}件 / 勝率{s.get('win_rate')}% / PF{s.get('profit_factor')}"
 
 
+def _pf_value(summary):
+    pf = summary.get("profit_factor")
+    return float(pf) if isinstance(pf, (int, float)) else -1.0
+
+
 def main():
-    logger.info("=== MA5 指標別・単独性能バックテスト開始 ===")
-    logger.info("ランキングなし。現行全シグナルを各指標だけでビン分けして比較します。")
+    logger.info("=== MA5 2条件組み合わせバックテスト開始 ===")
+    logger.info("MA25乖離の強い2帯を軸に、他指標を1つずつ重ねて比較します。")
 
     strategy = registry.get_strategy("ma5_breakout")
     target_codes = download.get_target_codes()
@@ -153,69 +185,95 @@ def main():
         g = price_data_by_code.get(sig["code"])
         if g is None:
             continue
-        features = _feature_row(g, sig["signal_idx"])
-        rows.append({"trade": trade, **features})
+        rows.append({"trade": trade, **_feature_row(g, sig["signal_idx"])})
 
-    results = {}
-    logger.info("\n" + "=" * 78)
-    logger.info("単独性能（全期間 | 2025-2026）")
-    logger.info("=" * 78)
+    output = {
+        "baseline": baseline,
+        "anchors": {},
+    }
+    top_candidates = []
 
-    for display_name, (field, edges, labels) in BIN_SPECS.items():
-        logger.info(f"\n--- {display_name} ---")
-        values = pd.Series([r[field] for r in rows], dtype="float64")
-        bins = pd.cut(values, bins=edges, labels=labels, right=False)
+    logger.info("\n" + "=" * 88)
+    logger.info("2条件性能（全期間 | 2025-2026）")
+    logger.info("=" * 88)
 
-        metric_results = []
-        for label in labels:
-            selected = [rows[i] for i in range(len(rows)) if bins.iloc[i] == label]
-            if not selected:
-                continue
-            full = _summarize(selected)
-            recent = _summarize_recent(selected)
-            logger.info(f"{label}: 全期間 {_fmt(full)} | 2025-26 {_fmt(recent)}")
-            metric_results.append({
-                "bin": label,
-                "full": full,
-                "recent_2025_2026": recent,
-            })
+    for anchor_name, anchor_fn in ANCHORS.items():
+        anchor_rows = [r for r in rows if anchor_fn(r)]
+        anchor_full = _summarize(anchor_rows)
+        anchor_recent = _summarize_recent(anchor_rows)
+        logger.info(f"\n### {anchor_name} 単独: 全期間 {_fmt(anchor_full)} | 2025-26 {_fmt(anchor_recent)}")
 
-        missing = [r for r in rows if pd.isna(r[field])]
-        if missing:
-            full = _summarize(missing)
-            recent = _summarize_recent(missing)
-            logger.info(f"欠損: 全期間 {_fmt(full)} | 2025-26 {_fmt(recent)}")
-            metric_results.append({
-                "bin": "missing",
-                "full": full,
-                "recent_2025_2026": recent,
-            })
+        anchor_result = {
+            "anchor_full": anchor_full,
+            "anchor_recent_2025_2026": anchor_recent,
+            "combinations": {},
+        }
 
-        results[display_name] = metric_results
+        for display_name, (field, edges, labels) in SECONDARY_BIN_SPECS.items():
+            logger.info(f"\n--- {anchor_name} × {display_name} ---")
+            values = pd.Series([r[field] for r in anchor_rows], dtype="float64")
+            bins = pd.cut(values, bins=edges, labels=labels, right=False)
+            metric_results = []
 
-    os.makedirs("output", exist_ok=True)
-    with open("output/indicator_standalone_performance.json", "w", encoding="utf-8") as f:
-        json.dump({
-            "baseline": baseline,
-            "metrics": results,
-        }, f, ensure_ascii=False, indent=2, default=str)
+            for label in labels:
+                selected = [
+                    anchor_rows[i] for i in range(len(anchor_rows))
+                    if bins.iloc[i] == label
+                ]
+                if not selected:
+                    continue
 
-    feature_rows = []
-    for r in rows:
-        out = {k: v for k, v in r.items() if k != "trade"}
-        out.update({
-            "code": r["trade"]["code"],
-            "signal_date": r["trade"]["signal_date"],
-            "profit_pct": r["trade"]["profit_pct"],
-            "exit_reason": r["trade"]["exit_reason"],
-        })
-        feature_rows.append(out)
-    pd.DataFrame(feature_rows).to_csv(
-        "output/indicator_features.csv", index=False, encoding="utf-8-sig"
+                full = _summarize(selected)
+                recent = _summarize_recent(selected)
+                logger.info(f"{label}: 全期間 {_fmt(full)} | 2025-26 {_fmt(recent)}")
+
+                record = {
+                    "bin": label,
+                    "full": full,
+                    "recent_2025_2026": recent,
+                }
+                metric_results.append(record)
+
+                if (
+                    full.get("total_trades", 0) >= MIN_FULL_TRADES_FOR_TOP
+                    and recent.get("total_trades", 0) >= MIN_RECENT_TRADES_FOR_TOP
+                ):
+                    top_candidates.append({
+                        "anchor": anchor_name,
+                        "metric": display_name,
+                        "bin": label,
+                        "full": full,
+                        "recent": recent,
+                    })
+
+            anchor_result["combinations"][display_name] = metric_results
+
+        output["anchors"][anchor_name] = anchor_result
+
+    top_candidates.sort(
+        key=lambda x: (_pf_value(x["recent"]), _pf_value(x["full"])),
+        reverse=True,
     )
 
-    logger.info("\n結果を output/indicator_standalone_performance.json に保存しました。")
-    logger.info("=== MA5 指標別・単独性能バックテスト完了 ===")
+    logger.info("\n" + "=" * 88)
+    logger.info(
+        f"有力候補 TOP15（全期間>={MIN_FULL_TRADES_FOR_TOP}件かつ"
+        f"2025-26>={MIN_RECENT_TRADES_FOR_TOP}件、直近PF順）"
+    )
+    logger.info("=" * 88)
+    for i, x in enumerate(top_candidates[:15], 1):
+        logger.info(
+            f"{i:02d}. {x['anchor']} × {x['metric']} {x['bin']} | "
+            f"全期間 {_fmt(x['full'])} | 2025-26 {_fmt(x['recent'])}"
+        )
+
+    os.makedirs("output", exist_ok=True)
+    output["top_candidates"] = top_candidates[:30]
+    with open("output/two_condition_performance.json", "w", encoding="utf-8") as f:
+        json.dump(output, f, ensure_ascii=False, indent=2, default=str)
+
+    logger.info("\n結果を output/two_condition_performance.json に保存しました。")
+    logger.info("=== MA5 2条件組み合わせバックテスト完了 ===")
 
 
 if __name__ == "__main__":
