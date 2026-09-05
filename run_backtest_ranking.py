@@ -1,16 +1,18 @@
-"""本の「くいっと→がっくり」を出口まで含めて比較する実験。
+"""本命の「がっくりB」について、損切り・保有上限の有無を比較する実験。
 
 本番スクリーニング条件・通常バックテストは変更しない。
 既存の ranking モードを実験枠として使い、現行 ma5_breakout の入口に対して
-以下4種類の出口を比較する。
+以下の出口を比較する。
 
-- fixed: 現行 +5% / -3% / 最大10営業日
-- gakkuri_a: 前日までMA5上向き → 当日下向き + 陰線
-- gakkuri_b: MA5上昇が減速 → 前日非マイナス → 当日下向き + 陰線 + 終値<MA5
-- gakkuri_c: B + 当日高値>=MA5 + 長い下ヒゲ除外
+- fixed_5tp_3sl_10d: 現行 +5% / -3% / 最大10営業日（参考）
+- b_sl3_30d: がっくりB + -3%損切り + 最大30営業日（前回の本命）
+- b_no_sl_30d: がっくりB + 損切りなし + 最大30営業日
+- b_sl3_unlimited: がっくりB + -3%損切り + 保有上限なし
+- b_pure: がっくりBのみ。損切りなし・保有上限なし
 
+がっくりBは、MA5の上昇が減速 → 前日非マイナス → 当日下向き + 陰線 + 終値<MA5。
 がっくりは当日終値まで見て成立するため、決済は翌営業日始値。
-がっくり3種は -3% 損切りを残し、最大30営業日で時間切れ決済する。
+「保有上限なし」でデータ末尾までがっくりが出ない場合だけ、最終日の終値で data_end_exit とする。
 
 入口は以下3グループで別集計する。
 - 全シグナル
@@ -33,7 +35,6 @@ logger = get_logger(__name__)
 
 RSI_PERIOD = 14
 GAKKURI_MAX_HOLD_DAYS = 30
-LOWER_WICK_MAX_BODY_MULTIPLE = 1.5
 
 
 def _rsi_series(close, period=14):
@@ -95,8 +96,8 @@ def _is_bearish(row):
     return pd.notna(row["O"]) and pd.notna(row["C"]) and row["C"] < row["O"]
 
 
-def _is_gakkuri(g, idx, mode):
-    """終値確定時点で、指定モードの「がっくり」が成立したか。"""
+def _is_gakkuri_b(g, idx):
+    """終値確定時点で本命の「がっくりB」が成立したか。"""
     if idx < 2:
         return False
 
@@ -106,44 +107,18 @@ def _is_gakkuri(g, idx, mode):
 
     slope_today = _ma5_slope(g, idx)
     slope_prev = _ma5_slope(g, idx - 1)
-    if slope_today is None or slope_prev is None:
-        return False
-
-    if mode == "gakkuri_a":
-        return slope_prev > 0 and slope_today < 0
-
     slope_two_days_ago = _ma5_slope(g, idx - 2)
-    if slope_two_days_ago is None:
+    if slope_today is None or slope_prev is None or slope_two_days_ago is None:
         return False
 
-    # 本の「上向きの傾きが段々と緩やか→水平→下向き」を数値化。
-    # 2日前より前日の傾きが弱く、前日はまだ横ばい以上、当日初めて下向き。
+    # 上向きの傾きが弱まる → 前日はまだ横ばい以上 → 当日下向き。
     decelerating = slope_two_days_ago > slope_prev >= 0 and slope_today < 0
     ma5 = g["MA_SHORT"].iloc[idx]
-    if not decelerating or pd.isna(ma5) or row["C"] >= ma5:
-        return False
-
-    if mode == "gakkuri_b":
-        return True
-
-    if mode == "gakkuri_c":
-        # 「5日線にぶら下がる陰線」: 当日の値幅がMA5に触れ、終値は下。
-        if pd.isna(row["H"]) or row["H"] < ma5:
-            return False
-
-        body = row["O"] - row["C"]  # 陰線なので正
-        lower_wick = row["C"] - row["L"] if pd.notna(row["L"]) else None
-        if body <= 0 or lower_wick is None:
-            return False
-        if lower_wick > body * LOWER_WICK_MAX_BODY_MULTIPLE:
-            return False
-        return True
-
-    raise ValueError(f"unknown gakkuri mode: {mode}")
+    return decelerating and pd.notna(ma5) and row["C"] < ma5
 
 
-def _simulate_gakkuri_trade(g, signal_idx, mode):
-    """翌日寄り買い、-3%損切り、がっくり翌日寄り売り、最大30日。"""
+def _simulate_gakkuri_b_trade(g, signal_idx, use_stop_loss=True, max_hold_days=30):
+    """翌日寄り買い。がっくりB成立の翌日寄りで売却する。"""
     entry_idx = signal_idx + 1
     if entry_idx >= len(g):
         return None
@@ -154,40 +129,43 @@ def _simulate_gakkuri_trade(g, signal_idx, mode):
         return None
 
     stop_loss_price = entry_price * (1 - config.BACKTEST_STOP_LOSS_PCT / 100)
-    hold_end_idx = min(entry_idx + GAKKURI_MAX_HOLD_DAYS - 1, len(g) - 1)
+
+    if max_hold_days is None:
+        hold_end_idx = len(g) - 1
+    else:
+        hold_end_idx = min(entry_idx + max_hold_days - 1, len(g) - 1)
 
     for idx in range(entry_idx, hold_end_idx + 1):
         row = g.iloc[idx]
         holding_days = idx - entry_idx + 1
 
-        # 当日中の損切りは、引け後にしか分からない「がっくり」より先に判定。
-        low = row.get("L")
-        if pd.notna(low) and low <= stop_loss_price:
-            return {
-                "entry_date": entry_row["Date"],
-                "entry_price": round(entry_price, 2),
-                "exit_date": row["Date"],
-                "exit_price": round(stop_loss_price, 2),
-                "exit_reason": "stop_loss",
-                "holding_days": holding_days,
-                "profit_pct": round((stop_loss_price - entry_price) / entry_price * 100, 3),
-            }
+        # 損切りを使うパターンでは、日中の-3%到達を先に判定する。
+        if use_stop_loss:
+            low = row.get("L")
+            if pd.notna(low) and low <= stop_loss_price:
+                return {
+                    "entry_date": entry_row["Date"],
+                    "entry_price": round(entry_price, 2),
+                    "exit_date": row["Date"],
+                    "exit_price": round(stop_loss_price, 2),
+                    "exit_reason": "stop_loss",
+                    "holding_days": holding_days,
+                    "profit_pct": round((stop_loss_price - entry_price) / entry_price * 100, 3),
+                }
 
-        if _is_gakkuri(g, idx, mode):
+        if _is_gakkuri_b(g, idx):
             exit_idx = idx + 1
             if exit_idx < len(g):
                 exit_row = g.iloc[exit_idx]
                 exit_price = exit_row["O"]
                 if pd.notna(exit_price) and exit_price > 0:
-                    # がっくり判定日の翌日寄りまでを保有日数に含める。
-                    exit_holding_days = exit_idx - entry_idx + 1
                     return {
                         "entry_date": entry_row["Date"],
                         "entry_price": round(entry_price, 2),
                         "exit_date": exit_row["Date"],
                         "exit_price": round(exit_price, 2),
-                        "exit_reason": mode,
-                        "holding_days": exit_holding_days,
+                        "exit_reason": "gakkuri_b",
+                        "holding_days": exit_idx - entry_idx + 1,
                         "profit_pct": round((exit_price - entry_price) / entry_price * 100, 3),
                     }
 
@@ -195,30 +173,38 @@ def _simulate_gakkuri_trade(g, signal_idx, mode):
     exit_price = final_row["C"]
     if pd.isna(exit_price) or exit_price <= 0:
         return None
+
+    # 30日上限なら time_exit。上限なしならデータ末尾到達。
+    exit_reason = "data_end_exit" if max_hold_days is None else "time_exit"
     return {
         "entry_date": entry_row["Date"],
         "entry_price": round(entry_price, 2),
         "exit_date": final_row["Date"],
         "exit_price": round(exit_price, 2),
-        "exit_reason": "time_exit",
+        "exit_reason": exit_reason,
         "holding_days": hold_end_idx - entry_idx + 1,
         "profit_pct": round((exit_price - entry_price) / entry_price * 100, 3),
     }
 
 
-def _run_gakkuri_backtest(signals, price_data_by_code, mode):
+def _run_b_backtest(signals, price_data_by_code, label, use_stop_loss=True, max_hold_days=30):
     trades = []
     for sig in signals:
         g = price_data_by_code.get(sig["code"])
         if g is None:
             continue
-        result = _simulate_gakkuri_trade(g, sig["signal_idx"], mode)
+        result = _simulate_gakkuri_b_trade(
+            g,
+            sig["signal_idx"],
+            use_stop_loss=use_stop_loss,
+            max_hold_days=max_hold_days,
+        )
         if result is None:
             continue
         result["code"] = sig["code"]
         result["signal_date"] = sig["signal_date"]
         trades.append(result)
-    logger.info(f"{mode}: シミュレートしたトレード数 {len(trades)}件")
+    logger.info(f"{label}: シミュレートしたトレード数 {len(trades)}件")
     return trades
 
 
@@ -234,14 +220,16 @@ def _extended_summary(trades):
             "gakkuri_exit_count": 0,
             "stop_loss_count": 0,
             "time_exit_count": 0,
+            "data_end_exit_count": 0,
         })
         return summary
 
     df = pd.DataFrame(trades)
     summary["max_holding_days"] = int(df["holding_days"].max())
-    summary["gakkuri_exit_count"] = int(df["exit_reason"].astype(str).str.startswith("gakkuri_").sum())
+    summary["gakkuri_exit_count"] = int((df["exit_reason"] == "gakkuri_b").sum())
     summary["stop_loss_count"] = int((df["exit_reason"] == "stop_loss").sum())
     summary["time_exit_count"] = int((df["exit_reason"] == "time_exit").sum())
+    summary["data_end_exit_count"] = int((df["exit_reason"] == "data_end_exit").sum())
     return summary
 
 
@@ -263,8 +251,8 @@ def _filter_by_keys(trades, keys):
 
 
 def main():
-    logger.info("=== くいっと→がっくり 出口比較バックテスト開始 ===")
-    logger.info("本番条件は変更せず、現行入口に対して fixed / がっくりA/B/C を比較します。")
+    logger.info("=== がっくりB 出口条件比較バックテスト開始 ===")
+    logger.info("本番条件は変更せず、がっくりBの損切り・保有上限だけを比較します。")
 
     strategy = registry.get_strategy("ma5_breakout")
     target_codes = download.get_target_codes()
@@ -276,16 +264,23 @@ def main():
 
     signals, price_data_by_code = strategy(price_df, target_codes)
 
-    # 現行出口は既存実装をそのまま利用。
     fixed_trades = backtest.run_backtest(signals, price_data_by_code)
     exit_trades = {
         "fixed_5tp_3sl_10d": fixed_trades,
-        "gakkuri_a": _run_gakkuri_backtest(signals, price_data_by_code, "gakkuri_a"),
-        "gakkuri_b": _run_gakkuri_backtest(signals, price_data_by_code, "gakkuri_b"),
-        "gakkuri_c": _run_gakkuri_backtest(signals, price_data_by_code, "gakkuri_c"),
+        "b_sl3_30d": _run_b_backtest(
+            signals, price_data_by_code, "b_sl3_30d", use_stop_loss=True, max_hold_days=30
+        ),
+        "b_no_sl_30d": _run_b_backtest(
+            signals, price_data_by_code, "b_no_sl_30d", use_stop_loss=False, max_hold_days=30
+        ),
+        "b_sl3_unlimited": _run_b_backtest(
+            signals, price_data_by_code, "b_sl3_unlimited", use_stop_loss=True, max_hold_days=None
+        ),
+        "b_pure": _run_b_backtest(
+            signals, price_data_by_code, "b_pure", use_stop_loss=False, max_hold_days=None
+        ),
     }
 
-    # 入口条件はシグナル当日時点の情報だけで分類する。
     all_keys = set()
     volume_keys = set()
     rsi_keys = set()
@@ -296,10 +291,7 @@ def main():
         key = (str(sig["code"]), pd.Timestamp(sig["signal_date"]))
         all_keys.add(key)
         f = _entry_features(g, sig["signal_idx"])
-        in_ma25_band = (
-            pd.notna(f["ma25_dev_pct"])
-            and -10 <= f["ma25_dev_pct"] < -5
-        )
+        in_ma25_band = pd.notna(f["ma25_dev_pct"]) and -10 <= f["ma25_dev_pct"] < -5
         if in_ma25_band and pd.notna(f["volume_ratio"]) and f["volume_ratio"] < 1.0:
             volume_keys.add(key)
         if in_ma25_band and pd.notna(f["rsi14"]) and 40 <= f["rsi14"] < 50:
@@ -313,17 +305,18 @@ def main():
 
     output = {
         "settings": {
-            "gakkuri_max_hold_days": GAKKURI_MAX_HOLD_DAYS,
+            "gakkuri_mode": "B",
             "stop_loss_pct": config.BACKTEST_STOP_LOSS_PCT,
-            "lower_wick_max_body_multiple": LOWER_WICK_MAX_BODY_MULTIPLE,
+            "limited_hold_days": GAKKURI_MAX_HOLD_DAYS,
             "gakkuri_exit_timing": "signal next business day open",
+            "unlimited_fallback": "last available close as data_end_exit",
         },
         "groups": {},
     }
 
-    logger.info("\n" + "=" * 104)
-    logger.info("出口比較")
-    logger.info("=" * 104)
+    logger.info("\n" + "=" * 108)
+    logger.info("がっくりB 出口条件比較")
+    logger.info("=" * 108)
 
     for group_name, keys in groups.items():
         logger.info(f"\n### 入口: {group_name}（対象キー {len(keys)}件）")
@@ -333,17 +326,15 @@ def main():
             selected = _filter_by_keys(trades, keys)
             summary = _extended_summary(selected)
             yearly = _yearly_records(selected)
-            group_result[exit_name] = {
-                "summary": summary,
-                "yearly": yearly,
-            }
+            group_result[exit_name] = {"summary": summary, "yearly": yearly}
 
             logger.info(f"{exit_name}: {_fmt(summary)}")
             logger.info(
                 "  決済内訳: "
                 f"がっくり {summary.get('gakkuri_exit_count', 0)} / "
                 f"損切り {summary.get('stop_loss_count', 0)} / "
-                f"期日 {summary.get('time_exit_count', 0)} / "
+                f"30日期日 {summary.get('time_exit_count', 0)} / "
+                f"データ末尾 {summary.get('data_end_exit_count', 0)} / "
                 f"最大保有 {summary.get('max_holding_days')}日"
             )
             if yearly:
@@ -355,19 +346,18 @@ def main():
         output["groups"][group_name] = group_result
 
     os.makedirs("output", exist_ok=True)
-    with open("output/gakkuri_exit_comparison.json", "w", encoding="utf-8") as f:
+    with open("output/gakkuri_b_variant_comparison.json", "w", encoding="utf-8") as f:
         json.dump(output, f, ensure_ascii=False, indent=2, default=str)
 
-    # 後から個別トレードも確認できるよう、出口別にCSV保存。
     for exit_name, trades in exit_trades.items():
         pd.DataFrame(trades).to_csv(
-            f"output/gakkuri_trades_{exit_name}.csv",
+            f"output/gakkuri_b_trades_{exit_name}.csv",
             index=False,
             encoding="utf-8-sig",
         )
 
-    logger.info("\n結果を output/gakkuri_exit_comparison.json に保存しました。")
-    logger.info("=== くいっと→がっくり 出口比較バックテスト完了 ===")
+    logger.info("\n結果を output/gakkuri_b_variant_comparison.json に保存しました。")
+    logger.info("=== がっくりB 出口条件比較バックテスト完了 ===")
 
 
 if __name__ == "__main__":
