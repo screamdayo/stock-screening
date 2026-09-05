@@ -15,7 +15,7 @@ on:
       strategy:
         description: "戦略名（strategies/registry.pyに登録されているもの）"
         required: false
-        default: "kuitto"
+        default: "ma5_breakout"
         type: string
       condition:
         description: "MA判定方式（modeがnormalのときのみ使用）"
