@@ -1,4 +1,4 @@
-"""有力2戦略を最大8同時保有で現実運用に近づけて比較する実験。
+"""有力2戦略で「同日候補のどれを最大8枠に入れるか」を単独指標ごとに比較する実験。
 
 本番スクリーニング条件・通常バックテストは変更しない。
 既存 ranking モードを実験枠として使う。
@@ -12,15 +12,24 @@
 - 出口: 純がっくりB（損切りなし・保有上限なし）
 
 最大8ポジション。1銘柄は同時に1ポジションまで。
-同日候補が空き枠を超える場合はコード昇順で決定する。
-これは将来のexit_dateや損益を使わないため、既存のmax-position処理にあった
-未来情報による並び替えを避けた決定的な比較用ルール。
+候補順位はシグナル当日の情報だけを使い、将来のexit_dateや損益は一切使わない。
 
-資産推移は初期資金100万円を8スロットに等分（各12.5万円）し、
-各スロットが決済ごとに複利で増減する簡易モデル。
+比較する同日優先順位:
+- code_asc: 銘柄コード昇順（前回の基準）
+- ma25_deeper: MA25乖離がよりマイナス（-10%側）
+- ma25_shallower: MA25乖離が浅い（-5%側）
+- volume_lower: 出来高倍率が低い
+- rsi_lower: RSIが低い
+- rsi_near45: RSIが45に近い
+- gain_lower: 当日上昇率が低い
+- ma5_rise_lower: MA5上昇率が低い
+- close_near80: 終値位置が80%に近い
+
+資産推移は初期100万円を8スロットに等分し、各スロットを決済ごとに複利。
 """
 
 import json
+import math
 import os
 
 import pandas as pd
@@ -37,6 +46,19 @@ RSI_PERIOD = 14
 MAX_POSITIONS = 8
 INITIAL_CAPITAL = 1_000_000
 GAKKURI_MAX_HOLD_DAYS = 30
+RECENT_START_YEAR = 2025
+
+RANKING_MODES = [
+    ("code_asc", "コード昇順（基準）"),
+    ("ma25_deeper", "MA25乖離が深い順（-10%側）"),
+    ("ma25_shallower", "MA25乖離が浅い順（-5%側）"),
+    ("volume_lower", "出来高倍率が低い順"),
+    ("rsi_lower", "RSIが低い順"),
+    ("rsi_near45", "RSIが45に近い順"),
+    ("gain_lower", "当日上昇率が低い順"),
+    ("ma5_rise_lower", "MA5上昇率が低い順"),
+    ("close_near80", "終値位置が80%に近い順"),
+]
 
 
 def _rsi_series(close, period=14):
@@ -70,11 +92,33 @@ def _entry_features(g, idx):
 
     if "RSI14" not in g.columns:
         g["RSI14"] = _rsi_series(g["C"], RSI_PERIOD)
+    rsi14 = g["RSI14"].iloc[idx]
+
+    gain_pct = None
+    if pd.notna(row["O"]) and row["O"] > 0 and pd.notna(row["C"]):
+        gain_pct = (row["C"] / row["O"] - 1) * 100
+
+    ma5_rise_pct = None
+    if idx > 0:
+        ma5_prev = g["MA_SHORT"].iloc[idx - 1]
+        ma5_today = g["MA_SHORT"].iloc[idx]
+        if pd.notna(ma5_prev) and ma5_prev != 0 and pd.notna(ma5_today):
+            ma5_rise_pct = (ma5_today / ma5_prev - 1) * 100
+
+    close_position_pct = None
+    if (
+        pd.notna(row["H"]) and pd.notna(row["L"]) and pd.notna(row["C"])
+        and row["H"] > row["L"]
+    ):
+        close_position_pct = (row["C"] - row["L"]) / (row["H"] - row["L"]) * 100
 
     return {
         "volume_ratio": volume_ratio,
         "ma25_dev_pct": ma25_dev_pct,
-        "rsi14": g["RSI14"].iloc[idx],
+        "rsi14": rsi14,
+        "gain_pct": gain_pct,
+        "ma5_rise_pct": ma5_rise_pct,
+        "close_position_pct": close_position_pct,
     }
 
 
@@ -212,10 +256,43 @@ def _build_strategy_trades(signals, price_data_by_code, kind):
 
         result["code"] = str(sig["code"])
         result["signal_date"] = sig["signal_date"]
+        # 優先順位はこのシグナル当日の特徴だけを使う。
+        result.update(f)
         trades.append(result)
 
     logger.info(f"戦略{kind}: 対象シグナル {eligible_signals}件 / トレード候補 {len(trades)}件")
     return trades
+
+
+def _safe_num(value, fallback=float("inf")):
+    if value is None or pd.isna(value):
+        return fallback
+    return float(value)
+
+
+def _rank_key(trade, mode):
+    code = str(trade["code"])
+    if mode == "code_asc":
+        return (code,)
+    if mode == "ma25_deeper":
+        return (_safe_num(trade.get("ma25_dev_pct")), code)
+    if mode == "ma25_shallower":
+        return (-_safe_num(trade.get("ma25_dev_pct"), fallback=-float("inf")), code)
+    if mode == "volume_lower":
+        return (_safe_num(trade.get("volume_ratio")), code)
+    if mode == "rsi_lower":
+        return (_safe_num(trade.get("rsi14")), code)
+    if mode == "rsi_near45":
+        rsi = _safe_num(trade.get("rsi14"))
+        return (abs(rsi - 45), code)
+    if mode == "gain_lower":
+        return (_safe_num(trade.get("gain_pct")), code)
+    if mode == "ma5_rise_lower":
+        return (_safe_num(trade.get("ma5_rise_pct")), code)
+    if mode == "close_near80":
+        pos = _safe_num(trade.get("close_position_pct"))
+        return (abs(pos - 80), code)
+    raise ValueError(mode)
 
 
 def _release_is_before_entry(trade, entry_date):
@@ -227,12 +304,12 @@ def _release_is_before_entry(trade, entry_date):
     return exit_date == entry_date and trade.get("exit_reason") == "gakkuri_b"
 
 
-def _portfolio_max8(candidate_trades):
-    """未来の損益・exit_dateで候補順位を付けず、最大8同時保有を再現する。"""
-    candidates = sorted(
-        candidate_trades,
-        key=lambda t: (pd.Timestamp(t["entry_date"]), str(t["code"])),
-    )
+def _portfolio_max8(candidate_trades, ranking_mode):
+    """同日候補だけを指定指標で順位付けし、最大8同時保有を再現する。"""
+    by_date = {}
+    for tr in candidate_trades:
+        d = pd.Timestamp(tr["entry_date"])
+        by_date.setdefault(d, []).append(tr)
 
     slots = [
         {"capital": INITIAL_CAPITAL / MAX_POSITIONS, "trade": None}
@@ -243,7 +320,6 @@ def _portfolio_max8(candidate_trades):
     skipped_duplicate_code = 0
     max_concurrent = 0
 
-    # 決済時にスロット資金を確定させる。
     def release_slots(entry_date):
         for slot in slots:
             tr = slot["trade"]
@@ -253,32 +329,33 @@ def _portfolio_max8(candidate_trades):
                 slot["capital"] *= 1 + tr["profit_pct"] / 100
                 slot["trade"] = None
 
-    for tr in candidates:
-        entry_date = pd.Timestamp(tr["entry_date"])
+    for entry_date in sorted(by_date):
         release_slots(entry_date)
+        day_candidates = sorted(by_date[entry_date], key=lambda t: _rank_key(t, ranking_mode))
 
-        active_codes = {
-            str(slot["trade"]["code"])
-            for slot in slots
-            if slot["trade"] is not None
-        }
-        if str(tr["code"]) in active_codes:
-            skipped_duplicate_code += 1
-            continue
+        for tr in day_candidates:
+            active_codes = {
+                str(slot["trade"]["code"])
+                for slot in slots
+                if slot["trade"] is not None
+            }
+            if str(tr["code"]) in active_codes:
+                skipped_duplicate_code += 1
+                continue
 
-        free_slot = next((slot for slot in slots if slot["trade"] is None), None)
-        if free_slot is None:
-            skipped_capacity += 1
-            continue
+            free_slot = next((slot for slot in slots if slot["trade"] is None), None)
+            if free_slot is None:
+                skipped_capacity += 1
+                continue
 
-        tr_copy = dict(tr)
-        tr_copy["slot_entry_capital"] = round(free_slot["capital"], 2)
-        free_slot["trade"] = tr_copy
-        selected.append(tr_copy)
-        concurrent = sum(slot["trade"] is not None for slot in slots)
-        max_concurrent = max(max_concurrent, concurrent)
+            tr_copy = dict(tr)
+            tr_copy["slot_entry_capital"] = round(free_slot["capital"], 2)
+            tr_copy["ranking_mode"] = ranking_mode
+            free_slot["trade"] = tr_copy
+            selected.append(tr_copy)
+            concurrent = sum(slot["trade"] is not None for slot in slots)
+            max_concurrent = max(max_concurrent, concurrent)
 
-    # 最後に残っているポジションも各トレードの既定exitで決済して資金確定。
     for slot in slots:
         tr = slot["trade"]
         if tr is not None:
@@ -305,34 +382,78 @@ def _yearly_records(trades):
     return yearly.to_dict("records") if not yearly.empty else []
 
 
-def _log_result(name, summary, yearly):
-    logger.info("\n" + "=" * 108)
-    logger.info(name)
-    logger.info("=" * 108)
+def _recent_summary(trades):
+    recent = [t for t in trades if pd.Timestamp(t["entry_date"]).year >= RECENT_START_YEAR]
+    return backtest.summarize_trades(recent)
+
+
+def _pf_num(summary):
+    pf = summary.get("profit_factor")
+    if isinstance(pf, (int, float)) and math.isfinite(float(pf)):
+        return float(pf)
+    return -1.0
+
+
+def _log_mode(label, summary, recent):
     logger.info(
-        f"候補 {summary['candidate_trades']}件 → 実エントリー {summary['actual_entries']}件 / "
-        f"容量見送り {summary['skipped_capacity']}件 / 同一銘柄重複見送り {summary['skipped_duplicate_code']}件"
+        f"{label}: entries {summary['actual_entries']} / PF {summary.get('profit_factor')} / "
+        f"勝率 {summary.get('win_rate')}% / 資産 {summary['ending_capital']:,.0f}円 "
+        f"({summary['portfolio_return_pct']:+.2f}%) / 2025-26 PF {recent.get('profit_factor')} "
+        f"勝率 {recent.get('win_rate')}%"
     )
-    logger.info(
-        f"勝率 {summary.get('win_rate')}% / PF {summary.get('profit_factor')} / "
-        f"平均勝ち {summary.get('avg_profit_pct')}% / 平均負け {summary.get('avg_loss_pct')}% / "
-        f"平均保有 {summary.get('avg_holding_days')}日"
-    )
-    logger.info(
-        f"最大同時保有 {summary['max_concurrent_positions']} / "
-        f"資産 {summary['initial_capital']:,.0f}円 → {summary['ending_capital']:,.0f}円 "
-        f"({summary['portfolio_return_pct']:+.2f}%)"
-    )
-    if yearly:
-        logger.info("年別: " + " / ".join(
-            f"{int(r['year'])}: {int(r['total_trades'])}件 PF{r['profit_factor']} 勝率{r['win_rate']}%"
-            for r in yearly
-        ))
+
+
+def _run_rankings(strategy_name, candidate_trades):
+    logger.info("\n" + "=" * 116)
+    logger.info(strategy_name)
+    logger.info("=" * 116)
+
+    results = {}
+    rows_for_ranking = []
+
+    for mode, label in RANKING_MODES:
+        selected, summary = _portfolio_max8(candidate_trades, mode)
+        yearly = _yearly_records(selected)
+        recent = _recent_summary(selected)
+        results[mode] = {
+            "label": label,
+            "summary": summary,
+            "recent_2025_2026": recent,
+            "yearly": yearly,
+        }
+        rows_for_ranking.append((mode, label, summary, recent))
+        _log_mode(label, summary, recent)
+
+        pd.DataFrame(selected).to_csv(
+            f"output/max8_rank_{strategy_name.split(':')[0]}_{mode}.csv",
+            index=False,
+            encoding="utf-8-sig",
+        )
+
+    logger.info("\n--- 全期間PF順 ---")
+    for i, (mode, label, summary, recent) in enumerate(
+        sorted(rows_for_ranking, key=lambda x: _pf_num(x[2]), reverse=True), 1
+    ):
+        logger.info(
+            f"{i:02d}. {label}: PF {summary.get('profit_factor')} / "
+            f"資産 {summary['ending_capital']:,.0f}円 / 2025-26 PF {recent.get('profit_factor')}"
+        )
+
+    logger.info("\n--- 2025-26 PF順 ---")
+    for i, (mode, label, summary, recent) in enumerate(
+        sorted(rows_for_ranking, key=lambda x: _pf_num(x[3]), reverse=True), 1
+    ):
+        logger.info(
+            f"{i:02d}. {label}: 2025-26 PF {recent.get('profit_factor')} / "
+            f"全期間PF {summary.get('profit_factor')} / 資産 {summary['ending_capital']:,.0f}円"
+        )
+
+    return results
 
 
 def main():
-    logger.info("=== 有力2戦略 最大8ポジション現実運用バックテスト開始 ===")
-    logger.info("未来情報で候補順位を付けず、同日候補はコード昇順で処理します。")
+    logger.info("=== 最大8枠 同日候補ランキング検証開始 ===")
+    logger.info("候補順位はシグナル当日の情報だけを使用。未来の決済日・損益は使いません。")
 
     strategy = registry.get_strategy("ma5_breakout")
     target_codes = download.get_target_codes()
@@ -346,47 +467,33 @@ def main():
     candidate_a = _build_strategy_trades(signals, price_data_by_code, "A")
     candidate_b = _build_strategy_trades(signals, price_data_by_code, "B")
 
-    selected_a, summary_a = _portfolio_max8(candidate_a)
-    selected_b, summary_b = _portfolio_max8(candidate_b)
-    yearly_a = _yearly_records(selected_a)
-    yearly_b = _yearly_records(selected_b)
-
-    _log_result(
-        "戦略A: MA25 -10〜-5% × 出来高<1.0x → がっくりB + -3%SL + 30日",
-        summary_a,
-        yearly_a,
-    )
-    _log_result(
-        "戦略B: MA25 -10〜-5% × RSI40-50 → 純がっくりB",
-        summary_b,
-        yearly_b,
-    )
-
     os.makedirs("output", exist_ok=True)
+
+    results_a = _run_rankings(
+        "A: MA25 -10〜-5% × 出来高<1.0x → がっくりB + -3%SL + 30日",
+        candidate_a,
+    )
+    results_b = _run_rankings(
+        "B: MA25 -10〜-5% × RSI40-50 → 純がっくりB",
+        candidate_b,
+    )
+
     output = {
         "settings": {
             "max_positions": MAX_POSITIONS,
             "initial_capital": INITIAL_CAPITAL,
-            "position_model": "8 independent equal-capital slots, compounded per slot",
-            "same_day_candidate_order": "code ascending; no future outcome/exit-date ranking",
-            "same_code_rule": "one simultaneous position per code",
-            "same_day_reuse": "gakkuri next-open exits free a slot for same-day next-open entries",
+            "ranking_uses_future_information": False,
+            "recent_start_year": RECENT_START_YEAR,
+            "ranking_modes": [m for m, _ in RANKING_MODES],
         },
-        "strategy_A": {"summary": summary_a, "yearly": yearly_a},
-        "strategy_B": {"summary": summary_b, "yearly": yearly_b},
+        "strategy_A": results_a,
+        "strategy_B": results_b,
     }
-    with open("output/max8_two_strategy_comparison.json", "w", encoding="utf-8") as f:
+    with open("output/max8_ranking_comparison.json", "w", encoding="utf-8") as f:
         json.dump(output, f, ensure_ascii=False, indent=2, default=str)
 
-    pd.DataFrame(selected_a).to_csv(
-        "output/max8_strategy_A_trades.csv", index=False, encoding="utf-8-sig"
-    )
-    pd.DataFrame(selected_b).to_csv(
-        "output/max8_strategy_B_trades.csv", index=False, encoding="utf-8-sig"
-    )
-
-    logger.info("\n結果を output/max8_two_strategy_comparison.json に保存しました。")
-    logger.info("=== 有力2戦略 最大8ポジション現実運用バックテスト完了 ===")
+    logger.info("\n結果を output/max8_ranking_comparison.json に保存しました。")
+    logger.info("=== 最大8枠 同日候補ランキング検証完了 ===")
 
 
 if __name__ == "__main__":
