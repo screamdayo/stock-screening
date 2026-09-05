@@ -78,7 +78,7 @@ jobs:
           --strategy "${{ github.event.inputs.strategy }}"
           --sweep-pattern
 
-      - name: がっくり出口比較バックテスト実行
+      - name: 有力2戦略 最大8ポジション現実運用バックテスト実行
         if: github.event.inputs.mode == 'ranking'
         env:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
