@@ -31,9 +31,6 @@ on:
 jobs:
   backtest:
     runs-on: ubuntu-latest
-    # バックテストは5年分のデータを扱うため時間がかかる。
-    # スイープモードは複数パターンを繰り返すためさらに時間がかかるので、
-    # デフォルトの6時間ではなく明示的にタイムアウトを設定しておく。
     timeout-minutes: 180
     steps:
       - uses: actions/checkout@v4
@@ -46,9 +43,6 @@ jobs:
       - name: ライブラリインストール
         run: pip install -r requirements.txt
 
-      # data/フォルダのキャッシュ（株価CSV）をGitHub Actionsのキャッシュ機能で
-      # 実行間を超えて保持する。これがないと毎回5年分を再取得することになり、
-      # スイープモードでは特に非現実的な時間がかかってしまう。
       - name: 株価データキャッシュの復元
         id: cache-restore
         uses: actions/cache/restore@v4
@@ -78,16 +72,13 @@ jobs:
           --strategy "${{ github.event.inputs.strategy }}"
           --sweep-pattern
 
-      - name: 有力2戦略 最大8ポジション現実運用バックテスト実行
+      - name: 最大8枠 同日候補ランキング検証実行
         if: github.event.inputs.mode == 'ranking'
         env:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
           JQUANTS_API_KEY: ${{ secrets.JQUANTS_API_KEY }}
         run: python run_backtest_ranking.py
 
-      # 差分取得で更新された最新のdata/を、次回の実行のために保存し直す。
-      # restore/saveアクションを分けて使うことで、run_idごとに新しいキーで
-      # 保存しつつ、次回はrestore-keysの前方一致で最新のものを拾える。
       - name: 株価データキャッシュの保存
         if: always()
         uses: actions/cache/save@v4
@@ -95,10 +86,6 @@ jobs:
           path: data/
           key: backtest-price-cache-v1-${{ github.run_id }}
 
-      # 実行結果（CSV/JSON）をアーティファクトとして保存する。
-      # data/やoutput/はコンテナ終了と同時に消えるため、後から中身を
-      # ダウンロードして確認したい場合はここから取得する
-      # （Discord通知はサマリーのみで、詳細なtrades.csvなどはここにしか残らない）。
       - name: 結果ファイルをアーティファクトとして保存
         if: always()
         uses: actions/upload-artifact@v4
