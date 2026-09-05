@@ -78,7 +78,7 @@ jobs:
           --strategy "${{ github.event.inputs.strategy }}"
           --sweep-pattern
 
-      - name: ランキング比較バックテスト実行
+      - name: がっくり出口比較バックテスト実行
         if: github.event.inputs.mode == 'ranking'
         env:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
