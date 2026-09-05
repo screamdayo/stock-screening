@@ -11,6 +11,7 @@ on:
         options:
           - normal
           - sweep-pattern
+          - ranking
       strategy:
         description: "戦略名（strategies/registry.pyに登録されているもの）"
         required: false
@@ -76,6 +77,13 @@ jobs:
           python run_backtest.py
           --strategy "${{ github.event.inputs.strategy }}"
           --sweep-pattern
+
+      - name: ランキング比較バックテスト実行
+        if: github.event.inputs.mode == 'ranking'
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          JQUANTS_API_KEY: ${{ secrets.JQUANTS_API_KEY }}
+        run: python run_backtest_ranking.py
 
       # 差分取得で更新された最新のdata/を、次回の実行のために保存し直す。
       # restore/saveアクションを分けて使うことで、run_idごとに新しいキーで
