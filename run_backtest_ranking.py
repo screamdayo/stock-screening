@@ -1,4 +1,4 @@
-"""有力2戦略で、同日候補の下位切り捨て率を細かく比較する最大8枠実験。
+"""戦略A/Bを同じ最大8枠で運用する、本番寄りの共有ポートフォリオ実験。
 
 本番スクリーニング条件・通常バックテストは変更しない。
 候補順位・切り捨て判定はシグナル当日の情報だけを使い、未来の決済日や損益は使わない。
@@ -6,14 +6,21 @@
 戦略A
 - 入口: MA25乖離 -10〜-5% × 出来高前日比 <1.0
 - 出口: がっくりB + -3%損切り + 最大30営業日
-- 順位: MA25乖離が浅い（-5%側）ほど上
-- 前回20%切りが最良だったため 15 / 20 / 25% を細かく比較
+- 同日順位: MA25乖離が浅い（-5%側）ほど上
+- 下位20%を除外
 
 戦略B
 - 入口: MA25乖離 -10〜-5% × RSI14 40〜50
 - 出口: 純がっくりB（損切りなし・保有上限なし）
-- 順位: MA25乖離が深い（-10%側）ほど上
-- 前回50%切りが最良だったため 40 / 45 / 50 / 55 / 60% を細かく比較
+- 同日順位: MA25乖離が深い（-10%側）ほど上
+- 下位50%を除外
+
+A/Bは別々に8枠を持たず、合計8枠を共有する。
+同じ銘柄が同日にA/B両方へ入った場合は、優先ルールに従って片方だけ採用する。
+比較する共有順位:
+- A優先
+- B優先
+- A/Bそれぞれの同日順位を0〜1へ正規化して混ぜるバランス順位
 """
 
 import json
@@ -35,25 +42,14 @@ MAX_POSITIONS = 8
 INITIAL_CAPITAL = 1_000_000
 GAKKURI_MAX_HOLD_DAYS = 30
 RECENT_START_YEAR = 2025
+A_CUT_PCT = 20
+B_CUT_PCT = 50
 
-CUT_MODES = {
-    "A": [
-        ("code_asc", "コード昇順（旧基準）", None),
-        ("ma25_all", "MA25順位・切り捨てなし", 0),
-        ("cut15", "MA25順位・下位15%切り捨て", 15),
-        ("cut20", "MA25順位・下位20%切り捨て", 20),
-        ("cut25", "MA25順位・下位25%切り捨て", 25),
-    ],
-    "B": [
-        ("code_asc", "コード昇順（旧基準）", None),
-        ("ma25_all", "MA25順位・切り捨てなし", 0),
-        ("cut40", "MA25順位・下位40%切り捨て", 40),
-        ("cut45", "MA25順位・下位45%切り捨て", 45),
-        ("cut50", "MA25順位・下位50%切り捨て", 50),
-        ("cut55", "MA25順位・下位55%切り捨て", 55),
-        ("cut60", "MA25順位・下位60%切り捨て", 60),
-    ],
-}
+MERGE_MODES = [
+    ("a_first", "A優先 → B"),
+    ("b_first", "B優先 → A"),
+    ("balanced_rank", "A/B同日順位を正規化して混合"),
+]
 
 
 def _rsi_series(close, period=14):
@@ -135,6 +131,7 @@ def _ma5_slope(g, idx):
 def _is_gakkuri_b(g, idx):
     if idx < 2:
         return False
+
     row = g.iloc[idx]
     if pd.isna(row["O"]) or pd.isna(row["C"]) or row["C"] >= row["O"]:
         return False
@@ -149,7 +146,7 @@ def _is_gakkuri_b(g, idx):
     return s2 > s1 >= 0 and s0 < 0 and pd.notna(ma5) and row["C"] < ma5
 
 
-def _simulate_b_trade(g, signal_idx, use_stop_loss, max_hold_days):
+def _simulate_trade(g, signal_idx, kind):
     entry_idx = signal_idx + 1
     if entry_idx >= len(g):
         return None
@@ -159,6 +156,8 @@ def _simulate_b_trade(g, signal_idx, use_stop_loss, max_hold_days):
     if pd.isna(entry_price) or entry_price <= 0:
         return None
 
+    use_stop_loss = kind == "A"
+    max_hold_days = GAKKURI_MAX_HOLD_DAYS if kind == "A" else None
     stop_price = entry_price * (1 - config.BACKTEST_STOP_LOSS_PCT / 100)
     hold_end_idx = (
         len(g) - 1
@@ -225,18 +224,13 @@ def _build_strategy_trades(signals, price_data_by_code, kind):
             continue
 
         f = _entry_features(g, sig["signal_idx"])
-        in_band = pd.notna(f["ma25_dev_pct"]) and -10 <= f["ma25_dev_pct"] < -5
-        if not in_band:
+        if not (pd.notna(f["ma25_dev_pct"]) and -10 <= f["ma25_dev_pct"] < -5):
             continue
 
         if kind == "A":
             eligible = pd.notna(f["volume_ratio"]) and f["volume_ratio"] < 1.0
-            use_stop_loss = True
-            max_hold_days = GAKKURI_MAX_HOLD_DAYS
         elif kind == "B":
             eligible = pd.notna(f["rsi14"]) and 40 <= f["rsi14"] < 50
-            use_stop_loss = False
-            max_hold_days = None
         else:
             raise ValueError(kind)
 
@@ -244,17 +238,13 @@ def _build_strategy_trades(signals, price_data_by_code, kind):
             continue
         eligible_signals += 1
 
-        result = _simulate_b_trade(
-            g,
-            sig["signal_idx"],
-            use_stop_loss=use_stop_loss,
-            max_hold_days=max_hold_days,
-        )
+        result = _simulate_trade(g, sig["signal_idx"], kind)
         if result is None:
             continue
 
         result["code"] = str(sig["code"])
         result["signal_date"] = sig["signal_date"]
+        result["strategy"] = kind
         result.update(f)
         trades.append(result)
 
@@ -268,7 +258,7 @@ def _safe_num(value, fallback=float("inf")):
     return float(value)
 
 
-def _quality_rank_key(trade, kind):
+def _strategy_rank_key(trade, kind):
     code = str(trade["code"])
     ma25 = _safe_num(trade.get("ma25_dev_pct"))
     if kind == "A":
@@ -276,6 +266,62 @@ def _quality_rank_key(trade, kind):
     if kind == "B":
         return (ma25, code)
     raise ValueError(kind)
+
+
+def _cut_day_candidates(day_candidates, kind, cut_pct):
+    ranked = sorted(day_candidates, key=lambda t: _strategy_rank_key(t, kind))
+    if not ranked:
+        return []
+
+    keep_n = max(1, math.ceil(len(ranked) * (1 - cut_pct / 100)))
+    kept = ranked[:keep_n]
+    denom = max(1, len(kept) - 1)
+    result = []
+    for rank, tr in enumerate(kept):
+        tr_copy = dict(tr)
+        tr_copy["within_strategy_rank"] = rank + 1
+        tr_copy["within_strategy_count"] = len(kept)
+        tr_copy["normalized_rank"] = rank / denom if len(kept) > 1 else 0.0
+        tr_copy["quality_cut_pct"] = cut_pct
+        result.append(tr_copy)
+    return result
+
+
+def _merge_day_candidates(a_day, b_day, mode):
+    a_kept = _cut_day_candidates(a_day, "A", A_CUT_PCT)
+    b_kept = _cut_day_candidates(b_day, "B", B_CUT_PCT)
+
+    if mode == "a_first":
+        combined = sorted(a_kept, key=lambda t: (t["within_strategy_rank"], str(t["code"])))
+        combined += sorted(b_kept, key=lambda t: (t["within_strategy_rank"], str(t["code"])))
+    elif mode == "b_first":
+        combined = sorted(b_kept, key=lambda t: (t["within_strategy_rank"], str(t["code"])))
+        combined += sorted(a_kept, key=lambda t: (t["within_strategy_rank"], str(t["code"])))
+    elif mode == "balanced_rank":
+        combined = sorted(
+            a_kept + b_kept,
+            key=lambda t: (
+                t["normalized_rank"],
+                0 if t["strategy"] == "A" else 1,
+                str(t["code"]),
+            ),
+        )
+    else:
+        raise ValueError(mode)
+
+    # 同じ銘柄が同日にA/B両方へ入った場合、共有順位で先に来た方だけ残す。
+    deduped = []
+    seen_codes = set()
+    duplicate_same_day = 0
+    for tr in combined:
+        code = str(tr["code"])
+        if code in seen_codes:
+            duplicate_same_day += 1
+            continue
+        seen_codes.add(code)
+        deduped.append(tr)
+
+    return deduped, len(a_kept), len(b_kept), duplicate_same_day
 
 
 def _release_is_before_entry(trade, entry_date):
@@ -286,20 +332,31 @@ def _release_is_before_entry(trade, entry_date):
     return exit_date == entry_date and trade.get("exit_reason") == "gakkuri_b"
 
 
-def _portfolio_max8(candidate_trades, kind, mode, cut_pct):
-    by_date = {}
-    for tr in candidate_trades:
+def _portfolio_shared_max8(candidate_a, candidate_b, mode):
+    a_by_date = {}
+    b_by_date = {}
+    all_dates = set()
+
+    for tr in candidate_a:
         d = pd.Timestamp(tr["entry_date"])
-        by_date.setdefault(d, []).append(tr)
+        a_by_date.setdefault(d, []).append(tr)
+        all_dates.add(d)
+    for tr in candidate_b:
+        d = pd.Timestamp(tr["entry_date"])
+        b_by_date.setdefault(d, []).append(tr)
+        all_dates.add(d)
 
     slots = [
         {"capital": INITIAL_CAPITAL / MAX_POSITIONS, "trade": None}
         for _ in range(MAX_POSITIONS)
     ]
+
     selected = []
     skipped_capacity = 0
-    skipped_duplicate_code = 0
-    skipped_quality_cut = 0
+    skipped_active_duplicate = 0
+    duplicate_same_day = 0
+    kept_after_cut_a = 0
+    kept_after_cut_b = 0
     max_concurrent = 0
 
     def release_slots(entry_date):
@@ -309,18 +366,16 @@ def _portfolio_max8(candidate_trades, kind, mode, cut_pct):
                 slot["capital"] *= 1 + tr["profit_pct"] / 100
                 slot["trade"] = None
 
-    for entry_date in sorted(by_date):
+    for entry_date in sorted(all_dates):
         release_slots(entry_date)
-        day_candidates = list(by_date[entry_date])
-
-        if mode == "code_asc":
-            day_candidates.sort(key=lambda t: str(t["code"]))
-        else:
-            day_candidates.sort(key=lambda t: _quality_rank_key(t, kind))
-            if cut_pct and len(day_candidates) > 1:
-                keep_n = max(1, math.ceil(len(day_candidates) * (1 - cut_pct / 100)))
-                skipped_quality_cut += len(day_candidates) - keep_n
-                day_candidates = day_candidates[:keep_n]
+        day_candidates, kept_a, kept_b, dup_day = _merge_day_candidates(
+            a_by_date.get(entry_date, []),
+            b_by_date.get(entry_date, []),
+            mode,
+        )
+        kept_after_cut_a += kept_a
+        kept_after_cut_b += kept_b
+        duplicate_same_day += dup_day
 
         for tr in day_candidates:
             active_codes = {
@@ -329,7 +384,7 @@ def _portfolio_max8(candidate_trades, kind, mode, cut_pct):
                 if slot["trade"] is not None
             }
             if str(tr["code"]) in active_codes:
-                skipped_duplicate_code += 1
+                skipped_active_duplicate += 1
                 continue
 
             free_slot = next((slot for slot in slots if slot["trade"] is None), None)
@@ -339,12 +394,13 @@ def _portfolio_max8(candidate_trades, kind, mode, cut_pct):
 
             tr_copy = dict(tr)
             tr_copy["slot_entry_capital"] = round(free_slot["capital"], 2)
-            tr_copy["ranking_mode"] = mode
-            tr_copy["quality_cut_pct"] = cut_pct if cut_pct is not None else 0
+            tr_copy["merge_mode"] = mode
             free_slot["trade"] = tr_copy
             selected.append(tr_copy)
-            concurrent = sum(slot["trade"] is not None for slot in slots)
-            max_concurrent = max(max_concurrent, concurrent)
+            max_concurrent = max(
+                max_concurrent,
+                sum(slot["trade"] is not None for slot in slots),
+            )
 
     for slot in slots:
         tr = slot["trade"]
@@ -354,12 +410,19 @@ def _portfolio_max8(candidate_trades, kind, mode, cut_pct):
 
     ending_capital = sum(slot["capital"] for slot in slots)
     summary = backtest.summarize_trades(selected)
+    a_entries = sum(1 for tr in selected if tr.get("strategy") == "A")
+    b_entries = sum(1 for tr in selected if tr.get("strategy") == "B")
     summary.update({
-        "candidate_trades": len(candidate_trades),
+        "candidate_trades_A": len(candidate_a),
+        "candidate_trades_B": len(candidate_b),
+        "kept_after_cut_A": kept_after_cut_a,
+        "kept_after_cut_B": kept_after_cut_b,
         "actual_entries": len(selected),
+        "entries_A": a_entries,
+        "entries_B": b_entries,
         "skipped_capacity": skipped_capacity,
-        "skipped_duplicate_code": skipped_duplicate_code,
-        "skipped_quality_cut": skipped_quality_cut,
+        "skipped_active_duplicate": skipped_active_duplicate,
+        "duplicate_same_day_A_B": duplicate_same_day,
         "max_concurrent_positions": max_concurrent,
         "initial_capital": INITIAL_CAPITAL,
         "ending_capital": round(ending_capital, 0),
@@ -387,69 +450,19 @@ def _pf_num(summary):
 
 def _log_mode(label, summary, recent):
     logger.info(
-        f"{label}: entries {summary['actual_entries']} / PF {summary.get('profit_factor')} / "
-        f"勝率 {summary.get('win_rate')}% / 資産 {summary['ending_capital']:,.0f}円 "
-        f"({summary['portfolio_return_pct']:+.2f}%) / 品質除外 {summary['skipped_quality_cut']}件 / "
+        f"{label}: entries {summary['actual_entries']} (A {summary['entries_A']} / B {summary['entries_B']}) / "
+        f"PF {summary.get('profit_factor')} / 勝率 {summary.get('win_rate')}% / "
+        f"資産 {summary['ending_capital']:,.0f}円 ({summary['portfolio_return_pct']:+.2f}%) / "
+        f"容量見送り {summary['skipped_capacity']} / 同日AB重複 {summary['duplicate_same_day_A_B']} / "
         f"2025-26 PF {recent.get('profit_factor')} 勝率 {recent.get('win_rate')}%"
     )
 
 
-def _run_cuts(kind, strategy_name, candidate_trades):
-    logger.info("\n" + "=" * 116)
-    logger.info(strategy_name)
-    logger.info("=" * 116)
-
-    results = {}
-    rows_for_ranking = []
-
-    for mode, label, cut_pct in CUT_MODES[kind]:
-        selected, summary = _portfolio_max8(
-            candidate_trades, kind=kind, mode=mode, cut_pct=cut_pct
-        )
-        yearly = _yearly_records(selected)
-        recent = _recent_summary(selected)
-        results[mode] = {
-            "label": label,
-            "cut_pct": cut_pct,
-            "summary": summary,
-            "recent_2025_2026": recent,
-            "yearly": yearly,
-        }
-        rows_for_ranking.append((mode, label, summary, recent))
-        _log_mode(label, summary, recent)
-
-        pd.DataFrame(selected).to_csv(
-            f"output/max8_bottom_cut_{kind}_{mode}.csv",
-            index=False,
-            encoding="utf-8-sig",
-        )
-
-    logger.info("\n--- 全期間PF順 ---")
-    for i, (mode, label, summary, recent) in enumerate(
-        sorted(rows_for_ranking, key=lambda x: _pf_num(x[2]), reverse=True), 1
-    ):
-        logger.info(
-            f"{i:02d}. {label}: PF {summary.get('profit_factor')} / "
-            f"資産 {summary['ending_capital']:,.0f}円 / entries {summary['actual_entries']} / "
-            f"2025-26 PF {recent.get('profit_factor')}"
-        )
-
-    logger.info("\n--- 2025-26 PF順 ---")
-    for i, (mode, label, summary, recent) in enumerate(
-        sorted(rows_for_ranking, key=lambda x: _pf_num(x[3]), reverse=True), 1
-    ):
-        logger.info(
-            f"{i:02d}. {label}: 2025-26 PF {recent.get('profit_factor')} / "
-            f"全期間PF {summary.get('profit_factor')} / entries {summary['actual_entries']} / "
-            f"資産 {summary['ending_capital']:,.0f}円"
-        )
-
-    return results
-
-
 def main():
-    logger.info("=== 最大8枠 下位候補切り捨て率・細分化検証開始 ===")
-    logger.info("Aは15/20/25%、Bは40/45/50/55/60%を比較します。未来情報は使いません。")
+    logger.info("=== A+B共有 最大8枠・本番寄りバックテスト開始 ===")
+    logger.info(
+        "Aは下位20%、Bは下位50%を同日ごとに除外後、同じ8枠を共有します。未来情報は順位付けに使いません。"
+    )
 
     strategy = registry.get_strategy("ma5_breakout")
     target_codes = download.get_target_codes()
@@ -465,36 +478,65 @@ def main():
 
     os.makedirs("output", exist_ok=True)
 
-    results_a = _run_cuts(
-        "A",
-        "A: MA25 -10〜-5% × 出来高<1.0x → がっくりB + -3%SL + 30日",
-        candidate_a,
-    )
-    results_b = _run_cuts(
-        "B",
-        "B: MA25 -10〜-5% × RSI40-50 → 純がっくりB",
-        candidate_b,
-    )
+    results = {}
+    ranking_rows = []
+    for mode, label in MERGE_MODES:
+        selected, summary = _portfolio_shared_max8(candidate_a, candidate_b, mode)
+        recent = _recent_summary(selected)
+        yearly = _yearly_records(selected)
+        results[mode] = {
+            "label": label,
+            "summary": summary,
+            "recent_2025_2026": recent,
+            "yearly": yearly,
+        }
+        ranking_rows.append((mode, label, summary, recent))
+        _log_mode(label, summary, recent)
+
+        pd.DataFrame(selected).to_csv(
+            f"output/max8_shared_ab_{mode}.csv",
+            index=False,
+            encoding="utf-8-sig",
+        )
+
+    logger.info("\n--- 全期間PF順 ---")
+    for i, (_, label, summary, recent) in enumerate(
+        sorted(ranking_rows, key=lambda x: _pf_num(x[2]), reverse=True), 1
+    ):
+        logger.info(
+            f"{i:02d}. {label}: PF {summary.get('profit_factor')} / "
+            f"資産 {summary['ending_capital']:,.0f}円 / entries {summary['actual_entries']} "
+            f"(A {summary['entries_A']} / B {summary['entries_B']}) / 2025-26 PF {recent.get('profit_factor')}"
+        )
+
+    logger.info("\n--- 2025-26 PF順 ---")
+    for i, (_, label, summary, recent) in enumerate(
+        sorted(ranking_rows, key=lambda x: _pf_num(x[3]), reverse=True), 1
+    ):
+        logger.info(
+            f"{i:02d}. {label}: 2025-26 PF {recent.get('profit_factor')} / "
+            f"全期間PF {summary.get('profit_factor')} / 資産 {summary['ending_capital']:,.0f}円"
+        )
 
     output = {
         "settings": {
-            "max_positions": MAX_POSITIONS,
+            "max_positions_shared": MAX_POSITIONS,
             "initial_capital": INITIAL_CAPITAL,
             "ranking_uses_future_information": False,
             "recent_start_year": RECENT_START_YEAR,
-            "cut_percentages_A": [0, 15, 20, 25],
-            "cut_percentages_B": [0, 40, 45, 50, 55, 60],
+            "strategy_A_cut_pct": A_CUT_PCT,
+            "strategy_B_cut_pct": B_CUT_PCT,
             "strategy_A_rank": "MA25 shallow (-5% side) first",
             "strategy_B_rank": "MA25 deep (-10% side) first",
+            "merge_modes": [m for m, _ in MERGE_MODES],
         },
-        "strategy_A": results_a,
-        "strategy_B": results_b,
+        "results": results,
     }
-    with open("output/max8_bottom_cut_refined_comparison.json", "w", encoding="utf-8") as f:
+    with open("output/max8_shared_ab_comparison.json", "w", encoding="utf-8") as f:
         json.dump(output, f, ensure_ascii=False, indent=2, default=str)
 
-    logger.info("\n結果を output/max8_bottom_cut_refined_comparison.json に保存しました。")
-    logger.info("=== 最大8枠 下位候補切り捨て率・細分化検証完了 ===")
+    logger.info("\n結果を output/max8_shared_ab_comparison.json に保存しました。")
+    logger.info("=== A+B共有 最大8枠・本番寄りバックテスト完了 ===")
 
 
 if __name__ == "__main__":
