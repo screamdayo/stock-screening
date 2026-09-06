@@ -1,64 +1,84 @@
-name: 株スクリーニング
+name: Daily Screening
 
 on:
+  workflow_dispatch:
   schedule:
-    - cron: '0 7 * * 1-5'  # UTC 7:00 = JST 16:00（平日のみ）
-  workflow_dispatch: {}
+    - cron: '0 7 * * 1-5'  # 16:00 JST
+  push:
+    paths:
+      - 'trigger/screening.txt'
 
 permissions:
   contents: write
 
 jobs:
-  screen:
+  screening:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-      - name: Python セットアップ
+      - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
-      - name: ライブラリインストール
+      - name: Install dependencies
         run: pip install -r requirements.txt
 
-      - name: スクリーニング実行（Discord通知 + GitHub Pages用データ出力）
+      - name: Run screening
         env:
-          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
           JQUANTS_API_KEY: ${{ secrets.JQUANTS_API_KEY }}
-        # 使用する戦略は config.py の ACTIVE_STRATEGY で切り替える
-        # 株価取得・シグナル判定・Discord通知・docs/への出力を1回の実行でまとめて行う
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
         run: python main.py
 
-      - name: GitHub Pages用データをcommit
+      - name: Commit generated docs
+        shell: bash
         run: |
-          set -e
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
+          set -euo pipefail
 
-          # 生成済みdocsを一時退避してから、remote mainの最新状態へ乗せ直す。
-          # 他のActionsや手動更新が先にmainへpushしていても、その変更を消さない。
-          tar -czf /tmp/screening-docs.tar.gz docs/prices docs/screening.json
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          tmpdir="$(mktemp -d)"
+          mkdir -p "$tmpdir/docs"
+          if [ -d docs/prices ]; then
+            cp -a docs/prices "$tmpdir/docs/prices"
+          fi
+          if [ -f docs/screening.json ]; then
+            cp docs/screening.json "$tmpdir/docs/screening.json"
+          fi
 
           for attempt in 1 2 3; do
             git fetch origin main
             git reset --hard origin/main
-            rm -rf docs/prices docs/screening.json
-            tar -xzf /tmp/screening-docs.tar.gz
 
-            git add docs/prices/ docs/screening.json
+            if [ -d "$tmpdir/docs/prices" ]; then
+              rm -rf docs/prices
+              mkdir -p docs
+              cp -a "$tmpdir/docs/prices" docs/prices
+            fi
+            if [ -f "$tmpdir/docs/screening.json" ]; then
+              mkdir -p docs
+              cp "$tmpdir/docs/screening.json" docs/screening.json
+            fi
+
+            git add docs/prices/ docs/screening.json 2>/dev/null || true
             if git diff --cached --quiet; then
-              echo "変更なし"
+              echo "No generated docs changes to commit."
               exit 0
             fi
 
-            git commit -m "chore: docsデータを更新"
+            git commit -m "Update screening data"
             if git push origin HEAD:main; then
               exit 0
             fi
 
-            echo "push競合。最新mainへ乗せ直して再試行します (${attempt}/3)"
+            echo "Push failed due to a concurrent update; retrying ($attempt/3)..."
+            git reset --soft HEAD~1
           done
 
-          echo "3回再試行してもpushできませんでした"
+          echo "Failed to push after 3 attempts."
           exit 1
