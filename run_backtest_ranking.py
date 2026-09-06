@@ -1,4 +1,4 @@
-"""有力2戦略で最大8枠の「MA25乖離帯 + 第2指標」を比較する実験。
+"""有力2戦略で「下位候補を切り捨てる」最大8枠実験。
 
 本番スクリーニング条件・通常バックテストは変更しない。
 既存 ranking モードを実験枠として使う。
@@ -6,29 +6,23 @@
 戦略A
 - 入口: MA25乖離 -10〜-5% × 出来高前日比 <1.0
 - 出口: がっくりB + -3%損切り + 最大30営業日
+- 同日候補の基準順位: MA25乖離が浅い（-5%側）ほど上
 
 戦略B
 - 入口: MA25乖離 -10〜-5% × RSI14 40〜50
 - 出口: 純がっくりB（損切りなし・保有上限なし）
+- 同日候補の基準順位: MA25乖離が深い（-10%側）ほど上
 
 最大8ポジション。1銘柄は同時に1ポジションまで。
-候補順位はシグナル当日の情報だけを使い、将来のexit_dateや損益は一切使わない。
+候補順位・切り捨て判定はシグナル当日の情報だけを使い、
+将来のexit_dateや損益は一切使わない。
 
-今回の狙い:
-連続値のMA25乖離を第1キーにすると、それだけでほぼ全順位が決まり、第2指標が
-効かなかった。そこでMA25乖離を1%刻みの帯に丸め、その帯の中で第2指標を使う。
+今回の比較:
+- コード昇順（旧基準）
+- MA25順位で全件残す
+- MA25順位の下位10 / 20 / 30 / 40 / 50%を同日ごとに切り捨てる
 
-帯:
-- -5〜-6%
-- -6〜-7%
-- -7〜-8%
-- -8〜-9%
-- -9〜-10%
-
-戦略Aは浅い帯（-5%側）を優先。
-戦略Bは深い帯（-10%側）を優先。
-
-資産推移は初期100万円を8スロットに等分し、各スロットを決済ごとに複利。
+切り捨て後に候補が8枠未満なら、無理に別候補を補充せず空き枠を残す。
 """
 
 import json
@@ -51,24 +45,15 @@ INITIAL_CAPITAL = 1_000_000
 GAKKURI_MAX_HOLD_DAYS = 30
 RECENT_START_YEAR = 2025
 
-RANKING_MODES = {
-    "A": [
-        ("code_asc", "コード昇順（基準）"),
-        ("ma25_cont_shallow", "MA25連続値・浅い順（前回基準）"),
-        ("band_shallow_code", "MA25 1%帯・浅い帯順 → コード順"),
-        ("band_shallow_ma5", "MA25 1%帯・浅い帯順 → MA5上昇率低い順"),
-        ("band_shallow_gain", "MA25 1%帯・浅い帯順 → 当日上昇率低い順"),
-        ("band_shallow_close80", "MA25 1%帯・浅い帯順 → 終値位置80%に近い順"),
-    ],
-    "B": [
-        ("code_asc", "コード昇順（基準）"),
-        ("ma25_cont_deep", "MA25連続値・深い順（前回基準）"),
-        ("band_deep_code", "MA25 1%帯・深い帯順 → コード順"),
-        ("band_deep_ma5", "MA25 1%帯・深い帯順 → MA5上昇率低い順"),
-        ("band_deep_close80", "MA25 1%帯・深い帯順 → 終値位置80%に近い順"),
-        ("band_deep_rsi45", "MA25 1%帯・深い帯順 → RSI45に近い順"),
-    ],
-}
+CUT_MODES = [
+    ("code_asc", "コード昇順（旧基準）", None),
+    ("ma25_all", "MA25順位・切り捨てなし", 0),
+    ("cut10", "MA25順位・下位10%切り捨て", 10),
+    ("cut20", "MA25順位・下位20%切り捨て", 20),
+    ("cut30", "MA25順位・下位30%切り捨て", 30),
+    ("cut40", "MA25順位・下位40%切り捨て", 40),
+    ("cut50", "MA25順位・下位50%切り捨て", 50),
+]
 
 
 def _rsi_series(close, period=14):
@@ -90,7 +75,9 @@ def _entry_features(g, idx):
     today_volume = row.get("Vo")
     volume_ratio = None
     if (
-        prev_volume is not None and pd.notna(prev_volume) and prev_volume > 0
+        prev_volume is not None
+        and pd.notna(prev_volume)
+        and prev_volume > 0
         and pd.notna(today_volume)
     ):
         volume_ratio = today_volume / prev_volume
@@ -117,7 +104,9 @@ def _entry_features(g, idx):
 
     close_position_pct = None
     if (
-        pd.notna(row["H"]) and pd.notna(row["L"]) and pd.notna(row["C"])
+        pd.notna(row["H"])
+        and pd.notna(row["L"])
+        and pd.notna(row["C"])
         and row["H"] > row["L"]
     ):
         close_position_pct = (row["C"] - row["L"]) / (row["H"] - row["L"]) * 100
@@ -269,7 +258,9 @@ def _build_strategy_trades(signals, price_data_by_code, kind):
         result.update(f)
         trades.append(result)
 
-    logger.info(f"戦略{kind}: 対象シグナル {eligible_signals}件 / トレード候補 {len(trades)}件")
+    logger.info(
+        f"戦略{kind}: 対象シグナル {eligible_signals}件 / トレード候補 {len(trades)}件"
+    )
     return trades
 
 
@@ -279,54 +270,17 @@ def _safe_num(value, fallback=float("inf")):
     return float(value)
 
 
-def _ma25_band(ma25_dev_pct):
-    """-5〜-10%のMA25乖離を1%刻みの帯番号5〜9へ変換する。"""
-    value = _safe_num(ma25_dev_pct)
-    if not math.isfinite(value):
-        return 99
-    # -5.2 -> 5, -6.0 -> 6, -9.9 -> 9
-    return int(math.floor(-value))
-
-
-def _rank_key(trade, mode):
+def _quality_rank_key(trade, kind):
+    """過去検証で最も良かったMA25方向だけで同日候補を並べる。"""
     code = str(trade["code"])
     ma25 = _safe_num(trade.get("ma25_dev_pct"))
-    ma5 = _safe_num(trade.get("ma5_rise_pct"))
-    gain = _safe_num(trade.get("gain_pct"))
-    rsi = _safe_num(trade.get("rsi14"))
-    close_pos = _safe_num(trade.get("close_position_pct"))
-    band = _ma25_band(trade.get("ma25_dev_pct"))
-
-    if mode == "code_asc":
-        return (code,)
-
-    # 前回の連続値ソートを比較用に残す。
-    if mode == "ma25_cont_shallow":
+    if kind == "A":
+        # Aは浅い方（-5%側）が上。
         return (-ma25, code)
-    if mode == "ma25_cont_deep":
+    if kind == "B":
+        # Bは深い方（-10%側）が上。
         return (ma25, code)
-
-    # A: 浅い帯（5→6→7→8→9）を優先し、その帯の中で第2指標を効かせる。
-    if mode == "band_shallow_code":
-        return (band, code)
-    if mode == "band_shallow_ma5":
-        return (band, ma5, code)
-    if mode == "band_shallow_gain":
-        return (band, gain, code)
-    if mode == "band_shallow_close80":
-        return (band, abs(close_pos - 80), code)
-
-    # B: 深い帯（9→8→7→6→5）を優先し、その帯の中で第2指標を効かせる。
-    if mode == "band_deep_code":
-        return (-band, code)
-    if mode == "band_deep_ma5":
-        return (-band, ma5, code)
-    if mode == "band_deep_close80":
-        return (-band, abs(close_pos - 80), code)
-    if mode == "band_deep_rsi45":
-        return (-band, abs(rsi - 45), code)
-
-    raise ValueError(mode)
+    raise ValueError(kind)
 
 
 def _release_is_before_entry(trade, entry_date):
@@ -334,10 +288,11 @@ def _release_is_before_entry(trade, entry_date):
     entry_date = pd.Timestamp(entry_date)
     if exit_date < entry_date:
         return True
+    # がっくりBは翌日寄り決済なので、同日の新規寄り買いに枠を再利用できる。
     return exit_date == entry_date and trade.get("exit_reason") == "gakkuri_b"
 
 
-def _portfolio_max8(candidate_trades, ranking_mode):
+def _portfolio_max8(candidate_trades, kind, mode, cut_pct):
     by_date = {}
     for tr in candidate_trades:
         d = pd.Timestamp(tr["entry_date"])
@@ -350,6 +305,7 @@ def _portfolio_max8(candidate_trades, ranking_mode):
     selected = []
     skipped_capacity = 0
     skipped_duplicate_code = 0
+    skipped_quality_cut = 0
     max_concurrent = 0
 
     def release_slots(entry_date):
@@ -363,7 +319,16 @@ def _portfolio_max8(candidate_trades, ranking_mode):
 
     for entry_date in sorted(by_date):
         release_slots(entry_date)
-        day_candidates = sorted(by_date[entry_date], key=lambda t: _rank_key(t, ranking_mode))
+        day_candidates = list(by_date[entry_date])
+
+        if mode == "code_asc":
+            day_candidates.sort(key=lambda t: str(t["code"]))
+        else:
+            day_candidates.sort(key=lambda t: _quality_rank_key(t, kind))
+            if cut_pct and len(day_candidates) > 1:
+                keep_n = max(1, math.ceil(len(day_candidates) * (1 - cut_pct / 100)))
+                skipped_quality_cut += len(day_candidates) - keep_n
+                day_candidates = day_candidates[:keep_n]
 
         for tr in day_candidates:
             active_codes = {
@@ -382,8 +347,8 @@ def _portfolio_max8(candidate_trades, ranking_mode):
 
             tr_copy = dict(tr)
             tr_copy["slot_entry_capital"] = round(free_slot["capital"], 2)
-            tr_copy["ranking_mode"] = ranking_mode
-            tr_copy["ma25_band"] = _ma25_band(tr_copy.get("ma25_dev_pct"))
+            tr_copy["ranking_mode"] = mode
+            tr_copy["quality_cut_pct"] = cut_pct if cut_pct is not None else 0
             free_slot["trade"] = tr_copy
             selected.append(tr_copy)
             concurrent = sum(slot["trade"] is not None for slot in slots)
@@ -397,16 +362,21 @@ def _portfolio_max8(candidate_trades, ranking_mode):
 
     ending_capital = sum(slot["capital"] for slot in slots)
     summary = backtest.summarize_trades(selected)
-    summary.update({
-        "candidate_trades": len(candidate_trades),
-        "actual_entries": len(selected),
-        "skipped_capacity": skipped_capacity,
-        "skipped_duplicate_code": skipped_duplicate_code,
-        "max_concurrent_positions": max_concurrent,
-        "initial_capital": INITIAL_CAPITAL,
-        "ending_capital": round(ending_capital, 0),
-        "portfolio_return_pct": round((ending_capital / INITIAL_CAPITAL - 1) * 100, 2),
-    })
+    summary.update(
+        {
+            "candidate_trades": len(candidate_trades),
+            "actual_entries": len(selected),
+            "skipped_capacity": skipped_capacity,
+            "skipped_duplicate_code": skipped_duplicate_code,
+            "skipped_quality_cut": skipped_quality_cut,
+            "max_concurrent_positions": max_concurrent,
+            "initial_capital": INITIAL_CAPITAL,
+            "ending_capital": round(ending_capital, 0),
+            "portfolio_return_pct": round(
+                (ending_capital / INITIAL_CAPITAL - 1) * 100, 2
+            ),
+        }
+    )
     return selected, summary
 
 
@@ -416,7 +386,9 @@ def _yearly_records(trades):
 
 
 def _recent_summary(trades):
-    recent = [t for t in trades if pd.Timestamp(t["entry_date"]).year >= RECENT_START_YEAR]
+    recent = [
+        t for t in trades if pd.Timestamp(t["entry_date"]).year >= RECENT_START_YEAR
+    ]
     return backtest.summarize_trades(recent)
 
 
@@ -431,12 +403,12 @@ def _log_mode(label, summary, recent):
     logger.info(
         f"{label}: entries {summary['actual_entries']} / PF {summary.get('profit_factor')} / "
         f"勝率 {summary.get('win_rate')}% / 資産 {summary['ending_capital']:,.0f}円 "
-        f"({summary['portfolio_return_pct']:+.2f}%) / 2025-26 PF {recent.get('profit_factor')} "
-        f"勝率 {recent.get('win_rate')}%"
+        f"({summary['portfolio_return_pct']:+.2f}%) / 品質除外 {summary['skipped_quality_cut']}件 / "
+        f"2025-26 PF {recent.get('profit_factor')} 勝率 {recent.get('win_rate')}%"
     )
 
 
-def _run_rankings(kind, strategy_name, candidate_trades):
+def _run_cuts(kind, strategy_name, candidate_trades):
     logger.info("\n" + "=" * 116)
     logger.info(strategy_name)
     logger.info("=" * 116)
@@ -444,12 +416,15 @@ def _run_rankings(kind, strategy_name, candidate_trades):
     results = {}
     rows_for_ranking = []
 
-    for mode, label in RANKING_MODES[kind]:
-        selected, summary = _portfolio_max8(candidate_trades, mode)
+    for mode, label, cut_pct in CUT_MODES:
+        selected, summary = _portfolio_max8(
+            candidate_trades, kind=kind, mode=mode, cut_pct=cut_pct
+        )
         yearly = _yearly_records(selected)
         recent = _recent_summary(selected)
         results[mode] = {
             "label": label,
+            "cut_pct": cut_pct,
             "summary": summary,
             "recent_2025_2026": recent,
             "yearly": yearly,
@@ -458,7 +433,7 @@ def _run_rankings(kind, strategy_name, candidate_trades):
         _log_mode(label, summary, recent)
 
         pd.DataFrame(selected).to_csv(
-            f"output/max8_ma25_band_{kind}_{mode}.csv",
+            f"output/max8_bottom_cut_{kind}_{mode}.csv",
             index=False,
             encoding="utf-8-sig",
         )
@@ -469,7 +444,8 @@ def _run_rankings(kind, strategy_name, candidate_trades):
     ):
         logger.info(
             f"{i:02d}. {label}: PF {summary.get('profit_factor')} / "
-            f"資産 {summary['ending_capital']:,.0f}円 / 2025-26 PF {recent.get('profit_factor')}"
+            f"資産 {summary['ending_capital']:,.0f}円 / entries {summary['actual_entries']} / "
+            f"2025-26 PF {recent.get('profit_factor')}"
         )
 
     logger.info("\n--- 2025-26 PF順 ---")
@@ -478,19 +454,24 @@ def _run_rankings(kind, strategy_name, candidate_trades):
     ):
         logger.info(
             f"{i:02d}. {label}: 2025-26 PF {recent.get('profit_factor')} / "
-            f"全期間PF {summary.get('profit_factor')} / 資産 {summary['ending_capital']:,.0f}円"
+            f"全期間PF {summary.get('profit_factor')} / entries {summary['actual_entries']} / "
+            f"資産 {summary['ending_capital']:,.0f}円"
         )
 
     return results
 
 
 def main():
-    logger.info("=== 最大8枠 MA25乖離1%帯ランキング検証開始 ===")
-    logger.info("MA25乖離を1%帯に区切り、帯内で第2指標を使います。未来情報は使いません。")
+    logger.info("=== 最大8枠 下位候補切り捨て検証開始 ===")
+    logger.info(
+        "同日候補をMA25乖離で順位付けし、下位10〜50%を切った場合を比較します。未来情報は使いません。"
+    )
 
     strategy = registry.get_strategy("ma5_breakout")
     target_codes = download.get_target_codes()
-    cache_filename = f"backtest_prices_{config.TARGET_MARKET}_{config.BACKTEST_YEARS}y.csv"
+    cache_filename = (
+        f"backtest_prices_{config.TARGET_MARKET}_{config.BACKTEST_YEARS}y.csv"
+    )
     price_df = download.get_price_history_incremental(
         cache_filename=cache_filename,
         years=config.BACKTEST_YEARS,
@@ -502,12 +483,12 @@ def main():
 
     os.makedirs("output", exist_ok=True)
 
-    results_a = _run_rankings(
+    results_a = _run_cuts(
         "A",
         "A: MA25 -10〜-5% × 出来高<1.0x → がっくりB + -3%SL + 30日",
         candidate_a,
     )
-    results_b = _run_rankings(
+    results_b = _run_cuts(
         "B",
         "B: MA25 -10〜-5% × RSI40-50 → 純がっくりB",
         candidate_b,
@@ -519,19 +500,20 @@ def main():
             "initial_capital": INITIAL_CAPITAL,
             "ranking_uses_future_information": False,
             "recent_start_year": RECENT_START_YEAR,
-            "ma25_band_width_pct": 1.0,
-            "ma25_band_range_pct": [-10, -5],
-            "ranking_modes_A": [m for m, _ in RANKING_MODES["A"]],
-            "ranking_modes_B": [m for m, _ in RANKING_MODES["B"]],
+            "cut_percentages": [0, 10, 20, 30, 40, 50],
+            "strategy_A_rank": "MA25 shallow (-5% side) first",
+            "strategy_B_rank": "MA25 deep (-10% side) first",
         },
         "strategy_A": results_a,
         "strategy_B": results_b,
     }
-    with open("output/max8_ma25_band_ranking_comparison.json", "w", encoding="utf-8") as f:
+    with open(
+        "output/max8_bottom_cut_comparison.json", "w", encoding="utf-8"
+    ) as f:
         json.dump(output, f, ensure_ascii=False, indent=2, default=str)
 
-    logger.info("\n結果を output/max8_ma25_band_ranking_comparison.json に保存しました。")
-    logger.info("=== 最大8枠 MA25乖離1%帯ランキング検証完了 ===")
+    logger.info("\n結果を output/max8_bottom_cut_comparison.json に保存しました。")
+    logger.info("=== 最大8枠 下位候補切り捨て検証完了 ===")
 
 
 if __name__ == "__main__":
