@@ -1,4 +1,4 @@
-"""有力2戦略で「同日候補のどれを最大8枠に入れるか」を単独指標ごとに比較する実験。
+"""有力2戦略で最大8枠の「同日候補2段階ソート」を比較する実験。
 
 本番スクリーニング条件・通常バックテストは変更しない。
 既存 ranking モードを実験枠として使う。
@@ -14,16 +14,20 @@
 最大8ポジション。1銘柄は同時に1ポジションまで。
 候補順位はシグナル当日の情報だけを使い、将来のexit_dateや損益は一切使わない。
 
-比較する同日優先順位:
-- code_asc: 銘柄コード昇順（前回の基準）
-- ma25_deeper: MA25乖離がよりマイナス（-10%側）
-- ma25_shallower: MA25乖離が浅い（-5%側）
-- volume_lower: 出来高倍率が低い
-- rsi_lower: RSIが低い
-- rsi_near45: RSIが45に近い
-- gain_lower: 当日上昇率が低い
-- ma5_rise_lower: MA5上昇率が低い
-- close_near80: 終値位置が80%に近い
+前回の単独指標結果を踏まえて、以下の2段階ソートを比較する。
+戦略A:
+- code_asc: コード昇順（基準）
+- ma25_shallow_then_ma5: MA25乖離が浅い順 → MA5上昇率が低い順
+- ma25_shallow_then_gain: MA25乖離が浅い順 → 当日上昇率が低い順
+- ma5_then_ma25_shallow: MA5上昇率が低い順 → MA25乖離が浅い順
+- gain_then_ma25_shallow: 当日上昇率が低い順 → MA25乖離が浅い順
+
+戦略B:
+- code_asc: コード昇順（基準）
+- ma25_deep_then_ma5: MA25乖離が深い順 → MA5上昇率が低い順
+- ma5_then_ma25_deep: MA5上昇率が低い順 → MA25乖離が深い順
+- ma25_deep_then_close80: MA25乖離が深い順 → 終値位置が80%に近い順
+- ma25_deep_then_rsi45: MA25乖離が深い順 → RSIが45に近い順
 
 資産推移は初期100万円を8スロットに等分し、各スロットを決済ごとに複利。
 """
@@ -48,17 +52,22 @@ INITIAL_CAPITAL = 1_000_000
 GAKKURI_MAX_HOLD_DAYS = 30
 RECENT_START_YEAR = 2025
 
-RANKING_MODES = [
-    ("code_asc", "コード昇順（基準）"),
-    ("ma25_deeper", "MA25乖離が深い順（-10%側）"),
-    ("ma25_shallower", "MA25乖離が浅い順（-5%側）"),
-    ("volume_lower", "出来高倍率が低い順"),
-    ("rsi_lower", "RSIが低い順"),
-    ("rsi_near45", "RSIが45に近い順"),
-    ("gain_lower", "当日上昇率が低い順"),
-    ("ma5_rise_lower", "MA5上昇率が低い順"),
-    ("close_near80", "終値位置が80%に近い順"),
-]
+RANKING_MODES = {
+    "A": [
+        ("code_asc", "コード昇順（基準）"),
+        ("ma25_shallow_then_ma5", "MA25浅い順 → MA5上昇率低い順"),
+        ("ma25_shallow_then_gain", "MA25浅い順 → 当日上昇率低い順"),
+        ("ma5_then_ma25_shallow", "MA5上昇率低い順 → MA25浅い順"),
+        ("gain_then_ma25_shallow", "当日上昇率低い順 → MA25浅い順"),
+    ],
+    "B": [
+        ("code_asc", "コード昇順（基準）"),
+        ("ma25_deep_then_ma5", "MA25深い順 → MA5上昇率低い順"),
+        ("ma5_then_ma25_deep", "MA5上昇率低い順 → MA25深い順"),
+        ("ma25_deep_then_close80", "MA25深い順 → 終値位置80%に近い順"),
+        ("ma25_deep_then_rsi45", "MA25深い順 → RSI45に近い順"),
+    ],
+}
 
 
 def _rsi_series(close, period=14):
@@ -256,7 +265,6 @@ def _build_strategy_trades(signals, price_data_by_code, kind):
 
         result["code"] = str(sig["code"])
         result["signal_date"] = sig["signal_date"]
-        # 優先順位はこのシグナル当日の特徴だけを使う。
         result.update(f)
         trades.append(result)
 
@@ -272,26 +280,35 @@ def _safe_num(value, fallback=float("inf")):
 
 def _rank_key(trade, mode):
     code = str(trade["code"])
+    ma25 = _safe_num(trade.get("ma25_dev_pct"))
+    ma5 = _safe_num(trade.get("ma5_rise_pct"))
+    gain = _safe_num(trade.get("gain_pct"))
+    rsi = _safe_num(trade.get("rsi14"))
+    close_pos = _safe_num(trade.get("close_position_pct"))
+
     if mode == "code_asc":
         return (code,)
-    if mode == "ma25_deeper":
-        return (_safe_num(trade.get("ma25_dev_pct")), code)
-    if mode == "ma25_shallower":
-        return (-_safe_num(trade.get("ma25_dev_pct"), fallback=-float("inf")), code)
-    if mode == "volume_lower":
-        return (_safe_num(trade.get("volume_ratio")), code)
-    if mode == "rsi_lower":
-        return (_safe_num(trade.get("rsi14")), code)
-    if mode == "rsi_near45":
-        rsi = _safe_num(trade.get("rsi14"))
-        return (abs(rsi - 45), code)
-    if mode == "gain_lower":
-        return (_safe_num(trade.get("gain_pct")), code)
-    if mode == "ma5_rise_lower":
-        return (_safe_num(trade.get("ma5_rise_pct")), code)
-    if mode == "close_near80":
-        pos = _safe_num(trade.get("close_position_pct"))
-        return (abs(pos - 80), code)
+
+    # 「浅い」は -5%側なので値が大きい方を先にする。
+    if mode == "ma25_shallow_then_ma5":
+        return (-ma25, ma5, code)
+    if mode == "ma25_shallow_then_gain":
+        return (-ma25, gain, code)
+    if mode == "ma5_then_ma25_shallow":
+        return (ma5, -ma25, code)
+    if mode == "gain_then_ma25_shallow":
+        return (gain, -ma25, code)
+
+    # 「深い」は -10%側なので値が小さい方を先にする。
+    if mode == "ma25_deep_then_ma5":
+        return (ma25, ma5, code)
+    if mode == "ma5_then_ma25_deep":
+        return (ma5, ma25, code)
+    if mode == "ma25_deep_then_close80":
+        return (ma25, abs(close_pos - 80), code)
+    if mode == "ma25_deep_then_rsi45":
+        return (ma25, abs(rsi - 45), code)
+
     raise ValueError(mode)
 
 
@@ -300,12 +317,10 @@ def _release_is_before_entry(trade, entry_date):
     entry_date = pd.Timestamp(entry_date)
     if exit_date < entry_date:
         return True
-    # がっくりBは翌日寄り決済なので、同日の新規寄り買いに枠を再利用できる。
     return exit_date == entry_date and trade.get("exit_reason") == "gakkuri_b"
 
 
 def _portfolio_max8(candidate_trades, ranking_mode):
-    """同日候補だけを指定指標で順位付けし、最大8同時保有を再現する。"""
     by_date = {}
     for tr in candidate_trades:
         d = pd.Timestamp(tr["entry_date"])
@@ -403,7 +418,7 @@ def _log_mode(label, summary, recent):
     )
 
 
-def _run_rankings(strategy_name, candidate_trades):
+def _run_rankings(kind, strategy_name, candidate_trades):
     logger.info("\n" + "=" * 116)
     logger.info(strategy_name)
     logger.info("=" * 116)
@@ -411,7 +426,7 @@ def _run_rankings(strategy_name, candidate_trades):
     results = {}
     rows_for_ranking = []
 
-    for mode, label in RANKING_MODES:
+    for mode, label in RANKING_MODES[kind]:
         selected, summary = _portfolio_max8(candidate_trades, mode)
         yearly = _yearly_records(selected)
         recent = _recent_summary(selected)
@@ -425,7 +440,7 @@ def _run_rankings(strategy_name, candidate_trades):
         _log_mode(label, summary, recent)
 
         pd.DataFrame(selected).to_csv(
-            f"output/max8_rank_{strategy_name.split(':')[0]}_{mode}.csv",
+            f"output/max8_two_stage_{kind}_{mode}.csv",
             index=False,
             encoding="utf-8-sig",
         )
@@ -452,7 +467,7 @@ def _run_rankings(strategy_name, candidate_trades):
 
 
 def main():
-    logger.info("=== 最大8枠 同日候補ランキング検証開始 ===")
+    logger.info("=== 最大8枠 同日候補2段階ソート検証開始 ===")
     logger.info("候補順位はシグナル当日の情報だけを使用。未来の決済日・損益は使いません。")
 
     strategy = registry.get_strategy("ma5_breakout")
@@ -470,10 +485,12 @@ def main():
     os.makedirs("output", exist_ok=True)
 
     results_a = _run_rankings(
+        "A",
         "A: MA25 -10〜-5% × 出来高<1.0x → がっくりB + -3%SL + 30日",
         candidate_a,
     )
     results_b = _run_rankings(
+        "B",
         "B: MA25 -10〜-5% × RSI40-50 → 純がっくりB",
         candidate_b,
     )
@@ -484,16 +501,17 @@ def main():
             "initial_capital": INITIAL_CAPITAL,
             "ranking_uses_future_information": False,
             "recent_start_year": RECENT_START_YEAR,
-            "ranking_modes": [m for m, _ in RANKING_MODES],
+            "ranking_modes_A": [m for m, _ in RANKING_MODES["A"]],
+            "ranking_modes_B": [m for m, _ in RANKING_MODES["B"]],
         },
         "strategy_A": results_a,
         "strategy_B": results_b,
     }
-    with open("output/max8_ranking_comparison.json", "w", encoding="utf-8") as f:
+    with open("output/max8_two_stage_ranking_comparison.json", "w", encoding="utf-8") as f:
         json.dump(output, f, ensure_ascii=False, indent=2, default=str)
 
-    logger.info("\n結果を output/max8_ranking_comparison.json に保存しました。")
-    logger.info("=== 最大8枠 同日候補ランキング検証完了 ===")
+    logger.info("\n結果を output/max8_two_stage_ranking_comparison.json に保存しました。")
+    logger.info("=== 最大8枠 同日候補2段階ソート検証完了 ===")
 
 
 if __name__ == "__main__":
