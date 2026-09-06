@@ -15,18 +15,49 @@ logger = get_logger(__name__)
 SCREENING_VIEW_URL = "https://screamdayo.github.io/stock-screening/screening.html"
 
 
-def notify(results, rescue_results=None):
+def notify(results, rescue_results=None, primary_results=None):
     today = datetime.now().strftime("%Y/%m/%d")
     rescue_results = rescue_results or []
+    primary_results = primary_results or []
 
-    if not results and not rescue_results:
+    if not results and not rescue_results and not primary_results:
         _post(f"📊 **株スクリーニング結果 {today}**\n該当銘柄なし\n{SCREENING_VIEW_URL}")
         return
+
+    parts = [f"📊 **株スクリーニング結果 {today}**"]
+
+    if primary_results:
+        lines = []
+        for r in primary_results[:15]:
+            rank = r.get("production_rank")
+            kind = r.get("production_strategy") or "?"
+            label = r.get("name") or r["code"]
+            ma25 = r.get("ma25_dev_pct")
+            rsi = r.get("rsi14")
+            vol = r.get("volume_ratio")
+            detail = []
+            if ma25 is not None:
+                detail.append(f"MA25乖離 {ma25:+.1f}%")
+            if kind == "A" and vol is not None:
+                detail.append(f"出来高 {vol:.2f}倍")
+            if kind == "B" and rsi is not None:
+                detail.append(f"RSI {rsi:.1f}")
+            suffix = f" — {' / '.join(detail)}" if detail else ""
+            lines.append(f"🥇 #{rank} **{kind}** {label}{suffix}")
+        remaining = len(primary_results) - 15
+        if remaining > 0:
+            lines.append(f"…他{remaining}件")
+        parts.append(
+            f"🏆 **本命候補（A/B正規化混合） {len(primary_results)}件**\n"
+            + "\n".join(lines)
+        )
+    else:
+        parts.append("🏆 **本命候補（A/B正規化混合） 0件**")
 
     bottom = [r for r in results if r.get("signal_type") == "bottom_reversal"]
     pullback = [r for r in results if r.get("signal_type") == "pullback_reacceleration"]
 
-    preview_limit = 15
+    preview_limit = 10
     names = []
     for r in results[:preview_limit]:
         icon = "🔵" if r.get("signal_type") == "bottom_reversal" else "🟠"
@@ -35,18 +66,14 @@ def notify(results, rescue_results=None):
 
     remaining = len(results) - preview_limit
     footer = f"\n…他{remaining}件" if remaining > 0 else ""
-
-    header = (
-        f"📊 **株スクリーニング結果 {today}**\n"
-        f"🔵 大底反転 {len(bottom)}件 / 🟠 押し目再上昇 {len(pullback)}件\n"
-        f"通常シグナル 合計 {len(results)}件\n"
+    normal_header = (
+        f"📋 **通常候補（本命除く） {len(results)}件**\n"
+        f"🔵 大底反転 {len(bottom)}件 / 🟠 押し目再上昇 {len(pullback)}件"
     )
-
-    parts = [header]
     if names:
-        parts.append("\n".join(names) + footer)
-    elif results == []:
-        parts.append("通常シグナルなし")
+        parts.append(normal_header + "\n" + "\n".join(names) + footer)
+    else:
+        parts.append(normal_header + "\n通常候補なし")
 
     if rescue_results:
         rescue_preview_limit = 10
