@@ -32,8 +32,33 @@ jobs:
 
       - name: GitHub Pages用データをcommit
         run: |
+          set -e
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add docs/prices/ docs/screening.json
-          git diff --cached --quiet && echo "変更なし" || git commit -m "chore: docsデータを更新"
-          git push
+
+          # 生成済みdocsを一時退避してから、remote mainの最新状態へ乗せ直す。
+          # 他のActionsや手動更新が先にmainへpushしていても、その変更を消さない。
+          tar -czf /tmp/screening-docs.tar.gz docs/prices docs/screening.json
+
+          for attempt in 1 2 3; do
+            git fetch origin main
+            git reset --hard origin/main
+            rm -rf docs/prices docs/screening.json
+            tar -xzf /tmp/screening-docs.tar.gz
+
+            git add docs/prices/ docs/screening.json
+            if git diff --cached --quiet; then
+              echo "変更なし"
+              exit 0
+            fi
+
+            git commit -m "chore: docsデータを更新"
+            if git push origin HEAD:main; then
+              exit 0
+            fi
+
+            echo "push競合。最新mainへ乗せ直して再試行します (${attempt}/3)"
+          done
+
+          echo "3回再試行してもpushできませんでした"
+          exit 1
