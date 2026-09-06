@@ -77,7 +77,9 @@ jobs:
         env:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
           JQUANTS_API_KEY: ${{ secrets.JQUANTS_API_KEY }}
-        run: python run_backtest_ranking.py
+        run: |
+          python run_backtest_ranking.py
+          python analyze_balanced_mark_to_market.py
 
       - name: 株価データキャッシュの保存
         if: always()
