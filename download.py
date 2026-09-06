@@ -470,6 +470,16 @@ def get_price_history_incremental(cache_filename, years=None):
               f"追加取得は不要です。")
         return existing_df
 
+    # 土日しか含まれない差分期間なら、1549銘柄へ無駄なAPIアクセスを行わない。
+    # pd.bdate_range は平日（月〜金）の有無だけを見るため、祝日は別途API側で0件になる。
+    weekday_range = pd.bdate_range(start=from_date.date(), end=to_date.date())
+    if len(weekday_range) == 0:
+        logger.info(
+            f"差分期間 {from_date.date()} 〜 {to_date.date()} は土日のみのため、"
+            "J-Quantsへの差分取得をスキップします。"
+        )
+        return existing_df
+
     from_str = from_date.strftime("%Y%m%d")
     to_str = to_date.strftime("%Y%m%d")
 
