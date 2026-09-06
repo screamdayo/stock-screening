@@ -21,6 +21,8 @@ A/Bは別々に8枠を持たず、合計8枠を共有する。
 - A優先
 - B優先
 - A/Bそれぞれの同日順位を0〜1へ正規化して混ぜるバランス順位
+
+正規化混合については、年別成績・決済ベース最大ドローダウン・最大連敗数も出力する。
 """
 
 import json
@@ -309,7 +311,6 @@ def _merge_day_candidates(a_day, b_day, mode):
     else:
         raise ValueError(mode)
 
-    # 同じ銘柄が同日にA/B両方へ入った場合、共有順位で先に来た方だけ残す。
     deduped = []
     seen_codes = set()
     duplicate_same_day = 0
@@ -347,8 +348,8 @@ def _portfolio_shared_max8(candidate_a, candidate_b, mode):
         all_dates.add(d)
 
     slots = [
-        {"capital": INITIAL_CAPITAL / MAX_POSITIONS, "trade": None}
-        for _ in range(MAX_POSITIONS)
+        {"id": i + 1, "capital": INITIAL_CAPITAL / MAX_POSITIONS, "trade": None}
+        for i in range(MAX_POSITIONS)
     ]
 
     selected = []
@@ -358,13 +359,24 @@ def _portfolio_shared_max8(candidate_a, candidate_b, mode):
     kept_after_cut_a = 0
     kept_after_cut_b = 0
     max_concurrent = 0
+    realized_equity = [{"date": None, "equity": float(INITIAL_CAPITAL)}]
+
+    def snapshot_equity(date_value):
+        realized_equity.append({
+            "date": pd.Timestamp(date_value) if date_value is not None else None,
+            "equity": float(sum(slot["capital"] for slot in slots)),
+        })
 
     def release_slots(entry_date):
+        released = False
         for slot in slots:
             tr = slot["trade"]
             if tr is not None and _release_is_before_entry(tr, entry_date):
                 slot["capital"] *= 1 + tr["profit_pct"] / 100
                 slot["trade"] = None
+                released = True
+        if released:
+            snapshot_equity(entry_date)
 
     for entry_date in sorted(all_dates):
         release_slots(entry_date)
@@ -393,6 +405,7 @@ def _portfolio_shared_max8(candidate_a, candidate_b, mode):
                 continue
 
             tr_copy = dict(tr)
+            tr_copy["slot_id"] = free_slot["id"]
             tr_copy["slot_entry_capital"] = round(free_slot["capital"], 2)
             tr_copy["merge_mode"] = mode
             free_slot["trade"] = tr_copy
@@ -402,11 +415,18 @@ def _portfolio_shared_max8(candidate_a, candidate_b, mode):
                 sum(slot["trade"] is not None for slot in slots),
             )
 
+    final_exit_date = None
     for slot in slots:
         tr = slot["trade"]
         if tr is not None:
             slot["capital"] *= 1 + tr["profit_pct"] / 100
+            final_exit_date = max(
+                pd.Timestamp(tr["exit_date"]),
+                final_exit_date or pd.Timestamp(tr["exit_date"]),
+            )
             slot["trade"] = None
+    if final_exit_date is not None:
+        snapshot_equity(final_exit_date)
 
     ending_capital = sum(slot["capital"] for slot in slots)
     summary = backtest.summarize_trades(selected)
@@ -428,12 +448,21 @@ def _portfolio_shared_max8(candidate_a, candidate_b, mode):
         "ending_capital": round(ending_capital, 0),
         "portfolio_return_pct": round((ending_capital / INITIAL_CAPITAL - 1) * 100, 2),
     })
-    return selected, summary
+    return selected, summary, realized_equity
 
 
 def _yearly_records(trades):
     yearly = backtest.build_yearly_summary(trades)
-    return yearly.to_dict("records") if not yearly.empty else []
+    if yearly.empty:
+        return []
+
+    rows = yearly.to_dict("records")
+    for row in rows:
+        year = int(row["year"])
+        year_trades = [t for t in trades if pd.Timestamp(t["entry_date"]).year == year]
+        row["entries_A"] = sum(1 for t in year_trades if t.get("strategy") == "A")
+        row["entries_B"] = sum(1 for t in year_trades if t.get("strategy") == "B")
+    return rows
 
 
 def _recent_summary(trades):
@@ -448,6 +477,79 @@ def _pf_num(summary):
     return -1.0
 
 
+def _max_losing_streak(trades):
+    ordered = sorted(
+        trades,
+        key=lambda t: (
+            pd.Timestamp(t["exit_date"]),
+            pd.Timestamp(t["entry_date"]),
+            str(t["code"]),
+        ),
+    )
+    current = 0
+    max_streak = 0
+    streak_end = None
+    max_streak_end = None
+    for tr in ordered:
+        if float(tr.get("profit_pct", 0)) < 0:
+            current += 1
+            streak_end = pd.Timestamp(tr["exit_date"])
+            if current > max_streak:
+                max_streak = current
+                max_streak_end = streak_end
+        else:
+            current = 0
+            streak_end = None
+    return {
+        "max_consecutive_losses": max_streak,
+        "streak_end_date": str(max_streak_end.date()) if max_streak_end is not None else None,
+    }
+
+
+def _realized_max_drawdown(realized_equity):
+    if not realized_equity:
+        return {
+            "max_drawdown_pct": 0.0,
+            "peak_equity": INITIAL_CAPITAL,
+            "trough_equity": INITIAL_CAPITAL,
+            "peak_date": None,
+            "trough_date": None,
+            "basis": "realized_equity_only",
+        }
+
+    peak = float(realized_equity[0]["equity"])
+    peak_date = realized_equity[0]["date"]
+    max_dd = 0.0
+    dd_peak = peak
+    dd_trough = peak
+    dd_peak_date = peak_date
+    dd_trough_date = peak_date
+
+    for point in realized_equity:
+        equity = float(point["equity"])
+        date = point["date"]
+        if equity > peak:
+            peak = equity
+            peak_date = date
+        if peak > 0:
+            dd = (equity / peak - 1) * 100
+            if dd < max_dd:
+                max_dd = dd
+                dd_peak = peak
+                dd_trough = equity
+                dd_peak_date = peak_date
+                dd_trough_date = date
+
+    return {
+        "max_drawdown_pct": round(max_dd, 2),
+        "peak_equity": round(dd_peak, 0),
+        "trough_equity": round(dd_trough, 0),
+        "peak_date": str(dd_peak_date.date()) if dd_peak_date is not None else None,
+        "trough_date": str(dd_trough_date.date()) if dd_trough_date is not None else None,
+        "basis": "realized_equity_only",
+    }
+
+
 def _log_mode(label, summary, recent):
     logger.info(
         f"{label}: entries {summary['actual_entries']} (A {summary['entries_A']} / B {summary['entries_B']}) / "
@@ -456,6 +558,29 @@ def _log_mode(label, summary, recent):
         f"容量見送り {summary['skipped_capacity']} / 同日AB重複 {summary['duplicate_same_day_A_B']} / "
         f"2025-26 PF {recent.get('profit_factor')} 勝率 {recent.get('win_rate')}%"
     )
+
+
+def _log_balanced_details(yearly, drawdown, streak):
+    logger.info("\n--- 正規化混合：年別成績 ---")
+    for row in yearly:
+        logger.info(
+            f"{int(row['year'])}: trades {int(row['total_trades'])} "
+            f"(A {row['entries_A']} / B {row['entries_B']}) / "
+            f"勝率 {row['win_rate']}% / 平均損益 {row['avg_profit_pct']:+.3f}% / "
+            f"PF {row['profit_factor']}"
+        )
+
+    logger.info("\n--- 正規化混合：リスク指標 ---")
+    logger.info(
+        f"決済ベース最大DD: {drawdown['max_drawdown_pct']:.2f}% / "
+        f"ピーク {drawdown['peak_equity']:,.0f}円 ({drawdown['peak_date']}) → "
+        f"ボトム {drawdown['trough_equity']:,.0f}円 ({drawdown['trough_date']})"
+    )
+    logger.info(
+        f"最大連敗: {streak['max_consecutive_losses']}連敗 / "
+        f"最大連敗終了日 {streak['streak_end_date']}"
+    )
+    logger.info("※ 最大DDは未決済含み損益を含まない『決済ベース』。実運用中の瞬間最大DDはこれより大きくなる可能性があります。")
 
 
 def main():
@@ -481,15 +606,31 @@ def main():
     results = {}
     ranking_rows = []
     for mode, label in MERGE_MODES:
-        selected, summary = _portfolio_shared_max8(candidate_a, candidate_b, mode)
+        selected, summary, realized_equity = _portfolio_shared_max8(candidate_a, candidate_b, mode)
         recent = _recent_summary(selected)
         yearly = _yearly_records(selected)
-        results[mode] = {
+        result = {
             "label": label,
             "summary": summary,
             "recent_2025_2026": recent,
             "yearly": yearly,
         }
+
+        if mode == "balanced_rank":
+            drawdown = _realized_max_drawdown(realized_equity)
+            streak = _max_losing_streak(selected)
+            result["risk"] = {
+                "drawdown": drawdown,
+                "losing_streak": streak,
+            }
+            _log_balanced_details(yearly, drawdown, streak)
+            pd.DataFrame(realized_equity).to_csv(
+                "output/max8_shared_ab_balanced_realized_equity.csv",
+                index=False,
+                encoding="utf-8-sig",
+            )
+
+        results[mode] = result
         ranking_rows.append((mode, label, summary, recent))
         _log_mode(label, summary, recent)
 
@@ -529,6 +670,7 @@ def main():
             "strategy_A_rank": "MA25 shallow (-5% side) first",
             "strategy_B_rank": "MA25 deep (-10% side) first",
             "merge_modes": [m for m, _ in MERGE_MODES],
+            "drawdown_basis": "realized_equity_only",
         },
         "results": results,
     }
