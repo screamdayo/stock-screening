@@ -1,28 +1,19 @@
-"""有力2戦略で「下位候補を切り捨てる」最大8枠実験。
+"""有力2戦略で、同日候補の下位切り捨て率を細かく比較する最大8枠実験。
 
 本番スクリーニング条件・通常バックテストは変更しない。
-既存 ranking モードを実験枠として使う。
+候補順位・切り捨て判定はシグナル当日の情報だけを使い、未来の決済日や損益は使わない。
 
 戦略A
 - 入口: MA25乖離 -10〜-5% × 出来高前日比 <1.0
 - 出口: がっくりB + -3%損切り + 最大30営業日
-- 同日候補の基準順位: MA25乖離が浅い（-5%側）ほど上
+- 順位: MA25乖離が浅い（-5%側）ほど上
+- 前回20%切りが最良だったため 15 / 20 / 25% を細かく比較
 
 戦略B
 - 入口: MA25乖離 -10〜-5% × RSI14 40〜50
 - 出口: 純がっくりB（損切りなし・保有上限なし）
-- 同日候補の基準順位: MA25乖離が深い（-10%側）ほど上
-
-最大8ポジション。1銘柄は同時に1ポジションまで。
-候補順位・切り捨て判定はシグナル当日の情報だけを使い、
-将来のexit_dateや損益は一切使わない。
-
-今回の比較:
-- コード昇順（旧基準）
-- MA25順位で全件残す
-- MA25順位の下位10 / 20 / 30 / 40 / 50%を同日ごとに切り捨てる
-
-切り捨て後に候補が8枠未満なら、無理に別候補を補充せず空き枠を残す。
+- 順位: MA25乖離が深い（-10%側）ほど上
+- 前回50%切りが最良だったため 40 / 45 / 50 / 55 / 60% を細かく比較
 """
 
 import json
@@ -45,15 +36,24 @@ INITIAL_CAPITAL = 1_000_000
 GAKKURI_MAX_HOLD_DAYS = 30
 RECENT_START_YEAR = 2025
 
-CUT_MODES = [
-    ("code_asc", "コード昇順（旧基準）", None),
-    ("ma25_all", "MA25順位・切り捨てなし", 0),
-    ("cut10", "MA25順位・下位10%切り捨て", 10),
-    ("cut20", "MA25順位・下位20%切り捨て", 20),
-    ("cut30", "MA25順位・下位30%切り捨て", 30),
-    ("cut40", "MA25順位・下位40%切り捨て", 40),
-    ("cut50", "MA25順位・下位50%切り捨て", 50),
-]
+CUT_MODES = {
+    "A": [
+        ("code_asc", "コード昇順（旧基準）", None),
+        ("ma25_all", "MA25順位・切り捨てなし", 0),
+        ("cut15", "MA25順位・下位15%切り捨て", 15),
+        ("cut20", "MA25順位・下位20%切り捨て", 20),
+        ("cut25", "MA25順位・下位25%切り捨て", 25),
+    ],
+    "B": [
+        ("code_asc", "コード昇順（旧基準）", None),
+        ("ma25_all", "MA25順位・切り捨てなし", 0),
+        ("cut40", "MA25順位・下位40%切り捨て", 40),
+        ("cut45", "MA25順位・下位45%切り捨て", 45),
+        ("cut50", "MA25順位・下位50%切り捨て", 50),
+        ("cut55", "MA25順位・下位55%切り捨て", 55),
+        ("cut60", "MA25順位・下位60%切り捨て", 60),
+    ],
+}
 
 
 def _rsi_series(close, period=14):
@@ -71,16 +71,17 @@ def _entry_features(g, idx):
     row = g.iloc[idx]
     prev = g.iloc[idx - 1] if idx > 0 else None
 
-    prev_volume = prev.get("Vo") if prev is not None else None
-    today_volume = row.get("Vo")
     volume_ratio = None
-    if (
-        prev_volume is not None
-        and pd.notna(prev_volume)
-        and prev_volume > 0
-        and pd.notna(today_volume)
-    ):
-        volume_ratio = today_volume / prev_volume
+    if prev is not None:
+        prev_volume = prev.get("Vo")
+        today_volume = row.get("Vo")
+        if (
+            prev_volume is not None
+            and pd.notna(prev_volume)
+            and prev_volume > 0
+            and pd.notna(today_volume)
+        ):
+            volume_ratio = today_volume / prev_volume
 
     ma25 = g["MA_LONG"].iloc[idx]
     ma25_dev_pct = None
@@ -134,7 +135,6 @@ def _ma5_slope(g, idx):
 def _is_gakkuri_b(g, idx):
     if idx < 2:
         return False
-
     row = g.iloc[idx]
     if pd.isna(row["O"]) or pd.isna(row["C"]) or row["C"] >= row["O"]:
         return False
@@ -258,9 +258,7 @@ def _build_strategy_trades(signals, price_data_by_code, kind):
         result.update(f)
         trades.append(result)
 
-    logger.info(
-        f"戦略{kind}: 対象シグナル {eligible_signals}件 / トレード候補 {len(trades)}件"
-    )
+    logger.info(f"戦略{kind}: 対象シグナル {eligible_signals}件 / トレード候補 {len(trades)}件")
     return trades
 
 
@@ -271,14 +269,11 @@ def _safe_num(value, fallback=float("inf")):
 
 
 def _quality_rank_key(trade, kind):
-    """過去検証で最も良かったMA25方向だけで同日候補を並べる。"""
     code = str(trade["code"])
     ma25 = _safe_num(trade.get("ma25_dev_pct"))
     if kind == "A":
-        # Aは浅い方（-5%側）が上。
         return (-ma25, code)
     if kind == "B":
-        # Bは深い方（-10%側）が上。
         return (ma25, code)
     raise ValueError(kind)
 
@@ -288,7 +283,6 @@ def _release_is_before_entry(trade, entry_date):
     entry_date = pd.Timestamp(entry_date)
     if exit_date < entry_date:
         return True
-    # がっくりBは翌日寄り決済なので、同日の新規寄り買いに枠を再利用できる。
     return exit_date == entry_date and trade.get("exit_reason") == "gakkuri_b"
 
 
@@ -311,9 +305,7 @@ def _portfolio_max8(candidate_trades, kind, mode, cut_pct):
     def release_slots(entry_date):
         for slot in slots:
             tr = slot["trade"]
-            if tr is None:
-                continue
-            if _release_is_before_entry(tr, entry_date):
+            if tr is not None and _release_is_before_entry(tr, entry_date):
                 slot["capital"] *= 1 + tr["profit_pct"] / 100
                 slot["trade"] = None
 
@@ -362,21 +354,17 @@ def _portfolio_max8(candidate_trades, kind, mode, cut_pct):
 
     ending_capital = sum(slot["capital"] for slot in slots)
     summary = backtest.summarize_trades(selected)
-    summary.update(
-        {
-            "candidate_trades": len(candidate_trades),
-            "actual_entries": len(selected),
-            "skipped_capacity": skipped_capacity,
-            "skipped_duplicate_code": skipped_duplicate_code,
-            "skipped_quality_cut": skipped_quality_cut,
-            "max_concurrent_positions": max_concurrent,
-            "initial_capital": INITIAL_CAPITAL,
-            "ending_capital": round(ending_capital, 0),
-            "portfolio_return_pct": round(
-                (ending_capital / INITIAL_CAPITAL - 1) * 100, 2
-            ),
-        }
-    )
+    summary.update({
+        "candidate_trades": len(candidate_trades),
+        "actual_entries": len(selected),
+        "skipped_capacity": skipped_capacity,
+        "skipped_duplicate_code": skipped_duplicate_code,
+        "skipped_quality_cut": skipped_quality_cut,
+        "max_concurrent_positions": max_concurrent,
+        "initial_capital": INITIAL_CAPITAL,
+        "ending_capital": round(ending_capital, 0),
+        "portfolio_return_pct": round((ending_capital / INITIAL_CAPITAL - 1) * 100, 2),
+    })
     return selected, summary
 
 
@@ -386,9 +374,7 @@ def _yearly_records(trades):
 
 
 def _recent_summary(trades):
-    recent = [
-        t for t in trades if pd.Timestamp(t["entry_date"]).year >= RECENT_START_YEAR
-    ]
+    recent = [t for t in trades if pd.Timestamp(t["entry_date"]).year >= RECENT_START_YEAR]
     return backtest.summarize_trades(recent)
 
 
@@ -416,7 +402,7 @@ def _run_cuts(kind, strategy_name, candidate_trades):
     results = {}
     rows_for_ranking = []
 
-    for mode, label, cut_pct in CUT_MODES:
+    for mode, label, cut_pct in CUT_MODES[kind]:
         selected, summary = _portfolio_max8(
             candidate_trades, kind=kind, mode=mode, cut_pct=cut_pct
         )
@@ -462,16 +448,12 @@ def _run_cuts(kind, strategy_name, candidate_trades):
 
 
 def main():
-    logger.info("=== 最大8枠 下位候補切り捨て検証開始 ===")
-    logger.info(
-        "同日候補をMA25乖離で順位付けし、下位10〜50%を切った場合を比較します。未来情報は使いません。"
-    )
+    logger.info("=== 最大8枠 下位候補切り捨て率・細分化検証開始 ===")
+    logger.info("Aは15/20/25%、Bは40/45/50/55/60%を比較します。未来情報は使いません。")
 
     strategy = registry.get_strategy("ma5_breakout")
     target_codes = download.get_target_codes()
-    cache_filename = (
-        f"backtest_prices_{config.TARGET_MARKET}_{config.BACKTEST_YEARS}y.csv"
-    )
+    cache_filename = f"backtest_prices_{config.TARGET_MARKET}_{config.BACKTEST_YEARS}y.csv"
     price_df = download.get_price_history_incremental(
         cache_filename=cache_filename,
         years=config.BACKTEST_YEARS,
@@ -500,20 +482,19 @@ def main():
             "initial_capital": INITIAL_CAPITAL,
             "ranking_uses_future_information": False,
             "recent_start_year": RECENT_START_YEAR,
-            "cut_percentages": [0, 10, 20, 30, 40, 50],
+            "cut_percentages_A": [0, 15, 20, 25],
+            "cut_percentages_B": [0, 40, 45, 50, 55, 60],
             "strategy_A_rank": "MA25 shallow (-5% side) first",
             "strategy_B_rank": "MA25 deep (-10% side) first",
         },
         "strategy_A": results_a,
         "strategy_B": results_b,
     }
-    with open(
-        "output/max8_bottom_cut_comparison.json", "w", encoding="utf-8"
-    ) as f:
+    with open("output/max8_bottom_cut_refined_comparison.json", "w", encoding="utf-8") as f:
         json.dump(output, f, ensure_ascii=False, indent=2, default=str)
 
-    logger.info("\n結果を output/max8_bottom_cut_comparison.json に保存しました。")
-    logger.info("=== 最大8枠 下位候補切り捨て検証完了 ===")
+    logger.info("\n結果を output/max8_bottom_cut_refined_comparison.json に保存しました。")
+    logger.info("=== 最大8枠 下位候補切り捨て率・細分化検証完了 ===")
 
 
 if __name__ == "__main__":
