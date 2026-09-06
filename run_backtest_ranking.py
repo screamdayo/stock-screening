@@ -1,4 +1,4 @@
-"""有力2戦略で最大8枠の「同日候補2段階ソート」を比較する実験。
+"""有力2戦略で最大8枠の「MA25乖離帯 + 第2指標」を比較する実験。
 
 本番スクリーニング条件・通常バックテストは変更しない。
 既存 ranking モードを実験枠として使う。
@@ -14,20 +14,19 @@
 最大8ポジション。1銘柄は同時に1ポジションまで。
 候補順位はシグナル当日の情報だけを使い、将来のexit_dateや損益は一切使わない。
 
-前回の単独指標結果を踏まえて、以下の2段階ソートを比較する。
-戦略A:
-- code_asc: コード昇順（基準）
-- ma25_shallow_then_ma5: MA25乖離が浅い順 → MA5上昇率が低い順
-- ma25_shallow_then_gain: MA25乖離が浅い順 → 当日上昇率が低い順
-- ma5_then_ma25_shallow: MA5上昇率が低い順 → MA25乖離が浅い順
-- gain_then_ma25_shallow: 当日上昇率が低い順 → MA25乖離が浅い順
+今回の狙い:
+連続値のMA25乖離を第1キーにすると、それだけでほぼ全順位が決まり、第2指標が
+効かなかった。そこでMA25乖離を1%刻みの帯に丸め、その帯の中で第2指標を使う。
 
-戦略B:
-- code_asc: コード昇順（基準）
-- ma25_deep_then_ma5: MA25乖離が深い順 → MA5上昇率が低い順
-- ma5_then_ma25_deep: MA5上昇率が低い順 → MA25乖離が深い順
-- ma25_deep_then_close80: MA25乖離が深い順 → 終値位置が80%に近い順
-- ma25_deep_then_rsi45: MA25乖離が深い順 → RSIが45に近い順
+帯:
+- -5〜-6%
+- -6〜-7%
+- -7〜-8%
+- -8〜-9%
+- -9〜-10%
+
+戦略Aは浅い帯（-5%側）を優先。
+戦略Bは深い帯（-10%側）を優先。
 
 資産推移は初期100万円を8スロットに等分し、各スロットを決済ごとに複利。
 """
@@ -55,17 +54,19 @@ RECENT_START_YEAR = 2025
 RANKING_MODES = {
     "A": [
         ("code_asc", "コード昇順（基準）"),
-        ("ma25_shallow_then_ma5", "MA25浅い順 → MA5上昇率低い順"),
-        ("ma25_shallow_then_gain", "MA25浅い順 → 当日上昇率低い順"),
-        ("ma5_then_ma25_shallow", "MA5上昇率低い順 → MA25浅い順"),
-        ("gain_then_ma25_shallow", "当日上昇率低い順 → MA25浅い順"),
+        ("ma25_cont_shallow", "MA25連続値・浅い順（前回基準）"),
+        ("band_shallow_code", "MA25 1%帯・浅い帯順 → コード順"),
+        ("band_shallow_ma5", "MA25 1%帯・浅い帯順 → MA5上昇率低い順"),
+        ("band_shallow_gain", "MA25 1%帯・浅い帯順 → 当日上昇率低い順"),
+        ("band_shallow_close80", "MA25 1%帯・浅い帯順 → 終値位置80%に近い順"),
     ],
     "B": [
         ("code_asc", "コード昇順（基準）"),
-        ("ma25_deep_then_ma5", "MA25深い順 → MA5上昇率低い順"),
-        ("ma5_then_ma25_deep", "MA5上昇率低い順 → MA25深い順"),
-        ("ma25_deep_then_close80", "MA25深い順 → 終値位置80%に近い順"),
-        ("ma25_deep_then_rsi45", "MA25深い順 → RSI45に近い順"),
+        ("ma25_cont_deep", "MA25連続値・深い順（前回基準）"),
+        ("band_deep_code", "MA25 1%帯・深い帯順 → コード順"),
+        ("band_deep_ma5", "MA25 1%帯・深い帯順 → MA5上昇率低い順"),
+        ("band_deep_close80", "MA25 1%帯・深い帯順 → 終値位置80%に近い順"),
+        ("band_deep_rsi45", "MA25 1%帯・深い帯順 → RSI45に近い順"),
     ],
 }
 
@@ -278,6 +279,15 @@ def _safe_num(value, fallback=float("inf")):
     return float(value)
 
 
+def _ma25_band(ma25_dev_pct):
+    """-5〜-10%のMA25乖離を1%刻みの帯番号5〜9へ変換する。"""
+    value = _safe_num(ma25_dev_pct)
+    if not math.isfinite(value):
+        return 99
+    # -5.2 -> 5, -6.0 -> 6, -9.9 -> 9
+    return int(math.floor(-value))
+
+
 def _rank_key(trade, mode):
     code = str(trade["code"])
     ma25 = _safe_num(trade.get("ma25_dev_pct"))
@@ -285,29 +295,36 @@ def _rank_key(trade, mode):
     gain = _safe_num(trade.get("gain_pct"))
     rsi = _safe_num(trade.get("rsi14"))
     close_pos = _safe_num(trade.get("close_position_pct"))
+    band = _ma25_band(trade.get("ma25_dev_pct"))
 
     if mode == "code_asc":
         return (code,)
 
-    # 「浅い」は -5%側なので値が大きい方を先にする。
-    if mode == "ma25_shallow_then_ma5":
-        return (-ma25, ma5, code)
-    if mode == "ma25_shallow_then_gain":
-        return (-ma25, gain, code)
-    if mode == "ma5_then_ma25_shallow":
-        return (ma5, -ma25, code)
-    if mode == "gain_then_ma25_shallow":
-        return (gain, -ma25, code)
+    # 前回の連続値ソートを比較用に残す。
+    if mode == "ma25_cont_shallow":
+        return (-ma25, code)
+    if mode == "ma25_cont_deep":
+        return (ma25, code)
 
-    # 「深い」は -10%側なので値が小さい方を先にする。
-    if mode == "ma25_deep_then_ma5":
-        return (ma25, ma5, code)
-    if mode == "ma5_then_ma25_deep":
-        return (ma5, ma25, code)
-    if mode == "ma25_deep_then_close80":
-        return (ma25, abs(close_pos - 80), code)
-    if mode == "ma25_deep_then_rsi45":
-        return (ma25, abs(rsi - 45), code)
+    # A: 浅い帯（5→6→7→8→9）を優先し、その帯の中で第2指標を効かせる。
+    if mode == "band_shallow_code":
+        return (band, code)
+    if mode == "band_shallow_ma5":
+        return (band, ma5, code)
+    if mode == "band_shallow_gain":
+        return (band, gain, code)
+    if mode == "band_shallow_close80":
+        return (band, abs(close_pos - 80), code)
+
+    # B: 深い帯（9→8→7→6→5）を優先し、その帯の中で第2指標を効かせる。
+    if mode == "band_deep_code":
+        return (-band, code)
+    if mode == "band_deep_ma5":
+        return (-band, ma5, code)
+    if mode == "band_deep_close80":
+        return (-band, abs(close_pos - 80), code)
+    if mode == "band_deep_rsi45":
+        return (-band, abs(rsi - 45), code)
 
     raise ValueError(mode)
 
@@ -366,6 +383,7 @@ def _portfolio_max8(candidate_trades, ranking_mode):
             tr_copy = dict(tr)
             tr_copy["slot_entry_capital"] = round(free_slot["capital"], 2)
             tr_copy["ranking_mode"] = ranking_mode
+            tr_copy["ma25_band"] = _ma25_band(tr_copy.get("ma25_dev_pct"))
             free_slot["trade"] = tr_copy
             selected.append(tr_copy)
             concurrent = sum(slot["trade"] is not None for slot in slots)
@@ -440,7 +458,7 @@ def _run_rankings(kind, strategy_name, candidate_trades):
         _log_mode(label, summary, recent)
 
         pd.DataFrame(selected).to_csv(
-            f"output/max8_two_stage_{kind}_{mode}.csv",
+            f"output/max8_ma25_band_{kind}_{mode}.csv",
             index=False,
             encoding="utf-8-sig",
         )
@@ -467,8 +485,8 @@ def _run_rankings(kind, strategy_name, candidate_trades):
 
 
 def main():
-    logger.info("=== 最大8枠 同日候補2段階ソート検証開始 ===")
-    logger.info("候補順位はシグナル当日の情報だけを使用。未来の決済日・損益は使いません。")
+    logger.info("=== 最大8枠 MA25乖離1%帯ランキング検証開始 ===")
+    logger.info("MA25乖離を1%帯に区切り、帯内で第2指標を使います。未来情報は使いません。")
 
     strategy = registry.get_strategy("ma5_breakout")
     target_codes = download.get_target_codes()
@@ -501,17 +519,19 @@ def main():
             "initial_capital": INITIAL_CAPITAL,
             "ranking_uses_future_information": False,
             "recent_start_year": RECENT_START_YEAR,
+            "ma25_band_width_pct": 1.0,
+            "ma25_band_range_pct": [-10, -5],
             "ranking_modes_A": [m for m, _ in RANKING_MODES["A"]],
             "ranking_modes_B": [m for m, _ in RANKING_MODES["B"]],
         },
         "strategy_A": results_a,
         "strategy_B": results_b,
     }
-    with open("output/max8_two_stage_ranking_comparison.json", "w", encoding="utf-8") as f:
+    with open("output/max8_ma25_band_ranking_comparison.json", "w", encoding="utf-8") as f:
         json.dump(output, f, ensure_ascii=False, indent=2, default=str)
 
-    logger.info("\n結果を output/max8_two_stage_ranking_comparison.json に保存しました。")
-    logger.info("=== 最大8枠 同日候補2段階ソート検証完了 ===")
+    logger.info("\n結果を output/max8_ma25_band_ranking_comparison.json に保存しました。")
+    logger.info("=== 最大8枠 MA25乖離1%帯ランキング検証完了 ===")
 
 
 if __name__ == "__main__":
