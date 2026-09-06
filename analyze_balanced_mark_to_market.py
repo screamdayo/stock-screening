@@ -1,16 +1,21 @@
-"""正規化混合ポートフォリオの日次時価評価と、DD局面の市場環境を分析する。
+"""正規化混合ポートフォリオを、本番寄りにリスク分析する。
 
-run_backtest_ranking.py が先に出力する
-output/max8_shared_ab_balanced_rank.csv を読み、同じ8スロットの実採用トレードを
-日次終値で時価評価する。
+run_backtest_ranking.py が先に出力する固定8枠の正規化混合を日次終値で時価評価し、
+東証プライム市場内部と主要DD局面を確認する。
 
-あわせて東証プライム株価キャッシュから市場内部の状態を作る:
-- 等金額平均の日次騰落率
-- 値上がり銘柄比率
-- 25日線割れ銘柄比率
+さらに同じA/B条件・同じ正規化混合順位を固定したまま、前営業日の
+「25日線上にいるプライム銘柄比率」だけで新規保有上限を 8 / 4 / 2 枠へ変える。
 
-これを過去の主要DD期間に重ね、戦略固有の不調か市場全体の悪化かを見る。
-本番スクリーニング条件や候補順位は変更しない。分析専用。
+可変ルール:
+- 前営業日の25日線上比率 40%以上: 最大8枠
+- 20%以上40%未満: 最大4枠
+- 20%未満: 最大2枠
+
+重要:
+- 当日の終値は寄り付き時点で未知なので、必ず前営業日の市場内部だけを使う。
+- 枠数が下がっても既存ポジションは強制決済しない。
+  現在保有数が上限以上なら、新規エントリーだけ止める。
+- 本番スクリーニング条件は変更しない。分析専用。
 """
 
 import json
@@ -18,8 +23,11 @@ import os
 
 import pandas as pd
 
+import backtest
 import config
 from logger import get_logger
+from strategies import registry
+import run_backtest_ranking as ranking
 
 logger = get_logger(__name__)
 
@@ -28,11 +36,14 @@ EQUITY_CSV = "output/max8_shared_ab_balanced_mtm_equity.csv"
 RISK_JSON = "output/max8_shared_ab_balanced_mtm_risk.json"
 MARKET_BREADTH_CSV = "output/max8_shared_ab_market_breadth.csv"
 MARKET_REGIME_JSON = "output/max8_shared_ab_market_regime.json"
+VARIABLE_TRADES_CSV = "output/max8_shared_ab_balanced_variable_capacity.csv"
+VARIABLE_EQUITY_CSV = "output/max8_shared_ab_balanced_variable_capacity_mtm_equity.csv"
+VARIABLE_SUMMARY_JSON = "output/max8_shared_ab_balanced_variable_capacity_summary.json"
+
 MAX_POSITIONS = 8
 INITIAL_CAPITAL = 1_000_000
+RECENT_START_YEAR = 2025
 
-# これまで確認できた代表的なDD窓。
-# 2022は決済ベース最大DD、2024は日次時価評価最大DD。
 REGIME_WINDOWS = {
     "2022_realized_dd": {
         "label": "2022 決済ベースDD",
@@ -125,8 +136,7 @@ def _slot_value_on_date(slot_trades, date, close_panel):
         return initial_slot_capital, None
 
     latest_entry_date = past["entry_date"].max()
-    latest_candidates = past[past["entry_date"] == latest_entry_date]
-    tr = latest_candidates.iloc[-1]
+    tr = past[past["entry_date"] == latest_entry_date].iloc[-1]
     exit_date = pd.Timestamp(tr["exit_date"])
     entry_capital = float(tr["slot_entry_capital"])
 
@@ -219,7 +229,6 @@ def _risk_summary(curve):
 
 
 def _build_market_breadth(prices):
-    """東証プライム各銘柄から、日ごとの市場内部指標を作る。"""
     p = prices[["Date", "Code", "C"]].copy().sort_values(["Code", "Date"])
     p["ret_pct"] = p.groupby("Code")["C"].pct_change() * 100
     p["ma25"] = p.groupby("Code")["C"].transform(lambda s: s.rolling(25, min_periods=25).mean())
@@ -241,8 +250,7 @@ def _build_market_breadth(prices):
             "above_ma25_pct": round(float(valid_ma["above_ma25"].mean() * 100), 2) if not valid_ma.empty else None,
             "below_ma25_pct": round(float((~valid_ma["above_ma25"]).mean() * 100), 2) if not valid_ma.empty else None,
         })
-    breadth = pd.DataFrame(rows).sort_values("date").reset_index(drop=True)
-    return breadth
+    return pd.DataFrame(rows).sort_values("date").reset_index(drop=True)
 
 
 def _window_market_summary(breadth, curve, spec):
@@ -272,7 +280,6 @@ def _window_market_summary(breadth, curve, spec):
         "end": str(end.date()),
         "trading_days": int(len(b)),
         "prime_equal_weight_return_pct": round(float((synthetic.iloc[-1] - 1) * 100), 2),
-        "avg_daily_equal_weight_return_pct": round(float(b["equal_weight_return_pct"].mean()), 3),
         "negative_market_days": int((b["equal_weight_return_pct"] < 0).sum()),
         "avg_advancers_pct": round(float(b["advancers_pct"].mean()), 2),
         "avg_below_ma25_pct": round(float(b["below_ma25_pct"].dropna().mean()), 2),
@@ -289,7 +296,7 @@ def _window_market_summary(breadth, curve, spec):
 
 def _log_market_regime(regime):
     logger.info("\n--- DD局面：東証プライム市場環境 ---")
-    for key, r in regime.items():
+    for _, r in regime.items():
         if "error" in r:
             logger.info("%s: 市場データなし", r["label"])
             continue
@@ -308,6 +315,208 @@ def _log_market_regime(regime):
             "  同期間の正規化混合: %+0.2f%% / 期間内最深DD %+.2f%%",
             r["portfolio_window_return_pct"], r["portfolio_worst_drawdown_pct_in_window"],
         )
+
+
+def _capacity_from_above_ma25(value):
+    if value is None or pd.isna(value):
+        return 8
+    value = float(value)
+    if value >= 40:
+        return 8
+    if value >= 20:
+        return 4
+    return 2
+
+
+def _previous_day_capacity_maps(breadth):
+    cap_map = {}
+    breadth_map = {}
+    b = breadth.sort_values("date").reset_index(drop=True)
+    for i in range(1, len(b)):
+        current_date = pd.Timestamp(b.iloc[i]["date"])
+        prev_value = b.iloc[i - 1]["above_ma25_pct"]
+        cap_map[current_date] = _capacity_from_above_ma25(prev_value)
+        breadth_map[current_date] = None if pd.isna(prev_value) else float(prev_value)
+    return cap_map, breadth_map
+
+
+def _variable_capacity_portfolio(candidate_a, candidate_b, cap_map, breadth_map):
+    a_by_date = {}
+    b_by_date = {}
+    all_dates = set()
+    for tr in candidate_a:
+        d = pd.Timestamp(tr["entry_date"])
+        a_by_date.setdefault(d, []).append(tr)
+        all_dates.add(d)
+    for tr in candidate_b:
+        d = pd.Timestamp(tr["entry_date"])
+        b_by_date.setdefault(d, []).append(tr)
+        all_dates.add(d)
+
+    slots = [
+        {"id": i + 1, "capital": INITIAL_CAPITAL / MAX_POSITIONS, "trade": None}
+        for i in range(MAX_POSITIONS)
+    ]
+    selected = []
+    skipped_capacity = 0
+    skipped_duplicate = 0
+    duplicate_same_day = 0
+    capacity_days = {8: 0, 4: 0, 2: 0}
+    max_concurrent = 0
+
+    def release_slots(entry_date):
+        for slot in slots:
+            tr = slot["trade"]
+            if tr is not None and ranking._release_is_before_entry(tr, entry_date):
+                slot["capital"] *= 1 + float(tr["profit_pct"]) / 100
+                slot["trade"] = None
+
+    for entry_date in sorted(all_dates):
+        release_slots(entry_date)
+        capacity = int(cap_map.get(entry_date, 8))
+        prev_breadth = breadth_map.get(entry_date)
+        capacity_days[capacity] += 1
+
+        day_candidates, _, _, dup_day = ranking._merge_day_candidates(
+            a_by_date.get(entry_date, []),
+            b_by_date.get(entry_date, []),
+            "balanced_rank",
+        )
+        duplicate_same_day += dup_day
+
+        for tr in day_candidates:
+            active_slots = [slot for slot in slots if slot["trade"] is not None]
+            active_codes = {str(slot["trade"]["code"]) for slot in active_slots}
+            if str(tr["code"]) in active_codes:
+                skipped_duplicate += 1
+                continue
+
+            # 枠数が下がっても既存ポジションは売らない。
+            # 現在保有数がその日の上限以上なら新規だけ停止する。
+            if len(active_slots) >= capacity:
+                skipped_capacity += 1
+                continue
+
+            free_slot = next((slot for slot in slots if slot["trade"] is None), None)
+            if free_slot is None:
+                skipped_capacity += 1
+                continue
+
+            tr_copy = dict(tr)
+            tr_copy["slot_id"] = free_slot["id"]
+            tr_copy["slot_entry_capital"] = round(free_slot["capital"], 2)
+            tr_copy["merge_mode"] = "balanced_rank_variable_capacity"
+            tr_copy["entry_capacity"] = capacity
+            tr_copy["prev_day_above_ma25_pct"] = prev_breadth
+            free_slot["trade"] = tr_copy
+            selected.append(tr_copy)
+            max_concurrent = max(max_concurrent, len(active_slots) + 1)
+
+    for slot in slots:
+        tr = slot["trade"]
+        if tr is not None:
+            slot["capital"] *= 1 + float(tr["profit_pct"]) / 100
+            slot["trade"] = None
+
+    ending_capital = sum(slot["capital"] for slot in slots)
+    summary = backtest.summarize_trades(selected)
+    summary.update({
+        "actual_entries": len(selected),
+        "entries_A": sum(1 for tr in selected if tr.get("strategy") == "A"),
+        "entries_B": sum(1 for tr in selected if tr.get("strategy") == "B"),
+        "skipped_regime_capacity": skipped_capacity,
+        "skipped_active_duplicate": skipped_duplicate,
+        "duplicate_same_day_A_B": duplicate_same_day,
+        "capacity_day_counts": capacity_days,
+        "max_concurrent_positions": max_concurrent,
+        "initial_capital": INITIAL_CAPITAL,
+        "ending_capital": round(ending_capital, 0),
+        "portfolio_return_pct": round((ending_capital / INITIAL_CAPITAL - 1) * 100, 2),
+    })
+    return selected, summary
+
+
+def _recent_summary(trades):
+    recent = [t for t in trades if pd.Timestamp(t["entry_date"]).year >= RECENT_START_YEAR]
+    return backtest.summarize_trades(recent)
+
+
+def _run_variable_capacity(prices, breadth):
+    logger.info("\n=== 正規化混合：可変8/4/2枠 検証開始 ===")
+    logger.info("前営業日の25日線上比率: 40%%以上=8枠 / 20〜40%%=4枠 / 20%%未満=2枠")
+    logger.info("既存建玉は強制決済せず、上限超過中は新規だけ停止します。")
+
+    target_codes = set(prices["Code"].dropna().astype(str).unique())
+    strategy = registry.get_strategy("ma5_breakout")
+    signals, price_data_by_code = strategy(prices, target_codes)
+    candidate_a = ranking._build_strategy_trades(signals, price_data_by_code, "A")
+    candidate_b = ranking._build_strategy_trades(signals, price_data_by_code, "B")
+
+    cap_map, breadth_map = _previous_day_capacity_maps(breadth)
+    selected, summary = _variable_capacity_portfolio(
+        candidate_a, candidate_b, cap_map, breadth_map
+    )
+    recent = _recent_summary(selected)
+    yearly_df = backtest.build_yearly_summary(selected)
+    yearly = yearly_df.to_dict("records") if not yearly_df.empty else []
+
+    selected_df = pd.DataFrame(selected)
+    trading_dates, close_panel = _build_close_panel(selected_df, prices)
+    curve = _build_daily_equity(selected_df, trading_dates, close_panel)
+    risk = _risk_summary(curve)
+
+    selected_df.to_csv(VARIABLE_TRADES_CSV, index=False, encoding="utf-8-sig")
+    curve.to_csv(VARIABLE_EQUITY_CSV, index=False, encoding="utf-8-sig")
+    output = {
+        "settings": {
+            "capacity_basis": "previous_trading_day_above_ma25_pct",
+            "capacity_rule": {"gte_40": 8, "gte_20_lt_40": 4, "lt_20": 2},
+            "force_exit_when_capacity_falls": False,
+            "ranking_uses_future_information": False,
+            "strategy_A_cut_pct": ranking.A_CUT_PCT,
+            "strategy_B_cut_pct": ranking.B_CUT_PCT,
+        },
+        "summary": summary,
+        "recent_2025_2026": recent,
+        "yearly": yearly,
+        "mark_to_market_risk": risk,
+    }
+    with open(VARIABLE_SUMMARY_JSON, "w", encoding="utf-8") as f:
+        json.dump(output, f, ensure_ascii=False, indent=2, default=str)
+
+    logger.info("\n--- 正規化混合：可変8/4/2枠 結果 ---")
+    logger.info(
+        "entries %s (A %s / B %s) / PF %s / 勝率 %s%% / 資産 %s円 (%+.2f%%) / 2025-26 PF %s",
+        summary["actual_entries"], summary["entries_A"], summary["entries_B"],
+        summary.get("profit_factor"), summary.get("win_rate"),
+        f"{summary['ending_capital']:,.0f}", summary["portfolio_return_pct"],
+        recent.get("profit_factor"),
+    )
+    logger.info(
+        "日次時価最大DD %.2f%% / ピーク %s円 (%s) → ボトム %s円 (%s) / 回復日 %s / 水面下 %s営業日",
+        risk["max_drawdown_pct"], f"{risk['peak_equity']:,.0f}", risk["peak_date"],
+        f"{risk['trough_equity']:,.0f}", risk["trough_date"],
+        risk["recovery_date"] or "未回復", risk["underwater_trading_days"],
+    )
+    logger.info(
+        "上限別シグナル日数: 8枠=%s日 / 4枠=%s日 / 2枠=%s日 / 上限で新規見送り=%s件",
+        summary["capacity_day_counts"].get(8, 0),
+        summary["capacity_day_counts"].get(4, 0),
+        summary["capacity_day_counts"].get(2, 0),
+        summary["skipped_regime_capacity"],
+    )
+    logger.info("\n--- 可変枠：年別PF ---")
+    for row in yearly:
+        logger.info(
+            "%s: trades %s / 勝率 %s%% / 平均損益 %+.3f%% / PF %s",
+            int(row["year"]), int(row["total_trades"]), row["win_rate"],
+            row["avg_profit_pct"], row["profit_factor"],
+        )
+    logger.info("可変枠トレード: %s", VARIABLE_TRADES_CSV)
+    logger.info("可変枠日次曲線: %s", VARIABLE_EQUITY_CSV)
+    logger.info("可変枠集計: %s", VARIABLE_SUMMARY_JSON)
+    logger.info("=== 正規化混合：可変8/4/2枠 検証完了 ===")
+    return output
 
 
 def main():
@@ -346,6 +555,10 @@ def main():
         f"{risk['final_equity']:,.0f}", risk["portfolio_return_pct"], risk["max_active_positions"],
     )
     _log_market_regime(regime)
+
+    # 固定8枠の市場診断後、同じ候補条件・同じ正規化順位のまま可変枠を検証する。
+    _run_variable_capacity(prices, breadth)
+
     logger.info("日次曲線: %s", EQUITY_CSV)
     logger.info("市場内部曲線: %s", MARKET_BREADTH_CSV)
     logger.info("市場局面集計: %s", MARKET_REGIME_JSON)
