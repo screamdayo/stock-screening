@@ -7,12 +7,16 @@ on:
   push:
     paths:
       - 'trigger/screening.txt'
+  issues:
+    types: [opened]
 
 permissions:
   contents: write
+  issues: write
 
 jobs:
   screening:
+    if: github.event_name != 'issues' || startsWith(github.event.issue.title, '[screening-trigger]')
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -82,3 +86,9 @@ jobs:
 
           echo "Failed to push after 3 attempts."
           exit 1
+
+      - name: Close ChatGPT trigger issue
+        if: always() && github.event_name == 'issues' && startsWith(github.event.issue.title, '[screening-trigger]')
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh issue close "${{ github.event.issue.number }}" --repo "${{ github.repository }}" --comment "Daily Screening trigger processed."
