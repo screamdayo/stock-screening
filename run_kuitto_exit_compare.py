@@ -54,12 +54,12 @@ def strict_gakutto(g,j):
     return float(g.C.iloc[j]) < float(g.O.iloc[j])
 
 
-def simulate(g,i,mode,hold_days=HOLD,timeout_next_open=False):
+def simulate(g,i,mode,hold_days=HOLD,timeout_next_open=False,sl_pct=SL):
     ent=i+1
     if ent>=len(g): return None
     entry=float(g.O.iloc[ent])
     if not entry>0: return None
-    sl=entry*(1-SL/100); tp=entry*(1+TP/100)
+    sl=entry*(1-sl_pct/100); tp=entry*(1+TP/100)
     end=min(ent+hold_days-1,len(g)-1)
     pending_exit=None
 
@@ -70,7 +70,7 @@ def simulate(g,i,mode,hold_days=HOLD,timeout_next_open=False):
 
         lo=float(g.L.iloc[j]); hi=float(g.H.iloc[j])
         if lo<=sl:
-            return -SL,'stop_loss',j-ent+1
+            return -sl_pct,'stop_loss',j-ent+1
         if mode in ('fixed5','hybrid_firstdown','hybrid_strict') and hi>=tp:
             return TP,'take_profit',j-ent+1
 
@@ -122,6 +122,7 @@ def main():
     out={m:[] for m in modes}
     strict_holds={10:[],15:[],20:[]}
     strict15_operational=[]
+    stop_losses={2.0:[],2.5:[],3.0:[],3.5:[],4.0:[]}
     signal_count=0
     for code,g in prices.groupby('Code'):
         g=g.sort_values('Date').reset_index(drop=True).copy()
@@ -144,6 +145,11 @@ def main():
             if sim:
                 pnl,reason,hold=sim
                 strict15_operational.append({'code':code,'date':str(g.Date.iloc[i]),'pnl':pnl,'reason':reason,'hold':hold})
+            for sl_pct in stop_losses:
+                sim=simulate(g,i,'strict',15,timeout_next_open=True,sl_pct=sl_pct)
+                if not sim: continue
+                pnl,reason,hold=sim
+                stop_losses[sl_pct].append({'code':code,'date':str(g.Date.iloc[i]),'pnl':pnl,'reason':reason,'hold':hold})
     result={
         'signals':signal_count,
         'modes':{m:stats(rows) for m,rows in out.items()},
@@ -155,6 +161,10 @@ def main():
         'strict15_operational_next_open':{
             'all':stats(strict15_operational),
             'three_way':three_way(strict15_operational)
+        },
+        'strict15_stop_loss_compare':{
+            str(sl):{'all':stats(rows),'three_way':three_way(rows)}
+            for sl,rows in stop_losses.items()
         }
     }
     print('KUITTO_EXIT_COMPARE='+json.dumps(result,ensure_ascii=False))
