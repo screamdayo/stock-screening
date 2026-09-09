@@ -8,19 +8,20 @@ run_backtest.py や main.py から名前で呼び出せるようになる。
 
 from strategies import kuitto
 from strategies import ma5_breakout
+from strategies import kuitto_pullback_auto
 
 # 戦略名 -> シグナル検出関数（バックテスト用: find_signals）
 STRATEGIES = {
     "kuitto": kuitto.find_signals,
     "ma5_breakout": ma5_breakout.find_signals,
-    # 新しい戦略を追加する場合はここに追記する。例:
-    # "golden_cross": golden_cross.find_signals,
+    "kuitto_pullback_auto": kuitto_pullback_auto.find_signals,
 }
 
 # 戦略名 -> 日次スクリーニング用関数（最新日だけ判定するもの）
 LATEST_SCREENERS = {
     "kuitto": kuitto.find_latest_signals,
     "ma5_breakout": ma5_breakout.find_latest_signals,
+    "kuitto_pullback_auto": kuitto_pullback_auto.find_latest_signals,
 }
 
 
