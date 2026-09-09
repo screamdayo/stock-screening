@@ -17,6 +17,14 @@ NEXT_OPEN_GAP_MAX_PCT = 0.5
 STOP_LOSS_PCT = 5.0
 
 
+def _stock_label(item):
+    code = str(item.get("code") or "").strip()
+    name = str(item.get("name") or "").strip()
+    if name and code:
+        return f"{name} ({code})"
+    return name or code or "?"
+
+
 def notify(results, rescue_results=None, primary_results=None):
     today = datetime.now().strftime("%Y/%m/%d")
     rescue_results = rescue_results or []
@@ -35,7 +43,7 @@ def notify(results, rescue_results=None, primary_results=None):
 
         lines = []
         for r in display_results[:20]:
-            label = r.get("name") or r["code"]
+            label = _stock_label(r)
             decline = r.get("ma5_prior5d_decline_pct")
             gap = r.get("ma5_vs_ma25_pct")
             bull = r.get("bull_candle_pct")
@@ -96,7 +104,7 @@ def notify(results, rescue_results=None, primary_results=None):
         for r in primary_results[:15]:
             rank = r.get("production_rank")
             kind = r.get("production_strategy") or "?"
-            label = r.get("name") or r["code"]
+            label = _stock_label(r)
             lines.append(f"🥇 #{rank} **{kind}** {label}")
         remaining = len(primary_results) - 15
         if remaining > 0:
@@ -106,7 +114,7 @@ def notify(results, rescue_results=None, primary_results=None):
     if results:
         preview = []
         for r in results[:10]:
-            label = r.get("name") or r["code"]
+            label = _stock_label(r)
             preview.append(f"• {label}")
         remaining = len(results) - 10
         if remaining > 0:
@@ -116,7 +124,7 @@ def notify(results, rescue_results=None, primary_results=None):
     if rescue_results:
         preview = []
         for r in rescue_results[:10]:
-            label = r.get("name") or r["code"]
+            label = _stock_label(r)
             preview.append(f"🟣 {label}")
         remaining = len(rescue_results) - 10
         if remaining > 0:
@@ -133,7 +141,7 @@ def notify_sell_signals(alerts):
     today = datetime.now().strftime("%Y/%m/%d")
     lines = []
     for a in alerts:
-        label = a.get("name") or a.get("code")
+        label = _stock_label(a)
         reason = a.get("reason")
         if reason == "strict_gakutto":
             reason_text = "厳しめがくっと成立"
@@ -149,7 +157,7 @@ def notify_sell_signals(alerts):
         if close is not None:
             detail.append(f"終値 {close:,.1f}")
         lines.append(
-            f"🔴 **{label} ({a.get('code')})** — {' / '.join(detail)}\n"
+            f"🔴 **{label}** — {' / '.join(detail)}\n"
             f"➡️ **翌営業日始値で売却**"
         )
 
