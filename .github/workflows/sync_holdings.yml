@@ -36,15 +36,17 @@ jobs:
               rows = []
           rows = [x for x in rows if isinstance(x, dict) and x.get('code')]
 
+          def valid_code(code):
+              return bool(re.fullmatch(r'[0-9A-Za-z]{4,6}', code or ''))
+
           if title.startswith('[holding-add]'):
-              # 例: [holding-add] 7203 2026-09-10 2850 トヨタ
               rest = title[len('[holding-add]'):].strip()
               parts = rest.split(maxsplit=4)
               if len(parts) < 2:
                   raise SystemExit('形式: [holding-add] 銘柄コード YYYY-MM-DD [買値] [銘柄名]')
-              code, buy_date = parts[0], parts[1]
-              if not re.fullmatch(r'\d{4,6}', code):
-                  raise SystemExit('銘柄コードが不正です')
+              code, buy_date = parts[0].upper(), parts[1]
+              if not valid_code(code):
+                  raise SystemExit('銘柄コードが不正です（英数字4〜6文字）')
               if not re.fullmatch(r'\d{4}-\d{2}-\d{2}', buy_date):
                   raise SystemExit('買付日は YYYY-MM-DD で指定してください')
               buy_price = None
@@ -61,16 +63,16 @@ jobs:
               item = {'code': code, 'buy_date': buy_date, 'name': name}
               if buy_price is not None:
                   item['buy_price'] = buy_price
-              rows = [x for x in rows if str(x.get('code')) != code]
+              rows = [x for x in rows if str(x.get('code','')).upper() != code]
               rows.append(item)
               action = f'✅ {code} を保有監視に登録しました。'
           else:
               rest = title[len('[holding-remove]'):].strip()
-              code = rest.split()[0] if rest else ''
-              if not re.fullmatch(r'\d{4,6}', code):
+              code = (rest.split()[0] if rest else '').upper()
+              if not valid_code(code):
                   raise SystemExit('形式: [holding-remove] 銘柄コード')
               before = len(rows)
-              rows = [x for x in rows if str(x.get('code')) != code]
+              rows = [x for x in rows if str(x.get('code','')).upper() != code]
               action = f'✅ {code} を保有監視から削除しました。' if len(rows) < before else f'ℹ️ {code} は保有監視にありませんでした。'
 
           rows.sort(key=lambda x: (x.get('buy_date',''), x.get('code','')))
