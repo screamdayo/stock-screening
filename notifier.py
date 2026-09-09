@@ -20,10 +20,45 @@ def notify(results, rescue_results=None, primary_results=None):
     rescue_results = rescue_results or []
     primary_results = primary_results or []
 
-    if not results and not rescue_results and not primary_results:
-        _post(f"📊 **株スクリーニング結果 {today}**\n該当銘柄なし\n{SCREENING_VIEW_URL}")
+    # 目視撤廃後の自動くいっと通知。
+    if results and all(r.get("auto_filtered") for r in results) and not rescue_results and not primary_results:
+        lines = []
+        for r in results[:20]:
+            label = r.get("name") or r["code"]
+            decline = r.get("ma5_prior5d_decline_pct")
+            gap = r.get("ma5_vs_ma25_pct")
+            bull = r.get("bull_candle_pct")
+            detail = []
+            if decline is not None:
+                detail.append(f"MA5直前5日 {decline:+.2f}%")
+            if gap is not None:
+                detail.append(f"MA5/25乖離 {gap:+.2f}%")
+            if bull is not None:
+                detail.append(f"当日 {bull:+.2f}%")
+            suffix = f" — {' / '.join(detail)}" if detail else ""
+            lines.append(f"🟢 {label}{suffix}")
+
+        remaining = len(results) - 20
+        if remaining > 0:
+            lines.append(f"…他{remaining}件")
+
+        msg = (
+            f"📊 **くいっと押し目版 {today}**\n"
+            f"🤖 **目視判定なし / 自動通過 {len(results)}件**\n"
+            + "\n".join(lines)
+            + f"\n\n📈 **チャート**\n{SCREENING_VIEW_URL}"
+        )
+        _post_long(msg)
         return
 
+    if not results and not rescue_results and not primary_results:
+        _post(
+            f"📊 **くいっと押し目版 {today}**\n"
+            f"🤖 目視判定なし / 本日の該当銘柄なし\n{SCREENING_VIEW_URL}"
+        )
+        return
+
+    # 旧ma5_breakoutの比較検証用通知。日次本番では通常ここを通らない。
     parts = [f"📊 **株スクリーニング結果 {today}**"]
 
     if primary_results:
@@ -32,66 +67,31 @@ def notify(results, rescue_results=None, primary_results=None):
             rank = r.get("production_rank")
             kind = r.get("production_strategy") or "?"
             label = r.get("name") or r["code"]
-            ma25 = r.get("ma25_dev_pct")
-            rsi = r.get("rsi14")
-            vol = r.get("volume_ratio")
-            detail = []
-            if ma25 is not None:
-                detail.append(f"MA25乖離 {ma25:+.1f}%")
-            if kind == "A" and vol is not None:
-                detail.append(f"出来高 {vol:.2f}倍")
-            if kind == "B" and rsi is not None:
-                detail.append(f"RSI {rsi:.1f}")
-            suffix = f" — {' / '.join(detail)}" if detail else ""
-            lines.append(f"🥇 #{rank} **{kind}** {label}{suffix}")
+            lines.append(f"🥇 #{rank} **{kind}** {label}")
         remaining = len(primary_results) - 15
         if remaining > 0:
             lines.append(f"…他{remaining}件")
-        parts.append(
-            f"🏆 **本命候補（A/B正規化混合） {len(primary_results)}件**\n"
-            + "\n".join(lines)
-        )
-    else:
-        parts.append("🏆 **本命候補（A/B正規化混合） 0件**")
+        parts.append(f"🏆 **旧A/B本命候補 {len(primary_results)}件**\n" + "\n".join(lines))
 
-    bottom = [r for r in results if r.get("signal_type") == "bottom_reversal"]
-    pullback = [r for r in results if r.get("signal_type") == "pullback_reacceleration"]
-
-    preview_limit = 10
-    names = []
-    for r in results[:preview_limit]:
-        icon = "🔵" if r.get("signal_type") == "bottom_reversal" else "🟠"
-        label = r.get("name") or r["code"]
-        names.append(f"{icon} {label}")
-
-    remaining = len(results) - preview_limit
-    footer = f"\n…他{remaining}件" if remaining > 0 else ""
-    normal_header = (
-        f"📋 **通常候補（本命除く） {len(results)}件**\n"
-        f"🔵 大底反転 {len(bottom)}件 / 🟠 押し目再上昇 {len(pullback)}件"
-    )
-    if names:
-        parts.append(normal_header + "\n" + "\n".join(names) + footer)
-    else:
-        parts.append(normal_header + "\n通常候補なし")
+    if results:
+        preview = []
+        for r in results[:10]:
+            label = r.get("name") or r["code"]
+            preview.append(f"• {label}")
+        remaining = len(results) - 10
+        if remaining > 0:
+            preview.append(f"…他{remaining}件")
+        parts.append(f"📋 **旧通常候補 {len(results)}件**\n" + "\n".join(preview))
 
     if rescue_results:
-        rescue_preview_limit = 10
-        rescue_names = []
-        for r in rescue_results[:rescue_preview_limit]:
+        preview = []
+        for r in rescue_results[:10]:
             label = r.get("name") or r["code"]
-            detail = r.get("signal_label") or "救済候補"
-            rescue_names.append(f"🟣 {label} — {detail}")
-
-        rescue_remaining = len(rescue_results) - rescue_preview_limit
-        rescue_footer = f"\n…他{rescue_remaining}件" if rescue_remaining > 0 else ""
-        parts.append(
-            f"🟣 **救済シグナル（参考枠） {len(rescue_results)}件**\n"
-            + "\n".join(rescue_names)
-            + rescue_footer
-        )
-    else:
-        parts.append("🟣 **救済シグナル（参考枠） 0件**")
+            preview.append(f"🟣 {label}")
+        remaining = len(rescue_results) - 10
+        if remaining > 0:
+            preview.append(f"…他{remaining}件")
+        parts.append(f"🟣 **旧救済候補 {len(rescue_results)}件**\n" + "\n".join(preview))
 
     parts.append(f"📈 **チャートで確認**\n{SCREENING_VIEW_URL}")
     _post_long("\n\n".join(parts))
