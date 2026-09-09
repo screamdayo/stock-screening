@@ -74,7 +74,11 @@ jobs:
               action = f'✅ {code} を保有監視から削除しました。' if len(rows) < before else f'ℹ️ {code} は保有監視にありませんでした。'
 
           rows.sort(key=lambda x: (x.get('buy_date',''), x.get('code','')))
-          path.write_text(json.dumps(rows, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+          text = json.dumps(rows, ensure_ascii=False, indent=2) + '\n'
+          path.write_text(text, encoding='utf-8')
+          docs = Path('docs/holdings.json')
+          docs.parent.mkdir(parents=True, exist_ok=True)
+          docs.write_text(text, encoding='utf-8')
           Path('/tmp/holding_action.txt').write_text(action, encoding='utf-8')
           PY
 
@@ -82,7 +86,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add holdings.json
+          git add holdings.json docs/holdings.json
           if ! git diff --cached --quiet; then
             git commit -m "chore: update holdings monitor"
             git pull --rebase origin main
