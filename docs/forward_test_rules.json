@@ -1,0 +1,23 @@
+{
+  "versions": [
+    {
+      "version": "kuitto_v1_2026-09-09",
+      "effective_from": "2026-09-09",
+      "entry": {
+        "signal": "kuitto_pullback_auto base shape",
+        "volume_ratio_min": 1.25,
+        "next_open_gap_max_pct": 0.5,
+        "daily_max": 5,
+        "ranking": "abs(MA5/MA25 gap) ascending when selecting top 5",
+        "sector_limit": null
+      },
+      "exit": {
+        "stop_loss_pct": 5.0,
+        "stop_fill": "if open <= stop: open, elif low <= stop: stop price",
+        "gakutto": "strict gakutto detected at close -> next trading-day open",
+        "max_hold_days": 15,
+        "max_hold_exit": "15th trading-day close alert -> next trading-day open"
+      }
+    }
+  ]
+}
