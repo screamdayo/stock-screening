@@ -3,13 +3,10 @@ main.py
 日次の全体フローをまとめるエントリーポイント。
 GitHub Actionsからは `python main.py` を呼ぶだけでよい。
 
-株価データはここで1回だけ取得し、Discord通知用のシグナル判定と
-GitHub Pages用のエクスポート（docs/prices/, docs/screening.json）の
-両方に使い回す。
-
-ma5_breakoutでは、厳格な通常シグナルからバックテストで固定した
-A/B正規化混合の本命候補を作る。通常シグナルと限定救済候補も残し、
-本命候補を先頭に表示する。
+2026-09-09以降の日次運用は、目視A/B/skipを廃止し、
+検証済みの自動条件 `kuitto_pullback_auto` を使用する。
+旧ma5_breakout/A-B/救済ロジックは比較検証用にコードを残すが、
+日次本番では起動しない。
 
 エラーが発生した場合はDiscordに通知してから例外を再送出する。
 """
@@ -25,12 +22,15 @@ from logger import get_logger
 
 logger = get_logger(__name__)
 
+# 目視撤廃後の本番日次戦略。
+DAILY_STRATEGY = "kuitto_pullback_auto"
+
 
 def run():
     logger.info("=== 株スクリーニング開始 ===")
-    logger.info(f"使用する戦略: {config.ACTIVE_STRATEGY}")
+    logger.info(f"使用する日次戦略: {DAILY_STRATEGY}（目視判定なし）")
 
-    screener_fn = registry.get_latest_screener(config.ACTIVE_STRATEGY)
+    screener_fn = registry.get_latest_screener(DAILY_STRATEGY)
 
     logger.info("対象銘柄リスト取得中...")
     target_codes, code_to_name = download.get_target_codes_and_names()
@@ -44,59 +44,23 @@ def run():
     )
     price_df = price_df[price_df["Code"].isin(target_codes)]
 
-    logger.info("スクリーニング中...")
+    logger.info("自動スクリーニング中...")
     results = screener_fn(price_df, target_codes)
 
-    rescue_results = []
-    primary_results = []
-    primary_meta = None
-
-    if config.ACTIVE_STRATEGY == "ma5_breakout":
-        from strategies import ma5_breakout
-        from production_screening import build_production_shortlist
-
-        rescue_results = ma5_breakout.find_latest_rescue_signals(price_df, target_codes)
-        primary_results, primary_meta = build_production_shortlist(price_df, results)
-
-    for r in results + rescue_results + primary_results:
+    for r in results:
         r["name"] = code_to_name.get(r["code"], "")
 
-    primary_codes = {str(r["code"]) for r in primary_results}
-    normal_results = []
-    for r in results:
-        if str(r["code"]) in primary_codes:
-            continue
-        x = dict(r)
-        x["screening_bucket"] = "normal"
-        normal_results.append(x)
-
-    for r in rescue_results:
-        r["screening_bucket"] = "rescue"
-
-    logger.info(f"本命候補: {len(primary_results)}件")
-    if primary_meta:
-        logger.info(
-            "A候補 %s→%s件 / B候補 %s→%s件 / 正規化混合 %s件",
-            primary_meta["a_before_cut"], primary_meta["a_after_cut"],
-            primary_meta["b_before_cut"], primary_meta["b_after_cut"],
-            primary_meta["primary_count"],
-        )
-    logger.info(f"通常シグナル（本命除く）: {len(normal_results)}件")
-    logger.info(f"救済シグナル: {len(rescue_results)}件")
+    logger.info(f"自動通過候補: {len(results)}件")
 
     logger.info("Discord通知中...")
-    notifier.notify(
-        normal_results,
-        rescue_results=rescue_results,
-        primary_results=primary_results,
-    )
+    notifier.notify(results)
 
     logger.info("GitHub Pages用データを出力中...")
     export_docs_prices.export_docs(
         price_df,
         target_codes,
         code_to_name,
-        primary_results + normal_results + rescue_results,
+        results,
     )
 
     logger.info("=== 完了 ===")
