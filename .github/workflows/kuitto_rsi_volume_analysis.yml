@@ -1,0 +1,23 @@
+name: Kuitto RSI Volume Analysis
+
+on:
+  push:
+    branches:
+      - kuitto-rsi-volume-analysis
+  workflow_dispatch:
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install pandas
+      - run: python run_kuitto_rsi_volume_analysis.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: kuitto-rsi-volume-${{ github.run_id }}
+          path: output/
+          retention-days: 14
