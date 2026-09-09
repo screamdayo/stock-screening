@@ -59,7 +59,6 @@ def _features(g, idx):
     if not (BULL_MIN_PCT <= bull <= BULL_MAX_PCT):
         return None
 
-    # 検証条件どおり、MA5はMA25以下かつ乖離-5〜0%。
     if not r["MA_LONG"] > 0:
         return None
     ma5_gap = (r["MA_SHORT"] / r["MA_LONG"] - 1) * 100
@@ -74,12 +73,10 @@ def _features(g, idx):
     if not (DECLINE_MIN_PCT <= decline <= DECLINE_MAX_PCT):
         return None
 
-    # 直近2日までは上向きになっていない。
     for j in range(idx - TURN_LOOKBACK, idx):
         if g["MA_SHORT"].iloc[j] > g["MA_SHORT"].iloc[j - 1]:
             return None
 
-    # 当日初めて上向き。
     if not g["MA_SHORT"].iloc[idx] > g["MA_SHORT"].iloc[idx - 1]:
         return None
 
@@ -98,7 +95,6 @@ def _features(g, idx):
 
 
 def find_signals(price_df, target_codes):
-    """バックテスト用: 全日付の自動押し目版シグナルを返す。"""
     signals = []
     price_data_by_code = {}
     df = price_df[price_df["Code"].isin(target_codes)].copy()
@@ -128,14 +124,13 @@ def find_signals(price_df, target_codes):
 
 
 def find_latest_signals(price_df, target_codes):
-    """日次スクリーニング用: 最新日の条件通過銘柄だけ返す。"""
     results = []
     df = price_df[price_df["Code"].isin(target_codes)].copy()
     if df.empty:
         return results
 
     latest_date = df["Date"].max()
-    logger.info(f"データ最新日付: {latest_date.date()}")
+    logger.info(f"データ最新日付: {latest_date}")
 
     for code, group in df.groupby("Code"):
         g = _prepare(group)
