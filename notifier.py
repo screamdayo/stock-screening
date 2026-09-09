@@ -22,8 +22,17 @@ def notify(results, rescue_results=None, primary_results=None):
 
     # 目視撤廃後の自動くいっと通知。
     if results and all(r.get("auto_filtered") for r in results) and not rescue_results and not primary_results:
+        # 5銘柄以上出た日は、検証で採用した優先順位に合わせて
+        # MA5がMA25に近い順（乖離の絶対値が小さい順）でDiscord表示する。
+        display_results = list(results)
+        sorted_by_ma25 = len(display_results) >= 5
+        if sorted_by_ma25:
+            display_results.sort(
+                key=lambda r: abs(r.get("ma5_vs_ma25_pct", float("inf")))
+            )
+
         lines = []
-        for r in results[:20]:
+        for r in display_results[:20]:
             label = r.get("name") or r["code"]
             decline = r.get("ma5_prior5d_decline_pct")
             gap = r.get("ma5_vs_ma25_pct")
@@ -41,13 +50,15 @@ def notify(results, rescue_results=None, primary_results=None):
             suffix = f" — {' / '.join(detail)}" if detail else ""
             lines.append(f"🟢 {label}{suffix}")
 
-        remaining = len(results) - 20
+        remaining = len(display_results) - 20
         if remaining > 0:
             lines.append(f"…他{remaining}件")
 
+        order_note = "\n📐 **MA25に近い順で表示**" if sorted_by_ma25 else ""
         msg = (
             f"📊 **くいっと押し目版 {today}**\n"
-            f"🤖 **目視判定なし / 出来高1.25倍以上 / 自動通過 {len(results)}件**\n"
+            f"🤖 **目視判定なし / 出来高1.25倍以上 / 自動通過 {len(results)}件**"
+            f"{order_note}\n"
             + "\n".join(lines)
             + f"\n\n📈 **チャート**\n{SCREENING_VIEW_URL}"
         )
