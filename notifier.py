@@ -28,6 +28,7 @@ def notify(results, rescue_results=None, primary_results=None):
             decline = r.get("ma5_prior5d_decline_pct")
             gap = r.get("ma5_vs_ma25_pct")
             bull = r.get("bull_candle_pct")
+            volume = r.get("volume_ratio")
             detail = []
             if decline is not None:
                 detail.append(f"MA5直前5日 {decline:+.2f}%")
@@ -35,6 +36,8 @@ def notify(results, rescue_results=None, primary_results=None):
                 detail.append(f"MA5/25乖離 {gap:+.2f}%")
             if bull is not None:
                 detail.append(f"当日 {bull:+.2f}%")
+            if volume is not None:
+                detail.append(f"出来高 {volume:.2f}倍")
             suffix = f" — {' / '.join(detail)}" if detail else ""
             lines.append(f"🟢 {label}{suffix}")
 
@@ -44,7 +47,7 @@ def notify(results, rescue_results=None, primary_results=None):
 
         msg = (
             f"📊 **くいっと押し目版 {today}**\n"
-            f"🤖 **目視判定なし / 自動通過 {len(results)}件**\n"
+            f"🤖 **目視判定なし / 出来高1.25倍以上 / 自動通過 {len(results)}件**\n"
             + "\n".join(lines)
             + f"\n\n📈 **チャート**\n{SCREENING_VIEW_URL}"
         )
@@ -54,7 +57,7 @@ def notify(results, rescue_results=None, primary_results=None):
     if not results and not rescue_results and not primary_results:
         _post(
             f"📊 **くいっと押し目版 {today}**\n"
-            f"🤖 目視判定なし / 本日の該当銘柄なし\n{SCREENING_VIEW_URL}"
+            f"🤖 目視判定なし / 出来高1.25倍以上 / 本日の該当銘柄なし\n{SCREENING_VIEW_URL}"
         )
         return
 
