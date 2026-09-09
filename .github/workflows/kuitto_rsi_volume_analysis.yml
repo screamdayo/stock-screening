@@ -16,6 +16,7 @@ jobs:
           python-version: '3.11'
       - run: pip install pandas
       - run: python run_kuitto_rsi_volume_analysis.py
+      - run: python run_kuitto_exit_compare.py
       - uses: actions/upload-artifact@v4
         with:
           name: kuitto-rsi-volume-${{ github.run_id }}
