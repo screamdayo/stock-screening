@@ -51,12 +51,11 @@ jobs:
           if [ -d docs/prices ]; then
             cp -a docs/prices "$tmpdir/docs/prices"
           fi
-          if [ -f docs/screening.json ]; then
-            cp docs/screening.json "$tmpdir/docs/screening.json"
-          fi
-          if [ -f docs/stock_names.json ]; then
-            cp docs/stock_names.json "$tmpdir/docs/stock_names.json"
-          fi
+          for f in screening.json stock_names.json forward_test_log.json forward_test_rules.json; do
+            if [ -f "docs/$f" ]; then
+              cp "docs/$f" "$tmpdir/docs/$f"
+            fi
+          done
 
           for attempt in 1 2 3; do
             git fetch origin main
@@ -67,16 +66,14 @@ jobs:
               mkdir -p docs
               cp -a "$tmpdir/docs/prices" docs/prices
             fi
-            if [ -f "$tmpdir/docs/screening.json" ]; then
-              mkdir -p docs
-              cp "$tmpdir/docs/screening.json" docs/screening.json
-            fi
-            if [ -f "$tmpdir/docs/stock_names.json" ]; then
-              mkdir -p docs
-              cp "$tmpdir/docs/stock_names.json" docs/stock_names.json
-            fi
+            for f in screening.json stock_names.json forward_test_log.json forward_test_rules.json; do
+              if [ -f "$tmpdir/docs/$f" ]; then
+                mkdir -p docs
+                cp "$tmpdir/docs/$f" "docs/$f"
+              fi
+            done
 
-            git add docs/prices/ docs/screening.json docs/stock_names.json 2>/dev/null || true
+            git add docs/prices/ docs/screening.json docs/stock_names.json docs/forward_test_log.json docs/forward_test_rules.json 2>/dev/null || true
             if git diff --cached --quiet; then
               echo "No generated docs changes to commit."
               exit 0
