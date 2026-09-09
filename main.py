@@ -8,6 +8,9 @@ GitHub Actionsからは `python main.py` を呼ぶだけでよい。
 旧ma5_breakout/A-B/救済ロジックは比較検証用にコードを残すが、
 日次本番では起動しない。
 
+保有銘柄が holdings.json に登録されている場合は、同じ日足データで
+厳しめがくっと/最大15営業日を監視し、売りルール成立時だけDiscord通知する。
+
 エラーが発生した場合はDiscordに通知してから例外を再送出する。
 """
 
@@ -17,6 +20,7 @@ import config
 import download
 import notifier
 import export_docs_prices
+import sell_monitor
 from strategies import registry
 from logger import get_logger
 
@@ -43,6 +47,14 @@ def run():
         max_lookback_days=config.CHART_MAX_LOOKBACK_DAYS,
     )
     price_df = price_df[price_df["Code"].isin(target_codes)]
+
+    logger.info("保有銘柄の売りシグナル確認中...")
+    sell_alerts = sell_monitor.check_sell_signals(price_df, code_to_name)
+    if sell_alerts:
+        logger.info(f"売りルール成立: {len(sell_alerts)}件")
+        notifier.notify_sell_signals(sell_alerts)
+    else:
+        logger.info("売りルール成立なし")
 
     logger.info("自動スクリーニング中...")
     results = screener_fn(price_df, target_codes)
