@@ -1,0 +1,115 @@
+name: 保有銘柄を同期
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  sync:
+    if: |
+      (startsWith(github.event.issue.title, '[holding-add]') || startsWith(github.event.issue.title, '[holding-remove]')) &&
+      github.event.issue.user.login == 'screamdayo'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: 保有銘柄を更新
+        env:
+          ISSUE_TITLE: ${{ github.event.issue.title }}
+        run: |
+          python - <<'PY'
+          import json, os, re
+          from pathlib import Path
+
+          title = os.environ.get('ISSUE_TITLE', '').strip()
+          path = Path('holdings.json')
+          try:
+              rows = json.loads(path.read_text(encoding='utf-8')) if path.exists() else []
+          except Exception:
+              rows = []
+          rows = [x for x in rows if isinstance(x, dict) and x.get('code')]
+
+          if title.startswith('[holding-add]'):
+              # 例: [holding-add] 7203 2026-09-10 2850 トヨタ
+              rest = title[len('[holding-add]'):].strip()
+              parts = rest.split(maxsplit=4)
+              if len(parts) < 2:
+                  raise SystemExit('形式: [holding-add] 銘柄コード YYYY-MM-DD [買値] [銘柄名]')
+              code, buy_date = parts[0], parts[1]
+              if not re.fullmatch(r'\d{4,6}', code):
+                  raise SystemExit('銘柄コードが不正です')
+              if not re.fullmatch(r'\d{4}-\d{2}-\d{2}', buy_date):
+                  raise SystemExit('買付日は YYYY-MM-DD で指定してください')
+              buy_price = None
+              name = code
+              if len(parts) >= 3:
+                  try:
+                      buy_price = float(parts[2].replace(',', ''))
+                  except ValueError:
+                      name = parts[2]
+              if len(parts) >= 4:
+                  name = parts[3]
+              if len(parts) >= 5:
+                  name = f'{name} {parts[4]}'
+              item = {'code': code, 'buy_date': buy_date, 'name': name}
+              if buy_price is not None:
+                  item['buy_price'] = buy_price
+              rows = [x for x in rows if str(x.get('code')) != code]
+              rows.append(item)
+              action = f'✅ {code} を保有監視に登録しました。'
+          else:
+              rest = title[len('[holding-remove]'):].strip()
+              code = rest.split()[0] if rest else ''
+              if not re.fullmatch(r'\d{4,6}', code):
+                  raise SystemExit('形式: [holding-remove] 銘柄コード')
+              before = len(rows)
+              rows = [x for x in rows if str(x.get('code')) != code]
+              action = f'✅ {code} を保有監視から削除しました。' if len(rows) < before else f'ℹ️ {code} は保有監視にありませんでした。'
+
+          rows.sort(key=lambda x: (x.get('buy_date',''), x.get('code','')))
+          path.write_text(json.dumps(rows, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+          Path('/tmp/holding_action.txt').write_text(action, encoding='utf-8')
+          PY
+
+      - name: GitHubへ保存
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add holdings.json
+          if ! git diff --cached --quiet; then
+            git commit -m "chore: update holdings monitor"
+            git pull --rebase origin main
+            git push origin main
+          fi
+
+      - name: Issueを閉じる
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if [ -f /tmp/holding_action.txt ]; then
+            BODY="$(cat /tmp/holding_action.txt)"
+          else
+            BODY="⚠️ 保有銘柄の更新に失敗しました。Issueの形式を確認してください。"
+          fi
+          gh issue close "${{ github.event.issue.number }}" --repo "${{ github.repository }}" --comment "$BODY"
+
+  reject:
+    if: |
+      (startsWith(github.event.issue.title, '[holding-add]') || startsWith(github.event.issue.title, '[holding-remove]')) &&
+      github.event.issue.user.login != 'screamdayo'
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+      - env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh issue close "${{ github.event.issue.number }}" --repo "${{ github.repository }}" --comment "このIssueは管理者本人の投稿ではないため処理しませんでした。"
