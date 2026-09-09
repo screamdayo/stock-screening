@@ -9,7 +9,7 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    timeout-minutes: 180
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
         with:
@@ -20,26 +20,16 @@ jobs:
           python-version: '3.11'
 
       - name: Install dependencies
-        run: pip install -r requirements.txt
+        run: pip install pandas
 
-      - name: Restore price cache
-        uses: actions/cache/restore@v4
-        with:
-          path: data/
-          key: backtest-price-cache-v1-gakutto-${{ github.run_id }}
-          restore-keys: |
-            backtest-price-cache-v1-
-
-      - name: Run gakutto backtest
-        env:
-          JQUANTS_API_KEY: ${{ secrets.JQUANTS_API_KEY }}
-        run: python run_gakutto_test.py
+      - name: Run recent gakutto backtest
+        run: python run_gakutto_recent.py
 
       - name: Upload result
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: gakutto-output-${{ github.run_id }}
+          name: gakutto-recent-output-${{ github.run_id }}
           path: output/
           retention-days: 14
           if-no-files-found: ignore
