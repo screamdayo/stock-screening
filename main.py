@@ -11,6 +11,9 @@ GitHub Actionsからは `python main.py` を呼ぶだけでよい。
 保有銘柄が holdings.json に登録されている場合は、同じ日足データで
 厳しめがくっと/最大15営業日を監視し、売りルール成立時だけDiscord通知する。
 
+2026-09-09以降の新規シグナルは forward_test.py で将来検証用に記録し、
+翌朝ギャップ・5/10/15日後騰落・MFE/MAE・出口結果を日次で追記する。
+
 エラーが発生した場合はDiscordに通知してから例外を再送出する。
 """
 
@@ -21,6 +24,7 @@ import download
 import notifier
 import export_docs_prices
 import sell_monitor
+import forward_test
 from strategies import registry
 from logger import get_logger
 
@@ -63,6 +67,9 @@ def run():
         r["name"] = code_to_name.get(r["code"], "")
 
     logger.info(f"自動通過候補: {len(results)}件")
+
+    logger.info("未来検証ログ更新中...")
+    forward_test.update_forward_test(price_df, code_to_name)
 
     logger.info("Discord通知中...")
     notifier.notify(results)
