@@ -25,11 +25,14 @@ jobs:
       - name: Run recent gakutto backtest
         run: python run_gakutto_recent.py
 
+      - name: Run kuitto reverse analysis
+        run: python run_kuitto_reverse.py
+
       - name: Upload result
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: gakutto-recent-output-${{ github.run_id }}
+          name: signal-analysis-output-${{ github.run_id }}
           path: output/
           retention-days: 14
           if-no-files-found: ignore
