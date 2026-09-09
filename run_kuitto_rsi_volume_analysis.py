@@ -76,14 +76,28 @@ def simulate(g,i):
     return pnl,'time_exit'
 
 
+def stats(g):
+    if g.empty: return {'count':0}
+    s=g.pnl.astype(float); w=s[s>0]; l=s[s<=0]; gl=-l.sum(); pf=w.sum()/gl if gl>0 else None
+    return {
+        'count':len(g),
+        'win_rate':round((s>0).mean()*100,2),
+        'avg_pnl':round(s.mean(),3),
+        'median_pnl':round(s.median(),3),
+        'pf':round(pf,3) if pf is not None else None,
+        'date_min':str(g.date.min()),
+        'date_max':str(g.date.max()),
+    }
+
+
 def qstats(df,col):
     x=df[[col,'pnl']].dropna().copy()
     if x.empty: return []
     x['bin']=pd.qcut(x[col],4,duplicates='drop')
     out=[]
     for b,g in x.groupby('bin',observed=True):
-        s=g.pnl.astype(float); w=s[s>0]; l=s[s<=0]; gl=-l.sum(); pf=w.sum()/gl if gl>0 else None
-        out.append({'bin':str(b),'count':len(g),'win_rate':round((s>0).mean()*100,2),'avg_pnl':round(s.mean(),3),'median_pnl':round(s.median(),3),'pf':round(pf,3) if pf is not None else None})
+        st=stats(g)
+        out.append({'bin':str(b),**{k:v for k,v in st.items() if k not in ('date_min','date_max')}})
     return out
 
 
@@ -94,9 +108,25 @@ def threshold_stats(df,col,thresholds,op):
         elif op=='le': g=df[df[col]<=t]
         else: continue
         if g.empty: continue
-        s=g.pnl.astype(float); w=s[s>0]; l=s[s<=0]; gl=-l.sum(); pf=w.sum()/gl if gl>0 else None
-        out.append({'threshold':t,'op':op,'count':len(g),'win_rate':round((s>0).mean()*100,2),'avg_pnl':round(s.mean(),3),'pf':round(pf,3) if pf is not None else None})
+        st=stats(g)
+        out.append({'threshold':t,'op':op,**{k:v for k,v in st.items() if k not in ('date_min','date_max')}})
     return out
+
+
+def three_way_time_split(df):
+    x=df[df['volume_ratio']>=1.25].copy()
+    if x.empty: return []
+    x['date_dt']=pd.to_datetime(x['date'])
+    dates=sorted(x['date_dt'].dropna().unique())
+    if len(dates)<3: return [stats(x)]
+    cut1=dates[len(dates)//3]
+    cut2=dates[(2*len(dates))//3]
+    parts=[
+        x[x['date_dt']<cut1],
+        x[(x['date_dt']>=cut1)&(x['date_dt']<cut2)],
+        x[x['date_dt']>=cut2],
+    ]
+    return [stats(g) for g in parts]
 
 
 def main():
@@ -113,15 +143,14 @@ def main():
             pnl,reason=sim
             rows.append({'code':code,'date':str(g.iloc[i].Date),'pnl':pnl,'reason':reason,**f})
     df=pd.DataFrame(rows)
-    s=df.pnl.astype(float); w=s[s>0]; l=s[s<=0]; gl=-l.sum(); pf=w.sum()/gl if gl>0 else None
-    base={'count':len(df),'win_rate':round((s>0).mean()*100,2),'avg_pnl':round(s.mean(),3),'pf':round(pf,3) if pf is not None else None}
     analysis={
-        'base':base,
+        'base':stats(df),
         'rsi_quartiles':qstats(df,'rsi14'),
         'volume_quartiles':qstats(df,'volume_ratio'),
         'rsi_thresholds_ge':threshold_stats(df,'rsi14',[30,35,40,45,50,55,60],'ge'),
         'rsi_thresholds_le':threshold_stats(df,'rsi14',[40,45,50,55,60,65,70],'le'),
         'volume_thresholds_ge':threshold_stats(df,'volume_ratio',[0.5,0.75,1.0,1.25,1.5,2.0],'ge'),
+        'volume_1_25_three_way_split':three_way_time_split(df),
         'non_null':{'rsi':int(df.rsi14.notna().sum()),'volume':int(df.volume_ratio.notna().sum())},
     }
     print('KUITTO_RSI_VOLUME='+json.dumps(analysis,ensure_ascii=False))
