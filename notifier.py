@@ -13,6 +13,7 @@ from logger import get_logger
 logger = get_logger(__name__)
 
 SCREENING_VIEW_URL = "https://screamdayo.github.io/stock-screening/screening.html"
+NEXT_OPEN_GAP_MAX_PCT = 0.5
 
 
 def notify(results, rescue_results=None, primary_results=None):
@@ -38,6 +39,7 @@ def notify(results, rescue_results=None, primary_results=None):
             gap = r.get("ma5_vs_ma25_pct")
             bull = r.get("bull_candle_pct")
             volume = r.get("volume_ratio")
+            close = r.get("close")
             detail = []
             if decline is not None:
                 detail.append(f"MA5直前5日 {decline:+.2f}%")
@@ -49,6 +51,12 @@ def notify(results, rescue_results=None, primary_results=None):
                 detail.append(f"出来高 {volume:.2f}倍")
             suffix = f" — {' / '.join(detail)}" if detail else ""
             lines.append(f"🟢 {label}{suffix}")
+            if close is not None:
+                max_open = float(close) * (1 + NEXT_OPEN_GAP_MAX_PCT / 100)
+                lines.append(
+                    f"   ↳ 翌朝寄値 **{max_open:,.1f}円以下なら買い** / 超えたら見送り "
+                    f"（終値 {float(close):,.1f}円 × +{NEXT_OPEN_GAP_MAX_PCT:.1f}%）"
+                )
 
         remaining = len(display_results) - 20
         if remaining > 0:
@@ -57,7 +65,8 @@ def notify(results, rescue_results=None, primary_results=None):
         order_note = "\n📐 **MA25に近い順で表示**" if sorted_by_ma25 else ""
         msg = (
             f"📊 **くいっと押し目版 {today}**\n"
-            f"🤖 **目視判定なし / 出来高1.25倍以上 / 自動通過 {len(results)}件**"
+            f"🤖 **目視判定なし / 出来高1.25倍以上 / 自動通過 {len(results)}件**\n"
+            f"🌅 **翌朝ルール：前日終値比 +{NEXT_OPEN_GAP_MAX_PCT:.1f}%以内で寄れば買い、超えたら見送り**"
             f"{order_note}\n"
             + "\n".join(lines)
             + f"\n\n📈 **チャート**\n{SCREENING_VIEW_URL}"
