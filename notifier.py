@@ -3,6 +3,7 @@ notifier.py
 スクリーニング結果をDiscordに通知する。
 """
 
+import math
 import traceback
 import requests
 from datetime import datetime
@@ -23,6 +24,50 @@ def _stock_label(item):
     if name and code:
         return f"{name} ({code})"
     return name or code or "?"
+
+
+def _safe_tick_size(price):
+    """東証の一般銘柄側の呼値を使う安全側テーブル。
+
+    TOPIX500等はより細かい呼値を使える場合があるが、一般銘柄側の
+    刻みに合わせれば有効な価格になり、+0.5%上限を超えない。
+    """
+    p = float(price)
+    if p <= 3000:
+        return 1.0
+    if p <= 5000:
+        return 5.0
+    if p <= 30000:
+        return 10.0
+    if p <= 50000:
+        return 50.0
+    if p <= 300000:
+        return 100.0
+    if p <= 500000:
+        return 500.0
+    if p <= 3000000:
+        return 1000.0
+    if p <= 5000000:
+        return 5000.0
+    if p <= 30000000:
+        return 10000.0
+    if p <= 50000000:
+        return 50000.0
+    return 100000.0
+
+
+def _floor_to_valid_tick(price):
+    p = float(price)
+    tick = _safe_tick_size(p)
+    # 浮動小数誤差で1呼値余計に下がらないよう微小値を足す。
+    return math.floor((p + 1e-9) / tick) * tick
+
+
+def _fmt_yen(price):
+    p = float(price)
+    if p.is_integer():
+        return f"{p:,.0f}円"
+    return f"{p:,.1f}円"
 
 
 def notify(results, rescue_results=None, primary_results=None):
@@ -61,15 +106,17 @@ def notify(results, rescue_results=None, primary_results=None):
             suffix = f" — {' / '.join(detail)}" if detail else ""
             lines.append(f"🟢 {label}{suffix}")
             if close is not None:
-                max_open = float(close) * (1 + NEXT_OPEN_GAP_MAX_PCT / 100)
-                stop_at_max_open = max_open * (1 - STOP_LOSS_PCT / 100)
+                theoretical_max_open = float(close) * (1 + NEXT_OPEN_GAP_MAX_PCT / 100)
+                max_open = _floor_to_valid_tick(theoretical_max_open)
+                theoretical_stop = max_open * (1 - STOP_LOSS_PCT / 100)
+                stop_at_max_open = _floor_to_valid_tick(theoretical_stop)
                 lines.append(
-                    f"   ↳ 翌朝寄値 **{max_open:,.1f}円以下なら買い** / 超えたら見送り "
-                    f"（終値 {float(close):,.1f}円 × +{NEXT_OPEN_GAP_MAX_PCT:.1f}%）"
+                    f"   ↳ 翌朝寄指 **{_fmt_yen(max_open)}以下なら買い** / 超えたら見送り "
+                    f"（理論上限 {_fmt_yen(theoretical_max_open)} → 呼値切下げ）"
                 )
                 lines.append(
                     f"   🛑 損切り **実際の買値 × 0.95** "
-                    f"（参考：寄値上限で買った場合 **{stop_at_max_open:,.1f}円**）"
+                    f"（参考：寄指上限で買った場合 **{_fmt_yen(stop_at_max_open)}**）"
                 )
 
         remaining = len(display_results) - 20
@@ -81,6 +128,7 @@ def notify(results, rescue_results=None, primary_results=None):
             f"📊 **くいっと押し目版 {today}**\n"
             f"🤖 **目視判定なし / 出来高1.25倍以上 / 自動通過 {len(results)}件**\n"
             f"🌅 **翌朝ルール：前日終値比 +{NEXT_OPEN_GAP_MAX_PCT:.1f}%以内で寄れば買い、超えたら見送り**\n"
+            f"💴 **注文価格は呼値に合わせて安全側へ切り下げ表示**\n"
             f"🛑 **損切り：実際の買値から -{STOP_LOSS_PCT:.0f}%**"
             f"{order_note}\n"
             + "\n".join(lines)
