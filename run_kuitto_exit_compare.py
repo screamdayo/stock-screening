@@ -40,8 +40,7 @@ def entry_signal(g,i):
     close_ma5=(r.C/r.MA5-1)*100
     if close_ma5 > 4.0: return False
     if i<1 or pd.isna(r.Vo) or pd.isna(g.Vo.iloc[i-1]) or not float(g.Vo.iloc[i-1])>0: return False
-    vr=float(r.Vo)/float(g.Vo.iloc[i-1])
-    return vr>=1.25
+    return float(r.Vo)/float(g.Vo.iloc[i-1]) >= 1.25
 
 
 def first_down(g,j):
@@ -50,7 +49,6 @@ def first_down(g,j):
 
 def strict_gakutto(g,j):
     if j<3 or not first_down(g,j): return False
-    # 直前2区間が上向き/横ばいで、当日陰線。出口では値幅閾値は課さない。
     if g.MA5.iloc[j-1] < g.MA5.iloc[j-2]: return False
     if g.MA5.iloc[j-2] < g.MA5.iloc[j-3]: return False
     return float(g.C.iloc[j]) < float(g.O.iloc[j])
@@ -63,16 +61,27 @@ def simulate(g,i,mode):
     if not entry>0: return None
     sl=entry*(1-SL/100); tp=entry*(1+TP/100)
     end=min(ent+HOLD-1,len(g)-1)
+    pending_exit=None
+
     for j in range(ent,end+1):
-        lo=float(g.L.iloc[j]); hi=float(g.H.iloc[j]); close=float(g.C.iloc[j])
+        # 前日引けでがくっとを確認した場合は、この日の始値で手仕舞い。
+        if pending_exit is not None:
+            px=float(g.O.iloc[j])
+            return (px-entry)/entry*100,pending_exit,j-ent+1
+
+        lo=float(g.L.iloc[j]); hi=float(g.H.iloc[j])
         if lo<=sl:
             return -SL,'stop_loss',j-ent+1
         if mode in ('fixed5','hybrid_firstdown','hybrid_strict') and hi>=tp:
             return TP,'take_profit',j-ent+1
-        if mode in ('firstdown','hybrid_firstdown') and first_down(g,j):
-            return (close-entry)/entry*100,'gakutto_firstdown',j-ent+1
-        if mode in ('strict','hybrid_strict') and strict_gakutto(g,j):
-            return (close-entry)/entry*100,'gakutto_strict',j-ent+1
+
+        # 最終保有日は引けでタイムアウトするので、翌朝売却予約はしない。
+        if j < end:
+            if mode in ('firstdown','hybrid_firstdown') and first_down(g,j):
+                pending_exit='gakutto_firstdown_next_open'
+            if mode in ('strict','hybrid_strict') and strict_gakutto(g,j):
+                pending_exit='gakutto_strict_next_open'
+
     close=float(g.C.iloc[end])
     return (close-entry)/entry*100,'time_exit',end-ent+1
 
