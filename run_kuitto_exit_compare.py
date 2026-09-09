@@ -122,7 +122,7 @@ def main():
     out={m:[] for m in modes}
     strict_holds={10:[],15:[],20:[]}
     strict15_operational=[]
-    stop_losses={2.0:[],2.5:[],3.0:[],3.5:[],4.0:[]}
+    stop_losses={4.0:[],4.5:[],5.0:[],5.5:[],6.0:[]}
     signal_count=0
     for code,g in prices.groupby('Code'):
         g=g.sort_values('Date').reset_index(drop=True).copy()
