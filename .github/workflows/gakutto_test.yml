@@ -28,6 +28,9 @@ jobs:
       - name: Run kuitto reverse analysis
         run: python run_kuitto_reverse.py
 
+      - name: Run kuitto filter comparison
+        run: python run_kuitto_compare.py
+
       - name: Upload result
         if: always()
         uses: actions/upload-artifact@v4
