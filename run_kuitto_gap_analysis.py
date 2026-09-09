@@ -168,11 +168,13 @@ def main():
     caps=[0.0,0.5,1.0,1.5,2.0,2.5,3.0,4.0,5.0]
     cap_stats={str(x):stats(df[df.gap<=x]) for x in caps}
     floor_stats={str(x):stats(df[df.gap>=x]) for x in [0.0,0.5,1.0,1.5,2.0,3.0]}
+    cap_three_way={str(x):three_way(df[df.gap<=x]) for x in [0.0,0.5,1.0,1.5,2.0]}
     result={
         'rule':'strict gakutto next open / max 15d next open / SL -5%',
         'all':stats(df),
         'buckets':{k:stats(v) for k,v in buckets.items()},
         'max_gap_filter':cap_stats,
+        'max_gap_filter_three_way':cap_three_way,
         'min_gap_filter':floor_stats,
         'three_way_all':three_way(df),
     }
