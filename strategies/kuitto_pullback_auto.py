@@ -1,8 +1,8 @@
 """
 目視判定なしの自動くいっと戦略。
 
-2025-11-06〜2026-09-08 の保存済み株価で検証した「広め押し目版」を
-そのまま実装する。
+2025-11-06〜2026-09-08 の保存済み株価で検証した「広め押し目版」に、
+追加検証で有効だった出来高条件（当日出来高が前日の1.25倍以上）を加えた本番版。
 
 条件:
 - 直近2日までMA5が下向き/横ばい
@@ -11,6 +11,7 @@
 - MA5とMA25の乖離: -5.0%〜0%
 - 終値とMA5の乖離: +4.0%以下
 - 当日陽線: +1.5%〜+3.5%
+- 当日出来高: 前日比1.25倍以上
 
 売買の良し悪しを人のA/B/skipで選別せず、条件通過銘柄をそのまま扱う。
 """
@@ -36,12 +37,17 @@ MA5_VS_MA25_MAX_PCT = 0.0
 CLOSE_VS_MA5_MAX_PCT = 4.0
 BULL_MIN_PCT = 1.5
 BULL_MAX_PCT = 3.5
+VOLUME_RATIO_MIN = 1.25
 
 
 def _prepare(group):
     g = group.dropna(subset=["C", "O"]).sort_values("Date").reset_index(drop=True).copy()
     for c in ["O", "C"]:
         g[c] = pd.to_numeric(g[c], errors="coerce")
+    if "Vo" in g.columns:
+        g["Vo"] = pd.to_numeric(g["Vo"], errors="coerce")
+    else:
+        g["Vo"] = pd.NA
     g["MA_SHORT"] = g["C"].rolling(MA_SHORT).mean()
     g["MA_LONG"] = g["C"].rolling(MA_LONG).mean()
     return g
@@ -86,11 +92,22 @@ def _features(g, idx):
     if close_ma5 > CLOSE_VS_MA5_MAX_PCT:
         return None
 
+    if idx < 1:
+        return None
+    prev_volume = g["Vo"].iloc[idx - 1]
+    today_volume = r["Vo"]
+    if pd.isna(prev_volume) or pd.isna(today_volume) or not float(prev_volume) > 0:
+        return None
+    volume_ratio = float(today_volume) / float(prev_volume)
+    if volume_ratio < VOLUME_RATIO_MIN:
+        return None
+
     return {
         "bull_candle_pct": bull,
         "ma5_prior5d_decline_pct": decline,
         "ma5_vs_ma25_pct": ma5_gap,
         "close_vs_ma5_pct": close_ma5,
+        "volume_ratio": volume_ratio,
     }
 
 
@@ -119,7 +136,7 @@ def find_signals(price_df, target_codes):
                 **f,
             })
 
-    logger.info(f"自動くいっと検出: {len(signals)}件")
+    logger.info(f"自動くいっと検出: {len(signals)}件（出来高前日比{VOLUME_RATIO_MIN:.2f}倍以上）")
     return signals, price_data_by_code
 
 
@@ -155,5 +172,8 @@ def find_latest_signals(price_df, target_codes):
             **{k: round(float(v), 3) for k, v in f.items()},
         })
 
-    logger.info(f"目視なし・くいっと押し目版: {len(results)}件")
+    logger.info(
+        f"目視なし・くいっと押し目版: {len(results)}件 "
+        f"（出来高前日比{VOLUME_RATIO_MIN:.2f}倍以上）"
+    )
     return results
