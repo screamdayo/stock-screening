@@ -54,13 +54,13 @@ def strict_gakutto(g,j):
     return float(g.C.iloc[j]) < float(g.O.iloc[j])
 
 
-def simulate(g,i,mode):
+def simulate(g,i,mode,hold_days=HOLD):
     ent=i+1
     if ent>=len(g): return None
     entry=float(g.O.iloc[ent])
     if not entry>0: return None
     sl=entry*(1-SL/100); tp=entry*(1+TP/100)
-    end=min(ent+HOLD-1,len(g)-1)
+    end=min(ent+hold_days-1,len(g)-1)
     pending_exit=None
 
     for j in range(ent,end+1):
@@ -116,6 +116,7 @@ def main():
     prices=load_prices()
     modes=['fixed5','firstdown','strict','hybrid_firstdown','hybrid_strict']
     out={m:[] for m in modes}
+    strict_holds={10:[],15:[],20:[]}
     signal_count=0
     for code,g in prices.groupby('Code'):
         g=g.sort_values('Date').reset_index(drop=True).copy()
@@ -125,14 +126,23 @@ def main():
             if not entry_signal(g,i): continue
             signal_count+=1
             for m in modes:
-                sim=simulate(g,i,m)
+                sim=simulate(g,i,m,HOLD)
                 if not sim: continue
                 pnl,reason,hold=sim
                 out[m].append({'code':code,'date':str(g.Date.iloc[i]),'pnl':pnl,'reason':reason,'hold':hold})
+            for hold_days in strict_holds:
+                sim=simulate(g,i,'strict',hold_days)
+                if not sim: continue
+                pnl,reason,hold=sim
+                strict_holds[hold_days].append({'code':code,'date':str(g.Date.iloc[i]),'pnl':pnl,'reason':reason,'hold':hold})
     result={
         'signals':signal_count,
         'modes':{m:stats(rows) for m,rows in out.items()},
-        'strict_three_way':three_way(out['strict'])
+        'strict_three_way':three_way(out['strict']),
+        'strict_hold_compare':{
+            str(h):{'all':stats(rows),'three_way':three_way(rows)}
+            for h,rows in strict_holds.items()
+        }
     }
     print('KUITTO_EXIT_COMPARE='+json.dumps(result,ensure_ascii=False))
     os.makedirs('output',exist_ok=True)
