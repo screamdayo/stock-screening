@@ -111,6 +111,40 @@ def notify(results, rescue_results=None, primary_results=None):
     _post_long("\n\n".join(parts))
 
 
+def notify_sell_signals(alerts):
+    if not alerts:
+        return
+    today = datetime.now().strftime("%Y/%m/%d")
+    lines = []
+    for a in alerts:
+        label = a.get("name") or a.get("code")
+        reason = a.get("reason")
+        if reason == "strict_gakutto":
+            reason_text = "厳しめがくっと成立"
+        elif reason == "max_hold":
+            reason_text = "最大15営業日到達"
+        else:
+            reason_text = str(reason or "売りルール成立")
+        hold_days = a.get("hold_days")
+        close = a.get("latest_close")
+        detail = [reason_text]
+        if hold_days is not None:
+            detail.append(f"保有{hold_days}営業日")
+        if close is not None:
+            detail.append(f"終値 {close:,.1f}")
+        lines.append(
+            f"🔴 **{label} ({a.get('code')})** — {' / '.join(detail)}\n"
+            f"➡️ **翌営業日始値で売却**"
+        )
+
+    msg = (
+        f"🚨 **売りルール成立 {today}**\n"
+        f"感情判断なし・ルール通り実行\n\n"
+        + "\n\n".join(lines)
+    )
+    _post_long(msg)
+
+
 def notify_error(error, context=""):
     now = datetime.now().strftime("%Y/%m/%d %H:%M:%S")
     tb_text = traceback.format_exc()
