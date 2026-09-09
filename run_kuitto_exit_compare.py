@@ -54,7 +54,7 @@ def strict_gakutto(g,j):
     return float(g.C.iloc[j]) < float(g.O.iloc[j])
 
 
-def simulate(g,i,mode,hold_days=HOLD):
+def simulate(g,i,mode,hold_days=HOLD,timeout_next_open=False):
     ent=i+1
     if ent>=len(g): return None
     entry=float(g.O.iloc[ent])
@@ -79,6 +79,10 @@ def simulate(g,i,mode,hold_days=HOLD):
                 pending_exit='gakutto_firstdown_next_open'
             if mode in ('strict','hybrid_strict') and strict_gakutto(g,j):
                 pending_exit='gakutto_strict_next_open'
+
+    if timeout_next_open and end + 1 < len(g):
+        px=float(g.O.iloc[end+1])
+        return (px-entry)/entry*100,'time_exit_next_open',end-ent+2
 
     close=float(g.C.iloc[end])
     return (close-entry)/entry*100,'time_exit',end-ent+1
@@ -117,6 +121,7 @@ def main():
     modes=['fixed5','firstdown','strict','hybrid_firstdown','hybrid_strict']
     out={m:[] for m in modes}
     strict_holds={10:[],15:[],20:[]}
+    strict15_operational=[]
     signal_count=0
     for code,g in prices.groupby('Code'):
         g=g.sort_values('Date').reset_index(drop=True).copy()
@@ -135,6 +140,10 @@ def main():
                 if not sim: continue
                 pnl,reason,hold=sim
                 strict_holds[hold_days].append({'code':code,'date':str(g.Date.iloc[i]),'pnl':pnl,'reason':reason,'hold':hold})
+            sim=simulate(g,i,'strict',15,timeout_next_open=True)
+            if sim:
+                pnl,reason,hold=sim
+                strict15_operational.append({'code':code,'date':str(g.Date.iloc[i]),'pnl':pnl,'reason':reason,'hold':hold})
     result={
         'signals':signal_count,
         'modes':{m:stats(rows) for m,rows in out.items()},
@@ -142,6 +151,10 @@ def main():
         'strict_hold_compare':{
             str(h):{'all':stats(rows),'three_way':three_way(rows)}
             for h,rows in strict_holds.items()
+        },
+        'strict15_operational_next_open':{
+            'all':stats(strict15_operational),
+            'three_way':three_way(strict15_operational)
         }
     }
     print('KUITTO_EXIT_COMPARE='+json.dumps(result,ensure_ascii=False))
