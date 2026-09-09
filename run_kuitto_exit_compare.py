@@ -64,7 +64,6 @@ def simulate(g,i,mode):
     pending_exit=None
 
     for j in range(ent,end+1):
-        # 前日引けでがくっとを確認した場合は、この日の始値で手仕舞い。
         if pending_exit is not None:
             px=float(g.O.iloc[j])
             return (px-entry)/entry*100,pending_exit,j-ent+1
@@ -75,7 +74,6 @@ def simulate(g,i,mode):
         if mode in ('fixed5','hybrid_firstdown','hybrid_strict') and hi>=tp:
             return TP,'take_profit',j-ent+1
 
-        # 最終保有日は引けでタイムアウトするので、翌朝売却予約はしない。
         if j < end:
             if mode in ('firstdown','hybrid_firstdown') and first_down(g,j):
                 pending_exit='gakutto_firstdown_next_open'
@@ -93,8 +91,25 @@ def stats(rows):
     return {
         'count':len(df), 'win_rate':round((s>0).mean()*100,2), 'avg_pnl':round(s.mean(),3),
         'median_pnl':round(s.median(),3), 'pf':round(pf,3) if pf is not None else None,
-        'avg_hold':round(df.hold.mean(),2), 'reasons':df.reason.value_counts().to_dict()
+        'avg_hold':round(df.hold.mean(),2), 'reasons':df.reason.value_counts().to_dict(),
+        'date_min':str(df.date.min()), 'date_max':str(df.date.max())
     }
+
+
+def three_way(rows):
+    df=pd.DataFrame(rows)
+    if df.empty: return []
+    df['date_dt']=pd.to_datetime(df['date'])
+    dates=sorted(df['date_dt'].dropna().unique())
+    if len(dates)<3: return [stats(df)]
+    cut1=dates[len(dates)//3]
+    cut2=dates[(2*len(dates))//3]
+    parts=[
+        df[df.date_dt<cut1],
+        df[(df.date_dt>=cut1)&(df.date_dt<cut2)],
+        df[df.date_dt>=cut2],
+    ]
+    return [stats(p) for p in parts]
 
 
 def main():
@@ -114,7 +129,11 @@ def main():
                 if not sim: continue
                 pnl,reason,hold=sim
                 out[m].append({'code':code,'date':str(g.Date.iloc[i]),'pnl':pnl,'reason':reason,'hold':hold})
-    result={'signals':signal_count,'modes':{m:stats(rows) for m,rows in out.items()}}
+    result={
+        'signals':signal_count,
+        'modes':{m:stats(rows) for m,rows in out.items()},
+        'strict_three_way':three_way(out['strict'])
+    }
     print('KUITTO_EXIT_COMPARE='+json.dumps(result,ensure_ascii=False))
     os.makedirs('output',exist_ok=True)
     json.dump(result,open('output/kuitto_exit_compare.json','w',encoding='utf-8'),ensure_ascii=False,indent=2)
