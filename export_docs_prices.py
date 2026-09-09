@@ -2,13 +2,7 @@
 export_docs_prices.py
 GitHub Pages用に対象市場全銘柄の直近日足を docs/prices/ に出力し、
 同じ株価データを使って最新のスクリーニング結果を docs/screening.json に保存する。
-
-export_docs(): 既に取得済みの price_df / screening結果を書き出すだけの関数。
-               main.py の日次フローから、株価取得を1回にまとめて呼び出すために使う
-               （以前は main.py と本スクリプトがそれぞれ別々に全銘柄データを
-               J-Quantsから取得しており、1日2回の重複取得が発生していた）。
-run():         スタンドアロン実行用（取得からexportまで一括で行う）。
-               手元でdocs/を作り直したい場合などに `python export_docs_prices.py` で使う。
+さらに、保有管理画面の銘柄名自動補完用に docs/stock_names.json を出力する。
 """
 
 import os
@@ -37,15 +31,6 @@ def _json_safe(value):
 
 
 def export_docs(price_df, target_codes, code_to_name, screening_results):
-    """
-    既に取得済みのデータをdocs/以下に書き出す（J-Quantsへの追加リクエストは行わない）。
-
-    price_df: download.get_price_history() 等で取得済みの全銘柄株価DataFrame
-              （config.CHART_BUSINESS_DAYS分の期間をカバーしている想定）
-    target_codes, code_to_name: download.get_target_codes_and_names() の戻り値
-    screening_results: 戦略のfind_latest_signals()が返した最新シグナルのリスト
-                        （呼び出し側で既に "name" を付与済みでもよい）
-    """
     start = time.time()
 
     df = price_df[price_df["Code"].isin(target_codes)]
@@ -104,15 +89,27 @@ def export_docs(price_df, target_codes, code_to_name, screening_results):
             "items": screening_items,
         }, f, ensure_ascii=False, indent=2)
 
+    # Pages上で銘柄コードを入力した瞬間に会社名を補完するための軽量マスター。
+    names_path = os.path.join("docs", "stock_names.json")
+    names = {
+        str(code): str(code_to_name.get(str(code), ""))
+        for code in sorted(target_codes)
+        if code_to_name.get(str(code))
+    }
+    with open(names_path, "w", encoding="utf-8") as f:
+        json.dump({
+            "generated_at": datetime.now().isoformat(timespec="seconds"),
+            "items": names,
+        }, f, ensure_ascii=False, separators=(",", ":"))
+
     logger.info(
         f"docs/エクスポート完了: 株価{exported}銘柄 / "
-        f"スクリーニング{len(screening_items)}件 "
+        f"スクリーニング{len(screening_items)}件 / 銘柄名{len(names)}件 "
         f"（{time.time() - start:.1f}秒）"
     )
 
 
 def run():
-    """スタンドアロン実行用: 取得からexportまで一括で行う。"""
     logger.info("=== GitHub Pages用データエクスポート開始（単独実行） ===")
 
     target_codes, code_to_name = download.get_target_codes_and_names()
