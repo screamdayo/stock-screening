@@ -80,9 +80,12 @@ def stats(rows):
     df=pd.DataFrame(rows)
     if df.empty: return {'count':0}
     s=df.pnl.astype(float); pos=s[s>0]; neg=s[s<=0]; gl=-neg.sum(); pf=pos.sum()/gl if gl>0 else None
+    reason_avg_hold={k:round(float(v),2) for k,v in df.groupby('reason')['hold'].mean().to_dict().items()}
+    reason_median_hold={k:round(float(v),2) for k,v in df.groupby('reason')['hold'].median().to_dict().items()}
     return {'count':len(df),'win_rate':round((s>0).mean()*100,2),'avg_pnl':round(s.mean(),3),
             'median_pnl':round(s.median(),3),'pf':round(pf,3) if pf is not None else None,
             'avg_hold':round(df.hold.mean(),2),'reasons':df.reason.value_counts().to_dict(),
+            'reason_avg_hold':reason_avg_hold,'reason_median_hold':reason_median_hold,
             'date_min':str(df.date.min()),'date_max':str(df.date.max())}
 
 
