@@ -14,6 +14,7 @@ logger = get_logger(__name__)
 
 SCREENING_VIEW_URL = "https://screamdayo.github.io/stock-screening/screening.html"
 NEXT_OPEN_GAP_MAX_PCT = 0.5
+STOP_LOSS_PCT = 5.0
 
 
 def notify(results, rescue_results=None, primary_results=None):
@@ -53,9 +54,14 @@ def notify(results, rescue_results=None, primary_results=None):
             lines.append(f"🟢 {label}{suffix}")
             if close is not None:
                 max_open = float(close) * (1 + NEXT_OPEN_GAP_MAX_PCT / 100)
+                stop_at_max_open = max_open * (1 - STOP_LOSS_PCT / 100)
                 lines.append(
                     f"   ↳ 翌朝寄値 **{max_open:,.1f}円以下なら買い** / 超えたら見送り "
                     f"（終値 {float(close):,.1f}円 × +{NEXT_OPEN_GAP_MAX_PCT:.1f}%）"
+                )
+                lines.append(
+                    f"   🛑 損切り **実際の買値 × 0.95** "
+                    f"（参考：寄値上限で買った場合 **{stop_at_max_open:,.1f}円**）"
                 )
 
         remaining = len(display_results) - 20
@@ -66,7 +72,8 @@ def notify(results, rescue_results=None, primary_results=None):
         msg = (
             f"📊 **くいっと押し目版 {today}**\n"
             f"🤖 **目視判定なし / 出来高1.25倍以上 / 自動通過 {len(results)}件**\n"
-            f"🌅 **翌朝ルール：前日終値比 +{NEXT_OPEN_GAP_MAX_PCT:.1f}%以内で寄れば買い、超えたら見送り**"
+            f"🌅 **翌朝ルール：前日終値比 +{NEXT_OPEN_GAP_MAX_PCT:.1f}%以内で寄れば買い、超えたら見送り**\n"
+            f"🛑 **損切り：実際の買値から -{STOP_LOSS_PCT:.0f}%**"
             f"{order_note}\n"
             + "\n".join(lines)
             + f"\n\n📈 **チャート**\n{SCREENING_VIEW_URL}"
