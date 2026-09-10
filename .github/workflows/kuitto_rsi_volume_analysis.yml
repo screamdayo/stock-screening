@@ -22,6 +22,7 @@ jobs:
         env:
           JQUANTS_API_KEY: ${{ secrets.JQUANTS_API_KEY }}
       - run: python run_kuitto_hold30_analysis.py
+      - run: python run_kuitto_portfolio_cap_analysis.py
       - uses: actions/upload-artifact@v4
         with:
           name: kuitto-rsi-volume-${{ github.run_id }}
