@@ -5,7 +5,7 @@ SL = 5.0
 GAP_MAX = 0.5
 MAX_HOLD = 15
 DAILY_ORDER_CAP = 5
-PORTFOLIO_CAP = 5
+PORTFOLIO_CAPS = [5, 8, 10, 15]
 
 
 def load_prices():
@@ -91,44 +91,20 @@ def simulate(g, i):
     for j in range(ent, end + 1):
         if pending:
             px = float(g.O.iloc[j])
-            return {
-                'pnl': (px-entry)/entry*100,
-                'reason': 'gakutto_strict_next_open',
-                'hold': j-ent+1,
-                'entry_date': str(g.Date.iloc[ent]),
-                'exit_date': str(g.Date.iloc[j]),
-                'entry_gap': entry_gap,
-            }
+            return {'pnl': (px-entry)/entry*100, 'reason':'gakutto_strict_next_open', 'hold':j-ent+1,
+                    'entry_date':str(g.Date.iloc[ent]), 'exit_date':str(g.Date.iloc[j]), 'entry_gap':entry_gap}
         if float(g.L.iloc[j]) <= sl:
-            return {
-                'pnl': -SL,
-                'reason': 'stop_loss',
-                'hold': j-ent+1,
-                'entry_date': str(g.Date.iloc[ent]),
-                'exit_date': str(g.Date.iloc[j]),
-                'entry_gap': entry_gap,
-            }
+            return {'pnl':-SL, 'reason':'stop_loss', 'hold':j-ent+1,
+                    'entry_date':str(g.Date.iloc[ent]), 'exit_date':str(g.Date.iloc[j]), 'entry_gap':entry_gap}
         if j < end and strict_gakutto(g, j):
             pending = True
     if end + 1 < len(g):
         px = float(g.O.iloc[end+1])
-        return {
-            'pnl': (px-entry)/entry*100,
-            'reason': 'time_exit_next_open',
-            'hold': end-ent+2,
-            'entry_date': str(g.Date.iloc[ent]),
-            'exit_date': str(g.Date.iloc[end+1]),
-            'entry_gap': entry_gap,
-        }
+        return {'pnl':(px-entry)/entry*100, 'reason':'time_exit_next_open', 'hold':end-ent+2,
+                'entry_date':str(g.Date.iloc[ent]), 'exit_date':str(g.Date.iloc[end+1]), 'entry_gap':entry_gap}
     px = float(g.C.iloc[end])
-    return {
-        'pnl': (px-entry)/entry*100,
-        'reason': 'time_exit',
-        'hold': end-ent+1,
-        'entry_date': str(g.Date.iloc[ent]),
-        'exit_date': str(g.Date.iloc[end]),
-        'entry_gap': entry_gap,
-    }
+    return {'pnl':(px-entry)/entry*100, 'reason':'time_exit', 'hold':end-ent+1,
+            'entry_date':str(g.Date.iloc[ent]), 'exit_date':str(g.Date.iloc[end]), 'entry_gap':entry_gap}
 
 
 def stats(rows):
@@ -141,14 +117,32 @@ def stats(rows):
     gross_loss = -neg.sum()
     pf = pos.sum() / gross_loss if gross_loss > 0 else None
     return {
-        'count': len(df),
-        'win_rate': round((s > 0).mean()*100, 2),
-        'avg_pnl': round(s.mean(), 3),
-        'median_pnl': round(s.median(), 3),
-        'pf': round(pf, 3) if pf is not None else None,
-        'avg_hold': round(df.hold.mean(), 2),
-        'reasons': df.reason.value_counts().to_dict(),
+        'count':len(df),
+        'win_rate':round((s > 0).mean()*100, 2),
+        'avg_pnl':round(s.mean(), 3),
+        'median_pnl':round(s.median(), 3),
+        'pf':round(pf, 3) if pf is not None else None,
+        'avg_hold':round(df.hold.mean(), 2),
+        'reasons':df.reason.value_counts().to_dict(),
     }
+
+
+def apply_portfolio_cap(filled, cap):
+    selected = []
+    active = []
+    skipped_full = 0
+    by_entry = {}
+    for r in filled:
+        by_entry.setdefault(r['entry_date'], []).append(r)
+    for entry_date in sorted(by_entry):
+        active = [p for p in active if p['exit_date'] > entry_date]
+        slots = max(0, cap - len(active))
+        todays = sorted(by_entry[entry_date], key=lambda x: (x['ma25_distance'], x['code']))
+        take = todays[:slots]
+        skipped_full += max(0, len(todays) - len(take))
+        selected.extend(take)
+        active.extend(take)
+    return selected, skipped_full
 
 
 def main():
@@ -164,48 +158,31 @@ def main():
             if not entry_signal(g, i):
                 continue
             sim = simulate(g, i)
-            raw.append({
-                'code': code,
-                'signal_date': str(g.Date.iloc[i]),
-                'ma25_distance': abs((float(g.MA5.iloc[i])/float(g.MA25.iloc[i])-1)*100),
-                'gap_ok': sim is not None,
-                **(sim or {})
-            })
+            raw.append({'code':code, 'signal_date':str(g.Date.iloc[i]),
+                        'ma25_distance':abs((float(g.MA5.iloc[i])/float(g.MA25.iloc[i])-1)*100),
+                        'gap_ok':sim is not None, **(sim or {})})
 
-    # Operational order rule: rank every signal day first, and only the top 5 get orders.
     raw_df = pd.DataFrame(raw)
     ordered = []
     if not raw_df.empty:
         for _, day in raw_df.groupby('signal_date'):
             day = day.sort_values(['ma25_distance','code']).head(DAILY_ORDER_CAP)
             ordered.extend(day.to_dict('records'))
-    filled_no_portfolio_cap = [r for r in ordered if r.get('gap_ok')]
+    filled = [r for r in ordered if r.get('gap_ok')]
 
-    # Portfolio cap: positions exiting at today's open no longer occupy a slot.
-    selected = []
-    active = []
-    skipped_full = 0
-    by_entry = {}
-    for r in filled_no_portfolio_cap:
-        by_entry.setdefault(r['entry_date'], []).append(r)
-    for entry_date in sorted(by_entry):
-        active = [p for p in active if p['exit_date'] > entry_date]
-        slots = max(0, PORTFOLIO_CAP - len(active))
-        todays = sorted(by_entry[entry_date], key=lambda x: (x['ma25_distance'], x['code']))
-        take = todays[:slots]
-        skipped_full += max(0, len(todays) - len(take))
-        selected.extend(take)
-        active.extend(take)
+    comparisons = {}
+    for cap in PORTFOLIO_CAPS:
+        selected, skipped = apply_portfolio_cap(filled, cap)
+        comparisons[str(cap)] = {'stats':stats(selected), 'skipped_due_portfolio_full':skipped}
 
     result = {
-        'rule': 'daily MA25-near top5 orders -> next-open gap<=+0.5% fills -> max 5 concurrent holdings; SL -5%; strict gakutto next-open; max15 next-open',
-        'raw_signals': len(raw),
-        'ordered_top5': len(ordered),
-        'filled_without_portfolio_cap': stats(filled_no_portfolio_cap),
-        'max5_concurrent': stats(selected),
-        'skipped_due_portfolio_full': skipped_full,
+        'rule':'daily MA25-near top5 orders -> next-open gap<=+0.5% fills; SL -5%; strict gakutto next-open; max15 next-open',
+        'raw_signals':len(raw),
+        'ordered_top5':len(ordered),
+        'filled_without_portfolio_cap':stats(filled),
+        'portfolio_caps':comparisons,
     }
-    print('KUITTO_PORTFOLIO_CAP=' + json.dumps(result, ensure_ascii=False))
+    print('KUITTO_PORTFOLIO_CAP_COMPARE=' + json.dumps(result, ensure_ascii=False))
     os.makedirs('output', exist_ok=True)
     json.dump(result, open('output/kuitto_portfolio_cap_analysis.json','w',encoding='utf-8'), ensure_ascii=False, indent=2)
 
