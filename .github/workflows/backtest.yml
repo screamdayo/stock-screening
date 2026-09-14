@@ -12,6 +12,7 @@ on:
           - normal
           - sweep-pattern
           - ranking
+          - yearly-exit
       strategy:
         description: "戦略名（strategies/registry.pyに登録されているもの）"
         required: false
@@ -27,9 +28,12 @@ on:
           - rising
           - turning
           - pattern
+  issues:
+    types: [opened]
 
 jobs:
   backtest:
+    if: github.event_name == 'workflow_dispatch' || startsWith(github.event.issue.title, '[yearly-backtest-trigger]')
     runs-on: ubuntu-latest
     timeout-minutes: 180
     steps:
@@ -53,7 +57,7 @@ jobs:
             backtest-price-cache-v1-
 
       - name: 通常バックテスト実行
-        if: github.event.inputs.mode == 'normal'
+        if: github.event_name == 'workflow_dispatch' && github.event.inputs.mode == 'normal'
         env:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
           JQUANTS_API_KEY: ${{ secrets.JQUANTS_API_KEY }}
@@ -63,7 +67,7 @@ jobs:
           --condition "${{ github.event.inputs.condition }}"
 
       - name: パラメータスイープ実行
-        if: github.event.inputs.mode == 'sweep-pattern'
+        if: github.event_name == 'workflow_dispatch' && github.event.inputs.mode == 'sweep-pattern'
         env:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
           JQUANTS_API_KEY: ${{ secrets.JQUANTS_API_KEY }}
@@ -73,13 +77,19 @@ jobs:
           --sweep-pattern
 
       - name: 最大8枠 同日候補ランキング検証実行
-        if: github.event.inputs.mode == 'ranking'
+        if: github.event_name == 'workflow_dispatch' && github.event.inputs.mode == 'ranking'
         env:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
           JQUANTS_API_KEY: ${{ secrets.JQUANTS_API_KEY }}
         run: |
           python run_backtest_ranking.py
           python analyze_balanced_mark_to_market.py
+
+      - name: 5年・1年区切り 利確5% vs がくっと比較
+        if: (github.event_name == 'workflow_dispatch' && github.event.inputs.mode == 'yearly-exit') || (github.event_name == 'issues' && startsWith(github.event.issue.title, '[yearly-backtest-trigger]'))
+        env:
+          JQUANTS_API_KEY: ${{ secrets.JQUANTS_API_KEY }}
+        run: python compare_exit_yearly.py
 
       - name: 株価データキャッシュの保存
         if: always()
