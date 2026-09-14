@@ -1,0 +1,57 @@
+{
+  "started_at": "2026-09-09",
+  "source": "derived_from_jquants_prime_daily_bars",
+  "universe": "production Prime universe after excluded-code filtering",
+  "definition": "today close versus previous available close for each comparable stock",
+  "days": [
+    {
+      "date": "2026-09-09",
+      "advances": 600,
+      "declines": 916,
+      "unchanged": 32,
+      "comparable": 1548,
+      "advance_pct": 38.76,
+      "decline_pct": 59.17,
+      "advance_decline_ratio": 0.655,
+      "equal_weight_mean_return_pct": -0.121,
+      "equal_weight_median_return_pct": -0.344
+    },
+    {
+      "date": "2026-09-10",
+      "advances": 722,
+      "declines": 782,
+      "unchanged": 44,
+      "comparable": 1548,
+      "advance_pct": 46.64,
+      "decline_pct": 50.52,
+      "advance_decline_ratio": 0.923,
+      "equal_weight_mean_return_pct": 0.072,
+      "equal_weight_median_return_pct": -0.043
+    },
+    {
+      "date": "2026-09-11",
+      "advances": 508,
+      "declines": 982,
+      "unchanged": 58,
+      "comparable": 1548,
+      "advance_pct": 32.82,
+      "decline_pct": 63.44,
+      "advance_decline_ratio": 0.517,
+      "equal_weight_mean_return_pct": -0.592,
+      "equal_weight_median_return_pct": -0.409
+    },
+    {
+      "date": "2026-09-14",
+      "advances": 1218,
+      "declines": 307,
+      "unchanged": 23,
+      "comparable": 1548,
+      "advance_pct": 78.68,
+      "decline_pct": 19.83,
+      "advance_decline_ratio": 3.967,
+      "equal_weight_mean_return_pct": 1.062,
+      "equal_weight_median_return_pct": 1.015
+    }
+  ],
+  "updated_through": "2026-09-14"
+}
