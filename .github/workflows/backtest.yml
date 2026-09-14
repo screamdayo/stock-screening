@@ -31,6 +31,10 @@ on:
   issues:
     types: [opened]
 
+permissions:
+  contents: read
+  issues: write
+
 jobs:
   backtest:
     if: github.event_name == 'workflow_dispatch' || startsWith(github.event.issue.title, '[yearly-backtest-trigger]')
@@ -90,6 +94,19 @@ jobs:
         env:
           JQUANTS_API_KEY: ${{ secrets.JQUANTS_API_KEY }}
         run: python compare_exit_yearly.py
+
+      - name: Issueへ比較結果を投稿
+        if: github.event_name == 'issues' && success() && startsWith(github.event.issue.title, '[yearly-backtest-trigger]')
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          {
+            echo '## 5年・年別バックテスト結果'
+            echo '```text'
+            cat output/yearly_exit_comparison.txt
+            echo '```'
+          } > /tmp/result.md
+          gh issue comment "${{ github.event.issue.number }}" --repo "${{ github.repository }}" --body-file /tmp/result.md
 
       - name: 株価データキャッシュの保存
         if: always()
