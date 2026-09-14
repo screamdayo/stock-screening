@@ -13,6 +13,8 @@ GitHub Actionsからは `python main.py` を呼ぶだけでよい。
 
 2026-09-09以降の新規シグナルは forward_test.py で将来検証用に記録し、
 翌朝ギャップ・5/10/15日後騰落・MFE/MAE・出口結果を日次で追記する。
+同じJ-Quants日足からプライム市場の値上がり/値下がり比率も
+market_breadth.py で日次記録する。
 
 エラーが発生した場合はDiscordに通知してから例外を再送出する。
 """
@@ -25,6 +27,7 @@ import notifier
 import export_docs_prices
 import sell_monitor
 import forward_test
+import market_breadth
 from strategies import registry
 from logger import get_logger
 
@@ -70,6 +73,9 @@ def run():
 
     logger.info("未来検証ログ更新中...")
     forward_test.update_forward_test(price_df, code_to_name)
+
+    logger.info("市場地合いログ更新中...")
+    market_breadth.update_market_breadth(price_df)
 
     logger.info("Discord通知中...")
     notifier.notify(results)
