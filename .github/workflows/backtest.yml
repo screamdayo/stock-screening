@@ -14,6 +14,7 @@ on:
           - ranking
           - yearly-exit
           - ma25-filter
+          - ma-distance
       strategy:
         description: "戦略名（strategies/registry.pyに登録されているもの）"
         required: false
@@ -38,7 +39,7 @@ permissions:
 
 jobs:
   backtest:
-    if: github.event_name == 'workflow_dispatch' || startsWith(github.event.issue.title, '[yearly-backtest-trigger]') || startsWith(github.event.issue.title, '[ma25-backtest-trigger]')
+    if: github.event_name == 'workflow_dispatch' || startsWith(github.event.issue.title, '[yearly-backtest-trigger]') || startsWith(github.event.issue.title, '[ma25-backtest-trigger]') || startsWith(github.event.issue.title, '[ma-distance-backtest-trigger]')
     runs-on: ubuntu-latest
     timeout-minutes: 180
     steps:
@@ -102,6 +103,12 @@ jobs:
           JQUANTS_API_KEY: ${{ secrets.JQUANTS_API_KEY }}
         run: python compare_ma25_filter.py
 
+      - name: MA5/MA25距離フィルター 5年比較
+        if: (github.event_name == 'workflow_dispatch' && github.event.inputs.mode == 'ma-distance') || (github.event_name == 'issues' && startsWith(github.event.issue.title, '[ma-distance-backtest-trigger]'))
+        env:
+          JQUANTS_API_KEY: ${{ secrets.JQUANTS_API_KEY }}
+        run: python compare_ma_distance.py
+
       - name: Issueへ出口比較結果を投稿
         if: github.event_name == 'issues' && success() && startsWith(github.event.issue.title, '[yearly-backtest-trigger]')
         env:
@@ -124,6 +131,19 @@ jobs:
             echo '## MA25向きフィルター 5年バックテスト結果'
             echo '```text'
             cat output/ma25_filter_comparison.txt
+            echo '```'
+          } > /tmp/result.md
+          gh issue comment "${{ github.event.issue.number }}" --repo "${{ github.repository }}" --body-file /tmp/result.md
+
+      - name: IssueへMA距離比較結果を投稿
+        if: github.event_name == 'issues' && success() && startsWith(github.event.issue.title, '[ma-distance-backtest-trigger]')
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          {
+            echo '## MA5/MA25距離フィルター 5年バックテスト結果'
+            echo '```text'
+            cat output/ma_distance_comparison.txt
             echo '```'
           } > /tmp/result.md
           gh issue comment "${{ github.event.issue.number }}" --repo "${{ github.repository }}" --body-file /tmp/result.md
