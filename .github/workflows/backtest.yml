@@ -13,6 +13,7 @@ on:
           - sweep-pattern
           - ranking
           - yearly-exit
+          - ma25-filter
       strategy:
         description: "戦略名（strategies/registry.pyに登録されているもの）"
         required: false
@@ -37,7 +38,7 @@ permissions:
 
 jobs:
   backtest:
-    if: github.event_name == 'workflow_dispatch' || startsWith(github.event.issue.title, '[yearly-backtest-trigger]')
+    if: github.event_name == 'workflow_dispatch' || startsWith(github.event.issue.title, '[yearly-backtest-trigger]') || startsWith(github.event.issue.title, '[ma25-backtest-trigger]')
     runs-on: ubuntu-latest
     timeout-minutes: 180
     steps:
@@ -95,7 +96,13 @@ jobs:
           JQUANTS_API_KEY: ${{ secrets.JQUANTS_API_KEY }}
         run: python compare_exit_yearly.py
 
-      - name: Issueへ比較結果を投稿
+      - name: MA25向きフィルター 5年比較
+        if: (github.event_name == 'workflow_dispatch' && github.event.inputs.mode == 'ma25-filter') || (github.event_name == 'issues' && startsWith(github.event.issue.title, '[ma25-backtest-trigger]'))
+        env:
+          JQUANTS_API_KEY: ${{ secrets.JQUANTS_API_KEY }}
+        run: python compare_ma25_filter.py
+
+      - name: Issueへ出口比較結果を投稿
         if: github.event_name == 'issues' && success() && startsWith(github.event.issue.title, '[yearly-backtest-trigger]')
         env:
           GH_TOKEN: ${{ github.token }}
@@ -104,6 +111,19 @@ jobs:
             echo '## 5年・年別バックテスト結果'
             echo '```text'
             cat output/yearly_exit_comparison.txt
+            echo '```'
+          } > /tmp/result.md
+          gh issue comment "${{ github.event.issue.number }}" --repo "${{ github.repository }}" --body-file /tmp/result.md
+
+      - name: IssueへMA25比較結果を投稿
+        if: github.event_name == 'issues' && success() && startsWith(github.event.issue.title, '[ma25-backtest-trigger]')
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          {
+            echo '## MA25向きフィルター 5年バックテスト結果'
+            echo '```text'
+            cat output/ma25_filter_comparison.txt
             echo '```'
           } > /tmp/result.md
           gh issue comment "${{ github.event.issue.number }}" --repo "${{ github.repository }}" --body-file /tmp/result.md
