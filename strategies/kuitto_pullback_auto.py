@@ -3,6 +3,8 @@
 
 2025-11-06〜2026-09-08 の保存済み株価で検証した「広め押し目版」に、
 追加検証で有効だった出来高条件（当日出来高が前日の1.25倍以上）を加えた本番版。
+2026-09-16以降は、5年バックテストで成績と年別安定性が改善した
+20日平均売買代金5億円以上の流動性フィルターも適用する。
 
 条件:
 - 直近2日までMA5が下向き/横ばい
@@ -12,6 +14,7 @@
 - 終値とMA5の乖離: +4.0%以下
 - 当日陽線: +1.5%〜+3.5%
 - 当日出来高: 前日比1.25倍以上
+- 2026-09-16以降: 20日平均売買代金（終値×出来高）5億円以上
 
 売買の良し悪しを人のA/B/skipで選別せず、条件通過銘柄をそのまま扱う。
 """
@@ -38,6 +41,8 @@ CLOSE_VS_MA5_MAX_PCT = 4.0
 BULL_MIN_PCT = 1.5
 BULL_MAX_PCT = 3.5
 VOLUME_RATIO_MIN = 1.25
+AVG_TURNOVER_20_MIN = 500_000_000
+LIQUIDITY_EFFECTIVE_DATE = pd.Timestamp("2026-09-16")
 
 
 def _prepare(group):
@@ -50,6 +55,8 @@ def _prepare(group):
         g["Vo"] = pd.NA
     g["MA_SHORT"] = g["C"].rolling(MA_SHORT).mean()
     g["MA_LONG"] = g["C"].rolling(MA_LONG).mean()
+    g["TURNOVER"] = g["C"] * g["Vo"]
+    g["AVG_TURNOVER_20"] = g["TURNOVER"].rolling(20).mean()
     return g
 
 
@@ -102,12 +109,19 @@ def _features(g, idx):
     if volume_ratio < VOLUME_RATIO_MIN:
         return None
 
+    avg_turnover_20 = r["AVG_TURNOVER_20"]
+    signal_date = pd.Timestamp(g["Date"].iloc[idx])
+    if signal_date >= LIQUIDITY_EFFECTIVE_DATE:
+        if pd.isna(avg_turnover_20) or float(avg_turnover_20) < AVG_TURNOVER_20_MIN:
+            return None
+
     return {
         "bull_candle_pct": bull,
         "ma5_prior5d_decline_pct": decline,
         "ma5_vs_ma25_pct": ma5_gap,
         "close_vs_ma5_pct": close_ma5,
         "volume_ratio": volume_ratio,
+        "avg_turnover_20": float(avg_turnover_20) if pd.notna(avg_turnover_20) else None,
     }
 
 
@@ -136,7 +150,10 @@ def find_signals(price_df, target_codes):
                 **f,
             })
 
-    logger.info(f"自動くいっと検出: {len(signals)}件（出来高前日比{VOLUME_RATIO_MIN:.2f}倍以上）")
+    logger.info(
+        f"自動くいっと検出: {len(signals)}件（出来高前日比{VOLUME_RATIO_MIN:.2f}倍以上、"
+        f"{LIQUIDITY_EFFECTIVE_DATE.date()}以降は20日平均売買代金{AVG_TURNOVER_20_MIN/100_000_000:.0f}億円以上）"
+    )
     return signals, price_data_by_code
 
 
@@ -169,11 +186,12 @@ def find_latest_signals(price_df, target_codes):
             "signal_label": SIGNAL_LABEL,
             "auto_filtered": True,
             "screening_bucket": "auto",
-            **{k: round(float(v), 3) for k, v in f.items()},
+            **{k: (round(float(v), 3) if v is not None else None) for k, v in f.items()},
         })
 
     logger.info(
         f"目視なし・くいっと押し目版: {len(results)}件 "
-        f"（出来高前日比{VOLUME_RATIO_MIN:.2f}倍以上）"
+        f"（出来高前日比{VOLUME_RATIO_MIN:.2f}倍以上、"
+        f"{LIQUIDITY_EFFECTIVE_DATE.date()}以降は20日平均売買代金{AVG_TURNOVER_20_MIN/100_000_000:.0f}億円以上）"
     )
     return results
