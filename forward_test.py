@@ -15,12 +15,14 @@ from logger import get_logger
 logger = get_logger(__name__)
 
 FORWARD_TEST_START = pd.Timestamp("2026-09-09")
-RULE_VERSION = "kuitto_v1_2026-09-09"
+RULE_EFFECTIVE_FROM = pd.Timestamp("2026-09-16")
+RULE_VERSION = "kuitto_v2_2026-09-16_liquidity500m"
 LOG_PATH = Path("docs/forward_test_log.json")
 RULES_PATH = Path("docs/forward_test_rules.json")
 HOLDINGS_PATH = Path("holdings.json")
 
 VOLUME_RATIO_MIN = 1.25
+AVG_TURNOVER_20_MIN = 500_000_000
 MAX_ENTRY_GAP_PCT = 0.5
 MAX_DAILY_BUYS = 5
 STOP_LOSS_PCT = 5.0
@@ -28,10 +30,12 @@ MAX_HOLD_DAYS = 15
 
 RULE_SNAPSHOT = {
     "version": RULE_VERSION,
-    "effective_from": "2026-09-09",
+    "effective_from": "2026-09-16",
     "entry": {
         "signal": "kuitto_pullback_auto base shape",
         "volume_ratio_min": VOLUME_RATIO_MIN,
+        "avg_turnover_20_min_yen": AVG_TURNOVER_20_MIN,
+        "avg_turnover_20_definition": "20-day mean of close x volume",
         "next_open_gap_max_pct": MAX_ENTRY_GAP_PCT,
         "daily_max": MAX_DAILY_BUYS,
         "ranking": "abs(MA5/MA25 gap) ascending when selecting top 5",
@@ -69,6 +73,8 @@ def _prepare(group):
         g["Vo"] = pd.NA
     g["MA5"] = g["C"].rolling(5).mean()
     g["MA25"] = g["C"].rolling(25).mean()
+    g["turnover"] = g["C"] * g["Vo"]
+    g["avg_turnover_20"] = g["turnover"].rolling(20).mean()
     return g
 
 
@@ -102,12 +108,14 @@ def _base_features(g, i):
     volume_ratio = None
     if pd.notna(prev_v) and pd.notna(today_v) and float(prev_v) > 0:
         volume_ratio = float(today_v) / float(prev_v)
+    avg_turnover_20 = g.avg_turnover_20.iloc[i]
     return {
         "bull_candle_pct": round(float(bull), 3),
         "ma5_prior5d_decline_pct": round(float(decline), 3),
         "ma5_vs_ma25_pct": round(float(ma_gap), 3),
         "close_vs_ma5_pct": round(float(close_ma5), 3),
         "volume_ratio": round(float(volume_ratio), 3) if volume_ratio is not None else None,
+        "avg_turnover_20": round(float(avg_turnover_20), 3) if pd.notna(avg_turnover_20) else None,
     }
 
 
@@ -209,10 +217,18 @@ def _update_future(row, g, signal_idx):
         })
 
 
+def _row_passes_entry_filters(row):
+    if not row.get("volume_pass") or not row.get("gap_pass"):
+        return False
+    if row.get("rule_version") == RULE_VERSION:
+        return bool(row.get("liquidity_pass"))
+    return True
+
+
 def _mark_rule_selection(rows):
     by_date = {}
     for row in rows:
-        if row.get("volume_pass") and row.get("gap_pass"):
+        if _row_passes_entry_filters(row):
             by_date.setdefault(row["signal_date"], []).append(row)
 
     for candidates in by_date.values():
@@ -253,11 +269,11 @@ def update_forward_test(price_df, code_to_name=None):
     for code, group in price_df.groupby("Code"):
         groups[str(code)] = _prepare(group)
 
-    # Add newly observed base-shape signals only from the forward-test start date.
+    # New rule version begins 2026-09-16; older rows are preserved unchanged.
     for code, g in groups.items():
         for i in range(25, len(g)):
             signal_date = g.Date.iloc[i]
-            if signal_date < FORWARD_TEST_START:
+            if signal_date < RULE_EFFECTIVE_FROM:
                 continue
             f = _base_features(g, i)
             if not f:
@@ -266,6 +282,7 @@ def update_forward_test(price_df, code_to_name=None):
             if key in keyed:
                 continue
             volume_pass = f["volume_ratio"] is not None and f["volume_ratio"] >= VOLUME_RATIO_MIN
+            liquidity_pass = f["avg_turnover_20"] is not None and f["avg_turnover_20"] >= AVG_TURNOVER_20_MIN
             rows.append({
                 "rule_version": RULE_VERSION,
                 "code": code,
@@ -274,6 +291,7 @@ def update_forward_test(price_df, code_to_name=None):
                 "signal_close": round(float(g.C.iloc[i]), 3),
                 **f,
                 "volume_pass": bool(volume_pass),
+                "liquidity_pass": bool(liquidity_pass),
                 "gap_pass": None,
                 "ma25_rank": None,
                 "rule_selected": None,
@@ -294,10 +312,8 @@ def update_forward_test(price_df, code_to_name=None):
             })
             keyed.add(key)
 
-    # Fill future facts as they become observable.
+    # Fill future facts for all historical rule versions so old forward-test rows keep progressing.
     for row in rows:
-        if row.get("rule_version") != RULE_VERSION:
-            continue
         g = groups.get(str(row.get("code")))
         if g is None or g.empty:
             continue
