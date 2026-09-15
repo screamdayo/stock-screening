@@ -1,0 +1,1 @@
+Stable combo test added 2026-09-15. Main target: MA25 flat-or-rising over 5d combined with MA5/MA25 distance bands. Output: output/stable_combo_comparison.txt and .json.
