@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-15T07:19:57",
+  "generated_at": "2026-09-15T12:46:20",
   "strategy": "ma5_breakout",
   "count": 11,
   "items": [
@@ -19,6 +19,7 @@
       "ma5_vs_ma25_pct": -1.156,
       "close_vs_ma5_pct": 0.467,
       "volume_ratio": 1.321,
+      "avg_turnover_20": 487481175.0,
       "name": "東京エレクトロン　デバイス"
     },
     {
@@ -37,6 +38,7 @@
       "ma5_vs_ma25_pct": -1.697,
       "close_vs_ma5_pct": 1.323,
       "volume_ratio": 1.598,
+      "avg_turnover_20": 61316765.0,
       "name": "明治電機工業"
     },
     {
@@ -55,6 +57,7 @@
       "ma5_vs_ma25_pct": -4.287,
       "close_vs_ma5_pct": 1.0,
       "volume_ratio": 1.409,
+      "avg_turnover_20": 260182690.0,
       "name": "住友精化"
     },
     {
@@ -73,6 +76,7 @@
       "ma5_vs_ma25_pct": -1.228,
       "close_vs_ma5_pct": -0.468,
       "volume_ratio": 1.401,
+      "avg_turnover_20": 132262770.0,
       "name": "テイカ"
     },
     {
@@ -91,6 +95,7 @@
       "ma5_vs_ma25_pct": -4.99,
       "close_vs_ma5_pct": 2.257,
       "volume_ratio": 1.475,
+      "avg_turnover_20": 390297550.0,
       "name": "東和薬品"
     },
     {
@@ -109,6 +114,7 @@
       "ma5_vs_ma25_pct": -2.983,
       "close_vs_ma5_pct": 1.787,
       "volume_ratio": 1.69,
+      "avg_turnover_20": 337914975.0,
       "name": "サカタインクス"
     },
     {
@@ -127,6 +133,7 @@
       "ma5_vs_ma25_pct": -4.622,
       "close_vs_ma5_pct": 3.052,
       "volume_ratio": 1.516,
+      "avg_turnover_20": 1129263865.0,
       "name": "ＧＭＯインターネット"
     },
     {
@@ -145,6 +152,7 @@
       "ma5_vs_ma25_pct": -0.324,
       "close_vs_ma5_pct": 1.064,
       "volume_ratio": 1.973,
+      "avg_turnover_20": 128041245.0,
       "name": "中山製鋼所"
     },
     {
@@ -163,6 +171,7 @@
       "ma5_vs_ma25_pct": -4.48,
       "close_vs_ma5_pct": 1.844,
       "volume_ratio": 2.0,
+      "avg_turnover_20": 24630850.0,
       "name": "Ｏｒｃｈｅｓｔｒａ　Ｈｏｌｄｉｎｇｓ"
     },
     {
@@ -181,6 +190,7 @@
       "ma5_vs_ma25_pct": -0.609,
       "close_vs_ma5_pct": 2.505,
       "volume_ratio": 1.823,
+      "avg_turnover_20": 172451000.0,
       "name": "トピー工業"
     },
     {
@@ -199,6 +209,7 @@
       "ma5_vs_ma25_pct": -4.376,
       "close_vs_ma5_pct": 0.945,
       "volume_ratio": 2.089,
+      "avg_turnover_20": 4410481375.0,
       "name": "ミスミグループ本社"
     }
   ]
