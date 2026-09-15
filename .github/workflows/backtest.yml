@@ -17,6 +17,7 @@ on:
           - ma-distance
           - stable-combo
           - liquidity
+          - capital-risk
       strategy:
         description: "戦略名（strategies/registry.pyに登録されているもの）"
         required: false
@@ -41,7 +42,7 @@ permissions:
 
 jobs:
   backtest:
-    if: github.event_name == 'workflow_dispatch' || startsWith(github.event.issue.title, '[yearly-backtest-trigger]') || startsWith(github.event.issue.title, '[ma25-backtest-trigger]') || startsWith(github.event.issue.title, '[ma-distance-backtest-trigger]') || startsWith(github.event.issue.title, '[stable-combo-backtest-trigger]') || startsWith(github.event.issue.title, '[liquidity-backtest-trigger]')
+    if: github.event_name == 'workflow_dispatch' || startsWith(github.event.issue.title, '[yearly-backtest-trigger]') || startsWith(github.event.issue.title, '[ma25-backtest-trigger]') || startsWith(github.event.issue.title, '[ma-distance-backtest-trigger]') || startsWith(github.event.issue.title, '[stable-combo-backtest-trigger]') || startsWith(github.event.issue.title, '[liquidity-backtest-trigger]') || startsWith(github.event.issue.title, '[capital-risk-backtest-trigger]')
     runs-on: ubuntu-latest
     timeout-minutes: 180
     steps:
@@ -123,6 +124,12 @@ jobs:
           JQUANTS_API_KEY: ${{ secrets.JQUANTS_API_KEY }}
         run: python compare_liquidity.py
 
+      - name: 資産・最大DD 5年比較
+        if: (github.event_name == 'workflow_dispatch' && github.event.inputs.mode == 'capital-risk') || (github.event_name == 'issues' && startsWith(github.event.issue.title, '[capital-risk-backtest-trigger]'))
+        env:
+          JQUANTS_API_KEY: ${{ secrets.JQUANTS_API_KEY }}
+        run: python compare_capital_risk.py
+
       - name: Issueへ出口比較結果を投稿
         if: github.event_name == 'issues' && success() && startsWith(github.event.issue.title, '[yearly-backtest-trigger]')
         env:
@@ -184,6 +191,19 @@ jobs:
             echo '## 流動性フィルター 5年バックテスト結果'
             echo '```text'
             cat output/liquidity_filter_comparison.txt
+            echo '```'
+          } > /tmp/result.md
+          gh issue comment "${{ github.event.issue.number }}" --repo "${{ github.repository }}" --body-file /tmp/result.md
+
+      - name: Issueへ資産・DD比較結果を投稿
+        if: github.event_name == 'issues' && success() && startsWith(github.event.issue.title, '[capital-risk-backtest-trigger]')
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          {
+            echo '## 100万円スタート・最大DD比較結果'
+            echo '```text'
+            cat output/capital_risk_comparison.txt
             echo '```'
           } > /tmp/result.md
           gh issue comment "${{ github.event.issue.number }}" --repo "${{ github.repository }}" --body-file /tmp/result.md
