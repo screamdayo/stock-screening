@@ -12,6 +12,7 @@ INITIAL_CAPITAL = 1_000_000.0
 MAX_POSITIONS = 11
 LIQUIDITY_MIN = 500_000_000
 TRIGGER_COUNT = 5
+FRESH_CACHE_FILENAME = "backtest_prices_prime_5y_rotation_fresh.csv"
 
 
 def build_current_trades(candidates, groups):
@@ -38,7 +39,6 @@ def close_on(groups, code, date, field="C"):
 
 def baseline(trades):
     slots = [{"capital": INITIAL_CAPITAL / MAX_POSITIONS, "trade": None} for _ in range(MAX_POSITIONS)]
-    realized = 0.0
     skipped = 0
     dates = sorted(set(t["entry_date"] for t in trades) | set(t["exit_date"] for t in trades))
     by_entry = {}
@@ -49,7 +49,6 @@ def baseline(trades):
             tr = s["trade"]
             if tr and tr["exit_date"] == d:
                 s["capital"] *= 1 + tr["pnl_pct"] / 100
-                realized += 1
                 s["trade"] = None
         for tr in by_entry.get(d, []):
             free = next((s for s in slots if s["trade"] is None), None)
@@ -57,7 +56,6 @@ def baseline(trades):
                 skipped += 1
             else:
                 free["trade"] = tr
-    # realize any still-open simulated trades at their predefined normal exits
     for s in slots:
         tr = s["trade"]
         if tr:
@@ -76,7 +74,6 @@ def rotation(trades, groups):
     dates = sorted(set(t["entry_date"] for t in trades) | set(t["exit_date"] for t in trades))
 
     for d in dates:
-        # normal exits happen first at the date's normal modeled exit price
         for s in slots:
             tr = s["trade"]
             if tr and tr["exit_date"] == d:
@@ -84,7 +81,6 @@ def rotation(trades, groups):
                 s["trade"] = None
 
         entrants = sorted(by_entry.get(d, []), key=lambda x: (abs(x["ma_gap"]), x["code"]))
-        # only rotate on days whose eligible candidate cohort has >=5 names
         do_rotate = len(entrants) >= TRIGGER_COUNT
         held_codes = {s["trade"]["code"] for s in slots if s["trade"]}
 
@@ -100,7 +96,6 @@ def rotation(trades, groups):
                 skipped += 1
                 continue
 
-            # sell the currently profitable holding with the largest unrealized percentage gain at this open
             choices = []
             for s in slots:
                 old = s["trade"]
@@ -134,10 +129,20 @@ def rotation(trades, groups):
     return sum(s["capital"] for s in slots), skipped, rotations
 
 
+def load_fresh_price_history():
+    """Ignore every restored Actions cache and rebuild the full history from J-Quants."""
+    cache_path = Path("data") / FRESH_CACHE_FILENAME
+    if cache_path.exists():
+        cache_path.unlink()
+        print(f"Deleted restored rotation cache: {cache_path}")
+    print("Rebuilding full 5-year price history from J-Quants (no incremental cache)...")
+    return download.get_price_history_range(years=YEARS, cache_filename=FRESH_CACHE_FILENAME)
+
+
 def main():
     os.makedirs("output", exist_ok=True)
     targets = download.get_target_codes()
-    price_df = download.get_price_history_incremental(cache_filename="backtest_prices_prime_5y.csv", years=YEARS)
+    price_df = load_fresh_price_history()
     price_df["Date"] = pd.to_datetime(price_df["Date"])
     candidates, groups = collect_candidates(price_df, targets)
     trades = build_current_trades(candidates, groups)
@@ -146,6 +151,7 @@ def main():
     r_final, r_skip, rots = rotation(trades, groups)
     report = {
         "through": str(pd.Timestamp(price_df.Date.max()).date()),
+        "price_source": "fresh_full_jquants_rebuild",
         "initial_capital": INITIAL_CAPITAL, "max_positions": MAX_POSITIONS,
         "trigger_candidate_count": TRIGGER_COUNT,
         "liquidity_min_yen": LIQUIDITY_MIN,
@@ -154,11 +160,12 @@ def main():
         "difference_yen": r_final - b_final,
         "difference_pct_points": (r_final - b_final) / INITIAL_CAPITAL * 100,
         "rotation_details": rots,
-        "notes": "5-year current-entry approximation; 11 equal slots; on >=5-entry days, when full, sell largest positive unrealized pct at next open and buy highest-ranked candidate; normal exits -5% stop/strict gakutto/max15; fees tax slippage excluded"
+        "notes": "FRESH full J-Quants rebuild; 5-year current-entry approximation; 11 equal slots; on >=5-entry days, when full, sell largest positive unrealized pct at next open and buy highest-ranked candidate; normal exits -5% stop/strict gakutto/max15; fees tax slippage excluded"
     }
     Path("output/profit_rotation_comparison.json").write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
     lines = [
         f"Profit rotation comparison / through {report['through']}",
+        "Price source=FRESH full J-Quants rebuild (restored/incremental cache ignored)",
         f"Baseline final={b_final:,.0f} return={report['baseline']['return_pct']:+.2f}% skipped={b_skip}",
         f"Rotation final={r_final:,.0f} return={report['rotation']['return_pct']:+.2f}% skipped={r_skip} rotations={len(rots)}",
         f"Rotation - baseline={r_final-b_final:+,.0f} yen ({report['difference_pct_points']:+.2f} pt)",
