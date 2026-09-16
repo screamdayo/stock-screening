@@ -13,6 +13,7 @@ MAX_POSITIONS = 11
 LIQUIDITY_MIN = 500_000_000
 TRIGGER_COUNT = 5
 FRESH_CACHE_FILENAME = "backtest_prices_prime_5y_rotation_fresh.csv"
+DIAGNOSTIC_CODES = {"6036", "3097", "3046", "8136", "8830"}
 
 
 def build_current_trades(candidates, groups):
@@ -113,6 +114,10 @@ def rotation(trades, groups):
             s["capital"] *= px / old["entry_price"]
             rotations.append({
                 "date": str(d.date()), "sold_code": old["code"], "sold_unrealized_pct": upct,
+                "sold_entry_date": str(pd.Timestamp(old["entry_date"]).date()),
+                "sold_entry_price": old["entry_price"], "sold_rotation_open": px,
+                "sold_normal_exit_date": str(pd.Timestamp(old["exit_date"]).date()),
+                "sold_normal_exit_price": old["exit_price"], "sold_normal_pnl_pct": old["pnl_pct"],
                 "sold_if_held_from_rotation_pct": old_normal_remaining,
                 "replacement_code": tr["code"], "replacement_normal_pct": tr["pnl_pct"],
                 "replacement_rank_gap_abs": abs(tr["ma_gap"]),
@@ -130,13 +135,36 @@ def rotation(trades, groups):
 
 
 def load_fresh_price_history():
-    """Ignore every restored Actions cache and rebuild the full history from J-Quants."""
     cache_path = Path("data") / FRESH_CACHE_FILENAME
     if cache_path.exists():
         cache_path.unlink()
         print(f"Deleted restored rotation cache: {cache_path}")
     print("Rebuilding full 5-year price history from J-Quants (no incremental cache)...")
     return download.get_price_history_range(years=YEARS, cache_filename=FRESH_CACHE_FILENAME)
+
+
+def diagnostic_lines(rots, groups):
+    lines = ["", "PRICE DIAGNOSTICS (raw O/H/L/C around suspicious rotations):"]
+    for x in rots:
+        code = x["sold_code"]
+        if code not in DIAGNOSTIC_CODES:
+            continue
+        lines.append(
+            f"{code}: entry={x['sold_entry_date']} entry_price={x['sold_entry_price']:.4f}; "
+            f"rotation={x['date']} open={x['sold_rotation_open']:.4f}; "
+            f"normal_exit={x['sold_normal_exit_date']} exit_price={x['sold_normal_exit_price']:.4f} "
+            f"normal_pnl={x['sold_normal_pnl_pct']:+.2f}%"
+        )
+        g = groups[code]
+        start = pd.Timestamp(x["sold_entry_date"]) - pd.Timedelta(days=3)
+        end = pd.Timestamp(x["sold_normal_exit_date"]) + pd.Timedelta(days=3)
+        sample = g[(g.Date >= start) & (g.Date <= end)][["Date", "O", "H", "L", "C"]]
+        for _, r in sample.iterrows():
+            lines.append(
+                f"  {pd.Timestamp(r['Date']).date()} O={float(r['O']):.4f} H={float(r['H']):.4f} "
+                f"L={float(r['L']):.4f} C={float(r['C']):.4f}"
+            )
+    return lines
 
 
 def main():
@@ -160,7 +188,7 @@ def main():
         "difference_yen": r_final - b_final,
         "difference_pct_points": (r_final - b_final) / INITIAL_CAPITAL * 100,
         "rotation_details": rots,
-        "notes": "FRESH full J-Quants rebuild; 5-year current-entry approximation; 11 equal slots; on >=5-entry days, when full, sell largest positive unrealized pct at next open and buy highest-ranked candidate; normal exits -5% stop/strict gakutto/max15; fees tax slippage excluded"
+        "notes": "FRESH full J-Quants rebuild; diagnostics include raw OHLC around suspicious rotations"
     }
     Path("output/profit_rotation_comparison.json").write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
     lines = [
@@ -169,11 +197,17 @@ def main():
         f"Baseline final={b_final:,.0f} return={report['baseline']['return_pct']:+.2f}% skipped={b_skip}",
         f"Rotation final={r_final:,.0f} return={report['rotation']['return_pct']:+.2f}% skipped={r_skip} rotations={len(rots)}",
         f"Rotation - baseline={r_final-b_final:+,.0f} yen ({report['difference_pct_points']:+.2f} pt)",
-        "",
-        "Rotation details:"
+        "", "Rotation details:"
     ]
     for x in rots:
-        lines.append(f"{x['date']} sold {x['sold_code']} unreal={x['sold_unrealized_pct']:+.2f}% hold_remaining={x['sold_if_held_from_rotation_pct']:+.2f}% -> {x['replacement_code']} replacement={x['replacement_normal_pct']:+.2f}%")
+        lines.append(
+            f"{x['date']} sold {x['sold_code']} entry={x['sold_entry_date']}@{x['sold_entry_price']:.2f} "
+            f"rotation_open={x['sold_rotation_open']:.2f} unreal={x['sold_unrealized_pct']:+.2f}% "
+            f"normal_exit={x['sold_normal_exit_date']}@{x['sold_normal_exit_price']:.2f} "
+            f"hold_remaining={x['sold_if_held_from_rotation_pct']:+.2f}% -> "
+            f"{x['replacement_code']} replacement={x['replacement_normal_pct']:+.2f}%"
+        )
+    lines.extend(diagnostic_lines(rots, groups))
     text = "\n".join(lines)
     Path("output/profit_rotation_comparison.txt").write_text(text, encoding="utf-8")
     print(text)
