@@ -63,7 +63,19 @@
       "advance_decline_ratio": 1.167,
       "equal_weight_mean_return_pct": 0.13,
       "equal_weight_median_return_pct": 0.077
+    },
+    {
+      "date": "2026-09-16",
+      "advances": 1046,
+      "declines": 449,
+      "unchanged": 53,
+      "comparable": 1548,
+      "advance_pct": 67.57,
+      "decline_pct": 29.01,
+      "advance_decline_ratio": 2.33,
+      "equal_weight_mean_return_pct": 0.678,
+      "equal_weight_median_return_pct": 0.505
     }
   ],
-  "updated_through": "2026-09-15"
+  "updated_through": "2026-09-16"
 }
