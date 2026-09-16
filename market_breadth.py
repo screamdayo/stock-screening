@@ -1,8 +1,8 @@
-"""Market breadth journal for the production Prime-market universe.
+"""Market breadth + screening frequency journal for the production Prime universe.
 
-The breadth numbers are derived from the same J-Quants daily bars used by the
-production screener, so they can be reproduced later without relying on a web
-page that may change.  Only dates on/after BREADTH_START are stored.
+The analysis is derived from the same J-Quants daily bars used by the production
+screener.  We keep enough history to test whether days with many kuitto candidates
+are simply broad up-market days.
 """
 
 import json
@@ -11,10 +11,13 @@ from pathlib import Path
 import pandas as pd
 
 from logger import get_logger
+from strategies import kuitto_pullback_auto
 
 logger = get_logger(__name__)
 
-BREADTH_START = pd.Timestamp("2026-09-09")
+# 200 business days are fetched by main.py, so June gives us a comfortably long
+# comparison window while leaving plenty of MA/turnover warm-up data before it.
+BREADTH_START = pd.Timestamp("2026-06-01")
 LOG_PATH = Path("docs/market_breadth_log.json")
 
 
@@ -30,22 +33,82 @@ def _save_json(path, data):
     path.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
 
 
-def update_market_breadth(price_df):
-    """Store daily Prime advance/decline breadth derived from daily closes.
+def _candidate_counts(price_df):
+    """Return candidate counts by signal date under two definitions.
 
-    `price_df` is expected to already be filtered to the production target
-    universe (Prime common stocks after the normal excluded-code filtering).
-    A stock is comparable when both today's and its previous available close
-    are present and positive.
+    production_rule_count reproduces the strategy's date-effective rule: the
+    liquidity filter starts on 2026-09-16.
+
+    current_rule_count applies today's full rule, including 20-day average
+    turnover >= 500m yen, to *all* historical dates.  This is the apples-to-apples
+    series used for the breadth correlation analysis.
     """
+    target_codes = set(price_df["Code"].astype(str).unique())
+    signals, _ = kuitto_pullback_auto.find_signals(price_df, target_codes)
+    production = {}
+    current = {}
+
+    for s in signals:
+        date_str = pd.Timestamp(s["signal_date"]).strftime("%Y-%m-%d")
+        production[date_str] = production.get(date_str, 0) + 1
+        turnover = s.get("avg_turnover_20")
+        if turnover is not None and float(turnover) >= kuitto_pullback_auto.AVG_TURNOVER_20_MIN:
+            current[date_str] = current.get(date_str, 0) + 1
+
+    return production, current
+
+
+def _correlation_summary(days):
+    rows = [
+        r for r in days
+        if r.get("advance_pct") is not None and r.get("current_rule_count") is not None
+    ]
+    if len(rows) < 3:
+        return {"n_days": len(rows), "pearson_candidate_vs_advance_pct": None}
+
+    x = pd.Series([float(r["current_rule_count"]) for r in rows])
+    y = pd.Series([float(r["advance_pct"]) for r in rows])
+    corr = x.corr(y)
+
+    high = [r for r in rows if int(r["current_rule_count"]) >= 5]
+    low = [r for r in rows if int(r["current_rule_count"]) < 5]
+
+    def avg(group, key):
+        if not group:
+            return None
+        return round(sum(float(r[key]) for r in group) / len(group), 2)
+
+    return {
+        "n_days": len(rows),
+        "pearson_candidate_vs_advance_pct": round(float(corr), 3) if pd.notna(corr) else None,
+        "days_with_5plus_candidates": len(high),
+        "avg_advance_pct_on_5plus_days": avg(high, "advance_pct"),
+        "avg_advance_pct_on_under5_days": avg(low, "advance_pct"),
+        "avg_candidates_when_advance_pct_60plus": round(
+            sum(int(r["current_rule_count"]) for r in rows if float(r["advance_pct"]) >= 60)
+            / max(1, sum(1 for r in rows if float(r["advance_pct"]) >= 60)), 2
+        ),
+        "avg_candidates_when_advance_pct_under40": round(
+            sum(int(r["current_rule_count"]) for r in rows if float(r["advance_pct"]) < 40)
+            / max(1, sum(1 for r in rows if float(r["advance_pct"]) < 40)), 2
+        ),
+    }
+
+
+def update_market_breadth(price_df):
+    """Backfill breadth and candidate frequency from BREADTH_START onward."""
     required = {"Code", "Date", "C"}
     if price_df is None or price_df.empty or not required.issubset(price_df.columns):
         logger.warning("Market breadth skipped: required price data is missing")
         return
 
-    df = price_df[["Code", "Date", "C"]].copy()
-    df["Code"] = df["Code"].astype(str)
-    df["Date"] = pd.to_datetime(df["Date"], errors="coerce")
+    source = price_df.copy()
+    source["Code"] = source["Code"].astype(str)
+    source["Date"] = pd.to_datetime(source["Date"], errors="coerce")
+
+    production_counts, current_counts = _candidate_counts(source)
+
+    df = source[["Code", "Date", "C"]].copy()
     df["C"] = pd.to_numeric(df["C"], errors="coerce")
     df = df.dropna(subset=["Code", "Date", "C"])
     df = df[df["C"] > 0].sort_values(["Code", "Date"])
@@ -58,19 +121,7 @@ def update_market_breadth(price_df):
     df["return_pct"] = (df["C"] / df["prev_close"] - 1) * 100
     df = df[(df["Date"] >= BREADTH_START) & df["prev_close"].notna() & (df["prev_close"] > 0)]
 
-    payload = _load_json(
-        LOG_PATH,
-        {
-            "started_at": BREADTH_START.strftime("%Y-%m-%d"),
-            "source": "derived_from_jquants_prime_daily_bars",
-            "universe": "production Prime universe after excluded-code filtering",
-            "definition": "today close versus previous available close for each comparable stock",
-            "days": [],
-        },
-    )
-
-    existing = {str(r.get("date")): r for r in payload.get("days", []) if r.get("date")}
-
+    days = []
     for date, day in df.groupby("Date"):
         r = day["return_pct"].dropna().astype(float)
         if r.empty:
@@ -82,7 +133,7 @@ def update_market_breadth(price_df):
         comparable = int(len(r))
         date_str = pd.Timestamp(date).strftime("%Y-%m-%d")
 
-        existing[date_str] = {
+        days.append({
             "date": date_str,
             "advances": advances,
             "declines": declines,
@@ -93,13 +144,28 @@ def update_market_breadth(price_df):
             "advance_decline_ratio": round(advances / declines, 3) if declines else None,
             "equal_weight_mean_return_pct": round(float(r.mean()), 3),
             "equal_weight_median_return_pct": round(float(r.median()), 3),
-        }
+            "production_rule_count": int(production_counts.get(date_str, 0)),
+            "current_rule_count": int(current_counts.get(date_str, 0)),
+        })
 
-    payload["days"] = [existing[k] for k in sorted(existing)]
-    payload["updated_through"] = payload["days"][-1]["date"] if payload["days"] else None
+    payload = {
+        "started_at": BREADTH_START.strftime("%Y-%m-%d"),
+        "source": "derived_from_jquants_prime_daily_bars",
+        "universe": "production Prime universe after excluded-code filtering",
+        "definition": "today close versus previous available close for each comparable stock",
+        "candidate_count_definition": (
+            "current_rule_count applies the 2026-09-16 full kuitto rule including "
+            "20-day average turnover >= 500m yen to every historical date; "
+            "production_rule_count preserves the date-effective production rule"
+        ),
+        "days": days,
+        "analysis": _correlation_summary(days),
+        "updated_through": days[-1]["date"] if days else None,
+    }
     _save_json(LOG_PATH, payload)
     logger.info(
-        "Market breadth log updated: %s days (through %s)",
-        len(payload["days"]),
+        "Market breadth/candidate log updated: %s days (through %s), corr=%s",
+        len(days),
         payload.get("updated_through"),
+        payload["analysis"].get("pearson_candidate_vs_advance_pct"),
     )
