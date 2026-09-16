@@ -12,8 +12,7 @@ INITIAL_CAPITAL = 1_000_000.0
 MAX_POSITIONS = 11
 LIQUIDITY_MIN = 500_000_000
 TRIGGER_COUNT = 5
-FRESH_CACHE_FILENAME = "backtest_prices_prime_5y_rotation_fresh.csv"
-DIAGNOSTIC_CODES = {"6036", "3097", "3046", "8136", "8830"}
+CACHE_FILENAME = "backtest_prices_prime_5y_rotation_fresh.csv"
 
 
 def build_current_trades(candidates, groups):
@@ -38,6 +37,16 @@ def close_on(groups, code, date, field="C"):
     return float(r.iloc[0][field])
 
 
+def enter_trade(slot, tr):
+    """Enter a trade; if it exits on the entry date, settle it immediately."""
+    if tr["exit_date"] == tr["entry_date"]:
+        slot["capital"] *= 1 + tr["pnl_pct"] / 100
+        slot["trade"] = None
+        return False
+    slot["trade"] = tr
+    return True
+
+
 def baseline(trades):
     slots = [{"capital": INITIAL_CAPITAL / MAX_POSITIONS, "trade": None} for _ in range(MAX_POSITIONS)]
     skipped = 0
@@ -56,7 +65,7 @@ def baseline(trades):
             if free is None:
                 skipped += 1
             else:
-                free["trade"] = tr
+                enter_trade(free, tr)
     for s in slots:
         tr = s["trade"]
         if tr:
@@ -90,8 +99,8 @@ def rotation(trades, groups):
                 continue
             free = next((s for s in slots if s["trade"] is None), None)
             if free is not None:
-                free["trade"] = tr
-                held_codes.add(tr["code"])
+                if enter_trade(free, tr):
+                    held_codes.add(tr["code"])
                 continue
             if not do_rotate:
                 skipped += 1
@@ -123,8 +132,8 @@ def rotation(trades, groups):
                 "replacement_rank_gap_abs": abs(tr["ma_gap"]),
             })
             held_codes.discard(old["code"])
-            s["trade"] = tr
-            held_codes.add(tr["code"])
+            if enter_trade(s, tr):
+                held_codes.add(tr["code"])
 
     for s in slots:
         tr = s["trade"]
@@ -134,43 +143,19 @@ def rotation(trades, groups):
     return sum(s["capital"] for s in slots), skipped, rotations
 
 
-def load_fresh_price_history():
-    cache_path = Path("data") / FRESH_CACHE_FILENAME
+def load_price_history():
+    cache_path = Path("data") / CACHE_FILENAME
     if cache_path.exists():
-        cache_path.unlink()
-        print(f"Deleted restored rotation cache: {cache_path}")
-    print("Rebuilding full 5-year price history from J-Quants (no incremental cache)...")
-    return download.get_price_history_range(years=YEARS, cache_filename=FRESH_CACHE_FILENAME)
-
-
-def diagnostic_lines(rots, groups):
-    lines = ["", "PRICE DIAGNOSTICS (raw O/H/L/C around suspicious rotations):"]
-    for x in rots:
-        code = x["sold_code"]
-        if code not in DIAGNOSTIC_CODES:
-            continue
-        lines.append(
-            f"{code}: entry={x['sold_entry_date']} entry_price={x['sold_entry_price']:.4f}; "
-            f"rotation={x['date']} open={x['sold_rotation_open']:.4f}; "
-            f"normal_exit={x['sold_normal_exit_date']} exit_price={x['sold_normal_exit_price']:.4f} "
-            f"normal_pnl={x['sold_normal_pnl_pct']:+.2f}%"
-        )
-        g = groups[code]
-        start = pd.Timestamp(x["sold_entry_date"]) - pd.Timedelta(days=3)
-        end = pd.Timestamp(x["sold_normal_exit_date"]) + pd.Timedelta(days=3)
-        sample = g[(g.Date >= start) & (g.Date <= end)][["Date", "O", "H", "L", "C"]]
-        for _, r in sample.iterrows():
-            lines.append(
-                f"  {pd.Timestamp(r['Date']).date()} O={float(r['O']):.4f} H={float(r['H']):.4f} "
-                f"L={float(r['L']):.4f} C={float(r['C']):.4f}"
-            )
-    return lines
+        print(f"Using validated full-rebuild cache: {cache_path}")
+        return pd.read_csv(cache_path, dtype={"Code": str})
+    print("Validated cache not found; rebuilding full 5-year history from J-Quants...")
+    return download.get_price_history_range(years=YEARS, cache_filename=CACHE_FILENAME)
 
 
 def main():
     os.makedirs("output", exist_ok=True)
     targets = download.get_target_codes()
-    price_df = load_fresh_price_history()
+    price_df = load_price_history()
     price_df["Date"] = pd.to_datetime(price_df["Date"])
     candidates, groups = collect_candidates(price_df, targets)
     trades = build_current_trades(candidates, groups)
@@ -179,21 +164,20 @@ def main():
     r_final, r_skip, rots = rotation(trades, groups)
     report = {
         "through": str(pd.Timestamp(price_df.Date.max()).date()),
-        "price_source": "fresh_full_jquants_rebuild",
+        "price_source": "validated_full_rebuild_cache_or_fresh_fallback",
+        "bugfix": "same_day_exit_settled_immediately",
         "initial_capital": INITIAL_CAPITAL, "max_positions": MAX_POSITIONS,
-        "trigger_candidate_count": TRIGGER_COUNT,
-        "liquidity_min_yen": LIQUIDITY_MIN,
+        "trigger_candidate_count": TRIGGER_COUNT, "liquidity_min_yen": LIQUIDITY_MIN,
         "baseline": {"final_equity": b_final, "return_pct": (b_final / INITIAL_CAPITAL - 1) * 100, "skipped": b_skip},
         "rotation": {"final_equity": r_final, "return_pct": (r_final / INITIAL_CAPITAL - 1) * 100, "skipped": r_skip, "rotations": len(rots)},
         "difference_yen": r_final - b_final,
         "difference_pct_points": (r_final - b_final) / INITIAL_CAPITAL * 100,
         "rotation_details": rots,
-        "notes": "FRESH full J-Quants rebuild; diagnostics include raw OHLC around suspicious rotations"
     }
     Path("output/profit_rotation_comparison.json").write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
     lines = [
         f"Profit rotation comparison / through {report['through']}",
-        "Price source=FRESH full J-Quants rebuild (restored/incremental cache ignored)",
+        "BUGFIX=same-day exits settled immediately",
         f"Baseline final={b_final:,.0f} return={report['baseline']['return_pct']:+.2f}% skipped={b_skip}",
         f"Rotation final={r_final:,.0f} return={report['rotation']['return_pct']:+.2f}% skipped={r_skip} rotations={len(rots)}",
         f"Rotation - baseline={r_final-b_final:+,.0f} yen ({report['difference_pct_points']:+.2f} pt)",
@@ -207,7 +191,6 @@ def main():
             f"hold_remaining={x['sold_if_held_from_rotation_pct']:+.2f}% -> "
             f"{x['replacement_code']} replacement={x['replacement_normal_pct']:+.2f}%"
         )
-    lines.extend(diagnostic_lines(rots, groups))
     text = "\n".join(lines)
     Path("output/profit_rotation_comparison.txt").write_text(text, encoding="utf-8")
     print(text)
