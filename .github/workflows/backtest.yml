@@ -18,6 +18,7 @@ on:
           - stable-combo
           - liquidity
           - capital-risk
+          - profit-rotation
       strategy:
         description: "戦略名（strategies/registry.pyに登録されているもの）"
         required: false
@@ -28,11 +29,7 @@ on:
         required: false
         default: "config"
         type: choice
-        options:
-          - config
-          - rising
-          - turning
-          - pattern
+        options: [config, rising, turning, pattern]
   issues:
     types: [opened]
 
@@ -42,20 +39,17 @@ permissions:
 
 jobs:
   backtest:
-    if: github.event_name == 'workflow_dispatch' || startsWith(github.event.issue.title, '[yearly-backtest-trigger]') || startsWith(github.event.issue.title, '[ma25-backtest-trigger]') || startsWith(github.event.issue.title, '[ma-distance-backtest-trigger]') || startsWith(github.event.issue.title, '[stable-combo-backtest-trigger]') || startsWith(github.event.issue.title, '[liquidity-backtest-trigger]') || startsWith(github.event.issue.title, '[capital-risk-backtest-trigger]')
+    if: github.event_name == 'workflow_dispatch' || startsWith(github.event.issue.title, '[yearly-backtest-trigger]') || startsWith(github.event.issue.title, '[ma25-backtest-trigger]') || startsWith(github.event.issue.title, '[ma-distance-backtest-trigger]') || startsWith(github.event.issue.title, '[stable-combo-backtest-trigger]') || startsWith(github.event.issue.title, '[liquidity-backtest-trigger]') || startsWith(github.event.issue.title, '[capital-risk-backtest-trigger]') || startsWith(github.event.issue.title, '[rotation-backtest-trigger]')
     runs-on: ubuntu-latest
     timeout-minutes: 180
     steps:
       - uses: actions/checkout@v4
-
       - name: Python セットアップ
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-
       - name: ライブラリインストール
         run: pip install -r requirements.txt
-
       - name: 株価データキャッシュの復元
         id: cache-restore
         uses: actions/cache/restore@v4
@@ -64,157 +58,67 @@ jobs:
           key: backtest-price-cache-v1-${{ github.run_id }}
           restore-keys: |
             backtest-price-cache-v1-
-
       - name: 通常バックテスト実行
         if: github.event_name == 'workflow_dispatch' && github.event.inputs.mode == 'normal'
-        env:
-          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
-          JQUANTS_API_KEY: ${{ secrets.JQUANTS_API_KEY }}
-        run: >
-          python run_backtest.py
-          --strategy "${{ github.event.inputs.strategy }}"
-          --condition "${{ github.event.inputs.condition }}"
-
+        env: {DISCORD_WEBHOOK_URL: "${{ secrets.DISCORD_WEBHOOK_URL }}", JQUANTS_API_KEY: "${{ secrets.JQUANTS_API_KEY }}"}
+        run: python run_backtest.py --strategy "${{ github.event.inputs.strategy }}" --condition "${{ github.event.inputs.condition }}"
       - name: パラメータスイープ実行
         if: github.event_name == 'workflow_dispatch' && github.event.inputs.mode == 'sweep-pattern'
-        env:
-          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
-          JQUANTS_API_KEY: ${{ secrets.JQUANTS_API_KEY }}
-        run: >
-          python run_backtest.py
-          --strategy "${{ github.event.inputs.strategy }}"
-          --sweep-pattern
-
+        env: {DISCORD_WEBHOOK_URL: "${{ secrets.DISCORD_WEBHOOK_URL }}", JQUANTS_API_KEY: "${{ secrets.JQUANTS_API_KEY }}"}
+        run: python run_backtest.py --strategy "${{ github.event.inputs.strategy }}" --sweep-pattern
       - name: 最大8枠 同日候補ランキング検証実行
         if: github.event_name == 'workflow_dispatch' && github.event.inputs.mode == 'ranking'
-        env:
-          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
-          JQUANTS_API_KEY: ${{ secrets.JQUANTS_API_KEY }}
+        env: {DISCORD_WEBHOOK_URL: "${{ secrets.DISCORD_WEBHOOK_URL }}", JQUANTS_API_KEY: "${{ secrets.JQUANTS_API_KEY }}"}
         run: |
           python run_backtest_ranking.py
           python analyze_balanced_mark_to_market.py
-
       - name: 5年・1年区切り 利確5% vs がくっと比較
         if: (github.event_name == 'workflow_dispatch' && github.event.inputs.mode == 'yearly-exit') || (github.event_name == 'issues' && startsWith(github.event.issue.title, '[yearly-backtest-trigger]'))
-        env:
-          JQUANTS_API_KEY: ${{ secrets.JQUANTS_API_KEY }}
+        env: {JQUANTS_API_KEY: "${{ secrets.JQUANTS_API_KEY }}"}
         run: python compare_exit_yearly.py
-
       - name: MA25向きフィルター 5年比較
         if: (github.event_name == 'workflow_dispatch' && github.event.inputs.mode == 'ma25-filter') || (github.event_name == 'issues' && startsWith(github.event.issue.title, '[ma25-backtest-trigger]'))
-        env:
-          JQUANTS_API_KEY: ${{ secrets.JQUANTS_API_KEY }}
+        env: {JQUANTS_API_KEY: "${{ secrets.JQUANTS_API_KEY }}"}
         run: python compare_ma25_filter.py
-
       - name: MA5/MA25距離フィルター 5年比較
         if: (github.event_name == 'workflow_dispatch' && github.event.inputs.mode == 'ma-distance') || (github.event_name == 'issues' && startsWith(github.event.issue.title, '[ma-distance-backtest-trigger]'))
-        env:
-          JQUANTS_API_KEY: ${{ secrets.JQUANTS_API_KEY }}
+        env: {JQUANTS_API_KEY: "${{ secrets.JQUANTS_API_KEY }}"}
         run: python compare_ma_distance.py
-
       - name: 安定条件かけ合わせ 5年比較
         if: (github.event_name == 'workflow_dispatch' && github.event.inputs.mode == 'stable-combo') || (github.event_name == 'issues' && startsWith(github.event.issue.title, '[stable-combo-backtest-trigger]'))
-        env:
-          JQUANTS_API_KEY: ${{ secrets.JQUANTS_API_KEY }}
+        env: {JQUANTS_API_KEY: "${{ secrets.JQUANTS_API_KEY }}"}
         run: python compare_stable_combo.py
-
       - name: 流動性フィルター 5年比較
         if: (github.event_name == 'workflow_dispatch' && github.event.inputs.mode == 'liquidity') || (github.event_name == 'issues' && startsWith(github.event.issue.title, '[liquidity-backtest-trigger]'))
-        env:
-          JQUANTS_API_KEY: ${{ secrets.JQUANTS_API_KEY }}
+        env: {JQUANTS_API_KEY: "${{ secrets.JQUANTS_API_KEY }}"}
         run: python compare_liquidity.py
-
       - name: 資産・最大DD 5年比較
         if: (github.event_name == 'workflow_dispatch' && github.event.inputs.mode == 'capital-risk') || (github.event_name == 'issues' && startsWith(github.event.issue.title, '[capital-risk-backtest-trigger]'))
-        env:
-          JQUANTS_API_KEY: ${{ secrets.JQUANTS_API_KEY }}
+        env: {JQUANTS_API_KEY: "${{ secrets.JQUANTS_API_KEY }}"}
         run: python compare_capital_risk.py
-
-      - name: Issueへ出口比較結果を投稿
-        if: github.event_name == 'issues' && success() && startsWith(github.event.issue.title, '[yearly-backtest-trigger]')
-        env:
-          GH_TOKEN: ${{ github.token }}
+      - name: 含み益利確・乗り換え 5年比較
+        if: (github.event_name == 'workflow_dispatch' && github.event.inputs.mode == 'profit-rotation') || (github.event_name == 'issues' && startsWith(github.event.issue.title, '[rotation-backtest-trigger]'))
+        env: {JQUANTS_API_KEY: "${{ secrets.JQUANTS_API_KEY }}"}
+        run: python compare_profit_rotation.py
+      - name: Issueへ結果を投稿
+        if: github.event_name == 'issues' && success()
+        env: {GH_TOKEN: "${{ github.token }}"}
         run: |
-          {
-            echo '## 5年・年別バックテスト結果'
-            echo '```text'
-            cat output/yearly_exit_comparison.txt
-            echo '```'
-          } > /tmp/result.md
+          if [[ "${{ github.event.issue.title }}" == \[yearly-backtest-trigger\]* ]]; then title='5年・年別バックテスト結果'; file='output/yearly_exit_comparison.txt';
+          elif [[ "${{ github.event.issue.title }}" == \[ma25-backtest-trigger\]* ]]; then title='MA25向きフィルター 5年バックテスト結果'; file='output/ma25_filter_comparison.txt';
+          elif [[ "${{ github.event.issue.title }}" == \[ma-distance-backtest-trigger\]* ]]; then title='MA5/MA25距離フィルター 5年バックテスト結果'; file='output/ma_distance_comparison.txt';
+          elif [[ "${{ github.event.issue.title }}" == \[stable-combo-backtest-trigger\]* ]]; then title='安定条件かけ合わせ 5年バックテスト結果'; file='output/stable_combo_comparison.txt';
+          elif [[ "${{ github.event.issue.title }}" == \[liquidity-backtest-trigger\]* ]]; then title='流動性フィルター 5年バックテスト結果'; file='output/liquidity_filter_comparison.txt';
+          elif [[ "${{ github.event.issue.title }}" == \[capital-risk-backtest-trigger\]* ]]; then title='100万円スタート・最大DD比較結果'; file='output/capital_risk_comparison.txt';
+          elif [[ "${{ github.event.issue.title }}" == \[rotation-backtest-trigger\]* ]]; then title='含み益利確・乗り換え 5年比較結果'; file='output/profit_rotation_comparison.txt'; else exit 0; fi
+          { echo "## $title"; echo '```text'; cat "$file"; echo '```'; } > /tmp/result.md
           gh issue comment "${{ github.event.issue.number }}" --repo "${{ github.repository }}" --body-file /tmp/result.md
-
-      - name: IssueへMA25比較結果を投稿
-        if: github.event_name == 'issues' && success() && startsWith(github.event.issue.title, '[ma25-backtest-trigger]')
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          {
-            echo '## MA25向きフィルター 5年バックテスト結果'
-            echo '```text'
-            cat output/ma25_filter_comparison.txt
-            echo '```'
-          } > /tmp/result.md
-          gh issue comment "${{ github.event.issue.number }}" --repo "${{ github.repository }}" --body-file /tmp/result.md
-
-      - name: IssueへMA距離比較結果を投稿
-        if: github.event_name == 'issues' && success() && startsWith(github.event.issue.title, '[ma-distance-backtest-trigger]')
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          {
-            echo '## MA5/MA25距離フィルター 5年バックテスト結果'
-            echo '```text'
-            cat output/ma_distance_comparison.txt
-            echo '```'
-          } > /tmp/result.md
-          gh issue comment "${{ github.event.issue.number }}" --repo "${{ github.repository }}" --body-file /tmp/result.md
-
-      - name: Issueへ安定条件かけ合わせ結果を投稿
-        if: github.event_name == 'issues' && success() && startsWith(github.event.issue.title, '[stable-combo-backtest-trigger]')
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          {
-            echo '## 安定条件かけ合わせ 5年バックテスト結果'
-            echo '```text'
-            cat output/stable_combo_comparison.txt
-            echo '```'
-          } > /tmp/result.md
-          gh issue comment "${{ github.event.issue.number }}" --repo "${{ github.repository }}" --body-file /tmp/result.md
-
-      - name: Issueへ流動性比較結果を投稿
-        if: github.event_name == 'issues' && success() && startsWith(github.event.issue.title, '[liquidity-backtest-trigger]')
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          {
-            echo '## 流動性フィルター 5年バックテスト結果'
-            echo '```text'
-            cat output/liquidity_filter_comparison.txt
-            echo '```'
-          } > /tmp/result.md
-          gh issue comment "${{ github.event.issue.number }}" --repo "${{ github.repository }}" --body-file /tmp/result.md
-
-      - name: Issueへ資産・DD比較結果を投稿
-        if: github.event_name == 'issues' && success() && startsWith(github.event.issue.title, '[capital-risk-backtest-trigger]')
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          {
-            echo '## 100万円スタート・最大DD比較結果'
-            echo '```text'
-            cat output/capital_risk_comparison.txt
-            echo '```'
-          } > /tmp/result.md
-          gh issue comment "${{ github.event.issue.number }}" --repo "${{ github.repository }}" --body-file /tmp/result.md
-
       - name: 株価データキャッシュの保存
         if: always()
         uses: actions/cache/save@v4
         with:
           path: data/
           key: backtest-price-cache-v1-${{ github.run_id }}
-
       - name: 結果ファイルをアーティファクトとして保存
         if: always()
         uses: actions/upload-artifact@v4
