@@ -13,6 +13,8 @@ MAX_POSITIONS = 11
 LIQUIDITY_MIN = 500_000_000
 TRIGGER_COUNT = 5
 CACHE_FILENAME = "backtest_prices_prime_5y_rotation_fresh.csv"
+# Sensitivity test: exclude the single +30.54% replacement trade (4631 on 2026-05-08).
+EXCLUDE_ROTATION_REPLACEMENT = ("2026-05-08", "4631")
 
 
 def build_current_trades(candidates, groups):
@@ -38,7 +40,6 @@ def close_on(groups, code, date, field="C"):
 
 
 def enter_trade(slot, tr):
-    """Enter a trade; if it exits on the entry date, settle it immediately."""
     if tr["exit_date"] == tr["entry_date"]:
         slot["capital"] *= 1 + tr["pnl_pct"] / 100
         slot["trade"] = None
@@ -78,6 +79,7 @@ def rotation(trades, groups):
     slots = [{"capital": INITIAL_CAPITAL / MAX_POSITIONS, "trade": None} for _ in range(MAX_POSITIONS)]
     rotations = []
     skipped = 0
+    excluded = 0
     by_entry = {}
     for t in trades:
         by_entry.setdefault(t["entry_date"], []).append(t)
@@ -103,6 +105,10 @@ def rotation(trades, groups):
                     held_codes.add(tr["code"])
                 continue
             if not do_rotate:
+                skipped += 1
+                continue
+            if (str(d.date()), tr["code"]) == EXCLUDE_ROTATION_REPLACEMENT:
+                excluded += 1
                 skipped += 1
                 continue
 
@@ -140,7 +146,7 @@ def rotation(trades, groups):
         if tr:
             s["capital"] *= 1 + tr["pnl_pct"] / 100
             s["trade"] = None
-    return sum(s["capital"] for s in slots), skipped, rotations
+    return sum(s["capital"] for s in slots), skipped, rotations, excluded
 
 
 def load_price_history():
@@ -161,36 +167,26 @@ def main():
     trades = build_current_trades(candidates, groups)
 
     b_final, b_skip = baseline(trades)
-    r_final, r_skip, rots = rotation(trades, groups)
+    r_final, r_skip, rots, excluded = rotation(trades, groups)
     report = {
         "through": str(pd.Timestamp(price_df.Date.max()).date()),
-        "price_source": "validated_full_rebuild_cache_or_fresh_fallback",
-        "bugfix": "same_day_exit_settled_immediately",
+        "test": "exclude_4631_2026-05-08_outlier_rotation",
+        "excluded_rotation_replacement": {"date": EXCLUDE_ROTATION_REPLACEMENT[0], "code": EXCLUDE_ROTATION_REPLACEMENT[1]},
         "initial_capital": INITIAL_CAPITAL, "max_positions": MAX_POSITIONS,
-        "trigger_candidate_count": TRIGGER_COUNT, "liquidity_min_yen": LIQUIDITY_MIN,
         "baseline": {"final_equity": b_final, "return_pct": (b_final / INITIAL_CAPITAL - 1) * 100, "skipped": b_skip},
-        "rotation": {"final_equity": r_final, "return_pct": (r_final / INITIAL_CAPITAL - 1) * 100, "skipped": r_skip, "rotations": len(rots)},
+        "rotation": {"final_equity": r_final, "return_pct": (r_final / INITIAL_CAPITAL - 1) * 100, "skipped": r_skip, "rotations": len(rots), "excluded": excluded},
         "difference_yen": r_final - b_final,
         "difference_pct_points": (r_final - b_final) / INITIAL_CAPITAL * 100,
         "rotation_details": rots,
     }
     Path("output/profit_rotation_comparison.json").write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
     lines = [
-        f"Profit rotation comparison / through {report['through']}",
-        "BUGFIX=same-day exits settled immediately",
+        f"Profit rotation sensitivity / through {report['through']}",
+        "EXCLUDED=2026-05-08 replacement 4631 (+30.54% outlier)",
         f"Baseline final={b_final:,.0f} return={report['baseline']['return_pct']:+.2f}% skipped={b_skip}",
-        f"Rotation final={r_final:,.0f} return={report['rotation']['return_pct']:+.2f}% skipped={r_skip} rotations={len(rots)}",
+        f"Rotation final={r_final:,.0f} return={report['rotation']['return_pct']:+.2f}% skipped={r_skip} rotations={len(rots)} excluded={excluded}",
         f"Rotation - baseline={r_final-b_final:+,.0f} yen ({report['difference_pct_points']:+.2f} pt)",
-        "", "Rotation details:"
     ]
-    for x in rots:
-        lines.append(
-            f"{x['date']} sold {x['sold_code']} entry={x['sold_entry_date']}@{x['sold_entry_price']:.2f} "
-            f"rotation_open={x['sold_rotation_open']:.2f} unreal={x['sold_unrealized_pct']:+.2f}% "
-            f"normal_exit={x['sold_normal_exit_date']}@{x['sold_normal_exit_price']:.2f} "
-            f"hold_remaining={x['sold_if_held_from_rotation_pct']:+.2f}% -> "
-            f"{x['replacement_code']} replacement={x['replacement_normal_pct']:+.2f}%"
-        )
     text = "\n".join(lines)
     Path("output/profit_rotation_comparison.txt").write_text(text, encoding="utf-8")
     print(text)
