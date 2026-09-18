@@ -1,0 +1,53 @@
+name: GC + くいっと 年別バックテスト
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  backtest:
+    if: startsWith(github.event.issue.title, '[gc-kuitto-yearly-trigger]')
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v4
+      - name: Python セットアップ
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: ライブラリインストール
+        run: pip install -r requirements.txt
+      - name: 株価データキャッシュの復元
+        uses: actions/cache/restore@v4
+        with:
+          path: data/
+          key: backtest-price-cache-v1-${{ github.run_id }}
+          restore-keys: |
+            backtest-price-cache-v1-
+      - name: GC + くいっと 年別比較
+        env: {JQUANTS_API_KEY: "${{ secrets.JQUANTS_API_KEY }}"}
+        run: python compare_gc_kuitto_yearly.py
+      - name: Issueへ結果を投稿
+        if: success()
+        env: {GH_TOKEN: "${{ github.token }}"}
+        run: |
+          { echo '## GC + くいっと 年別 5年バックテスト結果'; echo '```text'; cat output/gc_kuitto_yearly.txt; echo '```'; } > /tmp/result.md
+          gh issue comment "${{ github.event.issue.number }}" --repo "${{ github.repository }}" --body-file /tmp/result.md
+      - name: 株価データキャッシュの保存
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: data/
+          key: backtest-price-cache-v1-${{ github.run_id }}
+      - name: 結果ファイルを保存
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gc-kuitto-yearly-${{ github.run_id }}
+          path: output/
+          retention-days: 14
+          if-no-files-found: ignore
