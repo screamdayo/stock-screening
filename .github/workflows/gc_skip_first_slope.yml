@@ -1,0 +1,53 @@
+name: GC 1回目除外 + MA25向きバックテスト
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  backtest:
+    if: startsWith(github.event.issue.title, '[gc-skip-first-slope-trigger]')
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v4
+      - name: Python セットアップ
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: ライブラリインストール
+        run: pip install -r requirements.txt
+      - name: 株価データキャッシュの復元
+        uses: actions/cache/restore@v4
+        with:
+          path: data/
+          key: backtest-price-cache-v1-${{ github.run_id }}
+          restore-keys: |
+            backtest-price-cache-v1-
+      - name: GC 1回目除外 + MA25向き比較
+        env: {JQUANTS_API_KEY: "${{ secrets.JQUANTS_API_KEY }}"}
+        run: python compare_gc_skip_first_slope.py
+      - name: Issueへ結果を投稿
+        if: success()
+        env: {GH_TOKEN: "${{ github.token }}"}
+        run: |
+          { echo '## GC 1回目除外 + MA25向き 5年バックテスト結果'; echo '```text'; cat output/gc_skip_first_slope_comparison.txt; echo '```'; } > /tmp/result.md
+          gh issue comment "${{ github.event.issue.number }}" --repo "${{ github.repository }}" --body-file /tmp/result.md
+      - name: 株価データキャッシュの保存
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: data/
+          key: backtest-price-cache-v1-${{ github.run_id }}
+      - name: 結果ファイルを保存
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gc-skip-first-slope-${{ github.run_id }}
+          path: output/
+          retention-days: 14
+          if-no-files-found: ignore
