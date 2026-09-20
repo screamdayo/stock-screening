@@ -1,0 +1,83 @@
+name: GC 3回目+MA25上向き 出口3方式並列
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  prepare:
+    if: startsWith(github.event.issue.title, '[gc-base313-exit-trigger]')
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install -r requirements.txt
+      - name: 株価データキャッシュ復元
+        uses: actions/cache/restore@v4
+        with:
+          path: data/
+          key: backtest-price-cache-v1-${{ github.run_id }}
+          restore-keys: |
+            backtest-price-cache-v1-
+      - name: 5年株価キャッシュ準備
+        env: {JQUANTS_API_KEY: "${{ secrets.JQUANTS_API_KEY }}"}
+        run: |
+          python - <<'PY'
+          import download
+          download.get_price_history_incremental(
+              cache_filename="backtest_prices_prime_5y.csv",
+              years=5,
+          )
+          PY
+      - name: データ共有
+        uses: actions/upload-artifact@v4
+        with:
+          name: gc-base313-exit-data-${{ github.run_id }}
+          path: data/
+          retention-days: 1
+
+  test:
+    needs: prepare
+    strategy:
+      fail-fast: false
+      max-parallel: 3
+      matrix:
+        exit: [fixed10, dead_cross, gakutto]
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install -r requirements.txt
+      - name: 共有株価データ取得
+        uses: actions/download-artifact@v4
+        with:
+          name: gc-base313-exit-data-${{ github.run_id }}
+          path: data/
+      - name: 出口別バックテスト
+        env: {JQUANTS_API_KEY: "${{ secrets.JQUANTS_API_KEY }}"}
+        run: python compare_gc_exits_base313.py --exit "${{ matrix.exit }}"
+      - name: Issueへ結果を投稿
+        if: success()
+        env: {GH_TOKEN: "${{ github.token }}"}
+        run: |
+          file="output/gc_base313_exit_${{ matrix.exit }}.txt"
+          { echo "## GC 3回目+MA25上向き 出口比較: ${{ matrix.exit }}"; echo '```text'; cat "$file"; echo '```'; } > /tmp/result.md
+          gh issue comment "${{ github.event.issue.number }}" --repo "${{ github.repository }}" --body-file /tmp/result.md
+      - name: 結果保存
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gc-base313-exit-${{ matrix.exit }}-${{ github.run_id }}
+          path: output/
+          retention-days: 14
+          if-no-files-found: ignore
