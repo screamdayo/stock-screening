@@ -1,0 +1,45 @@
+name: GC 6-10日 × MA25傾き1%以上
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  backtest:
+    if: startsWith(github.event.issue.title, '[gc-combo-trigger]')
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install -r requirements.txt
+      - name: 株価データキャッシュ復元
+        uses: actions/cache/restore@v4
+        with:
+          path: data/
+          key: backtest-price-cache-v1-${{ github.run_id }}
+          restore-keys: |
+            backtest-price-cache-v1-
+      - name: 組み合わせバックテスト
+        env: {JQUANTS_API_KEY: "${{ secrets.JQUANTS_API_KEY }}"}
+        run: python compare_gc_combo.py
+      - name: Issueへ結果を投稿
+        if: success()
+        env: {GH_TOKEN: "${{ github.token }}"}
+        run: |
+          { echo '## GC組み合わせ 5年バックテスト結果'; echo '```text'; cat output/gc_combo_below6_10_ma25plus1.txt; echo '```'; } > /tmp/result.md
+          gh issue comment "${{ github.event.issue.number }}" --repo "${{ github.repository }}" --body-file /tmp/result.md
+      - name: 結果保存
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gc-combo-${{ github.run_id }}
+          path: output/
+          retention-days: 14
+          if-no-files-found: ignore
