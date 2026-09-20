@@ -1,0 +1,45 @@
+name: MA25上向き+15-20%下落 GC回数比較
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  backtest:
+    if: startsWith(github.event.issue.title, '[gc-rising-dd15-20-seq-trigger]')
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install -r requirements.txt
+      - name: 株価データキャッシュ復元
+        uses: actions/cache/restore@v4
+        with:
+          path: data/
+          key: backtest-price-cache-v1-${{ github.run_id }}
+          restore-keys: |
+            backtest-price-cache-v1-
+      - name: GC回数別バックテスト
+        env: {JQUANTS_API_KEY: "${{ secrets.JQUANTS_API_KEY }}"}
+        run: python compare_gc_rising_dd15_20_sequence.py
+      - name: Issueへ結果を投稿
+        if: success()
+        env: {GH_TOKEN: "${{ github.token }}"}
+        run: |
+          { echo '## MA25上向き+15-20%下落 GC回数別 5年バックテスト'; echo '```text'; cat output/gc_rising_dd15_20_sequence.txt; echo '```'; } > /tmp/result.md
+          gh issue comment "${{ github.event.issue.number }}" --repo "${{ github.repository }}" --body-file /tmp/result.md
+      - name: 結果保存
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gc-rising-dd15-20-sequence-${{ github.run_id }}
+          path: output/
+          retention-days: 14
+          if-no-files-found: ignore
