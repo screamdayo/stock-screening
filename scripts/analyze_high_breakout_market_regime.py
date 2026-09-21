@@ -87,7 +87,7 @@ def metrics(df):
 def main():
     raw=load_archive()
     df=add_stock_features(raw)
-    market=build_market_regime(df)
+    market=build_market_regime(df).rename(columns={"Date":"signal_date"})
 
     rows=[]
     for code,g in df.groupby("Code",sort=True):
@@ -119,9 +119,7 @@ def main():
 
     t=pd.DataFrame(rows)
     if t.empty: raise RuntimeError("No signals")
-    t=t.merge(market,on="Date" if "Date" in t.columns else "signal_date",how="left")
-    if "Date" in t.columns:
-        t=t.rename(columns={"Date":"market_date"})
+    t=t.merge(market,on="signal_date",how="left")
 
     split=pd.Timestamp(raw["Date"].min()).normalize()+pd.DateOffset(years=5)
     t["year"]=t["signal_date"].dt.year
