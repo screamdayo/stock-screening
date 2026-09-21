@@ -113,7 +113,13 @@ def notify(results, rescue_results=None, primary_results=None):
             if volume is not None:
                 detail.append(f"出来高 {volume:.2f}倍")
             suffix = f" — {' / '.join(detail)}" if detail else ""
-            lines.append(f"🟢 {label}{suffix}")
+            earnings_note = ""
+            if r.get("earnings_within_10bd"):
+                ed = r.get("earnings_date") or "日付不明"
+                bd = r.get("earnings_business_days")
+                when = f"（{bd}営業日後 / {ed}）" if bd is not None else f"（{ed}）"
+                earnings_note = f"\n   ⚠️ **10営業日以内に決算あり** {when}"
+            lines.append(f"🟢 {label}{suffix}{earnings_note}")
             if close is not None:
                 theoretical_max_open = float(close) * (1 + NEXT_OPEN_GAP_MAX_PCT / 100)
                 max_open = _floor_to_valid_tick(theoretical_max_open)
