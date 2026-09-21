@@ -16,6 +16,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+
       - name: Checkout private J-Quants data
         uses: actions/checkout@v4
         with:
@@ -26,13 +27,13 @@ jobs:
             data/batches
             data/daily_updates
           sparse-checkout-cone-mode: false
+
       - name: Mount private data
         run: |
           mkdir -p data
           ln -sfn "$GITHUB_WORKSPACE/.private-data/data/batches" data/batches
           ln -sfn "$GITHUB_WORKSPACE/.private-data/data/daily_updates" data/daily_updates
 
-        with: {fetch-depth: 0}
       - uses: actions/setup-python@v5
         with: {python-version: "3.11"}
       - run: pip install pandas pyarrow numpy requests
