@@ -30,7 +30,7 @@ def _json_safe(value):
     return value
 
 
-def export_docs(price_df, target_codes, code_to_name, screening_results):
+def export_docs(price_df, target_codes, code_to_name, screening_results, gc_results=None):
     start = time.time()
 
     df = price_df[price_df["Code"].isin(target_codes)]
@@ -73,6 +73,8 @@ def export_docs(price_df, target_codes, code_to_name, screening_results):
             "business_days": config.CHART_BUSINESS_DAYS,
         }, f, ensure_ascii=False, indent=2)
 
+    gc_results = gc_results or []
+
     screening_items = []
     for r in screening_results:
         item = {k: _json_safe(v) for k, v in r.items()}
@@ -87,6 +89,22 @@ def export_docs(price_df, target_codes, code_to_name, screening_results):
             "strategy": config.ACTIVE_STRATEGY,
             "count": len(screening_items),
             "items": screening_items,
+        }, f, ensure_ascii=False, indent=2)
+
+    gc_items = []
+    for r in gc_results:
+        item = {k: _json_safe(v) for k, v in r.items()}
+        if "name" not in item or not item["name"]:
+            item["name"] = code_to_name.get(r["code"], "")
+        gc_items.append(item)
+
+    gc_path = os.path.join("docs", "gc_screening.json")
+    with open(gc_path, "w", encoding="utf-8") as f:
+        json.dump({
+            "generated_at": datetime.now().isoformat(timespec="seconds"),
+            "strategy": "gc_strong_breakout",
+            "count": len(gc_items),
+            "items": gc_items,
         }, f, ensure_ascii=False, indent=2)
 
     # Pages上で銘柄コードを入力した瞬間に会社名を補完するための軽量マスター。
@@ -104,7 +122,7 @@ def export_docs(price_df, target_codes, code_to_name, screening_results):
 
     logger.info(
         f"docs/エクスポート完了: 株価{exported}銘柄 / "
-        f"スクリーニング{len(screening_items)}件 / 銘柄名{len(names)}件 "
+        f"スクリーニング{len(screening_items)}件 / GC強ブレイク{len(gc_items)}件 / 銘柄名{len(names)}件 "
         f"（{time.time() - start:.1f}秒）"
     )
 
@@ -128,9 +146,11 @@ def run():
         return
 
     screener_fn = registry.get_latest_screener(config.ACTIVE_STRATEGY)
+    gc_screener_fn = registry.get_latest_screener("gc_strong_breakout")
     results = screener_fn(price_df, target_codes)
+    gc_results = gc_screener_fn(price_df, target_codes)
 
-    export_docs(price_df, target_codes, code_to_name, results)
+    export_docs(price_df, target_codes, code_to_name, results, gc_results)
 
 
 if __name__ == "__main__":
