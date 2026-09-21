@@ -28,6 +28,7 @@ import export_docs_prices
 import sell_monitor
 import forward_test
 import market_breadth
+import earnings_warning
 from strategies import registry
 from logger import get_logger
 
@@ -68,6 +69,10 @@ def run():
 
     for r in results:
         r["name"] = code_to_name.get(r["code"], "")
+
+    latest_signal_date = price_df["Date"].max()
+    logger.info("決算予定チェック中...")
+    earnings_warning.add_earnings_warnings(results, latest_signal_date)
 
     logger.info(f"自動通過候補: {len(results)}件")
 
