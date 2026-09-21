@@ -14,6 +14,7 @@ from logger import get_logger
 logger = get_logger(__name__)
 
 SCREENING_VIEW_URL = "https://screamdayo.github.io/stock-screening/screening.html"
+GC_SCREENING_VIEW_URL = "https://screamdayo.github.io/stock-screening/gc.html"
 NEXT_OPEN_GAP_MAX_PCT = 0.5
 STOP_LOSS_PCT = 5.0
 
@@ -197,6 +198,45 @@ def notify(results, rescue_results=None, primary_results=None):
     parts.append(f"📈 **チャートで確認**\n{SCREENING_VIEW_URL}")
     _post_long("\n\n".join(parts))
 
+
+
+def notify_gc_strong_breakout(results):
+    """GC強ブレイクは希少シグナルなので、該当時だけ別メッセージで通知する。"""
+    if not results:
+        logger.info("GC強ブレイク通知なし（本日の該当なし）")
+        return
+
+    today = datetime.now().strftime("%Y/%m/%d")
+    lines = []
+    for r in results:
+        label = _stock_label(r)
+        detail = [
+            f"DD60 {r.get('dd60_pct', 0):+.2f}%",
+            f"MA25傾き {r.get('ma25_slope5_pct', 0):+.2f}%",
+            f"GC乖離 {r.get('gc_gap_pct', 0):+.2f}%",
+            f"出来高20日比 {r.get('volume_ratio20', 0):.2f}倍",
+            f"当日 {r.get('bull_candle_pct', 0):+.2f}%",
+        ]
+        earnings_note = ""
+        if r.get("earnings_within_10bd"):
+            ed = r.get("earnings_date") or "日付不明"
+            bd = r.get("earnings_business_days")
+            when = f"（{bd}営業日後 / {ed}）" if bd is not None else f"（{ed}）"
+            earnings_note = f"\n   ⚠️ **10営業日以内に決算あり** {when}"
+
+        lines.append(
+            f"🟡 **{label}** — " + " / ".join(detail) + earnings_note
+        )
+
+    msg = (
+        f"✨ **GC強ブレイク出現 {today}**\n"
+        f"深い下落後のGC2回目＋強ブレイク条件\n"
+        f"検証上は年数件の希少シグナル。くいっととは別枠で観察。\n"
+        f"⏱️ **出口検証の山：9〜10営業日**（固定10日が平均利益最大、9日はPF高め）\n\n"
+        + "\n\n".join(lines)
+        + f"\n\n📈 **GC専用ページ**\n{GC_SCREENING_VIEW_URL}"
+    )
+    _post_long(msg)
 
 def notify_sell_signals(alerts):
     if not alerts:
