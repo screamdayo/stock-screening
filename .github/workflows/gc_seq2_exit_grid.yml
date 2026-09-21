@@ -1,0 +1,36 @@
+name: GC Seq2 Exit Grid 10Y
+
+on:
+  workflow_dispatch:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  backtest:
+    if: github.event_name != 'issues' || startsWith(github.event.issue.title, '[gc-seq2-exit-grid]')
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Checkout public code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Checkout private J-Quants data
+        uses: actions/checkout@v4
+        with:
+          repository: screamdayo/stock-screening-data
+          token: ${{ secrets.STOCK_SCREENING_DATA_TOKEN }}
+          path: .private-data
+          sparse-checkout: |
+            data/batches
+            data/daily_updates
+          sparse-checkout-cone-mode: false
+      - name: Mount private data
+        run: |
+          mkdir -p data
+          ln -sfn "$GITHUB_WORKSPACE/.private-data/data/batches" data/batches
+          ln -sfn "$GITHUB_WORKSPACE/.private-data/data/daily_updates" data/daily_updates
