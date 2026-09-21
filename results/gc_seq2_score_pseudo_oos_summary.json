@@ -1,0 +1,241 @@
+{
+  "strategy": "GC rising + DD15-20 + exact 2nd GC",
+  "purpose": "Build a 0-4 ranking score without excluding candidates.",
+  "entry_exit": "next-open entry, fixed 10-session exit",
+  "split_date": "2021-09-20",
+  "method": "Four pre-declared features. For each feature, direction and q25/q75 threshold are learned only from older 5y by comparing low vs high quartile average 10d return; thresholds are then frozen for recent 5y.",
+  "overall": {
+    "n": 283,
+    "win_rate_pct": 57.95,
+    "avg_ret10_pct": 1.768,
+    "median_ret10_pct": 1.415,
+    "p5_plus_pct": 27.56,
+    "loss5_or_worse_pct": 18.02,
+    "profit_factor": 1.799
+  },
+  "older5_train": {
+    "n": 152,
+    "win_rate_pct": 53.95,
+    "avg_ret10_pct": 1.13,
+    "median_ret10_pct": 1.225,
+    "p5_plus_pct": 26.97,
+    "loss5_or_worse_pct": 23.68,
+    "profit_factor": 1.418
+  },
+  "recent5_test": {
+    "n": 131,
+    "win_rate_pct": 62.6,
+    "avg_ret10_pct": 2.508,
+    "median_ret10_pct": 1.605,
+    "p5_plus_pct": 28.24,
+    "loss5_or_worse_pct": 11.45,
+    "profit_factor": 2.527
+  },
+  "learned_rules": {
+    "atr14_pct": {
+      "direction": "high",
+      "threshold": 3.5457816927612553,
+      "train_low_quartile": {
+        "n": 38,
+        "win_rate_pct": 47.37,
+        "avg_ret10_pct": -1.796,
+        "median_ret10_pct": -0.737,
+        "p5_plus_pct": 13.16,
+        "loss5_or_worse_pct": 31.58,
+        "profit_factor": 0.5
+      },
+      "train_high_quartile": {
+        "n": 38,
+        "win_rate_pct": 47.37,
+        "avg_ret10_pct": 1.562,
+        "median_ret10_pct": -0.931,
+        "p5_plus_pct": 28.95,
+        "loss5_or_worse_pct": 21.05,
+        "profit_factor": 1.492
+      }
+    },
+    "dd60_pct": {
+      "direction": "high",
+      "threshold": -15.789975005713524,
+      "train_low_quartile": {
+        "n": 38,
+        "win_rate_pct": 44.74,
+        "avg_ret10_pct": -0.439,
+        "median_ret10_pct": -1.491,
+        "p5_plus_pct": 21.05,
+        "loss5_or_worse_pct": 26.32,
+        "profit_factor": 0.878
+      },
+      "train_high_quartile": {
+        "n": 38,
+        "win_rate_pct": 44.74,
+        "avg_ret10_pct": -0.395,
+        "median_ret10_pct": -0.396,
+        "p5_plus_pct": 18.42,
+        "loss5_or_worse_pct": 23.68,
+        "profit_factor": 0.881
+      }
+    },
+    "ma25_slope5_pct": {
+      "direction": "low",
+      "threshold": 0.4566527446417945,
+      "train_low_quartile": {
+        "n": 38,
+        "win_rate_pct": 52.63,
+        "avg_ret10_pct": 0.422,
+        "median_ret10_pct": 0.396,
+        "p5_plus_pct": 26.32,
+        "loss5_or_worse_pct": 23.68,
+        "profit_factor": 1.139
+      },
+      "train_high_quartile": {
+        "n": 38,
+        "win_rate_pct": 47.37,
+        "avg_ret10_pct": 0.315,
+        "median_ret10_pct": -0.052,
+        "p5_plus_pct": 23.68,
+        "loss5_or_worse_pct": 21.05,
+        "profit_factor": 1.111
+      }
+    },
+    "avg_turnover20": {
+      "direction": "low",
+      "threshold": 72258819.25,
+      "train_low_quartile": {
+        "n": 38,
+        "win_rate_pct": 55.26,
+        "avg_ret10_pct": 2.945,
+        "median_ret10_pct": 2.286,
+        "p5_plus_pct": 31.58,
+        "loss5_or_worse_pct": 10.53,
+        "profit_factor": 2.621
+      },
+      "train_high_quartile": {
+        "n": 38,
+        "win_rate_pct": 57.89,
+        "avg_ret10_pct": 1.628,
+        "median_ret10_pct": 1.486,
+        "p5_plus_pct": 34.21,
+        "loss5_or_worse_pct": 28.95,
+        "profit_factor": 1.65
+      }
+    }
+  },
+  "score_results": {
+    "older5_train": {
+      "0": {
+        "n": 47,
+        "win_rate_pct": 55.32,
+        "avg_ret10_pct": 0.757,
+        "median_ret10_pct": 1.445,
+        "p5_plus_pct": 29.79,
+        "loss5_or_worse_pct": 29.79,
+        "profit_factor": 1.278
+      },
+      "1": {
+        "n": 67,
+        "win_rate_pct": 59.7,
+        "avg_ret10_pct": 1.43,
+        "median_ret10_pct": 1.415,
+        "p5_plus_pct": 25.37,
+        "loss5_or_worse_pct": 23.88,
+        "profit_factor": 1.559
+      },
+      "2": {
+        "n": 29,
+        "win_rate_pct": 41.38,
+        "avg_ret10_pct": 1.537,
+        "median_ret10_pct": -1.016,
+        "p5_plus_pct": 24.14,
+        "loss5_or_worse_pct": 13.79,
+        "profit_factor": 1.588
+      },
+      "3": {
+        "n": 9,
+        "win_rate_pct": 44.44,
+        "avg_ret10_pct": -0.469,
+        "median_ret10_pct": -0.345,
+        "p5_plus_pct": 33.33,
+        "loss5_or_worse_pct": 22.22,
+        "profit_factor": 0.883
+      }
+    },
+    "recent5_test": {
+      "0": {
+        "n": 41,
+        "win_rate_pct": 70.73,
+        "avg_ret10_pct": 3.36,
+        "median_ret10_pct": 2.342,
+        "p5_plus_pct": 34.15,
+        "loss5_or_worse_pct": 7.32,
+        "profit_factor": 3.638
+      },
+      "1": {
+        "n": 60,
+        "win_rate_pct": 68.33,
+        "avg_ret10_pct": 3.31,
+        "median_ret10_pct": 2.442,
+        "p5_plus_pct": 31.67,
+        "loss5_or_worse_pct": 8.33,
+        "profit_factor": 3.59
+      },
+      "2": {
+        "n": 27,
+        "win_rate_pct": 44.44,
+        "avg_ret10_pct": 0.844,
+        "median_ret10_pct": -0.26,
+        "p5_plus_pct": 14.81,
+        "loss5_or_worse_pct": 14.81,
+        "profit_factor": 1.409
+      },
+      "3": {
+        "n": 3,
+        "win_rate_pct": 0.0,
+        "avg_ret10_pct": -10.2,
+        "median_ret10_pct": -11.384,
+        "p5_plus_pct": 0.0,
+        "loss5_or_worse_pct": 100.0,
+        "profit_factor": 0.0
+      }
+    },
+    "overall": {
+      "0": {
+        "n": 88,
+        "win_rate_pct": 62.5,
+        "avg_ret10_pct": 1.969,
+        "median_ret10_pct": 1.682,
+        "p5_plus_pct": 31.82,
+        "loss5_or_worse_pct": 19.32,
+        "profit_factor": 1.963
+      },
+      "1": {
+        "n": 127,
+        "win_rate_pct": 63.78,
+        "avg_ret10_pct": 2.318,
+        "median_ret10_pct": 2.304,
+        "p5_plus_pct": 28.35,
+        "loss5_or_worse_pct": 16.54,
+        "profit_factor": 2.187
+      },
+      "2": {
+        "n": 56,
+        "win_rate_pct": 42.86,
+        "avg_ret10_pct": 1.203,
+        "median_ret10_pct": -0.69,
+        "p5_plus_pct": 19.64,
+        "loss5_or_worse_pct": 14.29,
+        "profit_factor": 1.513
+      },
+      "3": {
+        "n": 12,
+        "win_rate_pct": 33.33,
+        "avg_ret10_pct": -2.902,
+        "median_ret10_pct": -2.529,
+        "p5_plus_pct": 25.0,
+        "loss5_or_worse_pct": 41.67,
+        "profit_factor": 0.478
+      }
+    }
+  },
+  "caveat": "Current-Prime survivor universe. Small sample (283 total historically), so score bands should be treated as ranking aids rather than hard filters."
+}
