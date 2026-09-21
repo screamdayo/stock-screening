@@ -1,0 +1,443 @@
+{
+  "focus": "15-trading-day exit",
+  "variants": {
+    "60": {
+      "plain": {
+        "2017": {
+          "n": 11418,
+          "win_rate_pct": 59.59,
+          "avg_return_pct": 2.151,
+          "median_return_pct": 1.615,
+          "profit_factor": 2.11
+        },
+        "2018": {
+          "n": 16467,
+          "win_rate_pct": 34.85,
+          "avg_return_pct": -2.512,
+          "median_return_pct": -2.715,
+          "profit_factor": 0.464
+        },
+        "2019": {
+          "n": 22800,
+          "win_rate_pct": 49.54,
+          "avg_return_pct": 0.317,
+          "median_return_pct": 0.0,
+          "profit_factor": 1.127
+        },
+        "2020": {
+          "n": 20445,
+          "win_rate_pct": 45.69,
+          "avg_return_pct": 0.084,
+          "median_return_pct": -0.704,
+          "profit_factor": 1.024
+        },
+        "2021": {
+          "n": 24003,
+          "win_rate_pct": 42.08,
+          "avg_return_pct": -0.763,
+          "median_return_pct": -1.351,
+          "profit_factor": 0.784
+        },
+        "2022": {
+          "n": 19628,
+          "win_rate_pct": 41.85,
+          "avg_return_pct": -0.783,
+          "median_return_pct": -1.02,
+          "profit_factor": 0.736
+        },
+        "2023": {
+          "n": 32888,
+          "win_rate_pct": 52.59,
+          "avg_return_pct": 0.796,
+          "median_return_pct": 0.42,
+          "profit_factor": 1.362
+        },
+        "2024": {
+          "n": 26976,
+          "win_rate_pct": 48.0,
+          "avg_return_pct": 0.066,
+          "median_return_pct": -0.252,
+          "profit_factor": 1.023
+        },
+        "2025": {
+          "n": 34804,
+          "win_rate_pct": 58.72,
+          "avg_return_pct": 1.482,
+          "median_return_pct": 1.275,
+          "profit_factor": 1.703
+        },
+        "2026": {
+          "n": 22630,
+          "win_rate_pct": 48.9,
+          "avg_return_pct": 0.771,
+          "median_return_pct": -0.131,
+          "profit_factor": 1.239
+        }
+      },
+      "ma25_rising_plus_volume": {
+        "2017": {
+          "n": 3190,
+          "win_rate_pct": 57.37,
+          "avg_return_pct": 2.338,
+          "median_return_pct": 1.303,
+          "profit_factor": 2.044
+        },
+        "2018": {
+          "n": 5144,
+          "win_rate_pct": 34.66,
+          "avg_return_pct": -2.381,
+          "median_return_pct": -2.865,
+          "profit_factor": 0.507
+        },
+        "2019": {
+          "n": 6636,
+          "win_rate_pct": 48.45,
+          "avg_return_pct": 0.393,
+          "median_return_pct": -0.138,
+          "profit_factor": 1.145
+        },
+        "2020": {
+          "n": 6053,
+          "win_rate_pct": 45.76,
+          "avg_return_pct": 0.345,
+          "median_return_pct": -0.81,
+          "profit_factor": 1.091
+        },
+        "2021": {
+          "n": 7250,
+          "win_rate_pct": 41.13,
+          "avg_return_pct": -0.751,
+          "median_return_pct": -1.688,
+          "profit_factor": 0.808
+        },
+        "2022": {
+          "n": 5162,
+          "win_rate_pct": 44.13,
+          "avg_return_pct": -0.433,
+          "median_return_pct": -0.796,
+          "profit_factor": 0.861
+        },
+        "2023": {
+          "n": 8516,
+          "win_rate_pct": 51.15,
+          "avg_return_pct": 0.716,
+          "median_return_pct": 0.208,
+          "profit_factor": 1.3
+        },
+        "2024": {
+          "n": 7019,
+          "win_rate_pct": 48.41,
+          "avg_return_pct": 0.271,
+          "median_return_pct": -0.179,
+          "profit_factor": 1.091
+        },
+        "2025": {
+          "n": 8073,
+          "win_rate_pct": 56.7,
+          "avg_return_pct": 1.519,
+          "median_return_pct": 1.042,
+          "profit_factor": 1.639
+        },
+        "2026": {
+          "n": 5467,
+          "win_rate_pct": 49.92,
+          "avg_return_pct": 1.38,
+          "median_return_pct": 0.0,
+          "profit_factor": 1.401
+        }
+      }
+    },
+    "120": {
+      "plain": {
+        "2017": {
+          "n": 9779,
+          "win_rate_pct": 60.15,
+          "avg_return_pct": 2.245,
+          "median_return_pct": 1.706,
+          "profit_factor": 2.173
+        },
+        "2018": {
+          "n": 11424,
+          "win_rate_pct": 35.29,
+          "avg_return_pct": -2.418,
+          "median_return_pct": -2.695,
+          "profit_factor": 0.49
+        },
+        "2019": {
+          "n": 14098,
+          "win_rate_pct": 49.53,
+          "avg_return_pct": 0.353,
+          "median_return_pct": 0.0,
+          "profit_factor": 1.144
+        },
+        "2020": {
+          "n": 13862,
+          "win_rate_pct": 48.36,
+          "avg_return_pct": 0.464,
+          "median_return_pct": -0.238,
+          "profit_factor": 1.133
+        },
+        "2021": {
+          "n": 17228,
+          "win_rate_pct": 42.92,
+          "avg_return_pct": -0.691,
+          "median_return_pct": -1.289,
+          "profit_factor": 0.81
+        },
+        "2022": {
+          "n": 12672,
+          "win_rate_pct": 43.06,
+          "avg_return_pct": -0.641,
+          "median_return_pct": -0.869,
+          "profit_factor": 0.782
+        },
+        "2023": {
+          "n": 26510,
+          "win_rate_pct": 51.96,
+          "avg_return_pct": 0.692,
+          "median_return_pct": 0.336,
+          "profit_factor": 1.302
+        },
+        "2024": {
+          "n": 19491,
+          "win_rate_pct": 47.7,
+          "avg_return_pct": 0.073,
+          "median_return_pct": -0.287,
+          "profit_factor": 1.025
+        },
+        "2025": {
+          "n": 26581,
+          "win_rate_pct": 59.16,
+          "avg_return_pct": 1.55,
+          "median_return_pct": 1.323,
+          "profit_factor": 1.738
+        },
+        "2026": {
+          "n": 17353,
+          "win_rate_pct": 48.82,
+          "avg_return_pct": 0.732,
+          "median_return_pct": -0.178,
+          "profit_factor": 1.208
+        }
+      },
+      "ma25_rising_plus_volume": {
+        "2017": {
+          "n": 2747,
+          "win_rate_pct": 58.46,
+          "avg_return_pct": 2.541,
+          "median_return_pct": 1.499,
+          "profit_factor": 2.176
+        },
+        "2018": {
+          "n": 3642,
+          "win_rate_pct": 35.39,
+          "avg_return_pct": -2.234,
+          "median_return_pct": -2.833,
+          "profit_factor": 0.542
+        },
+        "2019": {
+          "n": 4315,
+          "win_rate_pct": 48.74,
+          "avg_return_pct": 0.538,
+          "median_return_pct": -0.104,
+          "profit_factor": 1.206
+        },
+        "2020": {
+          "n": 4362,
+          "win_rate_pct": 47.57,
+          "avg_return_pct": 0.592,
+          "median_return_pct": -0.419,
+          "profit_factor": 1.155
+        },
+        "2021": {
+          "n": 5221,
+          "win_rate_pct": 42.85,
+          "avg_return_pct": -0.645,
+          "median_return_pct": -1.524,
+          "profit_factor": 0.84
+        },
+        "2022": {
+          "n": 3560,
+          "win_rate_pct": 45.79,
+          "avg_return_pct": -0.183,
+          "median_return_pct": -0.598,
+          "profit_factor": 0.94
+        },
+        "2023": {
+          "n": 7001,
+          "win_rate_pct": 50.46,
+          "avg_return_pct": 0.609,
+          "median_return_pct": 0.125,
+          "profit_factor": 1.247
+        },
+        "2024": {
+          "n": 5170,
+          "win_rate_pct": 48.32,
+          "avg_return_pct": 0.267,
+          "median_return_pct": -0.186,
+          "profit_factor": 1.088
+        },
+        "2025": {
+          "n": 6202,
+          "win_rate_pct": 56.58,
+          "avg_return_pct": 1.471,
+          "median_return_pct": 1.03,
+          "profit_factor": 1.599
+        },
+        "2026": {
+          "n": 4288,
+          "win_rate_pct": 50.4,
+          "avg_return_pct": 1.463,
+          "median_return_pct": 0.129,
+          "profit_factor": 1.398
+        }
+      }
+    },
+    "252": {
+      "plain": {
+        "2017": {
+          "n": 8547,
+          "win_rate_pct": 60.78,
+          "avg_return_pct": 2.352,
+          "median_return_pct": 1.836,
+          "profit_factor": 2.224
+        },
+        "2018": {
+          "n": 9390,
+          "win_rate_pct": 35.19,
+          "avg_return_pct": -2.402,
+          "median_return_pct": -2.741,
+          "profit_factor": 0.498
+        },
+        "2019": {
+          "n": 6808,
+          "win_rate_pct": 50.71,
+          "avg_return_pct": 0.523,
+          "median_return_pct": 0.143,
+          "profit_factor": 1.221
+        },
+        "2020": {
+          "n": 8500,
+          "win_rate_pct": 46.81,
+          "avg_return_pct": 0.086,
+          "median_return_pct": -0.526,
+          "profit_factor": 1.022
+        },
+        "2021": {
+          "n": 12714,
+          "win_rate_pct": 40.16,
+          "avg_return_pct": -1.213,
+          "median_return_pct": -1.813,
+          "profit_factor": 0.693
+        },
+        "2022": {
+          "n": 6553,
+          "win_rate_pct": 41.93,
+          "avg_return_pct": -1.017,
+          "median_return_pct": -1.095,
+          "profit_factor": 0.691
+        },
+        "2023": {
+          "n": 21822,
+          "win_rate_pct": 51.63,
+          "avg_return_pct": 0.654,
+          "median_return_pct": 0.283,
+          "profit_factor": 1.278
+        },
+        "2024": {
+          "n": 16090,
+          "win_rate_pct": 48.04,
+          "avg_return_pct": 0.1,
+          "median_return_pct": -0.248,
+          "profit_factor": 1.034
+        },
+        "2025": {
+          "n": 19343,
+          "win_rate_pct": 61.03,
+          "avg_return_pct": 1.913,
+          "median_return_pct": 1.618,
+          "profit_factor": 1.983
+        },
+        "2026": {
+          "n": 15712,
+          "win_rate_pct": 49.53,
+          "avg_return_pct": 0.907,
+          "median_return_pct": -0.027,
+          "profit_factor": 1.256
+        }
+      },
+      "ma25_rising_plus_volume": {
+        "2017": {
+          "n": 2389,
+          "win_rate_pct": 59.1,
+          "avg_return_pct": 2.613,
+          "median_return_pct": 1.653,
+          "profit_factor": 2.215
+        },
+        "2018": {
+          "n": 2956,
+          "win_rate_pct": 34.88,
+          "avg_return_pct": -2.37,
+          "median_return_pct": -3.021,
+          "profit_factor": 0.527
+        },
+        "2019": {
+          "n": 2110,
+          "win_rate_pct": 50.09,
+          "avg_return_pct": 0.876,
+          "median_return_pct": 0.031,
+          "profit_factor": 1.344
+        },
+        "2020": {
+          "n": 2689,
+          "win_rate_pct": 46.04,
+          "avg_return_pct": 0.104,
+          "median_return_pct": -0.848,
+          "profit_factor": 1.024
+        },
+        "2021": {
+          "n": 3911,
+          "win_rate_pct": 40.68,
+          "avg_return_pct": -1.097,
+          "median_return_pct": -2.013,
+          "profit_factor": 0.746
+        },
+        "2022": {
+          "n": 1900,
+          "win_rate_pct": 45.21,
+          "avg_return_pct": -0.563,
+          "median_return_pct": -0.734,
+          "profit_factor": 0.84
+        },
+        "2023": {
+          "n": 5707,
+          "win_rate_pct": 49.89,
+          "avg_return_pct": 0.444,
+          "median_return_pct": 0.0,
+          "profit_factor": 1.171
+        },
+        "2024": {
+          "n": 4283,
+          "win_rate_pct": 48.14,
+          "avg_return_pct": 0.316,
+          "median_return_pct": -0.211,
+          "profit_factor": 1.103
+        },
+        "2025": {
+          "n": 4375,
+          "win_rate_pct": 58.24,
+          "avg_return_pct": 1.791,
+          "median_return_pct": 1.337,
+          "profit_factor": 1.745
+        },
+        "2026": {
+          "n": 3815,
+          "win_rate_pct": 51.04,
+          "avg_return_pct": 1.694,
+          "median_return_pct": 0.248,
+          "profit_factor": 1.455
+        }
+      }
+    }
+  }
+}
