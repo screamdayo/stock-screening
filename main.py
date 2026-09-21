@@ -36,6 +36,7 @@ logger = get_logger(__name__)
 
 # 目視撤廃後の本番日次戦略。
 DAILY_STRATEGY = "kuitto_pullback_auto"
+GC_DAILY_STRATEGY = "gc_strong_breakout"
 
 
 def run():
@@ -43,6 +44,7 @@ def run():
     logger.info(f"使用する日次戦略: {DAILY_STRATEGY}（目視判定なし）")
 
     screener_fn = registry.get_latest_screener(DAILY_STRATEGY)
+    gc_screener_fn = registry.get_latest_screener(GC_DAILY_STRATEGY)
 
     logger.info("対象銘柄リスト取得中...")
     target_codes, code_to_name = download.get_target_codes_and_names()
@@ -67,14 +69,21 @@ def run():
     logger.info("自動スクリーニング中...")
     results = screener_fn(price_df, target_codes)
 
+    logger.info("GC強ブレイクを別枠スクリーニング中...")
+    gc_results = gc_screener_fn(price_df, target_codes)
+
     for r in results:
+        r["name"] = code_to_name.get(r["code"], "")
+    for r in gc_results:
         r["name"] = code_to_name.get(r["code"], "")
 
     latest_signal_date = price_df["Date"].max()
     logger.info("決算予定チェック中...")
     earnings_warning.add_earnings_warnings(results, latest_signal_date)
+    earnings_warning.add_earnings_warnings(gc_results, latest_signal_date)
 
     logger.info(f"自動通過候補: {len(results)}件")
+    logger.info(f"GC強ブレイク候補: {len(gc_results)}件")
 
     logger.info("未来検証ログ更新中...")
     forward_test.update_forward_test(price_df, code_to_name)
@@ -84,6 +93,7 @@ def run():
 
     logger.info("Discord通知中...")
     notifier.notify(results)
+    notifier.notify_gc_strong_breakout(gc_results)
 
     logger.info("GitHub Pages用データを出力中...")
     export_docs_prices.export_docs(
@@ -91,6 +101,7 @@ def run():
         target_codes,
         code_to_name,
         results,
+        gc_results,
     )
 
     logger.info("=== 完了 ===")
