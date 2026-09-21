@@ -1,0 +1,35 @@
+name: High Breakout Yearly
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'scripts/analyze_high_breakout_yearly.py'
+
+permissions:
+  contents: write
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install pandas
+      - name: Run yearly analysis
+        run: python scripts/analyze_high_breakout_yearly.py
+      - name: Commit result
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add results/high_breakout_yearly_15d.json
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "Run high breakout yearly analysis"
+          git pull --rebase origin main
+          git push origin HEAD:main
