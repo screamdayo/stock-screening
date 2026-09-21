@@ -20,6 +20,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+
       - name: Checkout private J-Quants data
         uses: actions/checkout@v4
         with:
@@ -30,8 +31,36 @@ jobs:
             data/batches
             data/daily_updates
           sparse-checkout-cone-mode: false
+
       - name: Mount private data
         run: |
           mkdir -p data
           ln -sfn "$GITHUB_WORKSPACE/.private-data/data/batches" data/batches
           ln -sfn "$GITHUB_WORKSPACE/.private-data/data/daily_updates" data/daily_updates
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - run: pip install pandas pyarrow numpy
+
+      - name: Run exit-method comparison
+        run: python scripts/backtest_gc_seq2_exit_methods.py
+
+      - name: Commit results
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add results/
+          if ! git diff --cached --quiet; then
+            git commit -m "Compare GC seq2 exit methods on 10-year archive"
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
+
+      - name: Close trigger issue
+        if: always() && github.event_name == 'issues' && startsWith(github.event.issue.title, '[gc-seq2-exit-methods]')
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh issue close "${{ github.event.issue.number }}" --repo "${{ github.repository }}" --comment "GC seq2 exit-method comparison processed."
