@@ -58,9 +58,9 @@ h1{font-size:23px;line-height:1.15;margin:5px 0 0;text-shadow:2px 2px 0 #100414}
 .meta{font-size:11px;color:var(--dim);text-align:right;line-height:1.55}
 
 .view{
-  display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:0 5px 13px;
+  display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:0 5px 13px;
 }
-.view button,.chip,.range,.judge button,.nav button,.links a,.sync,.acts button{
+.view button,.view a,.chip,.range,.judge button,.nav button,.links a,.sync,.acts button{
   border:3px solid var(--frame);
   background:var(--panel);
   color:var(--ink);
@@ -68,7 +68,7 @@ h1{font-size:23px;line-height:1.15;margin:5px 0 0;text-shadow:2px 2px 0 #100414}
   box-shadow:0 0 0 1px #173d40,0 0 0 3px var(--frame2);
   text-shadow:1px 1px 0 #110414;
 }
-.view button{padding:10px 8px}
+.view button,.view a{padding:10px 8px;text-align:center;text-decoration:none}
 .view .on,.chip.on{
   background:#7e36bf;
   color:#fff;
@@ -173,7 +173,7 @@ h1{font-size:23px;line-height:1.15;margin:5px 0 0;text-shadow:2px 2px 0 #100414}
   #chart{height:530px}.hchart{height:450px}
   .top{padding:12px 11px}.stats{padding-left:11px;padding-right:11px}
 }
-</style></head><body><div class="top"><div><div class="eye">SCREENING REVIEW</div><h1>スクリーニング結果</h1></div><div id="meta" class="meta">読込中…</div></div><div class="view"><button data-mode="today" class="on">今日の判定</button><button data-mode="history">判定履歴</button></div><div id="filters" class="filters"><button class="chip on" data-f="all">すべて</button><button class="chip" data-f="unrated">未判定</button><button class="chip" data-f="A">A</button><button class="chip" data-f="B">B</button><button class="chip" data-f="skip">見送り</button></div><div id="root"><div class="empty">読み込み中…</div></div><div id="help" class="help">左右スワイプで前後へ。判定は端末とGitHubの両方に残せます。</div><script>
+</style></head><body><div class="top"><div><div class="eye">SCREENING REVIEW</div><h1>スクリーニング結果</h1></div><div id="meta" class="meta">読込中…</div></div><div class="view"><button data-mode="today" class="on">今日の判定</button><button data-mode="history">判定履歴</button><a href="gc.html">GC強ブレイク</a></div><div id="filters" class="filters"><button class="chip on" data-f="all">すべて</button><button class="chip" data-f="unrated">未判定</button><button class="chip" data-f="A">A</button><button class="chip" data-f="B">B</button><button class="chip" data-f="skip">見送り</button></div><div id="root"><div class="empty">読み込み中…</div></div><div id="help" class="help">左右スワイプで前後へ。判定は端末とGitHubの両方に残せます。</div><script>
 const OWNER='screamdayo',REPO='stock-screening',HK='screening-judgement-history:v1';const S={data:null,items:[],filtered:[],i:0,f:'all',range:'3m',mode:'today',remote:[],px:{},metrics:{}};const date=()=>S.data?.generated_at?.slice(0,10)||new Date().toISOString().slice(0,10);const loadH=()=>{try{let v=JSON.parse(localStorage.getItem(HK)||'[]');return Array.isArray(v)?v:[]}catch{return[]}};const saveH=v=>localStorage.setItem(HK,JSON.stringify(v));const id=(d,c)=>`${d}:${c}`;const cur=c=>loadH().find(x=>x.id===id(date(),c));const rate=c=>cur(c)?.rating||'';const fmt=(n,d=0)=>n==null||isNaN(+n)?'—':(+n).toLocaleString('ja-JP',{maximumFractionDigits:d});const pct=n=>n==null||isNaN(+n)?'—':`${+n>=0?'+':''}${(+n).toFixed(2)}%`;const vol=n=>n==null||isNaN(+n)?'—':+n>=1e8?`${(+n/1e8).toFixed(1)}億`:+n>=1e4?`${(+n/1e4).toFixed(0)}万`:(+n).toLocaleString('ja-JP');const ma=(a,n)=>a.map((_,i)=>i<n-1?null:a.slice(i-n+1,i+1).reduce((x,y)=>x+y,0)/n);const rlabel=x=>x==='skip'?'見送り':x;const slabel=x=>x.signal_label||(x.signal_type==='bottom_reversal'?'大底反転':x.signal_type==='pullback_reacceleration'?'押し目再上昇':'');const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));const cid=s=>String(s).replace(/[^a-zA-Z0-9_-]/g,'_');const xticks=(xs,max=6)=>{let cross=new Set(xs.map(x=>String(x).slice(0,4))).size>1,step=Math.max(1,Math.ceil((xs.length-1)/Math.max(1,max-1))),v=[];for(let i=0;i<xs.length;i+=step)v.push(xs[i]);if(xs.length&&v.at(-1)!==xs.at(-1))v.push(xs.at(-1));return{tickmode:'array',tickvals:v,ticktext:v.map(x=>cross?String(x).slice(0,10):String(x).slice(5,10))}};
 function mergeRemote(){let l=loadH(),m=new Map(l.map(x=>[x.id,x]));for(const x of S.remote||[])if(x&&x.id&&!m.has(x.id))m.set(x.id,x);saveH([...m.values()])}
 function setRate(item,v){let h=loadH(),k=id(date(),item.code),i=h.findIndex(x=>x.id===k);if(i>=0&&h[i].rating===v)h.splice(i,1);else{let e={id:k,date:date(),code:item.code,name:item.name||item.code,rating:v,close:Number(item.close)||null,signal_type:item.signal_type||'',signal_label:item.signal_label||'',judged_at:new Date().toISOString()};if(i>=0)h[i]=e;else h.push(e)}saveH(h);filter(false);render()}
