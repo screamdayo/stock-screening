@@ -1,0 +1,481 @@
+{
+  "strategy": "GC seq2 strong-breakout subset",
+  "selection_rules": {
+    "vol_ratio20_gt": 0.88,
+    "gc_gap_pct_gt": 0.13,
+    "candle_pct_gt": 2.14
+  },
+  "purpose": "Rebuild exits using price/MA behavior instead of assuming fixed 10 days.",
+  "execution_note": "Close/MA rules are confirmed at close and executed next open. Trailing stops use daily OHLC; gap-through exits at open, otherwise at stop level. Activated trailing has no protective stop before activation.",
+  "split_date": "2021-09-20",
+  "variants": {
+    "fixed5": {
+      "overall": {
+        "n": 41,
+        "win_rate_pct": 68.29,
+        "avg_return_pct": 2.671,
+        "median_return_pct": 1.727,
+        "p5_plus_pct": 29.27,
+        "loss5_or_worse_pct": 4.88,
+        "profit_factor": 3.985,
+        "avg_hold_sessions": 5.0,
+        "worst_return_pct": -6.282
+      },
+      "older5": {
+        "n": 21,
+        "win_rate_pct": 61.9,
+        "avg_return_pct": 3.026,
+        "median_return_pct": 3.558,
+        "p5_plus_pct": 33.33,
+        "loss5_or_worse_pct": 0.0,
+        "profit_factor": 4.357,
+        "avg_hold_sessions": 5.0,
+        "worst_return_pct": -4.535
+      },
+      "recent5": {
+        "n": 20,
+        "win_rate_pct": 75.0,
+        "avg_return_pct": 2.297,
+        "median_return_pct": 1.303,
+        "p5_plus_pct": 25.0,
+        "loss5_or_worse_pct": 10.0,
+        "profit_factor": 3.589,
+        "avg_hold_sessions": 5.0,
+        "worst_return_pct": -6.282
+      },
+      "exit_reasons": {
+        "fixed5": 41
+      }
+    },
+    "fixed10": {
+      "overall": {
+        "n": 41,
+        "win_rate_pct": 78.05,
+        "avg_return_pct": 5.387,
+        "median_return_pct": 4.773,
+        "p5_plus_pct": 46.34,
+        "loss5_or_worse_pct": 9.76,
+        "profit_factor": 6.249,
+        "avg_hold_sessions": 10.0,
+        "worst_return_pct": -9.669
+      },
+      "older5": {
+        "n": 21,
+        "win_rate_pct": 71.43,
+        "avg_return_pct": 5.616,
+        "median_return_pct": 5.656,
+        "p5_plus_pct": 57.14,
+        "loss5_or_worse_pct": 14.29,
+        "profit_factor": 5.331,
+        "avg_hold_sessions": 10.0,
+        "worst_return_pct": -9.669
+      },
+      "recent5": {
+        "n": 20,
+        "win_rate_pct": 85.0,
+        "avg_return_pct": 5.147,
+        "median_return_pct": 4.221,
+        "p5_plus_pct": 35.0,
+        "loss5_or_worse_pct": 5.0,
+        "profit_factor": 7.931,
+        "avg_hold_sessions": 10.0,
+        "worst_return_pct": -6.111
+      },
+      "exit_reasons": {
+        "fixed10": 41
+      }
+    },
+    "fixed15": {
+      "overall": {
+        "n": 41,
+        "win_rate_pct": 68.29,
+        "avg_return_pct": 4.415,
+        "median_return_pct": 3.148,
+        "p5_plus_pct": 39.02,
+        "loss5_or_worse_pct": 12.2,
+        "profit_factor": 3.053,
+        "avg_hold_sessions": 15.0,
+        "worst_return_pct": -15.833
+      },
+      "older5": {
+        "n": 21,
+        "win_rate_pct": 66.67,
+        "avg_return_pct": 5.174,
+        "median_return_pct": 3.638,
+        "p5_plus_pct": 47.62,
+        "loss5_or_worse_pct": 9.52,
+        "profit_factor": 3.534,
+        "avg_hold_sessions": 15.0,
+        "worst_return_pct": -15.562
+      },
+      "recent5": {
+        "n": 20,
+        "win_rate_pct": 70.0,
+        "avg_return_pct": 3.618,
+        "median_return_pct": 2.994,
+        "p5_plus_pct": 30.0,
+        "loss5_or_worse_pct": 15.0,
+        "profit_factor": 2.597,
+        "avg_hold_sessions": 15.0,
+        "worst_return_pct": -15.833
+      },
+      "exit_reasons": {
+        "fixed15": 41
+      }
+    },
+    "fixed20": {
+      "overall": {
+        "n": 41,
+        "win_rate_pct": 58.54,
+        "avg_return_pct": 3.009,
+        "median_return_pct": 3.106,
+        "p5_plus_pct": 39.02,
+        "loss5_or_worse_pct": 21.95,
+        "profit_factor": 2.01,
+        "avg_hold_sessions": 20.0,
+        "worst_return_pct": -19.786
+      },
+      "older5": {
+        "n": 21,
+        "win_rate_pct": 61.9,
+        "avg_return_pct": 3.709,
+        "median_return_pct": 4.39,
+        "p5_plus_pct": 47.62,
+        "loss5_or_worse_pct": 23.81,
+        "profit_factor": 2.39,
+        "avg_hold_sessions": 20.0,
+        "worst_return_pct": -15.948
+      },
+      "recent5": {
+        "n": 20,
+        "win_rate_pct": 55.0,
+        "avg_return_pct": 2.273,
+        "median_return_pct": 1.346,
+        "p5_plus_pct": 30.0,
+        "loss5_or_worse_pct": 20.0,
+        "profit_factor": 1.688,
+        "avg_hold_sessions": 20.0,
+        "worst_return_pct": -19.786
+      },
+      "exit_reasons": {
+        "fixed20": 41
+      }
+    },
+    "ma5_turn_down_max20": {
+      "overall": {
+        "n": 41,
+        "win_rate_pct": 60.98,
+        "avg_return_pct": 1.754,
+        "median_return_pct": 0.754,
+        "p5_plus_pct": 19.51,
+        "loss5_or_worse_pct": 4.88,
+        "profit_factor": 2.774,
+        "avg_hold_sessions": 7.46,
+        "worst_return_pct": -8.261
+      },
+      "older5": {
+        "n": 21,
+        "win_rate_pct": 57.14,
+        "avg_return_pct": 2.444,
+        "median_return_pct": 0.572,
+        "p5_plus_pct": 28.57,
+        "loss5_or_worse_pct": 0.0,
+        "profit_factor": 3.622,
+        "avg_hold_sessions": 7.14,
+        "worst_return_pct": -4.535
+      },
+      "recent5": {
+        "n": 20,
+        "win_rate_pct": 65.0,
+        "avg_return_pct": 1.029,
+        "median_return_pct": 0.858,
+        "p5_plus_pct": 10.0,
+        "loss5_or_worse_pct": 10.0,
+        "profit_factor": 1.981,
+        "avg_hold_sessions": 7.8,
+        "worst_return_pct": -8.261
+      },
+      "exit_reasons": {
+        "ma5_turn_down_next_open": 41
+      }
+    },
+    "close_below_ma5_max20": {
+      "overall": {
+        "n": 41,
+        "win_rate_pct": 53.66,
+        "avg_return_pct": 0.633,
+        "median_return_pct": 0.248,
+        "p5_plus_pct": 12.2,
+        "loss5_or_worse_pct": 7.32,
+        "profit_factor": 1.457,
+        "avg_hold_sessions": 4.39,
+        "worst_return_pct": -9.915
+      },
+      "older5": {
+        "n": 21,
+        "win_rate_pct": 42.86,
+        "avg_return_pct": 0.723,
+        "median_return_pct": -0.643,
+        "p5_plus_pct": 19.05,
+        "loss5_or_worse_pct": 4.76,
+        "profit_factor": 1.46,
+        "avg_hold_sessions": 4.62,
+        "worst_return_pct": -9.915
+      },
+      "recent5": {
+        "n": 20,
+        "win_rate_pct": 65.0,
+        "avg_return_pct": 0.539,
+        "median_return_pct": 0.398,
+        "p5_plus_pct": 5.0,
+        "loss5_or_worse_pct": 10.0,
+        "profit_factor": 1.453,
+        "avg_hold_sessions": 4.15,
+        "worst_return_pct": -7.291
+      },
+      "exit_reasons": {
+        "close_below_ma5_next_open": 41
+      }
+    },
+    "close_below_ma25_max20": {
+      "overall": {
+        "n": 41,
+        "win_rate_pct": 46.34,
+        "avg_return_pct": 2.053,
+        "median_return_pct": -0.386,
+        "p5_plus_pct": 31.71,
+        "loss5_or_worse_pct": 19.51,
+        "profit_factor": 2.018,
+        "avg_hold_sessions": 14.41,
+        "worst_return_pct": -12.086
+      },
+      "older5": {
+        "n": 21,
+        "win_rate_pct": 61.9,
+        "avg_return_pct": 4.577,
+        "median_return_pct": 2.909,
+        "p5_plus_pct": 42.86,
+        "loss5_or_worse_pct": 14.29,
+        "profit_factor": 4.23,
+        "avg_hold_sessions": 14.86,
+        "worst_return_pct": -6.842
+      },
+      "recent5": {
+        "n": 20,
+        "win_rate_pct": 30.0,
+        "avg_return_pct": -0.599,
+        "median_return_pct": -0.986,
+        "p5_plus_pct": 20.0,
+        "loss5_or_worse_pct": 25.0,
+        "profit_factor": 0.774,
+        "avg_hold_sessions": 13.95,
+        "worst_return_pct": -12.086
+      },
+      "exit_reasons": {
+        "close_below_ma25_next_open": 27,
+        "max20": 14
+      }
+    },
+    "trail5_max20": {
+      "overall": {
+        "n": 41,
+        "win_rate_pct": 43.9,
+        "avg_return_pct": -0.349,
+        "median_return_pct": -0.572,
+        "p5_plus_pct": 9.76,
+        "loss5_or_worse_pct": 7.32,
+        "profit_factor": 0.797,
+        "avg_hold_sessions": 5.24,
+        "worst_return_pct": -5.0
+      },
+      "older5": {
+        "n": 21,
+        "win_rate_pct": 47.62,
+        "avg_return_pct": 0.479,
+        "median_return_pct": -0.572,
+        "p5_plus_pct": 19.05,
+        "loss5_or_worse_pct": 9.52,
+        "profit_factor": 1.266,
+        "avg_hold_sessions": 5.38,
+        "worst_return_pct": -5.0
+      },
+      "recent5": {
+        "n": 20,
+        "win_rate_pct": 40.0,
+        "avg_return_pct": -1.219,
+        "median_return_pct": -0.326,
+        "p5_plus_pct": 0.0,
+        "loss5_or_worse_pct": 5.0,
+        "profit_factor": 0.252,
+        "avg_hold_sessions": 5.1,
+        "worst_return_pct": -5.0
+      },
+      "exit_reasons": {
+        "trail5": 28,
+        "trail5_gap": 10,
+        "max20": 3
+      }
+    },
+    "trail7_max20": {
+      "overall": {
+        "n": 41,
+        "win_rate_pct": 43.9,
+        "avg_return_pct": 0.301,
+        "median_return_pct": -0.28,
+        "p5_plus_pct": 24.39,
+        "loss5_or_worse_pct": 21.95,
+        "profit_factor": 1.154,
+        "avg_hold_sessions": 8.71,
+        "worst_return_pct": -7.0
+      },
+      "older5": {
+        "n": 21,
+        "win_rate_pct": 52.38,
+        "avg_return_pct": 1.031,
+        "median_return_pct": 0.164,
+        "p5_plus_pct": 28.57,
+        "loss5_or_worse_pct": 19.05,
+        "profit_factor": 1.518,
+        "avg_hold_sessions": 8.86,
+        "worst_return_pct": -7.0
+      },
+      "recent5": {
+        "n": 20,
+        "win_rate_pct": 35.0,
+        "avg_return_pct": -0.465,
+        "median_return_pct": -0.47,
+        "p5_plus_pct": 20.0,
+        "loss5_or_worse_pct": 25.0,
+        "profit_factor": 0.76,
+        "avg_hold_sessions": 8.55,
+        "worst_return_pct": -6.305
+      },
+      "exit_reasons": {
+        "trail7": 28,
+        "trail7_gap": 7,
+        "max20": 6
+      }
+    },
+    "plus5_then_trail3_max20": {
+      "overall": {
+        "n": 41,
+        "win_rate_pct": 73.17,
+        "avg_return_pct": 1.204,
+        "median_return_pct": 2.161,
+        "p5_plus_pct": 7.32,
+        "loss5_or_worse_pct": 7.32,
+        "profit_factor": 2.095,
+        "avg_hold_sessions": 7.39,
+        "worst_return_pct": -15.948
+      },
+      "older5": {
+        "n": 21,
+        "win_rate_pct": 80.95,
+        "avg_return_pct": 1.583,
+        "median_return_pct": 2.545,
+        "p5_plus_pct": 14.29,
+        "loss5_or_worse_pct": 9.52,
+        "profit_factor": 2.365,
+        "avg_hold_sessions": 7.43,
+        "worst_return_pct": -15.948
+      },
+      "recent5": {
+        "n": 20,
+        "win_rate_pct": 65.0,
+        "avg_return_pct": 0.806,
+        "median_return_pct": 1.99,
+        "p5_plus_pct": 0.0,
+        "loss5_or_worse_pct": 5.0,
+        "profit_factor": 1.778,
+        "avg_hold_sessions": 7.35,
+        "worst_return_pct": -13.611
+      },
+      "exit_reasons": {
+        "trail3_gap": 20,
+        "trail3": 14,
+        "max20": 7
+      }
+    },
+    "plus5_then_trail5_max20": {
+      "overall": {
+        "n": 41,
+        "win_rate_pct": 70.73,
+        "avg_return_pct": 0.847,
+        "median_return_pct": 0.865,
+        "p5_plus_pct": 12.2,
+        "loss5_or_worse_pct": 7.32,
+        "profit_factor": 1.769,
+        "avg_hold_sessions": 9.05,
+        "worst_return_pct": -15.948
+      },
+      "older5": {
+        "n": 21,
+        "win_rate_pct": 76.19,
+        "avg_return_pct": 1.794,
+        "median_return_pct": 1.356,
+        "p5_plus_pct": 23.81,
+        "loss5_or_worse_pct": 9.52,
+        "profit_factor": 2.539,
+        "avg_hold_sessions": 9.43,
+        "worst_return_pct": -15.948
+      },
+      "recent5": {
+        "n": 20,
+        "win_rate_pct": 65.0,
+        "avg_return_pct": -0.146,
+        "median_return_pct": 0.685,
+        "p5_plus_pct": 0.0,
+        "loss5_or_worse_pct": 5.0,
+        "profit_factor": 0.859,
+        "avg_hold_sessions": 8.65,
+        "worst_return_pct": -13.611
+      },
+      "exit_reasons": {
+        "trail5": 18,
+        "trail5_gap": 15,
+        "max20": 8
+      }
+    },
+    "plus7_then_trail3_max20": {
+      "overall": {
+        "n": 41,
+        "win_rate_pct": 70.73,
+        "avg_return_pct": 1.604,
+        "median_return_pct": 4.234,
+        "p5_plus_pct": 31.71,
+        "loss5_or_worse_pct": 14.63,
+        "profit_factor": 1.842,
+        "avg_hold_sessions": 11.05,
+        "worst_return_pct": -15.948
+      },
+      "older5": {
+        "n": 21,
+        "win_rate_pct": 66.67,
+        "avg_return_pct": 0.794,
+        "median_return_pct": 3.415,
+        "p5_plus_pct": 38.1,
+        "loss5_or_worse_pct": 23.81,
+        "profit_factor": 1.302,
+        "avg_hold_sessions": 11.71,
+        "worst_return_pct": -15.948
+      },
+      "recent5": {
+        "n": 20,
+        "win_rate_pct": 75.0,
+        "avg_return_pct": 2.455,
+        "median_return_pct": 4.247,
+        "p5_plus_pct": 25.0,
+        "loss5_or_worse_pct": 5.0,
+        "profit_factor": 3.142,
+        "avg_hold_sessions": 10.35,
+        "worst_return_pct": -13.611
+      },
+      "exit_reasons": {
+        "trail3_gap": 16,
+        "max20": 14,
+        "trail3": 11
+      }
+    }
+  },
+  "caveat": "The strong-breakout entry subset itself is post-hoc. Exit variants are exploratory and should not be treated as untouched OOS optimization."
+}
