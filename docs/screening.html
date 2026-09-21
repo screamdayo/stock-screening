@@ -10,11 +10,12 @@
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html{
   min-height:100%;
-  background:
-    linear-gradient(45deg, var(--bg1) 25%, transparent 25%, transparent 75%, var(--bg1) 75%, var(--bg1)),
-    linear-gradient(45deg, var(--bg2) 25%, transparent 25%, transparent 75%, var(--bg2) 75%, var(--bg2));
-  background-position:0 0,17px 17px;
-  background-size:34px 34px;
+  background-color:var(--bg1);
+  background-image:
+    linear-gradient(0deg, transparent 50%, var(--bg2) 50%),
+    linear-gradient(90deg, transparent 50%, var(--bg2) 50%);
+  background-size:32px 32px;
+  background-position:0 0,16px 16px;
   image-rendering:pixelated;
 }
 body{
