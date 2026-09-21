@@ -1,0 +1,53 @@
+name: Best Kuitto 10Y Backtest
+
+on:
+  workflow_dispatch:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  backtest:
+    if: github.event_name != 'issues' || startsWith(github.event.issue.title, '[kuitto-10y-test]')
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    steps:
+      - name: Checkout private data repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install pandas pyarrow numpy
+
+      - name: Run frozen best-kuitto 10-year backtest
+        run: python scripts/backtest_best_kuitto_10y.py
+
+      - name: Commit results
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add results/
+          if git diff --cached --quiet; then
+            echo "No result changes."
+          else
+            git commit -m "Backtest best kuitto on 10-year archive"
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
+
+      - name: Close trigger issue
+        if: always() && github.event_name == 'issues' && startsWith(github.event.issue.title, '[kuitto-10y-test]')
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh issue close "${{ github.event.issue.number }}" --repo "${{ github.repository }}" --comment "Best Kuitto 10Y backtest trigger processed."
