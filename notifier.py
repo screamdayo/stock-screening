@@ -77,14 +77,15 @@ def notify(results, rescue_results=None, primary_results=None):
 
     # 目視撤廃後の自動くいっと通知。
     if results and all(r.get("auto_filtered") for r in results) and not rescue_results and not primary_results:
-        # 5銘柄以上出た日は、検証で採用した優先順位に合わせて
-        # MA5がMA25に近い順（乖離の絶対値が小さい順）でDiscord表示する。
+        # 伸びスコアを最優先し、同点なら従来どおりMA5がMA25に近い順で表示する。
         display_results = list(results)
-        sorted_by_ma25 = len(display_results) >= 5
-        if sorted_by_ma25:
-            display_results.sort(
-                key=lambda r: abs(r.get("ma5_vs_ma25_pct", float("inf")))
+        display_results.sort(
+            key=lambda r: (
+                -int(r.get("runner_score") or 0),
+                abs(r.get("ma5_vs_ma25_pct", float("inf"))),
+                str(r.get("code") or ""),
             )
+        )
 
         lines = []
         for r in display_results[:20]:
@@ -95,6 +96,14 @@ def notify(results, rescue_results=None, primary_results=None):
             volume = r.get("volume_ratio")
             close = r.get("close")
             detail = []
+            score = int(r.get("runner_score") or 0)
+            atr = r.get("atr14_pct")
+            dd20 = r.get("dd20_pct")
+            detail.append(f"伸び {score}/4")
+            if atr is not None:
+                detail.append(f"ATR {atr:.2f}%")
+            if dd20 is not None:
+                detail.append(f"DD20 {dd20:+.2f}%")
             if decline is not None:
                 detail.append(f"MA5直前5日 {decline:+.2f}%")
             if gap is not None:
@@ -123,7 +132,7 @@ def notify(results, rescue_results=None, primary_results=None):
         if remaining > 0:
             lines.append(f"…他{remaining}件")
 
-        order_note = "\n📐 **MA25に近い順で表示**" if sorted_by_ma25 else ""
+        order_note = "\n⭐ **伸びスコア順 → 同点はMA25に近い順**"
         msg = (
             f"📊 **くいっと押し目版 {today}**\n"
             f"🤖 **目視判定なし / 出来高1.25倍以上 / 自動通過 {len(results)}件**\n"
