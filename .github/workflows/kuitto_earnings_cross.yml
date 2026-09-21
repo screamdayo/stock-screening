@@ -1,0 +1,54 @@
+name: Kuitto Earnings Cross Test
+on:
+  workflow_dispatch:
+  issues:
+    types: [opened]
+permissions:
+  contents: write
+  issues: write
+jobs:
+  test:
+    if: github.event_name != 'issues' || startsWith(github.event.issue.title, '[kuitto-earnings-cross]')
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - name: Checkout public code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Checkout private J-Quants data
+        uses: actions/checkout@v4
+        with:
+          repository: screamdayo/stock-screening-data
+          token: ${{ secrets.STOCK_SCREENING_DATA_TOKEN }}
+          path: .private-data
+          sparse-checkout: |
+            data/batches
+            data/daily_updates
+          sparse-checkout-cone-mode: false
+      - name: Mount private data
+        run: |
+          mkdir -p data
+          ln -sfn "$GITHUB_WORKSPACE/.private-data/data/batches" data/batches
+          ln -sfn "$GITHUB_WORKSPACE/.private-data/data/daily_updates" data/daily_updates
+
+        with: {fetch-depth: 0}
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.11"}
+      - run: pip install pandas pyarrow numpy requests
+      - run: python scripts/backtest_kuitto_earnings_cross.py
+        env:
+          JQUANTS_API_KEY: ${{ secrets.JQUANTS_API_KEY }}
+      - name: Commit results
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add results/
+          git diff --cached --quiet || git commit -m "Run Kuitto earnings cross test"
+          git pull --rebase origin main
+          git push origin HEAD:main
+      - name: Close trigger issue
+        if: always() && github.event_name == 'issues' && startsWith(github.event.issue.title, '[kuitto-earnings-cross]')
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh issue close "${{ github.event.issue.number }}" --repo "${{ github.repository }}" --comment "Earnings-cross test processed."
