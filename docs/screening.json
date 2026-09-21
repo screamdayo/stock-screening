@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-18T12:21:07",
+  "generated_at": "2026-09-21T04:29:45",
   "strategy": "ma5_breakout",
   "count": 5,
   "items": [
@@ -20,6 +20,9 @@
       "close_vs_ma5_pct": 1.947,
       "volume_ratio": 1.56,
       "avg_turnover_20": 2338064375.0,
+      "atr14_pct": 4.49,
+      "dd20_pct": -5.157,
+      "runner_score": 3.0,
       "name": "テクセンドフォトマスク"
     },
     {
@@ -39,6 +42,9 @@
       "close_vs_ma5_pct": 1.364,
       "volume_ratio": 1.668,
       "avg_turnover_20": 841642542.5,
+      "atr14_pct": 3.264,
+      "dd20_pct": -3.993,
+      "runner_score": 3.0,
       "name": "ペプチドリーム"
     },
     {
@@ -58,6 +64,9 @@
       "close_vs_ma5_pct": 3.783,
       "volume_ratio": 1.269,
       "avg_turnover_20": 1212742575.0,
+      "atr14_pct": 3.973,
+      "dd20_pct": -6.63,
+      "runner_score": 4.0,
       "name": "古河機械金属"
     },
     {
@@ -77,6 +86,9 @@
       "close_vs_ma5_pct": 3.097,
       "volume_ratio": 1.685,
       "avg_turnover_20": 32958524375.0,
+      "atr14_pct": 4.302,
+      "dd20_pct": -3.471,
+      "runner_score": 3.0,
       "name": "ルネサスエレクトロニクス"
     },
     {
@@ -96,6 +108,9 @@
       "close_vs_ma5_pct": 3.186,
       "volume_ratio": 1.435,
       "avg_turnover_20": 154718547250.0,
+      "atr14_pct": 4.356,
+      "dd20_pct": -5.9,
+      "runner_score": 4.0,
       "name": "東京エレクトロン"
     }
   ]
