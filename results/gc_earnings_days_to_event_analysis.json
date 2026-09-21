@@ -1,0 +1,182 @@
+{
+  "definition": "Trading days from GC strong-breakout signal date to scheduled earnings date. Earnings reaction remains SchDate close to next-session open under the after-close assumption.",
+  "overall": {
+    "n": 8,
+    "gap_up_rate_pct": 75.0,
+    "avg_gap_pct": 6.21,
+    "median_gap_pct": 5.239,
+    "gap_5pct_plus_rate_pct": 50.0,
+    "gap_minus5pct_or_worse_rate_pct": 0.0
+  },
+  "distribution_counts": {
+    "1": 1,
+    "2": 1,
+    "3": 1,
+    "4": 0,
+    "5": 1,
+    "6": 1,
+    "7": 1,
+    "8": 1,
+    "9": 0,
+    "10": 1
+  },
+  "buckets": {
+    "1-3": {
+      "n": 3,
+      "gap_up_rate_pct": 100.0,
+      "avg_gap_pct": 3.657,
+      "median_gap_pct": 4.812,
+      "gap_5pct_plus_rate_pct": 33.33,
+      "gap_minus5pct_or_worse_rate_pct": 0.0
+    },
+    "4-6": {
+      "n": 2,
+      "gap_up_rate_pct": 50.0,
+      "avg_gap_pct": 8.856,
+      "median_gap_pct": 8.856,
+      "gap_5pct_plus_rate_pct": 50.0,
+      "gap_minus5pct_or_worse_rate_pct": 0.0
+    },
+    "7-10": {
+      "n": 3,
+      "gap_up_rate_pct": 66.67,
+      "avg_gap_pct": 6.999,
+      "median_gap_pct": 6.674,
+      "gap_5pct_plus_rate_pct": 66.67,
+      "gap_minus5pct_or_worse_rate_pct": 0.0
+    }
+  },
+  "by_exact_day": {
+    "1": {
+      "n": 1,
+      "gap_up_rate_pct": 100.0,
+      "avg_gap_pct": 0.493,
+      "median_gap_pct": 0.493,
+      "gap_5pct_plus_rate_pct": 0.0,
+      "gap_minus5pct_or_worse_rate_pct": 0.0
+    },
+    "2": {
+      "n": 1,
+      "gap_up_rate_pct": 100.0,
+      "avg_gap_pct": 4.812,
+      "median_gap_pct": 4.812,
+      "gap_5pct_plus_rate_pct": 0.0,
+      "gap_minus5pct_or_worse_rate_pct": 0.0
+    },
+    "3": {
+      "n": 1,
+      "gap_up_rate_pct": 100.0,
+      "avg_gap_pct": 5.666,
+      "median_gap_pct": 5.666,
+      "gap_5pct_plus_rate_pct": 100.0,
+      "gap_minus5pct_or_worse_rate_pct": 0.0
+    },
+    "5": {
+      "n": 1,
+      "gap_up_rate_pct": 100.0,
+      "avg_gap_pct": 18.554,
+      "median_gap_pct": 18.554,
+      "gap_5pct_plus_rate_pct": 100.0,
+      "gap_minus5pct_or_worse_rate_pct": 0.0
+    },
+    "6": {
+      "n": 1,
+      "gap_up_rate_pct": 0.0,
+      "avg_gap_pct": -0.842,
+      "median_gap_pct": -0.842,
+      "gap_5pct_plus_rate_pct": 0.0,
+      "gap_minus5pct_or_worse_rate_pct": 0.0
+    },
+    "7": {
+      "n": 1,
+      "gap_up_rate_pct": 100.0,
+      "avg_gap_pct": 6.674,
+      "median_gap_pct": 6.674,
+      "gap_5pct_plus_rate_pct": 100.0,
+      "gap_minus5pct_or_worse_rate_pct": 0.0
+    },
+    "8": {
+      "n": 1,
+      "gap_up_rate_pct": 0.0,
+      "avg_gap_pct": -1.508,
+      "median_gap_pct": -1.508,
+      "gap_5pct_plus_rate_pct": 0.0,
+      "gap_minus5pct_or_worse_rate_pct": 0.0
+    },
+    "10": {
+      "n": 1,
+      "gap_up_rate_pct": 100.0,
+      "avg_gap_pct": 15.831,
+      "median_gap_pct": 15.831,
+      "gap_5pct_plus_rate_pct": 100.0,
+      "gap_minus5pct_or_worse_rate_pct": 0.0
+    }
+  },
+  "events": [
+    {
+      "code": "4345",
+      "signal_date": "2020-04-28",
+      "earnings_date": "2020-04-30",
+      "next_open_gap_pct": 0.49342105263157077,
+      "trading_days_signal_to_earnings": 1,
+      "bucket": "1-3"
+    },
+    {
+      "code": "3101",
+      "signal_date": "2026-05-08",
+      "earnings_date": "2026-05-12",
+      "next_open_gap_pct": 4.8121292023731055,
+      "trading_days_signal_to_earnings": 2,
+      "bucket": "1-3"
+    },
+    {
+      "code": "8570",
+      "signal_date": "2020-10-02",
+      "earnings_date": "2020-10-07",
+      "next_open_gap_pct": 5.665722379603388,
+      "trading_days_signal_to_earnings": 3,
+      "bucket": "1-3"
+    },
+    {
+      "code": "5714",
+      "signal_date": "2026-05-07",
+      "earnings_date": "2026-05-14",
+      "next_open_gap_pct": 18.553615960099744,
+      "trading_days_signal_to_earnings": 5,
+      "bucket": "4-6"
+    },
+    {
+      "code": "6272",
+      "signal_date": "2020-04-30",
+      "earnings_date": "2020-05-13",
+      "next_open_gap_pct": -0.8422664624808562,
+      "trading_days_signal_to_earnings": 6,
+      "bucket": "4-6"
+    },
+    {
+      "code": "6310",
+      "signal_date": "2026-05-01",
+      "earnings_date": "2026-05-15",
+      "next_open_gap_pct": 6.674144699943918,
+      "trading_days_signal_to_earnings": 7,
+      "bucket": "7-10"
+    },
+    {
+      "code": "3107",
+      "signal_date": "2020-10-23",
+      "earnings_date": "2020-11-05",
+      "next_open_gap_pct": -1.5082956259426794,
+      "trading_days_signal_to_earnings": 8,
+      "bucket": "7-10"
+    },
+    {
+      "code": "3922",
+      "signal_date": "2020-12-24",
+      "earnings_date": "2021-01-12",
+      "next_open_gap_pct": 15.8311345646438,
+      "trading_days_signal_to_earnings": 10,
+      "bucket": "7-10"
+    }
+  ],
+  "caveat": "Only 8 strong-breakout earnings events; bucket results are descriptive, not statistically stable."
+}
