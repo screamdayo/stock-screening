@@ -1,0 +1,50 @@
+name: GC Entry Neighborhood Earnings Cross
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'scripts/analyze_gc_entry_neighborhood_earnings.py'
+
+permissions:
+  contents: write
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Checkout private J-Quants data
+        uses: actions/checkout@v4
+        with:
+          repository: screamdayo/stock-screening-data
+          token: ${{ secrets.STOCK_SCREENING_DATA_TOKEN }}
+          path: .private-data
+          sparse-checkout: |
+            data/batches
+          sparse-checkout-cone-mode: false
+      - name: Mount private data
+        run: |
+          mkdir -p data
+          ln -sfn "$GITHUB_WORKSPACE/.private-data/data/batches" data/batches
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install pandas pyarrow numpy requests
+      - name: Run earnings-cross analysis
+        env:
+          JQUANTS_API_KEY: ${{ secrets.JQUANTS_API_KEY }}
+        run: python scripts/analyze_gc_entry_neighborhood_earnings.py
+      - name: Commit results
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add results/gc_entry_neighborhood_earnings_cross.json results/gc_entry_neighborhood_earnings_trades.csv
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "Run GC neighborhood earnings-cross analysis"
+          git pull --rebase origin main
+          git push origin HEAD:main
