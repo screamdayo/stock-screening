@@ -1,0 +1,765 @@
+{
+  "definition": "Earnings crossing = the latest J-Quants earnings schedule known as of signal day has SchDate from next-open entry through fixed 10-session exit, inclusive.",
+  "anchor": {
+    "rules": {
+      "vol_gt": 0.88,
+      "gap_gt": 0.13,
+      "candle_gt": 2.14
+    },
+    "n": 41,
+    "earnings_cross_n": 8,
+    "earnings_cross_rate_pct": 19.51,
+    "all": {
+      "n": 41,
+      "win_rate_pct": 78.05,
+      "avg_ret10_pct": 5.387,
+      "profit_factor": 6.249
+    },
+    "earnings_cross": {
+      "n": 8,
+      "win_rate_pct": 87.5,
+      "avg_ret10_pct": 9.477,
+      "profit_factor": 170.574
+    },
+    "no_earnings": {
+      "n": 33,
+      "win_rate_pct": 75.76,
+      "avg_ret10_pct": 4.395,
+      "profit_factor": 4.484
+    }
+  },
+  "local_27": [
+    {
+      "vol_gt": 0.85,
+      "gap_gt": 0.1,
+      "candle_gt": 2.0,
+      "n": 46,
+      "earnings_cross_n": 8,
+      "earnings_cross_rate_pct": 17.39,
+      "no_earnings_n": 38,
+      "all": {
+        "n": 46,
+        "win_rate_pct": 73.91,
+        "avg_ret10_pct": 4.617,
+        "profit_factor": 4.757
+      },
+      "earnings_cross": {
+        "n": 8,
+        "win_rate_pct": 87.5,
+        "avg_ret10_pct": 9.477,
+        "profit_factor": 170.574
+      },
+      "no_earnings": {
+        "n": 38,
+        "win_rate_pct": 71.05,
+        "avg_ret10_pct": 3.594,
+        "profit_factor": 3.435
+      }
+    },
+    {
+      "vol_gt": 0.85,
+      "gap_gt": 0.1,
+      "candle_gt": 2.14,
+      "n": 43,
+      "earnings_cross_n": 8,
+      "earnings_cross_rate_pct": 18.6,
+      "no_earnings_n": 35,
+      "all": {
+        "n": 43,
+        "win_rate_pct": 76.74,
+        "avg_ret10_pct": 5.088,
+        "profit_factor": 5.481
+      },
+      "earnings_cross": {
+        "n": 8,
+        "win_rate_pct": 87.5,
+        "avg_ret10_pct": 9.477,
+        "profit_factor": 170.574
+      },
+      "no_earnings": {
+        "n": 35,
+        "win_rate_pct": 74.29,
+        "avg_ret10_pct": 4.084,
+        "profit_factor": 3.955
+      }
+    },
+    {
+      "vol_gt": 0.85,
+      "gap_gt": 0.1,
+      "candle_gt": 2.3,
+      "n": 39,
+      "earnings_cross_n": 6,
+      "earnings_cross_rate_pct": 15.38,
+      "no_earnings_n": 33,
+      "all": {
+        "n": 39,
+        "win_rate_pct": 76.92,
+        "avg_ret10_pct": 5.133,
+        "profit_factor": 5.688
+      },
+      "earnings_cross": {
+        "n": 6,
+        "win_rate_pct": 83.33,
+        "avg_ret10_pct": 10.115,
+        "profit_factor": 136.743
+      },
+      "no_earnings": {
+        "n": 33,
+        "win_rate_pct": 75.76,
+        "avg_ret10_pct": 4.228,
+        "profit_factor": 4.301
+      }
+    },
+    {
+      "vol_gt": 0.85,
+      "gap_gt": 0.13,
+      "candle_gt": 2.0,
+      "n": 45,
+      "earnings_cross_n": 8,
+      "earnings_cross_rate_pct": 17.78,
+      "no_earnings_n": 37,
+      "all": {
+        "n": 45,
+        "win_rate_pct": 73.33,
+        "avg_ret10_pct": 4.617,
+        "profit_factor": 4.674
+      },
+      "earnings_cross": {
+        "n": 8,
+        "win_rate_pct": 87.5,
+        "avg_ret10_pct": 9.477,
+        "profit_factor": 170.574
+      },
+      "no_earnings": {
+        "n": 37,
+        "win_rate_pct": 70.27,
+        "avg_ret10_pct": 3.566,
+        "profit_factor": 3.352
+      }
+    },
+    {
+      "vol_gt": 0.85,
+      "gap_gt": 0.13,
+      "candle_gt": 2.14,
+      "n": 42,
+      "earnings_cross_n": 8,
+      "earnings_cross_rate_pct": 19.05,
+      "no_earnings_n": 34,
+      "all": {
+        "n": 42,
+        "win_rate_pct": 76.19,
+        "avg_ret10_pct": 5.098,
+        "profit_factor": 5.386
+      },
+      "earnings_cross": {
+        "n": 8,
+        "win_rate_pct": 87.5,
+        "avg_ret10_pct": 9.477,
+        "profit_factor": 170.574
+      },
+      "no_earnings": {
+        "n": 34,
+        "win_rate_pct": 73.53,
+        "avg_ret10_pct": 4.068,
+        "profit_factor": 3.859
+      }
+    },
+    {
+      "vol_gt": 0.85,
+      "gap_gt": 0.13,
+      "candle_gt": 2.3,
+      "n": 38,
+      "earnings_cross_n": 6,
+      "earnings_cross_rate_pct": 15.79,
+      "no_earnings_n": 32,
+      "all": {
+        "n": 38,
+        "win_rate_pct": 76.32,
+        "avg_ret10_pct": 5.146,
+        "profit_factor": 5.579
+      },
+      "earnings_cross": {
+        "n": 6,
+        "win_rate_pct": 83.33,
+        "avg_ret10_pct": 10.115,
+        "profit_factor": 136.743
+      },
+      "no_earnings": {
+        "n": 32,
+        "win_rate_pct": 75.0,
+        "avg_ret10_pct": 4.215,
+        "profit_factor": 4.191
+      }
+    },
+    {
+      "vol_gt": 0.85,
+      "gap_gt": 0.16,
+      "candle_gt": 2.0,
+      "n": 44,
+      "earnings_cross_n": 8,
+      "earnings_cross_rate_pct": 18.18,
+      "no_earnings_n": 36,
+      "all": {
+        "n": 44,
+        "win_rate_pct": 72.73,
+        "avg_ret10_pct": 4.691,
+        "profit_factor": 4.651
+      },
+      "earnings_cross": {
+        "n": 8,
+        "win_rate_pct": 87.5,
+        "avg_ret10_pct": 9.477,
+        "profit_factor": 170.574
+      },
+      "no_earnings": {
+        "n": 36,
+        "win_rate_pct": 69.44,
+        "avg_ret10_pct": 3.627,
+        "profit_factor": 3.328
+      }
+    },
+    {
+      "vol_gt": 0.85,
+      "gap_gt": 0.16,
+      "candle_gt": 2.14,
+      "n": 42,
+      "earnings_cross_n": 8,
+      "earnings_cross_rate_pct": 19.05,
+      "no_earnings_n": 34,
+      "all": {
+        "n": 42,
+        "win_rate_pct": 76.19,
+        "avg_ret10_pct": 5.098,
+        "profit_factor": 5.386
+      },
+      "earnings_cross": {
+        "n": 8,
+        "win_rate_pct": 87.5,
+        "avg_ret10_pct": 9.477,
+        "profit_factor": 170.574
+      },
+      "no_earnings": {
+        "n": 34,
+        "win_rate_pct": 73.53,
+        "avg_ret10_pct": 4.068,
+        "profit_factor": 3.859
+      }
+    },
+    {
+      "vol_gt": 0.85,
+      "gap_gt": 0.16,
+      "candle_gt": 2.3,
+      "n": 38,
+      "earnings_cross_n": 6,
+      "earnings_cross_rate_pct": 15.79,
+      "no_earnings_n": 32,
+      "all": {
+        "n": 38,
+        "win_rate_pct": 76.32,
+        "avg_ret10_pct": 5.146,
+        "profit_factor": 5.579
+      },
+      "earnings_cross": {
+        "n": 6,
+        "win_rate_pct": 83.33,
+        "avg_ret10_pct": 10.115,
+        "profit_factor": 136.743
+      },
+      "no_earnings": {
+        "n": 32,
+        "win_rate_pct": 75.0,
+        "avg_ret10_pct": 4.215,
+        "profit_factor": 4.191
+      }
+    },
+    {
+      "vol_gt": 0.88,
+      "gap_gt": 0.1,
+      "candle_gt": 2.0,
+      "n": 45,
+      "earnings_cross_n": 8,
+      "earnings_cross_rate_pct": 17.78,
+      "no_earnings_n": 37,
+      "all": {
+        "n": 45,
+        "win_rate_pct": 75.56,
+        "avg_ret10_pct": 4.87,
+        "profit_factor": 5.4
+      },
+      "earnings_cross": {
+        "n": 8,
+        "win_rate_pct": 87.5,
+        "avg_ret10_pct": 9.477,
+        "profit_factor": 170.574
+      },
+      "no_earnings": {
+        "n": 37,
+        "win_rate_pct": 72.97,
+        "avg_ret10_pct": 3.873,
+        "profit_factor": 3.904
+      }
+    },
+    {
+      "vol_gt": 0.88,
+      "gap_gt": 0.1,
+      "candle_gt": 2.14,
+      "n": 42,
+      "earnings_cross_n": 8,
+      "earnings_cross_rate_pct": 19.05,
+      "no_earnings_n": 34,
+      "all": {
+        "n": 42,
+        "win_rate_pct": 78.57,
+        "avg_ret10_pct": 5.369,
+        "profit_factor": 6.359
+      },
+      "earnings_cross": {
+        "n": 8,
+        "win_rate_pct": 87.5,
+        "avg_ret10_pct": 9.477,
+        "profit_factor": 170.574
+      },
+      "no_earnings": {
+        "n": 34,
+        "win_rate_pct": 76.47,
+        "avg_ret10_pct": 4.403,
+        "profit_factor": 4.595
+      }
+    },
+    {
+      "vol_gt": 0.88,
+      "gap_gt": 0.1,
+      "candle_gt": 2.3,
+      "n": 38,
+      "earnings_cross_n": 6,
+      "earnings_cross_rate_pct": 15.79,
+      "no_earnings_n": 32,
+      "all": {
+        "n": 38,
+        "win_rate_pct": 78.95,
+        "avg_ret10_pct": 5.446,
+        "profit_factor": 6.753
+      },
+      "earnings_cross": {
+        "n": 6,
+        "win_rate_pct": 83.33,
+        "avg_ret10_pct": 10.115,
+        "profit_factor": 136.743
+      },
+      "no_earnings": {
+        "n": 32,
+        "win_rate_pct": 78.12,
+        "avg_ret10_pct": 4.57,
+        "profit_factor": 5.117
+      }
+    },
+    {
+      "vol_gt": 0.88,
+      "gap_gt": 0.13,
+      "candle_gt": 2.0,
+      "n": 44,
+      "earnings_cross_n": 8,
+      "earnings_cross_rate_pct": 18.18,
+      "no_earnings_n": 36,
+      "all": {
+        "n": 44,
+        "win_rate_pct": 75.0,
+        "avg_ret10_pct": 4.875,
+        "profit_factor": 5.307
+      },
+      "earnings_cross": {
+        "n": 8,
+        "win_rate_pct": 87.5,
+        "avg_ret10_pct": 9.477,
+        "profit_factor": 170.574
+      },
+      "no_earnings": {
+        "n": 36,
+        "win_rate_pct": 72.22,
+        "avg_ret10_pct": 3.852,
+        "profit_factor": 3.81
+      }
+    },
+    {
+      "vol_gt": 0.88,
+      "gap_gt": 0.13,
+      "candle_gt": 2.14,
+      "n": 41,
+      "earnings_cross_n": 8,
+      "earnings_cross_rate_pct": 19.51,
+      "no_earnings_n": 33,
+      "all": {
+        "n": 41,
+        "win_rate_pct": 78.05,
+        "avg_ret10_pct": 5.387,
+        "profit_factor": 6.249
+      },
+      "earnings_cross": {
+        "n": 8,
+        "win_rate_pct": 87.5,
+        "avg_ret10_pct": 9.477,
+        "profit_factor": 170.574
+      },
+      "no_earnings": {
+        "n": 33,
+        "win_rate_pct": 75.76,
+        "avg_ret10_pct": 4.395,
+        "profit_factor": 4.484
+      }
+    },
+    {
+      "vol_gt": 0.88,
+      "gap_gt": 0.13,
+      "candle_gt": 2.3,
+      "n": 37,
+      "earnings_cross_n": 6,
+      "earnings_cross_rate_pct": 16.22,
+      "no_earnings_n": 31,
+      "all": {
+        "n": 37,
+        "win_rate_pct": 78.38,
+        "avg_ret10_pct": 5.467,
+        "profit_factor": 6.624
+      },
+      "earnings_cross": {
+        "n": 6,
+        "win_rate_pct": 83.33,
+        "avg_ret10_pct": 10.115,
+        "profit_factor": 136.743
+      },
+      "no_earnings": {
+        "n": 31,
+        "win_rate_pct": 77.42,
+        "avg_ret10_pct": 4.568,
+        "profit_factor": 4.986
+      }
+    },
+    {
+      "vol_gt": 0.88,
+      "gap_gt": 0.16,
+      "candle_gt": 2.0,
+      "n": 43,
+      "earnings_cross_n": 8,
+      "earnings_cross_rate_pct": 18.6,
+      "no_earnings_n": 35,
+      "all": {
+        "n": 43,
+        "win_rate_pct": 74.42,
+        "avg_ret10_pct": 4.957,
+        "profit_factor": 5.28
+      },
+      "earnings_cross": {
+        "n": 8,
+        "win_rate_pct": 87.5,
+        "avg_ret10_pct": 9.477,
+        "profit_factor": 170.574
+      },
+      "no_earnings": {
+        "n": 35,
+        "win_rate_pct": 71.43,
+        "avg_ret10_pct": 3.923,
+        "profit_factor": 3.782
+      }
+    },
+    {
+      "vol_gt": 0.88,
+      "gap_gt": 0.16,
+      "candle_gt": 2.14,
+      "n": 41,
+      "earnings_cross_n": 8,
+      "earnings_cross_rate_pct": 19.51,
+      "no_earnings_n": 33,
+      "all": {
+        "n": 41,
+        "win_rate_pct": 78.05,
+        "avg_ret10_pct": 5.387,
+        "profit_factor": 6.249
+      },
+      "earnings_cross": {
+        "n": 8,
+        "win_rate_pct": 87.5,
+        "avg_ret10_pct": 9.477,
+        "profit_factor": 170.574
+      },
+      "no_earnings": {
+        "n": 33,
+        "win_rate_pct": 75.76,
+        "avg_ret10_pct": 4.395,
+        "profit_factor": 4.484
+      }
+    },
+    {
+      "vol_gt": 0.88,
+      "gap_gt": 0.16,
+      "candle_gt": 2.3,
+      "n": 37,
+      "earnings_cross_n": 6,
+      "earnings_cross_rate_pct": 16.22,
+      "no_earnings_n": 31,
+      "all": {
+        "n": 37,
+        "win_rate_pct": 78.38,
+        "avg_ret10_pct": 5.467,
+        "profit_factor": 6.624
+      },
+      "earnings_cross": {
+        "n": 6,
+        "win_rate_pct": 83.33,
+        "avg_ret10_pct": 10.115,
+        "profit_factor": 136.743
+      },
+      "no_earnings": {
+        "n": 31,
+        "win_rate_pct": 77.42,
+        "avg_ret10_pct": 4.568,
+        "profit_factor": 4.986
+      }
+    },
+    {
+      "vol_gt": 0.95,
+      "gap_gt": 0.1,
+      "candle_gt": 2.0,
+      "n": 42,
+      "earnings_cross_n": 7,
+      "earnings_cross_rate_pct": 16.67,
+      "no_earnings_n": 35,
+      "all": {
+        "n": 42,
+        "win_rate_pct": 76.19,
+        "avg_ret10_pct": 4.568,
+        "profit_factor": 5.19
+      },
+      "earnings_cross": {
+        "n": 7,
+        "win_rate_pct": 85.71,
+        "avg_ret10_pct": 7.043,
+        "profit_factor": 111.273
+      },
+      "no_earnings": {
+        "n": 35,
+        "win_rate_pct": 74.29,
+        "avg_ret10_pct": 4.073,
+        "profit_factor": 4.144
+      }
+    },
+    {
+      "vol_gt": 0.95,
+      "gap_gt": 0.1,
+      "candle_gt": 2.14,
+      "n": 40,
+      "earnings_cross_n": 7,
+      "earnings_cross_rate_pct": 17.5,
+      "no_earnings_n": 33,
+      "all": {
+        "n": 40,
+        "win_rate_pct": 77.5,
+        "avg_ret10_pct": 4.856,
+        "profit_factor": 5.616
+      },
+      "earnings_cross": {
+        "n": 7,
+        "win_rate_pct": 85.71,
+        "avg_ret10_pct": 7.043,
+        "profit_factor": 111.273
+      },
+      "no_earnings": {
+        "n": 33,
+        "win_rate_pct": 75.76,
+        "avg_ret10_pct": 4.392,
+        "profit_factor": 4.481
+      }
+    },
+    {
+      "vol_gt": 0.95,
+      "gap_gt": 0.1,
+      "candle_gt": 2.3,
+      "n": 36,
+      "earnings_cross_n": 5,
+      "earnings_cross_rate_pct": 13.89,
+      "no_earnings_n": 31,
+      "all": {
+        "n": 36,
+        "win_rate_pct": 77.78,
+        "avg_ret10_pct": 4.88,
+        "profit_factor": 5.884
+      },
+      "earnings_cross": {
+        "n": 5,
+        "win_rate_pct": 80.0,
+        "avg_ret10_pct": 6.835,
+        "profit_factor": 77.443
+      },
+      "no_earnings": {
+        "n": 31,
+        "win_rate_pct": 77.42,
+        "avg_ret10_pct": 4.564,
+        "profit_factor": 4.983
+      }
+    },
+    {
+      "vol_gt": 0.95,
+      "gap_gt": 0.13,
+      "candle_gt": 2.0,
+      "n": 41,
+      "earnings_cross_n": 7,
+      "earnings_cross_rate_pct": 17.07,
+      "no_earnings_n": 34,
+      "all": {
+        "n": 41,
+        "win_rate_pct": 75.61,
+        "avg_ret10_pct": 4.567,
+        "profit_factor": 5.088
+      },
+      "earnings_cross": {
+        "n": 7,
+        "win_rate_pct": 85.71,
+        "avg_ret10_pct": 7.043,
+        "profit_factor": 111.273
+      },
+      "no_earnings": {
+        "n": 34,
+        "win_rate_pct": 73.53,
+        "avg_ret10_pct": 4.057,
+        "profit_factor": 4.041
+      }
+    },
+    {
+      "vol_gt": 0.95,
+      "gap_gt": 0.13,
+      "candle_gt": 2.14,
+      "n": 39,
+      "earnings_cross_n": 7,
+      "earnings_cross_rate_pct": 17.95,
+      "no_earnings_n": 32,
+      "all": {
+        "n": 39,
+        "win_rate_pct": 76.92,
+        "avg_ret10_pct": 4.861,
+        "profit_factor": 5.506
+      },
+      "earnings_cross": {
+        "n": 7,
+        "win_rate_pct": 85.71,
+        "avg_ret10_pct": 7.043,
+        "profit_factor": 111.273
+      },
+      "no_earnings": {
+        "n": 32,
+        "win_rate_pct": 75.0,
+        "avg_ret10_pct": 4.384,
+        "profit_factor": 4.37
+      }
+    },
+    {
+      "vol_gt": 0.95,
+      "gap_gt": 0.13,
+      "candle_gt": 2.3,
+      "n": 35,
+      "earnings_cross_n": 5,
+      "earnings_cross_rate_pct": 14.29,
+      "no_earnings_n": 30,
+      "all": {
+        "n": 35,
+        "win_rate_pct": 77.14,
+        "avg_ret10_pct": 4.887,
+        "profit_factor": 5.755
+      },
+      "earnings_cross": {
+        "n": 5,
+        "win_rate_pct": 80.0,
+        "avg_ret10_pct": 6.835,
+        "profit_factor": 77.443
+      },
+      "no_earnings": {
+        "n": 30,
+        "win_rate_pct": 76.67,
+        "avg_ret10_pct": 4.562,
+        "profit_factor": 4.853
+      }
+    },
+    {
+      "vol_gt": 0.95,
+      "gap_gt": 0.16,
+      "candle_gt": 2.0,
+      "n": 40,
+      "earnings_cross_n": 7,
+      "earnings_cross_rate_pct": 17.5,
+      "no_earnings_n": 33,
+      "all": {
+        "n": 40,
+        "win_rate_pct": 75.0,
+        "avg_ret10_pct": 4.647,
+        "profit_factor": 5.059
+      },
+      "earnings_cross": {
+        "n": 7,
+        "win_rate_pct": 85.71,
+        "avg_ret10_pct": 7.043,
+        "profit_factor": 111.273
+      },
+      "no_earnings": {
+        "n": 33,
+        "win_rate_pct": 72.73,
+        "avg_ret10_pct": 4.139,
+        "profit_factor": 4.012
+      }
+    },
+    {
+      "vol_gt": 0.95,
+      "gap_gt": 0.16,
+      "candle_gt": 2.14,
+      "n": 39,
+      "earnings_cross_n": 7,
+      "earnings_cross_rate_pct": 17.95,
+      "no_earnings_n": 32,
+      "all": {
+        "n": 39,
+        "win_rate_pct": 76.92,
+        "avg_ret10_pct": 4.861,
+        "profit_factor": 5.506
+      },
+      "earnings_cross": {
+        "n": 7,
+        "win_rate_pct": 85.71,
+        "avg_ret10_pct": 7.043,
+        "profit_factor": 111.273
+      },
+      "no_earnings": {
+        "n": 32,
+        "win_rate_pct": 75.0,
+        "avg_ret10_pct": 4.384,
+        "profit_factor": 4.37
+      }
+    },
+    {
+      "vol_gt": 0.95,
+      "gap_gt": 0.16,
+      "candle_gt": 2.3,
+      "n": 35,
+      "earnings_cross_n": 5,
+      "earnings_cross_rate_pct": 14.29,
+      "no_earnings_n": 30,
+      "all": {
+        "n": 35,
+        "win_rate_pct": 77.14,
+        "avg_ret10_pct": 4.887,
+        "profit_factor": 5.755
+      },
+      "earnings_cross": {
+        "n": 5,
+        "win_rate_pct": 80.0,
+        "avg_ret10_pct": 6.835,
+        "profit_factor": 77.443
+      },
+      "no_earnings": {
+        "n": 30,
+        "win_rate_pct": 76.67,
+        "avg_ret10_pct": 4.562,
+        "profit_factor": 4.853
+      }
+    }
+  ],
+  "envelope_n": 46,
+  "unique_codes_queried": 46,
+  "caveat": "Entry thresholds are post-hoc. Earnings schedules are reconstructed only from records published on or before each signal date."
+}
