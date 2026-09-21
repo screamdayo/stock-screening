@@ -1,0 +1,58 @@
+name: GC Seq2 Score Pseudo OOS
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'scripts/backtest_gc_seq2_score_pseudo_oos.py'
+
+permissions:
+  contents: write
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Checkout public code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Checkout private J-Quants data
+        uses: actions/checkout@v4
+        with:
+          repository: screamdayo/stock-screening-data
+          token: ${{ secrets.STOCK_SCREENING_DATA_TOKEN }}
+          path: .private-data
+          sparse-checkout: |
+            data/batches
+          sparse-checkout-cone-mode: false
+
+      - name: Mount private data
+        run: |
+          mkdir -p data
+          ln -sfn "$GITHUB_WORKSPACE/.private-data/data/batches" data/batches
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - run: pip install pandas pyarrow numpy
+
+      - name: Run GC seq2 score study
+        run: python scripts/backtest_gc_seq2_score_pseudo_oos.py
+
+      - name: Commit results
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "4189822+github-actions[bot]@users.noreply.github.com"
+          git add results/gc_seq2_score_pseudo_oos_summary.json results/gc_seq2_score_pseudo_oos_trades.csv
+          if git diff --cached --quiet; then
+            echo "No result changes."
+            exit 0
+          fi
+          git commit -m "Run GC seq2 score pseudo-OOS study"
+          git pull --rebase origin main
+          git push origin HEAD:main
