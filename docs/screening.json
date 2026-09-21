@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-21T07:18:10",
+  "generated_at": "2026-09-21T13:58:43",
   "strategy": "ma5_breakout",
   "count": 5,
   "items": [
@@ -23,7 +23,10 @@
       "atr14_pct": 4.49,
       "dd20_pct": -5.157,
       "runner_score": 3.0,
-      "name": "テクセンドフォトマスク"
+      "name": "テクセンドフォトマスク",
+      "earnings_within_10bd": false,
+      "earnings_date": null,
+      "earnings_business_days": null
     },
     {
       "code": "4587",
@@ -45,7 +48,10 @@
       "atr14_pct": 3.264,
       "dd20_pct": -3.993,
       "runner_score": 3.0,
-      "name": "ペプチドリーム"
+      "name": "ペプチドリーム",
+      "earnings_within_10bd": false,
+      "earnings_date": null,
+      "earnings_business_days": null
     },
     {
       "code": "5715",
@@ -67,7 +73,10 @@
       "atr14_pct": 3.973,
       "dd20_pct": -6.63,
       "runner_score": 4.0,
-      "name": "古河機械金属"
+      "name": "古河機械金属",
+      "earnings_within_10bd": false,
+      "earnings_date": null,
+      "earnings_business_days": null
     },
     {
       "code": "6723",
@@ -89,7 +98,10 @@
       "atr14_pct": 4.302,
       "dd20_pct": -3.471,
       "runner_score": 3.0,
-      "name": "ルネサスエレクトロニクス"
+      "name": "ルネサスエレクトロニクス",
+      "earnings_within_10bd": false,
+      "earnings_date": null,
+      "earnings_business_days": null
     },
     {
       "code": "8035",
@@ -111,7 +123,10 @@
       "atr14_pct": 4.356,
       "dd20_pct": -5.9,
       "runner_score": 4.0,
-      "name": "東京エレクトロン"
+      "name": "東京エレクトロン",
+      "earnings_within_10bd": false,
+      "earnings_date": null,
+      "earnings_business_days": null
     }
   ]
 }
