@@ -11,8 +11,10 @@
 html{
   min-height:100%;
   background:
-    conic-gradient(from 90deg at 2px 2px,var(--bg1) 25%,var(--bg2) 0 50%,var(--bg1) 0 75%,var(--bg2) 0)
-    0 0/34px 34px;
+    linear-gradient(45deg, var(--bg1) 25%, transparent 25%, transparent 75%, var(--bg1) 75%, var(--bg1)),
+    linear-gradient(45deg, var(--bg2) 25%, transparent 25%, transparent 75%, var(--bg2) 75%, var(--bg2));
+  background-position:0 0,17px 17px;
+  background-size:34px 34px;
   image-rendering:pixelated;
 }
 body{
