@@ -1,0 +1,97 @@
+{
+  "definition": "After-close assumption: earnings reaction = SchDate close to next trading session open. Signal-cross means a schedule known on signal day falls within the next 10 trading sessions.",
+  "strong_breakout_earnings": {
+    "n": 8,
+    "gap_up_rate_pct": 75.0,
+    "avg_next_open_gap_pct": 6.21,
+    "median_next_open_gap_pct": 5.239,
+    "gap_5pct_plus_rate_pct": 50.0,
+    "gap_minus5pct_or_worse_rate_pct": 0.0
+  },
+  "all_base_gc_seq2_earnings": {
+    "n": 68,
+    "gap_up_rate_pct": 51.47,
+    "avg_next_open_gap_pct": 1.397,
+    "median_next_open_gap_pct": 0.177,
+    "gap_5pct_plus_rate_pct": 19.12,
+    "gap_minus5pct_or_worse_rate_pct": 10.29
+  },
+  "same_companies_all_earnings": {
+    "n": 320,
+    "gap_up_rate_pct": 44.69,
+    "avg_next_open_gap_pct": 0.088,
+    "median_next_open_gap_pct": -0.043,
+    "gap_5pct_plus_rate_pct": 15.31,
+    "gap_minus5pct_or_worse_rate_pct": 14.69
+  },
+  "same_companies_other_earnings": {
+    "n": 312,
+    "gap_up_rate_pct": 43.91,
+    "avg_next_open_gap_pct": -0.069,
+    "median_next_open_gap_pct": -0.076,
+    "gap_5pct_plus_rate_pct": 14.42,
+    "gap_minus5pct_or_worse_rate_pct": 15.06
+  },
+  "counts": {
+    "base_signals": 285,
+    "base_earnings_cross": 68,
+    "strong_earnings_cross": 8,
+    "strong_company_count": 8
+  },
+  "strong_events": [
+    {
+      "code": "3101",
+      "signal_date": "2026-05-08",
+      "earnings_date": "2026-05-12",
+      "next_open_gap_pct": 4.8121292023731055
+    },
+    {
+      "code": "3107",
+      "signal_date": "2020-10-23",
+      "earnings_date": "2020-11-05",
+      "next_open_gap_pct": -1.5082956259426794
+    },
+    {
+      "code": "3922",
+      "signal_date": "2020-12-24",
+      "earnings_date": "2021-01-12",
+      "next_open_gap_pct": 15.8311345646438
+    },
+    {
+      "code": "4345",
+      "signal_date": "2020-04-28",
+      "earnings_date": "2020-04-30",
+      "next_open_gap_pct": 0.49342105263157077
+    },
+    {
+      "code": "5714",
+      "signal_date": "2026-05-07",
+      "earnings_date": "2026-05-14",
+      "next_open_gap_pct": 18.553615960099744
+    },
+    {
+      "code": "6272",
+      "signal_date": "2020-04-30",
+      "earnings_date": "2020-05-13",
+      "next_open_gap_pct": -0.8422664624808562
+    },
+    {
+      "code": "6310",
+      "signal_date": "2026-05-01",
+      "earnings_date": "2026-05-15",
+      "next_open_gap_pct": 6.674144699943918
+    },
+    {
+      "code": "8570",
+      "signal_date": "2020-10-02",
+      "earnings_date": "2020-10-07",
+      "next_open_gap_pct": 5.665722379603388
+    }
+  ],
+  "caveats": [
+    "Strong-breakout thresholds were discovered post-hoc; 8 events is a very small sample.",
+    "Historical universe is current-Prime survivors.",
+    "Actual announcement times are unavailable here; events are treated as after-close releases.",
+    "Same-company baseline does not control for quarter, year, industry, or market regime."
+  ]
+}
