@@ -1,0 +1,92 @@
+{
+  "method": "Pseudo out-of-sample: derive thresholds from older 5y only, freeze them, then evaluate recent 5y untouched.",
+  "split_date": "2021-09-20",
+  "learned_from_older5_only": {
+    "atr14_pct_q75": 2.917505,
+    "dd20_pct_q25": -5.855856,
+    "avg_turnover20_q75_yen": 828434090.0
+  },
+  "variants": {
+    "baseline": {
+      "train_older5": {
+        "n": 2957,
+        "win_rate_pct": 48.56,
+        "avg_ret10_pct": 0.382,
+        "median_ret10_pct": -0.135,
+        "p5_plus_pct": 20.53,
+        "p10_plus_pct": 7.14,
+        "profit_factor": 1.163
+      },
+      "test_recent5": {
+        "n": 2889,
+        "win_rate_pct": 51.71,
+        "avg_ret10_pct": 0.506,
+        "median_ret10_pct": 0.27,
+        "p5_plus_pct": 18.86,
+        "p10_plus_pct": 5.37,
+        "profit_factor": 1.246
+      }
+    },
+    "atr_only": {
+      "train_older5": {
+        "n": 740,
+        "win_rate_pct": 50.0,
+        "avg_ret10_pct": 1.238,
+        "median_ret10_pct": 0.034,
+        "p5_plus_pct": 27.3,
+        "p10_plus_pct": 12.7,
+        "profit_factor": 1.51
+      },
+      "test_recent5": {
+        "n": 588,
+        "win_rate_pct": 55.44,
+        "avg_ret10_pct": 1.277,
+        "median_ret10_pct": 0.915,
+        "p5_plus_pct": 25.85,
+        "p10_plus_pct": 11.39,
+        "profit_factor": 1.545
+      }
+    },
+    "atr_plus_dd20": {
+      "train_older5": {
+        "n": 313,
+        "win_rate_pct": 50.16,
+        "avg_ret10_pct": 1.155,
+        "median_ret10_pct": 0.068,
+        "p5_plus_pct": 27.48,
+        "p10_plus_pct": 12.46,
+        "profit_factor": 1.443
+      },
+      "test_recent5": {
+        "n": 246,
+        "win_rate_pct": 63.01,
+        "avg_ret10_pct": 2.537,
+        "median_ret10_pct": 2.289,
+        "p5_plus_pct": 32.52,
+        "p10_plus_pct": 13.82,
+        "profit_factor": 2.397
+      }
+    },
+    "atr_plus_turnover": {
+      "train_older5": {
+        "n": 185,
+        "win_rate_pct": 52.97,
+        "avg_ret10_pct": 1.127,
+        "median_ret10_pct": 0.519,
+        "p5_plus_pct": 29.73,
+        "p10_plus_pct": 12.97,
+        "profit_factor": 1.43
+      },
+      "test_recent5": {
+        "n": 208,
+        "win_rate_pct": 58.17,
+        "avg_ret10_pct": 2.055,
+        "median_ret10_pct": 1.409,
+        "p5_plus_pct": 28.85,
+        "p10_plus_pct": 12.98,
+        "profit_factor": 1.919
+      }
+    }
+  },
+  "caveat": "Historical universe is current-Prime survivors, so survivorship bias remains. This is pseudo-OOS, not a fully clean historical-universe OOS test."
+}
