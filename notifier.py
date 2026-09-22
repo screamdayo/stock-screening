@@ -299,8 +299,11 @@ def notify_pinch_to_chance(sensor):
         f"安値切り上げ **YES**\n"
         f"✅ 固定条件：反転率1%以上 + TOPIX+3%以上 + 安値切り上げ\n"
         f"🏆 本番選別：**DD20が深い順 TOP3**（4〜5位は参考）\n"
-        f"⏱️ 検証上の出口目安：**{sensor.get('exit_guide_business_days', 15)}営業日**\n\n"
-        f"{candidates_text}\n\n"
+        f"🟢 入口：**{sensor.get('entry_rule', '翌営業日寄り')}**"
+        + (f"（{sensor.get('planned_entry_date')}）\n" if sensor.get("planned_entry_date") else "\n")
+        + f"🔴 出口：**{sensor.get('exit_rule', '41営業日目の寄り')}**"
+        + (f"（{sensor.get('planned_exit_date')}）\n\n" if sensor.get("planned_exit_date") else "\n\n")
+        + f"{candidates_text}\n\n"
         f"📈 **専用ページ**\n{PINCH_SENSOR_VIEW_URL}"
     )
     _post_long(msg)
