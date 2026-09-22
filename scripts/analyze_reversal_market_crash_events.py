@@ -29,3 +29,5 @@ def main():
  OUT.write_text(json.dumps({"definition":"coarse reversal count >=20; stress dates within 10 calendar days clustered as one event","events":events},ensure_ascii=False,indent=2),encoding="utf-8")
  print(json.dumps(events,ensure_ascii=False,indent=2))
 if __name__=="__main__":main()
+
+# trigger
