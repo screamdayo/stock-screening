@@ -45,6 +45,8 @@ CANDIDATE_VOL_RATIO20_MIN = 1.5
 EXIT_GUIDE_BUSINESS_DAYS = 41
 MAIN_PICK_COUNT = 3
 REFERENCE_PICK_COUNT = 2
+SINGLE_STOCK_CAP_PCT = 65
+LOT_SIZE = 100
 
 
 def _prepare(group):
@@ -230,6 +232,10 @@ def evaluate(price_df, target_codes):
         "planned_entry_date": trade_plan["planned_entry_date"],
         "planned_exit_date": trade_plan["planned_exit_date"],
         "ranking_rule": "DD20が深い順",
+        "allocation_rule": "DD20順位順に1銘柄最大65%、100株単位、TOP3まで。余りは現金",
+        "single_stock_cap_pct": SINGLE_STOCK_CAP_PCT,
+        "lot_size": LOT_SIZE,
+        "allocation_candidate_pool": "TOP3",
         "main_pick_count": MAIN_PICK_COUNT,
         "reference_pick_count": REFERENCE_PICK_COUNT,
         "candidate_count": len(candidates) if active else 0,
