@@ -31,6 +31,7 @@ import market_breadth
 import earnings_warning
 import pinch_to_chance
 import selling_climax
+import crash_cycle
 from strategies import registry
 from logger import get_logger
 
@@ -108,12 +109,18 @@ def run():
         latest_signal_date,
     )
 
-    logger.info("統合フォワード検証ログ更新中（くいっと / GC / ピンチ）...")
+    logger.info("セリクラ→ピンチ状態を更新中...")
+    cycle_state = crash_cycle.update_state(price_df, selling_sensor, pinch_sensor)
+    selling_sensor["cycle_state"] = cycle_state
+    pinch_sensor["cycle_state"] = cycle_state
+
+    logger.info("統合フォワード検証ログ更新中（くいっと / GC / ピンチ / セリクラ）...")
     forward_test.update_forward_test(
         price_df,
         code_to_name,
         gc_results=gc_results,
         pinch_sensor=pinch_sensor,
+        selling_sensor=selling_sensor,
     )
 
     logger.info("Discord通知中...")
