@@ -39,6 +39,38 @@
         "max_hold_days": 15,
         "max_hold_exit": "15th trading-day close alert -> next trading-day open"
       }
+    },
+    {
+      "version": "gc_strong_breakout_v1_2026-09-22",
+      "effective_from": "2026-09-22",
+      "strategy": "gc_strong_breakout",
+      "entry": {
+        "signal": "production gc_strong_breakout",
+        "entry": "next trading-day open",
+        "gap_cap": null
+      },
+      "exit": {
+        "fixed_hold_days": 10,
+        "exit": "open after 10 trading days from entry",
+        "stop_loss": null
+      }
+    },
+    {
+      "version": "pinch_to_chance_v1_2026-09-22_top3_41d",
+      "effective_from": "2026-09-22",
+      "strategy": "pinch_to_chance",
+      "entry": {
+        "signal": "market sensor active + individual anchor",
+        "ranking": "DD20 deepest first",
+        "selected": "top 3",
+        "entry": "next trading-day open",
+        "gap_cap": null
+      },
+      "exit": {
+        "fixed_hold_days": 41,
+        "exit": "open after 41 trading days from entry",
+        "stop_loss": null
+      }
     }
   ]
 }
