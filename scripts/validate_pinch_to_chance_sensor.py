@@ -46,3 +46,5 @@ def main():
   rs=[r for r in candidates if r["year"]==y];yearly[str(y)]={"events":len(set(r["event"] for r in rs)),"days":len(rs),"r5":met([x for r in rs for x in r["r5"]]),"r10":met([x for r in rs for x in r["r10"]]),"r15":met([x for r in rs for x in r["r15"]])}
  OUT.write_text(json.dumps({"sensor":"crowd>=20 + TOPIX ret1>=3% + TOPIX low>prior low; individual anchor ret5<=-12, dd20<=-20, candle>=2, volratio>=1.5","candidates":[{k:v for k,v in r.items() if k not in ["r5","r10","r15"]} for r in candidates],"overall":{"r5":met([x for r in candidates for x in r["r5"]]),"r10":met([x for r in candidates for x in r["r10"]]),"r15":met([x for r in candidates for x in r["r15"]])},"events":ev,"yearly":yearly,"leave_one_event_out":loo},ensure_ascii=False,indent=2),encoding="utf-8")
 if __name__=="__main__":main()
+
+# trigger validation
