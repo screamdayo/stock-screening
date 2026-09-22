@@ -22,6 +22,7 @@ a{color:var(--d)}.nav{text-align:center;font-size:11px}.empty{padding:18px;text-
 <div class="cell"><div class="k">仕掛け予定日</div><div id="entryDate" class="v">—</div></div>
 <div class="cell"><div class="k">決済予定日</div><div id="exitDate" class="v">—</div></div>
 </div>
+<div class="note" id="cycle">サイクル状態を読込中…</div>
 <div class="note">先行センサー。発動後は <a href="pinch.html">ピンチをチャンスにセンサー</a> の底打ち確認待ち。固定条件：TOPIX -2%以下 / DD20 -15%以下 / 強反転比率10%以上。</div>
 </div>
 <div class="box"><div class="sub">PRIMARY PICKS</div><h1>🏆 本命 TOP3</h1><div class="sub">DD20が深い順。1銘柄最大80%、100株単位で #1 → #2 → #3。</div><div id="maincand" class="empty">読込中…</div></div>
@@ -31,7 +32,7 @@ a{color:var(--d)}.nav{text-align:center;font-size:11px}.empty{padding:18px;text-
 <script>
 const f=(n,d=2)=>n==null?'—':Number(n).toFixed(d);
 async function load(){try{
-let r=await fetch('selling_climax_sensor.json?v='+Date.now(),{cache:'no-store'});if(!r.ok)throw Error(r.status);let x=await r.json();
+let [r,sr]=await Promise.all([fetch('selling_climax_sensor.json?v='+Date.now(),{cache:'no-store'}),fetch('crash_cycle_state.json?v='+Date.now(),{cache:'no-store'})]);if(!r.ok)throw Error(r.status);let x=await r.json();let s=sr.ok?await sr.json():{};
 meta.textContent=(x.signal_date||'').slice(0,10)+' / '+(x.generated_at||'').replace('T',' ').slice(0,19);
 status.textContent=x.active?'発動中':'待機中';status.className='status '+(x.active?'on':'off');
 ret.textContent=(x.topix_return_pct>=0?'+':'')+f(x.topix_return_pct,3)+'%';
@@ -39,6 +40,11 @@ dd.textContent=f(x.topix_dd20_pct,3)+'%';
 share.textContent=f(x.anchor_share_pct,3)+'% ('+(x.anchor_count??0)+'/'+(x.coarse_reversal_count??0)+')';
 cap.textContent=(x.single_stock_cap_pct??80)+'%';
 entryDate.textContent=x.planned_entry_date||'発動時に算出';exitDate.textContent=x.planned_exit_date||'発動時に算出';
+if(s.status==='waiting_for_pinch'){cycle.innerHTML='⏳ <b>ピンチ確認待ち</b>：セリクラ '+(s.selling_climax_date||'—')+' から <b>'+(s.business_days_since_selling??0)+'営業日</b>経過';}
+else if(s.status==='pinch_confirmed'){cycle.innerHTML='✅ <b>ピンチ確認済み</b>：セリクラ '+(s.selling_climax_date||'—')+' → ピンチ '+(s.pinch_date||'—')+'（<b>'+(s.confirmed_after_business_days??'—')+'営業日後</b>）';}
+else if(s.status==='pinch_without_selling'){cycle.innerHTML='ℹ️ <b>ピンチ単独発動</b>：先行セリクラなし';}
+else if(s.status==='expired'){cycle.innerHTML='⌛ セリクラ後30営業日以内にピンチ未確認';}
+else{cycle.textContent='現在の暴落サイクル：待機中';}
 let a=x.candidates||[],m=x.main_candidates||[],q=x.reference_candidates||[];
 const tbl=z=>'<table><thead><tr><th>順位 / 銘柄</th><th>DD20</th><th>5日</th><th>陽線</th><th>出来高</th></tr></thead><tbody>'+z.map(v=>'<tr><td>#'+(v.dd20_rank??'—')+' '+(v.name||'')+' ('+v.code+')</td><td>'+f(v.dd20_pct)+'%</td><td>'+f(v.ret5_pct)+'%</td><td>+'+f(v.bull_candle_pct)+'%</td><td>'+f(v.volume_ratio20)+'x</td></tr>').join('')+'</tbody></table>';
 if(!x.active){maincand.innerHTML=refcand.innerHTML=cand.innerHTML='<div class="empty">売り尽くしセンサー未発動。</div>';return}
