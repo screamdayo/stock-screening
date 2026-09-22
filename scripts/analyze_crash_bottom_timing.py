@@ -35,3 +35,5 @@ def main():
  OUT.write_text(json.dumps({"rows":rows,"groups":groups},ensure_ascii=False,indent=2),encoding="utf-8")
  print(json.dumps({"groups":groups,"rows":rows},ensure_ascii=False,indent=2))
 if __name__=="__main__":main()
+
+# trigger
