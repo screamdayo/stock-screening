@@ -29,6 +29,7 @@ import sell_monitor
 import forward_test
 import market_breadth
 import earnings_warning
+import pinch_to_chance
 from strategies import registry
 from logger import get_logger
 
@@ -91,9 +92,19 @@ def run():
     logger.info("市場地合いログ更新中...")
     market_breadth.update_market_breadth(price_df)
 
+    logger.info("ピンチをチャンスにセンサー判定中...")
+    pinch_sensor = pinch_to_chance.evaluate(price_df, target_codes)
+    for r in pinch_sensor.get("candidates", []):
+        r["name"] = code_to_name.get(r["code"], "")
+    earnings_warning.add_earnings_warnings(
+        pinch_sensor.get("candidates", []),
+        latest_signal_date,
+    )
+
     logger.info("Discord通知中...")
     notifier.notify(results)
     notifier.notify_gc_strong_breakout(gc_results)
+    notifier.notify_pinch_to_chance(pinch_sensor)
 
     logger.info("GitHub Pages用データを出力中...")
     export_docs_prices.export_docs(
@@ -102,6 +113,7 @@ def run():
         code_to_name,
         results,
         gc_results,
+        pinch_sensor,
     )
 
     logger.info("=== 完了 ===")
