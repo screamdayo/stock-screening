@@ -83,3 +83,5 @@ def main():
       "caveat":"Current sector classification is applied to historical candidate dates; classification history is not reconstructed."},ensure_ascii=False,indent=2),encoding="utf-8")
     print(json.dumps(rows,ensure_ascii=False,indent=2))
 if __name__=="__main__":main()
+
+# trigger
