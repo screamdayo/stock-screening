@@ -15,6 +15,7 @@ logger = get_logger(__name__)
 
 SCREENING_VIEW_URL = "https://screamdayo.github.io/stock-screening/screening.html"
 GC_SCREENING_VIEW_URL = "https://screamdayo.github.io/stock-screening/gc.html"
+PINCH_SENSOR_VIEW_URL = "https://screamdayo.github.io/stock-screening/pinch.html"
 NEXT_OPEN_GAP_MAX_PCT = 0.5
 STOP_LOSS_PCT = 5.0
 
@@ -235,6 +236,56 @@ def notify_gc_strong_breakout(results):
         f"⏱️ **出口検証の山：9〜10営業日**（固定10日が平均利益最大、9日はPF高め）\n\n"
         + "\n\n".join(lines)
         + f"\n\n📈 **GC専用ページ**\n{GC_SCREENING_VIEW_URL}"
+    )
+    _post_long(msg)
+
+
+def notify_pinch_to_chance(sensor):
+    """暴落後の底打ち確認センサー。未発動時は通知しない。"""
+    if not sensor or not sensor.get("active"):
+        if sensor:
+            logger.info(
+                "ピンチをチャンスに通知なし（待機中: 反転率%s%% / TOPIX%s%% / 安値切上げ=%s）",
+                sensor.get("reversal_rate_pct"),
+                sensor.get("topix_return_pct"),
+                sensor.get("topix_low_up"),
+            )
+        return
+
+    signal_date = sensor.get("signal_date")
+    if hasattr(signal_date, "strftime"):
+        day = signal_date.strftime("%Y/%m/%d")
+    else:
+        day = str(signal_date or datetime.now().strftime("%Y/%m/%d"))[:10].replace("-", "/")
+
+    lines = []
+    for r in sensor.get("candidates", []):
+        label = _stock_label(r)
+        detail = [
+            f"5日 {r.get('ret5_pct', 0):+.2f}%",
+            f"DD20 {r.get('dd20_pct', 0):+.2f}%",
+            f"当日 {r.get('bull_candle_pct', 0):+.2f}%",
+            f"出来高20日比 {r.get('volume_ratio20', 0):.2f}倍",
+        ]
+        earnings_note = ""
+        if r.get("earnings_within_10bd"):
+            ed = r.get("earnings_date") or "日付不明"
+            bd = r.get("earnings_business_days")
+            when = f"（{bd}営業日後 / {ed}）" if bd is not None else f"（{ed}）"
+            earnings_note = f"\n   ⚠️ **10営業日以内に決算あり** {when}"
+        lines.append(f"🔥 **{label}** — " + " / ".join(detail) + earnings_note)
+
+    candidates_text = "\n\n".join(lines) if lines else "個別候補なし"
+    msg = (
+        f"🚨 **ピンチをチャンスにセンサー発動 {day}**\n"
+        f"市場反転率 **{sensor.get('reversal_rate_pct', 0):.3f}%** "
+        f"（{sensor.get('coarse_reversal_count', 0)}/{sensor.get('universe_n', 0)}）\n"
+        f"TOPIX **{sensor.get('topix_return_pct', 0):+.3f}%** / "
+        f"安値切り上げ **YES**\n"
+        f"✅ 固定条件：反転率1%以上 + TOPIX+3%以上 + 安値切り上げ\n"
+        f"⏱️ 検証上の出口目安：**{sensor.get('exit_guide_business_days', 15)}営業日**\n\n"
+        f"{candidates_text}\n\n"
+        f"📈 **専用ページ**\n{PINCH_SENSOR_VIEW_URL}"
     )
     _post_long(msg)
 
