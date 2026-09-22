@@ -1,0 +1,23 @@
+name: Pinch Top3 vs Top5 Capital Efficiency
+on:
+  workflow_dispatch:
+  push:
+    paths: ['scripts/analyze_pinch_top3_vs_top5.py']
+permissions: {contents: write}
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.11"}
+      - run: pip install pandas
+      - run: python scripts/analyze_pinch_top3_vs_top5.py
+      - run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add results/pinch_top3_vs_top5_capital_efficiency.json
+          git diff --cached --quiet && exit 0
+          git commit -m "Run pinch top3 vs top5 capital efficiency"
+          git pull --rebase origin main
+          git push
