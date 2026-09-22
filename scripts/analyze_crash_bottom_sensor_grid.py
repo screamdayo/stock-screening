@@ -53,3 +53,5 @@ def main():
  OUT.write_text(json.dumps({"rules":rules,"rows":[{k:v for k,v in r.items() if k!="ret15"} for r in rows]},ensure_ascii=False,indent=2),encoding="utf-8")
  print(json.dumps(rules,ensure_ascii=False,indent=2))
 if __name__=="__main__":main()
+
+# trigger run
