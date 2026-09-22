@@ -43,3 +43,5 @@ def main():
  OUT.write_text(json.dumps({"definition":"coarse reversal count / current-Prime archive codes with valid OHLC that day","grid":rows,"detected_date_ratios":key,"caveat":"Current-Prime survivor-biased archive denominator; ratio is internally consistent but not historical TOPIX membership."},ensure_ascii=False,indent=2),encoding="utf-8")
  print(json.dumps(rows,ensure_ascii=False,indent=2))
 if __name__=="__main__":main()
+
+# trigger
