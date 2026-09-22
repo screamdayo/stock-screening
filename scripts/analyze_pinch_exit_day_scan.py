@@ -6,9 +6,9 @@ import pandas as pd
 
 BATCH=Path("data/batches")
 TR=Path("results/reversal_signal_baseline_trades.csv")
-OUT=Path("results/pinch_exit_day_scan.json")
+OUT=Path("results/pinch_exit_day_scan_60d.json")
 DATES=pd.to_datetime(["2018-12-27","2020-04-06","2022-03-10","2024-08-06","2025-04-08"])
-HOLDS=list(range(8,31))
+HOLDS=list(range(8,61))
 SLOTS=3
 
 def load_candidates():
