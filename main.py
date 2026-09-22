@@ -11,8 +11,8 @@ GitHub Actionsからは `python main.py` を呼ぶだけでよい。
 保有銘柄が holdings.json に登録されている場合は、同じ日足データで
 厳しめがくっと/最大15営業日を監視し、売りルール成立時だけDiscord通知する。
 
-2026-09-09以降の新規シグナルは forward_test.py で将来検証用に記録し、
-翌朝ギャップ・5/10/15日後騰落・MFE/MAE・出口結果を日次で追記する。
+forward_test.py で、くいっと・GC強ブレイク・ピンチをチャンスにの本番シグナルを
+同じ将来検証ログへ記録し、翌朝エントリー・将来騰落・MFE/MAE・各戦略の固定出口結果を日次で追記する。
 同じJ-Quants日足からプライム市場の値上がり/値下がり比率も
 market_breadth.py で日次記録する。
 
@@ -86,9 +86,6 @@ def run():
     logger.info(f"自動通過候補: {len(results)}件")
     logger.info(f"GC強ブレイク候補: {len(gc_results)}件")
 
-    logger.info("未来検証ログ更新中...")
-    forward_test.update_forward_test(price_df, code_to_name)
-
     logger.info("市場地合いログ更新中...")
     market_breadth.update_market_breadth(price_df)
 
@@ -99,6 +96,14 @@ def run():
     earnings_warning.add_earnings_warnings(
         pinch_sensor.get("candidates", []),
         latest_signal_date,
+    )
+
+    logger.info("統合フォワード検証ログ更新中（くいっと / GC / ピンチ）...")
+    forward_test.update_forward_test(
+        price_df,
+        code_to_name,
+        gc_results=gc_results,
+        pinch_sensor=pinch_sensor,
     )
 
     logger.info("Discord通知中...")
