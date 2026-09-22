@@ -164,3 +164,5 @@ def main():
     print(json.dumps({"cross_capital_stability":stable},ensure_ascii=False,indent=2))
 
 if __name__=="__main__":main()
+
+# trigger
