@@ -1,0 +1,26 @@
+name: Selling Climax vs Pinch Relationship
+on:
+  workflow_dispatch:
+  push:
+    paths: ['scripts/analyze_selling_climax_vs_pinch.py']
+permissions: {contents: write}
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.11"}
+      - run: pip install pandas requests
+      - run: python scripts/analyze_selling_climax_vs_pinch.py
+        env:
+          JQUANTS_API_KEY: ${{ secrets.JQUANTS_API_KEY }}
+      - run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add results/selling_climax_vs_pinch_relationship.json
+          git diff --cached --quiet && exit 0
+          git commit -m "Run selling climax vs pinch relationship diagnostic"
+          git pull --rebase origin main
+          git push
