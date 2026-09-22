@@ -28,7 +28,7 @@ jobs:
       - run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add results/selling_climax_position_cap_sweep.json
+          git add results/selling_climax_position_cap_sweep_fine.json
           git diff --cached --quiet && exit 0
           git commit -m "Run selling climax position cap sweep"
           git pull --rebase origin main
