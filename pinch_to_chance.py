@@ -16,7 +16,7 @@
 - 当日陽線 >= +2%
 - 出来高 / 20日平均 >= 1.5倍
 
-検証時の出口候補は15営業日。ここでは売買執行せず、通知・表示だけ行う。
+本番出口は41営業日目の寄り。ここでは売買執行せず、通知・表示だけ行う。
 """
 from datetime import timedelta
 
@@ -42,7 +42,7 @@ CANDIDATE_DD20_MAX = -20.0
 CANDIDATE_CANDLE_MIN = 2.0
 CANDIDATE_VOL_RATIO20_MIN = 1.5
 
-EXIT_GUIDE_BUSINESS_DAYS = 15
+EXIT_GUIDE_BUSINESS_DAYS = 41
 MAIN_PICK_COUNT = 3
 REFERENCE_PICK_COUNT = 2
 
@@ -61,6 +61,41 @@ def _prepare(group):
     g["VOL20"] = g["Vo"].rolling(20).mean()
     g["VOLR20"] = g["Vo"] / g["VOL20"]
     return g
+
+
+def _fetch_trade_plan(signal_date, hold_days=EXIT_GUIDE_BUSINESS_DAYS):
+    """J-Quants取引カレンダーから翌営業日寄りと固定出口日を求める。
+
+    バックテスト定義に合わせ、entry=シグナル翌営業日の寄り、
+    exit=entryからhold_days営業日後の寄り（entry日は0日目）とする。
+    カレンダー取得に失敗してもセンサー判定自体は止めない。
+    """
+    start = (pd.Timestamp(signal_date) + timedelta(days=1)).strftime("%Y-%m-%d")
+    end = (pd.Timestamp(signal_date) + timedelta(days=120)).strftime("%Y-%m-%d")
+    try:
+        res = download._request_with_retry(
+            f"{download.BASE_URL}/markets/calendar",
+            params={"from": start, "to": end},
+        )
+        res.raise_for_status()
+        rows = res.json().get("data", [])
+        d = pd.DataFrame(rows)
+        if d.empty or "Date" not in d.columns:
+            raise RuntimeError("取引カレンダーが空です")
+        hol_col = "HolDiv" if "HolDiv" in d.columns else ("HolidayDivision" if "HolidayDivision" in d.columns else None)
+        if hol_col:
+            d = d[d[hol_col].astype(str).isin(["1", "2"])].copy()
+        d["Date"] = pd.to_datetime(d["Date"], errors="coerce")
+        days = d["Date"].dropna().sort_values().drop_duplicates().tolist()
+        if len(days) <= hold_days:
+            raise RuntimeError(f"取引カレンダー営業日不足: {len(days)}日")
+        return {
+            "planned_entry_date": pd.Timestamp(days[0]).strftime("%Y-%m-%d"),
+            "planned_exit_date": pd.Timestamp(days[hold_days]).strftime("%Y-%m-%d"),
+        }
+    except Exception as e:
+        logger.warning("ピンチセンサー売買予定日の算出に失敗: %s", e)
+        return {"planned_entry_date": None, "planned_exit_date": None}
 
 
 def _fetch_topix(latest_date):
@@ -167,6 +202,11 @@ def evaluate(price_df, target_codes):
     return_ok = topix_ret1 >= TOPIX_RETURN_MIN_PCT
     active = bool(rate_ok and return_ok and low_up)
 
+    trade_plan = _fetch_trade_plan(latest_date) if active else {
+        "planned_entry_date": None,
+        "planned_exit_date": None,
+    }
+
     result = {
         "active": active,
         "signal_date": latest_date,
@@ -184,7 +224,11 @@ def evaluate(price_df, target_codes):
             "topix_return_ok": return_ok,
             "topix_low_up_ok": low_up,
         },
+        "entry_rule": "翌営業日寄り",
+        "exit_rule": "41営業日目の寄り",
         "exit_guide_business_days": EXIT_GUIDE_BUSINESS_DAYS,
+        "planned_entry_date": trade_plan["planned_entry_date"],
+        "planned_exit_date": trade_plan["planned_exit_date"],
         "ranking_rule": "DD20が深い順",
         "main_pick_count": MAIN_PICK_COUNT,
         "reference_pick_count": REFERENCE_PICK_COUNT,
