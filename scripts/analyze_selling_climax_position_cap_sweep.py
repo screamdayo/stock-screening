@@ -5,10 +5,10 @@ import pandas as pd
 
 BATCH=Path("data/batches")
 TR=Path("results/reversal_signal_baseline_trades.csv")
-OUT=Path("results/selling_climax_position_cap_sweep.json")
+OUT=Path("results/selling_climax_position_cap_sweep_fine.json")
 DATES=pd.to_datetime(["2018-12-25","2020-03-13","2024-08-05","2025-04-07"])
 CAPITALS=[300_000,500_000,1_000_000,1_500_000,2_000_000]
-CAP_PCTS=[40,50,55,60,65,70,80,100]
+CAP_PCTS=[60,65,70,75,80,85]
 HOLD=41
 LOT=100
 MAX_RANK=5
@@ -160,7 +160,7 @@ def main():
     stable.sort(key=lambda r:(-r["mean_of_capital_level_avg_returns_pct"],-r["worst_of_all_event_returns_pct"],r["mean_stdev_pct"]))
 
     out={
-        "study":"Selling-climax real-capital DD20-ranked allocation sweep",
+        "study":"Selling-climax fine DD20-ranked allocation sweep 60-85%",
         "sensor_dates":[str(x.date()) for x in DATES],
         "entry":"Next business-day open",
         "exit":"41 business days after entry, open",
@@ -186,3 +186,5 @@ if __name__=="__main__":
     main()
 
 # trigger
+
+# fine trigger
