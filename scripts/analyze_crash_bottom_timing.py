@@ -4,7 +4,7 @@ import pandas as pd
 TR=Path("results/reversal_signal_baseline_trades.csv")
 OUT=Path("results/crash_bottom_timing_diagnostic.json")
 def met(s):
- s=pd.to_numeric(s,errors="coerce").dropna()
+ s=pd.Series(pd.to_numeric(s,errors="coerce")).dropna()
  if not len(s): return {"n":0}
  return {"n":int(len(s)),"win":round((s>0).mean()*100,2),"avg":round(s.mean(),3),"med":round(s.median(),3),"pf":round(s[s>0].sum()/abs(s[s<0].sum()),3) if (s<0).any() else None}
 def main():
