@@ -283,6 +283,13 @@ def notify_selling_climax(sensor):
     if refs:
         sections.append("👀 **参考：4〜5位**\n" + "\n\n".join(_line(r, "▫️") for r in refs))
     candidates_text = "\n\n".join(sections) if sections else "個別候補なし"
+    cycle = sensor.get("cycle_state") or {}
+    elapsed = cycle.get("business_days_since_selling")
+    cycle_text = (
+        f"⏳ **ピンチ確認待ち：セリクラ発動から {elapsed if elapsed is not None else 0}営業日**\n"
+        if cycle.get("status") == "waiting_for_pinch"
+        else ""
+    )
 
     msg = (
         f"🔥 **売り尽くしセンサー発動 {day}**\n"
@@ -298,6 +305,7 @@ def notify_selling_climax(sensor):
         + (f"（{sensor.get('planned_entry_date')}）\n" if sensor.get("planned_entry_date") else "\n")
         + f"🔴 出口：**{sensor.get('exit_rule', '41営業日目の寄り')}**"
         + (f"（{sensor.get('planned_exit_date')}）\n\n" if sensor.get("planned_exit_date") else "\n\n")
+        + cycle_text
         + "⏳ **先行シグナルです。次はピンチをチャンスにセンサーの底打ち確認待ち。**\n\n"
         + candidates_text
         + f"\n\n📈 **専用ページ**\n{SELLING_CLIMAX_VIEW_URL}"
@@ -356,6 +364,14 @@ def notify_pinch_to_chance(sensor):
     if remaining:
         sections.append(f"ほか候補 **{remaining}件**（専用ページで確認）")
     candidates_text = "\n\n".join(sections) if sections else "個別候補なし"
+    cycle = sensor.get("cycle_state") or {}
+    if cycle.get("status") == "pinch_confirmed":
+        n = cycle.get("confirmed_after_business_days")
+        cycle_text = f"✅ **セリクラ先行から {n}営業日でピンチ確認**\n"
+    elif cycle.get("status") == "pinch_without_selling":
+        cycle_text = "ℹ️ **今回は先行セリクラなしのピンチ単独発動**\n"
+    else:
+        cycle_text = ""
     msg = (
         f"🚨 **ピンチをチャンスにセンサー発動 {day}**\n"
         f"市場反転率 **{sensor.get('reversal_rate_pct', 0):.3f}%** "
@@ -370,6 +386,7 @@ def notify_pinch_to_chance(sensor):
         + (f"（{sensor.get('planned_entry_date')}）\n" if sensor.get("planned_entry_date") else "\n")
         + f"🔴 出口：**{sensor.get('exit_rule', '41営業日目の寄り')}**"
         + (f"（{sensor.get('planned_exit_date')}）\n\n" if sensor.get("planned_exit_date") else "\n\n")
+        + cycle_text
         + f"{candidates_text}\n\n"
         f"📈 **専用ページ**\n{PINCH_SENSOR_VIEW_URL}"
     )
