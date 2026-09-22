@@ -1,0 +1,6459 @@
+{
+  "study": "Pinch sensor real-capital allocation with 100-share lots",
+  "entry": "DD20-ranked candidates, next business-day open",
+  "exit": "41 business days after entry, open",
+  "lot_size": 100,
+  "capital_levels_yen": [
+    300000,
+    500000,
+    1000000,
+    1500000,
+    2000000
+  ],
+  "policies": {
+    "equal_target_top3": "Capital/3 target for each of ranks 1-3; buy whole 100-share lots; unused target stays cash.",
+    "rank_priority_top3": "Spend on rank 1 first, then rank 2, then rank 3.",
+    "one_lot_each_then_rank_top3": "Try to secure one lot in ranks 1-3 in rank order, then add extra lots in rank order while cash allows.",
+    "cap50_backfill_top5": "No stock may use more than 50% of starting capital; scan ranks 1-5 so ranks 4-5 can backfill."
+  },
+  "price_method": "Historical raw next-open price determines 100-share affordability. Split-adjusted open-to-open return determines P/L.",
+  "results": [
+    {
+      "policy": "equal_target_top3",
+      "capital_yen": 300000,
+      "event_avg_return_pct": 10.274,
+      "event_median_return_pct": 7.8,
+      "worst_event_return_pct": 0.0,
+      "best_event_return_pct": 31.771,
+      "event_stdev_pct": 11.205,
+      "positive_events": 4,
+      "avg_utilization_pct": 19.52,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "available": 2,
+          "invested_yen": 51900,
+          "cash_yen": 248100,
+          "utilization_pct": 17.3,
+          "portfolio_return_pct": 8.7,
+          "end_value_yen": 326100,
+          "holdings": [
+            {
+              "code": "3649",
+              "rank": 1,
+              "entry_price": 519.0,
+              "lots": 1,
+              "shares": 100,
+              "cost": 51900,
+              "return_pct": 50.289
+            }
+          ]
+        },
+        {
+          "date": "2020-04-06",
+          "available": 5,
+          "invested_yen": 110400,
+          "cash_yen": 189600,
+          "utilization_pct": 36.8,
+          "portfolio_return_pct": 31.771,
+          "end_value_yen": 395313,
+          "holdings": [
+            {
+              "code": "7172",
+              "rank": 1,
+              "entry_price": 580.0,
+              "lots": 1,
+              "shares": 100,
+              "cost": 58000,
+              "return_pct": 120.712
+            },
+            {
+              "code": "3561",
+              "rank": 3,
+              "entry_price": 524.0,
+              "lots": 1,
+              "shares": 100,
+              "cost": 52400,
+              "return_pct": 48.282
+            }
+          ]
+        },
+        {
+          "date": "2022-03-10",
+          "available": 3,
+          "invested_yen": 64200,
+          "cash_yen": 235800,
+          "utilization_pct": 21.4,
+          "portfolio_return_pct": 7.8,
+          "end_value_yen": 323400,
+          "holdings": [
+            {
+              "code": "8011",
+              "rank": 1,
+              "entry_price": 642.0,
+              "lots": 1,
+              "shares": 100,
+              "cost": 64200,
+              "return_pct": 36.449
+            }
+          ]
+        },
+        {
+          "date": "2024-08-06",
+          "available": 5,
+          "invested_yen": 0,
+          "cash_yen": 300000,
+          "utilization_pct": 0.0,
+          "portfolio_return_pct": 0.0,
+          "end_value_yen": 300000,
+          "holdings": []
+        },
+        {
+          "date": "2025-04-08",
+          "available": 5,
+          "invested_yen": 66300,
+          "cash_yen": 233700,
+          "utilization_pct": 22.1,
+          "portfolio_return_pct": 3.1,
+          "end_value_yen": 309300,
+          "holdings": [
+            {
+              "code": "6298",
+              "rank": 3,
+              "entry_price": 663.0,
+              "lots": 1,
+              "shares": 100,
+              "cost": 66300,
+              "return_pct": 14.027
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "policy": "rank_priority_top3",
+      "capital_yen": 300000,
+      "event_avg_return_pct": 50.837,
+      "event_median_return_pct": 43.5,
+      "worst_event_return_pct": 19.166,
+      "best_event_return_pct": 116.688,
+      "event_stdev_pct": 34.149,
+      "positive_events": 5,
+      "avg_utilization_pct": 84.11,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "available": 2,
+          "invested_yen": 259500,
+          "cash_yen": 40500,
+          "utilization_pct": 86.5,
+          "portfolio_return_pct": 43.5,
+          "end_value_yen": 430500,
+          "holdings": [
+            {
+              "code": "3649",
+              "rank": 1,
+              "entry_price": 519.0,
+              "lots": 5,
+              "shares": 500,
+              "cost": 259500,
+              "return_pct": 50.289
+            }
+          ]
+        },
+        {
+          "date": "2020-04-06",
+          "available": 5,
+          "invested_yen": 290000,
+          "cash_yen": 10000,
+          "utilization_pct": 96.67,
+          "portfolio_return_pct": 116.688,
+          "end_value_yen": 650065,
+          "holdings": [
+            {
+              "code": "7172",
+              "rank": 1,
+              "entry_price": 580.0,
+              "lots": 5,
+              "shares": 500,
+              "cost": 290000,
+              "return_pct": 120.712
+            }
+          ]
+        },
+        {
+          "date": "2022-03-10",
+          "available": 3,
+          "invested_yen": 256800,
+          "cash_yen": 43200,
+          "utilization_pct": 85.6,
+          "portfolio_return_pct": 31.2,
+          "end_value_yen": 393601,
+          "holdings": [
+            {
+              "code": "8011",
+              "rank": 1,
+              "entry_price": 642.0,
+              "lots": 4,
+              "shares": 400,
+              "cost": 256800,
+              "return_pct": 36.449
+            }
+          ]
+        },
+        {
+          "date": "2024-08-06",
+          "available": 5,
+          "invested_yen": 168600,
+          "cash_yen": 131400,
+          "utilization_pct": 56.2,
+          "portfolio_return_pct": 19.166,
+          "end_value_yen": 357499,
+          "holdings": [
+            {
+              "code": "6298",
+              "rank": 2,
+              "entry_price": 1686.0,
+              "lots": 1,
+              "shares": 100,
+              "cost": 168600,
+              "return_pct": 34.104
+            }
+          ]
+        },
+        {
+          "date": "2025-04-08",
+          "available": 5,
+          "invested_yen": 286700,
+          "cash_yen": 13300,
+          "utilization_pct": 95.57,
+          "portfolio_return_pct": 43.633,
+          "end_value_yen": 430899,
+          "holdings": [
+            {
+              "code": "6323",
+              "rank": 1,
+              "entry_price": 1102.0,
+              "lots": 2,
+              "shares": 200,
+              "cost": 220400,
+              "return_pct": 55.172
+            },
+            {
+              "code": "6298",
+              "rank": 3,
+              "entry_price": 663.0,
+              "lots": 1,
+              "shares": 100,
+              "cost": 66300,
+              "return_pct": 14.027
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "policy": "one_lot_each_then_rank_top3",
+      "capital_yen": 300000,
+      "event_avg_return_pct": 37.919,
+      "event_median_return_pct": 19.166,
+      "worst_event_return_pct": 13.334,
+      "best_event_return_pct": 84.804,
+      "event_stdev_pct": 28.728,
+      "positive_events": 5,
+      "avg_utilization_pct": 84.8,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "available": 2,
+          "invested_yen": 260700,
+          "cash_yen": 39300,
+          "utilization_pct": 86.9,
+          "portfolio_return_pct": 14.17,
+          "end_value_yen": 342510,
+          "holdings": [
+            {
+              "code": "3649",
+              "rank": 1,
+              "entry_price": 519.0,
+              "lots": 1,
+              "shares": 100,
+              "cost": 51900,
+              "return_pct": 50.289
+            },
+            {
+              "code": "9960",
+              "rank": 2,
+              "entry_price": 2088.0,
+              "lots": 1,
+              "shares": 100,
+              "cost": 208800,
+              "return_pct": 7.859
+            }
+          ]
+        },
+        {
+          "date": "2020-04-06",
+          "available": 5,
+          "invested_yen": 260600,
+          "cash_yen": 39400,
+          "utilization_pct": 86.87,
+          "portfolio_return_pct": 84.804,
+          "end_value_yen": 554413,
+          "holdings": [
+            {
+              "code": "7172",
+              "rank": 1,
+              "entry_price": 580.0,
+              "lots": 1,
+              "shares": 100,
+              "cost": 58000,
+              "return_pct": 120.712
+            },
+            {
+              "code": "4337",
+              "rank": 2,
+              "entry_price": 2026.0,
+              "lots": 1,
+              "shares": 100,
+              "cost": 202600,
+              "return_pct": 91.017
+            }
+          ]
+        },
+        {
+          "date": "2022-03-10",
+          "available": 3,
+          "invested_yen": 283500,
+          "cash_yen": 16500,
+          "utilization_pct": 94.5,
+          "portfolio_return_pct": 13.334,
+          "end_value_yen": 340001,
+          "holdings": [
+            {
+              "code": "8011",
+              "rank": 1,
+              "entry_price": 642.0,
+              "lots": 2,
+              "shares": 200,
+              "cost": 128400,
+              "return_pct": 36.449
+            },
+            {
+              "code": "7723",
+              "rank": 3,
+              "entry_price": 1551.0,
+              "lots": 1,
+              "shares": 100,
+              "cost": 155100,
+              "return_pct": -4.384
+            }
+          ]
+        },
+        {
+          "date": "2024-08-06",
+          "available": 5,
+          "invested_yen": 168600,
+          "cash_yen": 131400,
+          "utilization_pct": 56.2,
+          "portfolio_return_pct": 19.166,
+          "end_value_yen": 357499,
+          "holdings": [
+            {
+              "code": "6298",
+              "rank": 2,
+              "entry_price": 1686.0,
+              "lots": 1,
+              "shares": 100,
+              "cost": 168600,
+              "return_pct": 34.104
+            }
+          ]
+        },
+        {
+          "date": "2025-04-08",
+          "available": 5,
+          "invested_yen": 298650,
+          "cash_yen": 1350,
+          "utilization_pct": 99.55,
+          "portfolio_return_pct": 58.122,
+          "end_value_yen": 474365,
+          "holdings": [
+            {
+              "code": "6323",
+              "rank": 1,
+              "entry_price": 1102.0,
+              "lots": 1,
+              "shares": 100,
+              "cost": 110200,
+              "return_pct": 55.172
+            },
+            {
+              "code": "5802",
+              "rank": 2,
+              "entry_price": 1884.5,
+              "lots": 1,
+              "shares": 100,
+              "cost": 188450,
+              "return_pct": 60.263
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "policy": "cap50_backfill_top5",
+      "capital_yen": 300000,
+      "event_avg_return_pct": 25.382,
+      "event_median_return_pct": 17.4,
+      "worst_event_return_pct": 3.9,
+      "best_event_return_pct": 63.542,
+      "event_stdev_pct": 20.387,
+      "positive_events": 5,
+      "avg_utilization_pct": 59.94,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "available": 2,
+          "invested_yen": 103800,
+          "cash_yen": 196200,
+          "utilization_pct": 34.6,
+          "portfolio_return_pct": 17.4,
+          "end_value_yen": 352200,
+          "holdings": [
+            {
+              "code": "3649",
+              "rank": 1,
+              "entry_price": 519.0,
+              "lots": 2,
+              "shares": 200,
+              "cost": 103800,
+              "return_pct": 50.289
+            }
+          ]
+        },
+        {
+          "date": "2020-04-06",
+          "available": 5,
+          "invested_yen": 220800,
+          "cash_yen": 79200,
+          "utilization_pct": 73.6,
+          "portfolio_return_pct": 63.542,
+          "end_value_yen": 490625,
+          "holdings": [
+            {
+              "code": "7172",
+              "rank": 1,
+              "entry_price": 580.0,
+              "lots": 2,
+              "shares": 200,
+              "cost": 116000,
+              "return_pct": 120.712
+            },
+            {
+              "code": "3561",
+              "rank": 3,
+              "entry_price": 524.0,
+              "lots": 2,
+              "shares": 200,
+              "cost": 104800,
+              "return_pct": 48.282
+            }
+          ]
+        },
+        {
+          "date": "2022-03-10",
+          "available": 3,
+          "invested_yen": 128400,
+          "cash_yen": 171600,
+          "utilization_pct": 42.8,
+          "portfolio_return_pct": 15.6,
+          "end_value_yen": 346801,
+          "holdings": [
+            {
+              "code": "8011",
+              "rank": 1,
+              "entry_price": 642.0,
+              "lots": 2,
+              "shares": 200,
+              "cost": 128400,
+              "return_pct": 36.449
+            }
+          ]
+        },
+        {
+          "date": "2024-08-06",
+          "available": 5,
+          "invested_yen": 203300,
+          "cash_yen": 96700,
+          "utilization_pct": 67.77,
+          "portfolio_return_pct": 3.9,
+          "end_value_yen": 311701,
+          "holdings": [
+            {
+              "code": "7280",
+              "rank": 4,
+              "entry_price": 800.0,
+              "lots": 1,
+              "shares": 100,
+              "cost": 80000,
+              "return_pct": 12.75
+            },
+            {
+              "code": "6958",
+              "rank": 5,
+              "entry_price": 411.0,
+              "lots": 3,
+              "shares": 300,
+              "cost": 123300,
+              "return_pct": 1.217
+            }
+          ]
+        },
+        {
+          "date": "2025-04-08",
+          "available": 5,
+          "invested_yen": 242800,
+          "cash_yen": 57200,
+          "utilization_pct": 80.93,
+          "portfolio_return_pct": 26.466,
+          "end_value_yen": 379399,
+          "holdings": [
+            {
+              "code": "6323",
+              "rank": 1,
+              "entry_price": 1102.0,
+              "lots": 1,
+              "shares": 100,
+              "cost": 110200,
+              "return_pct": 55.172
+            },
+            {
+              "code": "6298",
+              "rank": 3,
+              "entry_price": 663.0,
+              "lots": 2,
+              "shares": 200,
+              "cost": 132600,
+              "return_pct": 14.027
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "policy": "equal_target_top3",
+      "capital_yen": 500000,
+      "event_avg_return_pct": 16.545,
+      "event_median_return_pct": 15.66,
+      "worst_event_return_pct": 0.0,
+      "best_event_return_pct": 43.185,
+      "event_stdev_pct": 14.544,
+      "positive_events": 4,
+      "avg_utilization_pct": 38.21,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "available": 2,
+          "invested_yen": 155700,
+          "cash_yen": 344300,
+          "utilization_pct": 31.14,
+          "portfolio_return_pct": 15.66,
+          "end_value_yen": 578300,
+          "holdings": [
+            {
+              "code": "3649",
+              "rank": 1,
+              "entry_price": 519.0,
+              "lots": 3,
+              "shares": 300,
+              "cost": 155700,
+              "return_pct": 50.289
+            }
+          ]
+        },
+        {
+          "date": "2020-04-06",
+          "available": 5,
+          "invested_yen": 273200,
+          "cash_yen": 226800,
+          "utilization_pct": 54.64,
+          "portfolio_return_pct": 43.185,
+          "end_value_yen": 715925,
+          "holdings": [
+            {
+              "code": "7172",
+              "rank": 1,
+              "entry_price": 580.0,
+              "lots": 2,
+              "shares": 200,
+              "cost": 116000,
+              "return_pct": 120.712
+            },
+            {
+              "code": "3561",
+              "rank": 3,
+              "entry_price": 524.0,
+              "lots": 3,
+              "shares": 300,
+              "cost": 157200,
+              "return_pct": 48.282
+            }
+          ]
+        },
+        {
+          "date": "2022-03-10",
+          "available": 3,
+          "invested_yen": 283500,
+          "cash_yen": 216500,
+          "utilization_pct": 56.7,
+          "portfolio_return_pct": 8.0,
+          "end_value_yen": 540001,
+          "holdings": [
+            {
+              "code": "8011",
+              "rank": 1,
+              "entry_price": 642.0,
+              "lots": 2,
+              "shares": 200,
+              "cost": 128400,
+              "return_pct": 36.449
+            },
+            {
+              "code": "7723",
+              "rank": 3,
+              "entry_price": 1551.0,
+              "lots": 1,
+              "shares": 100,
+              "cost": 155100,
+              "return_pct": -4.384
+            }
+          ]
+        },
+        {
+          "date": "2024-08-06",
+          "available": 5,
+          "invested_yen": 0,
+          "cash_yen": 500000,
+          "utilization_pct": 0.0,
+          "portfolio_return_pct": 0.0,
+          "end_value_yen": 500000,
+          "holdings": []
+        },
+        {
+          "date": "2025-04-08",
+          "available": 5,
+          "invested_yen": 242800,
+          "cash_yen": 257200,
+          "utilization_pct": 48.56,
+          "portfolio_return_pct": 15.88,
+          "end_value_yen": 579399,
+          "holdings": [
+            {
+              "code": "6323",
+              "rank": 1,
+              "entry_price": 1102.0,
+              "lots": 1,
+              "shares": 100,
+              "cost": 110200,
+              "return_pct": 55.172
+            },
+            {
+              "code": "6298",
+              "rank": 3,
+              "entry_price": 663.0,
+              "lots": 2,
+              "shares": 200,
+              "cost": 132600,
+              "return_pct": 14.027
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "policy": "rank_priority_top3",
+      "capital_yen": 500000,
+      "event_avg_return_pct": 52.68,
+      "event_median_return_pct": 46.98,
+      "worst_event_return_pct": 23.0,
+      "best_event_return_pct": 112.021,
+      "event_stdev_pct": 31.138,
+      "positive_events": 5,
+      "avg_utilization_pct": 86.34,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "available": 2,
+          "invested_yen": 467100,
+          "cash_yen": 32900,
+          "utilization_pct": 93.42,
+          "portfolio_return_pct": 46.98,
+          "end_value_yen": 734900,
+          "holdings": [
+            {
+              "code": "3649",
+              "rank": 1,
+              "entry_price": 519.0,
+              "lots": 9,
+              "shares": 900,
+              "cost": 467100,
+              "return_pct": 50.289
+            }
+          ]
+        },
+        {
+          "date": "2020-04-06",
+          "available": 5,
+          "invested_yen": 464000,
+          "cash_yen": 36000,
+          "utilization_pct": 92.8,
+          "portfolio_return_pct": 112.021,
+          "end_value_yen": 1060104,
+          "holdings": [
+            {
+              "code": "7172",
+              "rank": 1,
+              "entry_price": 580.0,
+              "lots": 8,
+              "shares": 800,
+              "cost": 464000,
+              "return_pct": 120.712
+            }
+          ]
+        },
+        {
+          "date": "2022-03-10",
+          "available": 3,
+          "invested_yen": 449400,
+          "cash_yen": 50600,
+          "utilization_pct": 89.88,
+          "portfolio_return_pct": 32.76,
+          "end_value_yen": 663802,
+          "holdings": [
+            {
+              "code": "8011",
+              "rank": 1,
+              "entry_price": 642.0,
+              "lots": 7,
+              "shares": 700,
+              "cost": 449400,
+              "return_pct": 36.449
+            }
+          ]
+        },
+        {
+          "date": "2024-08-06",
+          "available": 5,
+          "invested_yen": 337200,
+          "cash_yen": 162800,
+          "utilization_pct": 67.44,
+          "portfolio_return_pct": 23.0,
+          "end_value_yen": 614999,
+          "holdings": [
+            {
+              "code": "6298",
+              "rank": 2,
+              "entry_price": 1686.0,
+              "lots": 2,
+              "shares": 200,
+              "cost": 337200,
+              "return_pct": 34.104
+            }
+          ]
+        },
+        {
+          "date": "2025-04-08",
+          "available": 5,
+          "invested_yen": 440800,
+          "cash_yen": 59200,
+          "utilization_pct": 88.16,
+          "portfolio_return_pct": 48.64,
+          "end_value_yen": 743198,
+          "holdings": [
+            {
+              "code": "6323",
+              "rank": 1,
+              "entry_price": 1102.0,
+              "lots": 4,
+              "shares": 400,
+              "cost": 440800,
+              "return_pct": 55.172
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "policy": "one_lot_each_then_rank_top3",
+      "capital_yen": 500000,
+      "event_avg_return_pct": 47.999,
+      "event_median_return_pct": 48.893,
+      "worst_event_return_pct": 6.56,
+      "best_event_return_pct": 89.008,
+      "event_stdev_pct": 28.551,
+      "positive_events": 5,
+      "avg_utilization_pct": 90.74,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "available": 2,
+          "invested_yen": 468300,
+          "cash_yen": 31700,
+          "utilization_pct": 93.66,
+          "portfolio_return_pct": 29.382,
+          "end_value_yen": 646910,
+          "holdings": [
+            {
+              "code": "3649",
+              "rank": 1,
+              "entry_price": 519.0,
+              "lots": 5,
+              "shares": 500,
+              "cost": 259500,
+              "return_pct": 50.289
+            },
+            {
+              "code": "9960",
+              "rank": 2,
+              "entry_price": 2088.0,
+              "lots": 1,
+              "shares": 100,
+              "cost": 208800,
+              "return_pct": 7.859
+            }
+          ]
+        },
+        {
+          "date": "2020-04-06",
+          "available": 5,
+          "invested_yen": 481400,
+          "cash_yen": 18600,
+          "utilization_pct": 96.28,
+          "portfolio_return_pct": 89.008,
+          "end_value_yen": 945039,
+          "holdings": [
+            {
+              "code": "7172",
+              "rank": 1,
+              "entry_price": 580.0,
+              "lots": 3,
+              "shares": 300,
+              "cost": 174000,
+              "return_pct": 120.712
+            },
+            {
+              "code": "4337",
+              "rank": 2,
+              "entry_price": 2026.0,
+              "lots": 1,
+              "shares": 100,
+              "cost": 202600,
+              "return_pct": 91.017
+            },
+            {
+              "code": "3561",
+              "rank": 3,
+              "entry_price": 524.0,
+              "lots": 2,
+              "shares": 200,
+              "cost": 104800,
+              "return_pct": 48.282
+            }
+          ]
+        },
+        {
+          "date": "2022-03-10",
+          "available": 3,
+          "invested_yen": 440300,
+          "cash_yen": 59700,
+          "utilization_pct": 88.06,
+          "portfolio_return_pct": 6.56,
+          "end_value_yen": 532799,
+          "holdings": [
+            {
+              "code": "8011",
+              "rank": 1,
+              "entry_price": 642.0,
+              "lots": 1,
+              "shares": 100,
+              "cost": 64200,
+              "return_pct": 36.449
+            },
+            {
+              "code": "7269",
+              "rank": 2,
+              "entry_price": 3761.0,
+              "lots": 1,
+              "shares": 100,
+              "cost": 376100,
+              "return_pct": 2.499
+            }
+          ]
+        },
+        {
+          "date": "2024-08-06",
+          "available": 5,
+          "invested_yen": 403400,
+          "cash_yen": 96600,
+          "utilization_pct": 80.68,
+          "portfolio_return_pct": 66.152,
+          "end_value_yen": 830762,
+          "holdings": [
+            {
+              "code": "6298",
+              "rank": 2,
+              "entry_price": 1686.0,
+              "lots": 1,
+              "shares": 100,
+              "cost": 168600,
+              "return_pct": 34.104
+            },
+            {
+              "code": "5803",
+              "rank": 3,
+              "entry_price": 2348.0,
+              "lots": 1,
+              "shares": 100,
+              "cost": 234800,
+              "return_pct": 116.381
+            }
+          ]
+        },
+        {
+          "date": "2025-04-08",
+          "available": 5,
+          "invested_yen": 475150,
+          "cash_yen": 24850,
+          "utilization_pct": 95.03,
+          "portfolio_return_pct": 48.893,
+          "end_value_yen": 744465,
+          "holdings": [
+            {
+              "code": "6323",
+              "rank": 1,
+              "entry_price": 1102.0,
+              "lots": 2,
+              "shares": 200,
+              "cost": 220400,
+              "return_pct": 55.172
+            },
+            {
+              "code": "5802",
+              "rank": 2,
+              "entry_price": 1884.5,
+              "lots": 1,
+              "shares": 100,
+              "cost": 188450,
+              "return_pct": 60.263
+            },
+            {
+              "code": "6298",
+              "rank": 3,
+              "entry_price": 663.0,
+              "lots": 1,
+              "shares": 100,
+              "cost": 66300,
+              "return_pct": 14.027
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "policy": "cap50_backfill_top5",
+      "capital_yen": 500000,
+      "event_avg_return_pct": 50.375,
+      "event_median_return_pct": 48.893,
+      "worst_event_return_pct": 12.68,
+      "best_event_return_pct": 97.95,
+      "event_stdev_pct": 30.63,
+      "positive_events": 5,
+      "avg_utilization_pct": 88.39,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "available": 2,
+          "invested_yen": 416400,
+          "cash_yen": 83600,
+          "utilization_pct": 83.28,
+          "portfolio_return_pct": 24.162,
+          "end_value_yen": 620810,
+          "holdings": [
+            {
+              "code": "3649",
+              "rank": 1,
+              "entry_price": 519.0,
+              "lots": 4,
+              "shares": 400,
+              "cost": 207600,
+              "return_pct": 50.289
+            },
+            {
+              "code": "9960",
+              "rank": 2,
+              "entry_price": 2088.0,
+              "lots": 1,
+              "shares": 100,
+              "cost": 208800,
+              "return_pct": 7.859
+            }
+          ]
+        },
+        {
+          "date": "2020-04-06",
+          "available": 5,
+          "invested_yen": 487000,
+          "cash_yen": 13000,
+          "utilization_pct": 97.4,
+          "portfolio_return_pct": 97.95,
+          "end_value_yen": 989752,
+          "holdings": [
+            {
+              "code": "7172",
+              "rank": 1,
+              "entry_price": 580.0,
+              "lots": 4,
+              "shares": 400,
+              "cost": 232000,
+              "return_pct": 120.712
+            },
+            {
+              "code": "4337",
+              "rank": 2,
+              "entry_price": 2026.0,
+              "lots": 1,
+              "shares": 100,
+              "cost": 202600,
+              "return_pct": 91.017
+            },
+            {
+              "code": "3561",
+              "rank": 3,
+              "entry_price": 524.0,
+              "lots": 1,
+              "shares": 100,
+              "cost": 52400,
+              "return_pct": 48.282
+            }
+          ]
+        },
+        {
+          "date": "2022-03-10",
+          "available": 3,
+          "invested_yen": 347700,
+          "cash_yen": 152300,
+          "utilization_pct": 69.54,
+          "portfolio_return_pct": 12.68,
+          "end_value_yen": 563401,
+          "holdings": [
+            {
+              "code": "8011",
+              "rank": 1,
+              "entry_price": 642.0,
+              "lots": 3,
+              "shares": 300,
+              "cost": 192600,
+              "return_pct": 36.449
+            },
+            {
+              "code": "7723",
+              "rank": 3,
+              "entry_price": 1551.0,
+              "lots": 1,
+              "shares": 100,
+              "cost": 155100,
+              "return_pct": -4.384
+            }
+          ]
+        },
+        {
+          "date": "2024-08-06",
+          "available": 5,
+          "invested_yen": 483400,
+          "cash_yen": 16600,
+          "utilization_pct": 96.68,
+          "portfolio_return_pct": 68.192,
+          "end_value_yen": 840962,
+          "holdings": [
+            {
+              "code": "6298",
+              "rank": 2,
+              "entry_price": 1686.0,
+              "lots": 1,
+              "shares": 100,
+              "cost": 168600,
+              "return_pct": 34.104
+            },
+            {
+              "code": "5803",
+              "rank": 3,
+              "entry_price": 2348.0,
+              "lots": 1,
+              "shares": 100,
+              "cost": 234800,
+              "return_pct": 116.381
+            },
+            {
+              "code": "7280",
+              "rank": 4,
+              "entry_price": 800.0,
+              "lots": 1,
+              "shares": 100,
+              "cost": 80000,
+              "return_pct": 12.75
+            }
+          ]
+        },
+        {
+          "date": "2025-04-08",
+          "available": 5,
+          "invested_yen": 475150,
+          "cash_yen": 24850,
+          "utilization_pct": 95.03,
+          "portfolio_return_pct": 48.893,
+          "end_value_yen": 744465,
+          "holdings": [
+            {
+              "code": "6323",
+              "rank": 1,
+              "entry_price": 1102.0,
+              "lots": 2,
+              "shares": 200,
+              "cost": 220400,
+              "return_pct": 55.172
+            },
+            {
+              "code": "5802",
+              "rank": 2,
+              "entry_price": 1884.5,
+              "lots": 1,
+              "shares": 100,
+              "cost": 188450,
+              "return_pct": 60.263
+            },
+            {
+              "code": "6298",
+              "rank": 3,
+              "entry_price": 663.0,
+              "lots": 1,
+              "shares": 100,
+              "cost": 66300,
+              "return_pct": 14.027
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "policy": "equal_target_top3",
+      "capital_yen": 1000000,
+      "event_avg_return_pct": 32.718,
+      "event_median_return_pct": 33.076,
+      "worst_event_return_pct": 10.34,
+      "best_event_return_pct": 68.626,
+      "event_stdev_pct": 20.151,
+      "positive_events": 5,
+      "avg_utilization_pct": 64.25,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "available": 2,
+          "invested_yen": 520200,
+          "cash_yen": 479800,
+          "utilization_pct": 52.02,
+          "portfolio_return_pct": 17.301,
+          "end_value_yen": 1173010,
+          "holdings": [
+            {
+              "code": "3649",
+              "rank": 1,
+              "entry_price": 519.0,
+              "lots": 6,
+              "shares": 600,
+              "cost": 311400,
+              "return_pct": 50.289
+            },
+            {
+              "code": "9960",
+              "rank": 2,
+              "entry_price": 2088.0,
+              "lots": 1,
+              "shares": 100,
+              "cost": 208800,
+              "return_pct": 7.859
+            }
+          ]
+        },
+        {
+          "date": "2020-04-06",
+          "available": 5,
+          "invested_yen": 807000,
+          "cash_yen": 193000,
+          "utilization_pct": 80.7,
+          "portfolio_return_pct": 68.626,
+          "end_value_yen": 1686264,
+          "holdings": [
+            {
+              "code": "7172",
+              "rank": 1,
+              "entry_price": 580.0,
+              "lots": 5,
+              "shares": 500,
+              "cost": 290000,
+              "return_pct": 120.712
+            },
+            {
+              "code": "4337",
+              "rank": 2,
+              "entry_price": 2026.0,
+              "lots": 1,
+              "shares": 100,
+              "cost": 202600,
+              "return_pct": 91.017
+            },
+            {
+              "code": "3561",
+              "rank": 3,
+              "entry_price": 524.0,
+              "lots": 6,
+              "shares": 600,
+              "cost": 314400,
+              "return_pct": 48.282
+            }
+          ]
+        },
+        {
+          "date": "2022-03-10",
+          "available": 3,
+          "invested_yen": 631200,
+          "cash_yen": 368800,
+          "utilization_pct": 63.12,
+          "portfolio_return_pct": 10.34,
+          "end_value_yen": 1103402,
+          "holdings": [
+            {
+              "code": "8011",
+              "rank": 1,
+              "entry_price": 642.0,
+              "lots": 5,
+              "shares": 500,
+              "cost": 321000,
+              "return_pct": 36.449
+            },
+            {
+              "code": "7723",
+              "rank": 3,
+              "entry_price": 1551.0,
+              "lots": 2,
+              "shares": 200,
+              "cost": 310200,
+              "return_pct": -4.384
+            }
+          ]
+        },
+        {
+          "date": "2024-08-06",
+          "available": 5,
+          "invested_yen": 403400,
+          "cash_yen": 596600,
+          "utilization_pct": 40.34,
+          "portfolio_return_pct": 33.076,
+          "end_value_yen": 1330762,
+          "holdings": [
+            {
+              "code": "6298",
+              "rank": 2,
+              "entry_price": 1686.0,
+              "lots": 1,
+              "shares": 100,
+              "cost": 168600,
+              "return_pct": 34.104
+            },
+            {
+              "code": "5803",
+              "rank": 3,
+              "entry_price": 2348.0,
+              "lots": 1,
+              "shares": 100,
+              "cost": 234800,
+              "return_pct": 116.381
+            }
+          ]
+        },
+        {
+          "date": "2025-04-08",
+          "available": 5,
+          "invested_yen": 850550,
+          "cash_yen": 149450,
+          "utilization_pct": 85.06,
+          "portfolio_return_pct": 34.246,
+          "end_value_yen": 1342464,
+          "holdings": [
+            {
+              "code": "6323",
+              "rank": 1,
+              "entry_price": 1102.0,
+              "lots": 3,
+              "shares": 300,
+              "cost": 330600,
+              "return_pct": 55.172
+            },
+            {
+              "code": "5802",
+              "rank": 2,
+              "entry_price": 1884.5,
+              "lots": 1,
+              "shares": 100,
+              "cost": 188450,
+              "return_pct": 60.263
+            },
+            {
+              "code": "6298",
+              "rank": 3,
+              "entry_price": 663.0,
+              "lots": 5,
+              "shares": 500,
+              "cost": 331500,
+              "return_pct": 14.027
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "policy": "rank_priority_top3",
+      "capital_yen": 1000000,
+      "event_avg_return_pct": 56.279,
+      "event_median_return_pct": 49.59,
+      "worst_event_return_pct": 22.962,
+      "best_event_return_pct": 119.022,
+      "event_stdev_pct": 33.294,
+      "positive_events": 5,
+      "avg_utilization_pct": 95.73,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "available": 2,
+          "invested_yen": 986100,
+          "cash_yen": 13900,
+          "utilization_pct": 98.61,
+          "portfolio_return_pct": 49.59,
+          "end_value_yen": 1495900,
+          "holdings": [
+            {
+              "code": "3649",
+              "rank": 1,
+              "entry_price": 519.0,
+              "lots": 19,
+              "shares": 1900,
+              "cost": 986100,
+              "return_pct": 50.289
+            }
+          ]
+        },
+        {
+          "date": "2020-04-06",
+          "available": 5,
+          "invested_yen": 986000,
+          "cash_yen": 14000,
+          "utilization_pct": 98.6,
+          "portfolio_return_pct": 119.022,
+          "end_value_yen": 2190220,
+          "holdings": [
+            {
+              "code": "7172",
+              "rank": 1,
+              "entry_price": 580.0,
+              "lots": 17,
+              "shares": 1700,
+              "cost": 986000,
+              "return_pct": 120.712
+            }
+          ]
+        },
+        {
+          "date": "2022-03-10",
+          "available": 3,
+          "invested_yen": 963000,
+          "cash_yen": 37000,
+          "utilization_pct": 96.3,
+          "portfolio_return_pct": 35.1,
+          "end_value_yen": 1351004,
+          "holdings": [
+            {
+              "code": "8011",
+              "rank": 1,
+              "entry_price": 642.0,
+              "lots": 15,
+              "shares": 1500,
+              "cost": 963000,
+              "return_pct": 36.449
+            }
+          ]
+        },
+        {
+          "date": "2024-08-06",
+          "available": 5,
+          "invested_yen": 859800,
+          "cash_yen": 140200,
+          "utilization_pct": 85.98,
+          "portfolio_return_pct": 22.962,
+          "end_value_yen": 1229622,
+          "holdings": [
+            {
+              "code": "9984",
+              "rank": 1,
+              "entry_price": 6912.0,
+              "lots": 1,
+              "shares": 100,
+              "cost": 691200,
+              "return_pct": 24.902
+            },
+            {
+              "code": "6298",
+              "rank": 2,
+              "entry_price": 1686.0,
+              "lots": 1,
+              "shares": 100,
+              "cost": 168600,
+              "return_pct": 34.104
+            }
+          ]
+        },
+        {
+          "date": "2025-04-08",
+          "available": 5,
+          "invested_yen": 991800,
+          "cash_yen": 8200,
+          "utilization_pct": 99.18,
+          "portfolio_return_pct": 54.72,
+          "end_value_yen": 1547196,
+          "holdings": [
+            {
+              "code": "6323",
+              "rank": 1,
+              "entry_price": 1102.0,
+              "lots": 9,
+              "shares": 900,
+              "cost": 991800,
+              "return_pct": 55.172
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "policy": "one_lot_each_then_rank_top3",
+      "capital_yen": 1000000,
+      "event_avg_return_pct": 38.137,
+      "event_median_return_pct": 23.193,
+      "worst_event_return_pct": 8.94,
+      "best_event_return_pct": 90.915,
+      "event_stdev_pct": 28.755,
+      "positive_events": 5,
+      "avg_utilization_pct": 95.25,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "available": 2,
+          "invested_yen": 989700,
+          "cash_yen": 10300,
+          "utilization_pct": 98.97,
+          "portfolio_return_pct": 23.193,
+          "end_value_yen": 1231929,
+          "holdings": [
+            {
+              "code": "3649",
+              "rank": 1,
+              "entry_price": 519.0,
+              "lots": 7,
+              "shares": 700,
+              "cost": 363300,
+              "return_pct": 50.289
+            },
+            {
+              "code": "9960",
+              "rank": 2,
+              "entry_price": 2088.0,
+              "lots": 3,
+              "shares": 300,
+              "cost": 626400,
+              "return_pct": 7.859
+            }
+          ]
+        },
+        {
+          "date": "2020-04-06",
+          "available": 5,
+          "invested_yen": 997000,
+          "cash_yen": 3000,
+          "utilization_pct": 99.7,
+          "portfolio_return_pct": 90.915,
+          "end_value_yen": 1909152,
+          "holdings": [
+            {
+              "code": "7172",
+              "rank": 1,
+              "entry_price": 580.0,
+              "lots": 4,
+              "shares": 400,
+              "cost": 232000,
+              "return_pct": 120.712
+            },
+            {
+              "code": "4337",
+              "rank": 2,
+              "entry_price": 2026.0,
+              "lots": 3,
+              "shares": 300,
+              "cost": 607800,
+              "return_pct": 91.017
+            },
+            {
+              "code": "3561",
+              "rank": 3,
+              "entry_price": 524.0,
+              "lots": 3,
+              "shares": 300,
+              "cost": 157200,
+              "return_pct": 48.282
+            }
+          ]
+        },
+        {
+          "date": "2022-03-10",
+          "available": 3,
+          "invested_yen": 943100,
+          "cash_yen": 56900,
+          "utilization_pct": 94.31,
+          "portfolio_return_pct": 8.94,
+          "end_value_yen": 1089401,
+          "holdings": [
+            {
+              "code": "8011",
+              "rank": 1,
+              "entry_price": 642.0,
+              "lots": 4,
+              "shares": 400,
+              "cost": 256800,
+              "return_pct": 36.449
+            },
+            {
+              "code": "7269",
+              "rank": 2,
+              "entry_price": 3761.0,
+              "lots": 1,
+              "shares": 100,
+              "cost": 376100,
+              "return_pct": 2.499
+            },
+            {
+              "code": "7723",
+              "rank": 3,
+              "entry_price": 1551.0,
+              "lots": 2,
+              "shares": 200,
+              "cost": 310200,
+              "return_pct": -4.384
+            }
+          ]
+        },
+        {
+          "date": "2024-08-06",
+          "available": 5,
+          "invested_yen": 859800,
+          "cash_yen": 140200,
+          "utilization_pct": 85.98,
+          "portfolio_return_pct": 22.962,
+          "end_value_yen": 1229622,
+          "holdings": [
+            {
+              "code": "9984",
+              "rank": 1,
+              "entry_price": 6912.0,
+              "lots": 1,
+              "shares": 100,
+              "cost": 691200,
+              "return_pct": 24.902
+            },
+            {
+              "code": "6298",
+              "rank": 2,
+              "entry_price": 1686.0,
+              "lots": 1,
+              "shares": 100,
+              "cost": 168600,
+              "return_pct": 34.104
+            }
+          ]
+        },
+        {
+          "date": "2025-04-08",
+          "available": 5,
+          "invested_yen": 972700,
+          "cash_yen": 27300,
+          "utilization_pct": 97.27,
+          "portfolio_return_pct": 44.673,
+          "end_value_yen": 1446729,
+          "holdings": [
+            {
+              "code": "6323",
+              "rank": 1,
+              "entry_price": 1102.0,
+              "lots": 3,
+              "shares": 300,
+              "cost": 330600,
+              "return_pct": 55.172
+            },
+            {
+              "code": "5802",
+              "rank": 2,
+              "entry_price": 1884.5,
+              "lots": 2,
+              "shares": 200,
+              "cost": 376900,
+              "return_pct": 60.263
+            },
+            {
+              "code": "6298",
+              "rank": 3,
+              "entry_price": 663.0,
+              "lots": 4,
+              "shares": 400,
+              "cost": 265200,
+              "return_pct": 14.027
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "policy": "cap50_backfill_top5",
+      "capital_yen": 1000000,
+      "event_avg_return_pct": 51.689,
+      "event_median_return_pct": 48.893,
+      "worst_event_return_pct": 16.64,
+      "best_event_return_pct": 97.95,
+      "event_stdev_pct": 29.222,
+      "positive_events": 5,
+      "avg_utilization_pct": 95.13,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "available": 2,
+          "invested_yen": 884700,
+          "cash_yen": 115300,
+          "utilization_pct": 88.47,
+          "portfolio_return_pct": 26.772,
+          "end_value_yen": 1267719,
+          "holdings": [
+            {
+              "code": "3649",
+              "rank": 1,
+              "entry_price": 519.0,
+              "lots": 9,
+              "shares": 900,
+              "cost": 467100,
+              "return_pct": 50.289
+            },
+            {
+              "code": "9960",
+              "rank": 2,
+              "entry_price": 2088.0,
+              "lots": 2,
+              "shares": 200,
+              "cost": 417600,
+              "return_pct": 7.859
+            }
+          ]
+        },
+        {
+          "date": "2020-04-06",
+          "available": 5,
+          "invested_yen": 974000,
+          "cash_yen": 26000,
+          "utilization_pct": 97.4,
+          "portfolio_return_pct": 97.95,
+          "end_value_yen": 1979504,
+          "holdings": [
+            {
+              "code": "7172",
+              "rank": 1,
+              "entry_price": 580.0,
+              "lots": 8,
+              "shares": 800,
+              "cost": 464000,
+              "return_pct": 120.712
+            },
+            {
+              "code": "4337",
+              "rank": 2,
+              "entry_price": 2026.0,
+              "lots": 2,
+              "shares": 200,
+              "cost": 405200,
+              "return_pct": 91.017
+            },
+            {
+              "code": "3561",
+              "rank": 3,
+              "entry_price": 524.0,
+              "lots": 2,
+              "shares": 200,
+              "cost": 104800,
+              "return_pct": 48.282
+            }
+          ]
+        },
+        {
+          "date": "2022-03-10",
+          "available": 3,
+          "invested_yen": 980600,
+          "cash_yen": 19400,
+          "utilization_pct": 98.06,
+          "portfolio_return_pct": 16.64,
+          "end_value_yen": 1166401,
+          "holdings": [
+            {
+              "code": "8011",
+              "rank": 1,
+              "entry_price": 642.0,
+              "lots": 7,
+              "shares": 700,
+              "cost": 449400,
+              "return_pct": 36.449
+            },
+            {
+              "code": "7269",
+              "rank": 2,
+              "entry_price": 3761.0,
+              "lots": 1,
+              "shares": 100,
+              "cost": 376100,
+              "return_pct": 2.499
+            },
+            {
+              "code": "7723",
+              "rank": 3,
+              "entry_price": 1551.0,
+              "lots": 1,
+              "shares": 100,
+              "cost": 155100,
+              "return_pct": -4.384
+            }
+          ]
+        },
+        {
+          "date": "2024-08-06",
+          "available": 5,
+          "invested_yen": 966800,
+          "cash_yen": 33200,
+          "utilization_pct": 96.68,
+          "portfolio_return_pct": 68.192,
+          "end_value_yen": 1681924,
+          "holdings": [
+            {
+              "code": "6298",
+              "rank": 2,
+              "entry_price": 1686.0,
+              "lots": 2,
+              "shares": 200,
+              "cost": 337200,
+              "return_pct": 34.104
+            },
+            {
+              "code": "5803",
+              "rank": 3,
+              "entry_price": 2348.0,
+              "lots": 2,
+              "shares": 200,
+              "cost": 469600,
+              "return_pct": 116.381
+            },
+            {
+              "code": "7280",
+              "rank": 4,
+              "entry_price": 800.0,
+              "lots": 2,
+              "shares": 200,
+              "cost": 160000,
+              "return_pct": 12.75
+            }
+          ]
+        },
+        {
+          "date": "2025-04-08",
+          "available": 5,
+          "invested_yen": 950300,
+          "cash_yen": 49700,
+          "utilization_pct": 95.03,
+          "portfolio_return_pct": 48.893,
+          "end_value_yen": 1488929,
+          "holdings": [
+            {
+              "code": "6323",
+              "rank": 1,
+              "entry_price": 1102.0,
+              "lots": 4,
+              "shares": 400,
+              "cost": 440800,
+              "return_pct": 55.172
+            },
+            {
+              "code": "5802",
+              "rank": 2,
+              "entry_price": 1884.5,
+              "lots": 2,
+              "shares": 200,
+              "cost": 376900,
+              "return_pct": 60.263
+            },
+            {
+              "code": "6298",
+              "rank": 3,
+              "entry_price": 663.0,
+              "lots": 2,
+              "shares": 200,
+              "cost": 132600,
+              "return_pct": 14.027
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "policy": "equal_target_top3",
+      "capital_yen": 1500000,
+      "event_avg_return_pct": 36.988,
+      "event_median_return_pct": 35.695,
+      "worst_event_return_pct": 10.187,
+      "best_event_return_pct": 77.107,
+      "event_stdev_pct": 23.437,
+      "positive_events": 5,
+      "avg_utilization_pct": 74.73,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "available": 2,
+          "invested_yen": 884700,
+          "cash_yen": 615300,
+          "utilization_pct": 58.98,
+          "portfolio_return_pct": 17.848,
+          "end_value_yen": 1767719,
+          "holdings": [
+            {
+              "code": "3649",
+              "rank": 1,
+              "entry_price": 519.0,
+              "lots": 9,
+              "shares": 900,
+              "cost": 467100,
+              "return_pct": 50.289
+            },
+            {
+              "code": "9960",
+              "rank": 2,
+              "entry_price": 2088.0,
+              "lots": 2,
+              "shares": 200,
+              "cost": 417600,
+              "return_pct": 7.859
+            }
+          ]
+        },
+        {
+          "date": "2020-04-06",
+          "available": 5,
+          "invested_yen": 1340800,
+          "cash_yen": 159200,
+          "utilization_pct": 89.39,
+          "portfolio_return_pct": 77.107,
+          "end_value_yen": 2656602,
+          "holdings": [
+            {
+              "code": "7172",
+              "rank": 1,
+              "entry_price": 580.0,
+              "lots": 8,
+              "shares": 800,
+              "cost": 464000,
+              "return_pct": 120.712
+            },
+            {
+              "code": "4337",
+              "rank": 2,
+              "entry_price": 2026.0,
+              "lots": 2,
+              "shares": 200,
+              "cost": 405200,
+              "return_pct": 91.017
+            },
+            {
+              "code": "3561",
+              "rank": 3,
+              "entry_price": 524.0,
+              "lots": 9,
+              "shares": 900,
+              "cost": 471600,
+              "return_pct": 48.282
+            }
+          ]
+        },
+        {
+          "date": "2022-03-10",
+          "available": 3,
+          "invested_yen": 1290800,
+          "cash_yen": 209200,
+          "utilization_pct": 86.05,
+          "portfolio_return_pct": 10.187,
+          "end_value_yen": 1652802,
+          "holdings": [
+            {
+              "code": "8011",
+              "rank": 1,
+              "entry_price": 642.0,
+              "lots": 7,
+              "shares": 700,
+              "cost": 449400,
+              "return_pct": 36.449
+            },
+            {
+              "code": "7269",
+              "rank": 2,
+              "entry_price": 3761.0,
+              "lots": 1,
+              "shares": 100,
+              "cost": 376100,
+              "return_pct": 2.499
+            },
+            {
+              "code": "7723",
+              "rank": 3,
+              "entry_price": 1551.0,
+              "lots": 3,
+              "shares": 300,
+              "cost": 465300,
+              "return_pct": -4.384
+            }
+          ]
+        },
+        {
+          "date": "2024-08-06",
+          "available": 5,
+          "invested_yen": 806800,
+          "cash_yen": 693200,
+          "utilization_pct": 53.79,
+          "portfolio_return_pct": 44.102,
+          "end_value_yen": 2161524,
+          "holdings": [
+            {
+              "code": "6298",
+              "rank": 2,
+              "entry_price": 1686.0,
+              "lots": 2,
+              "shares": 200,
+              "cost": 337200,
+              "return_pct": 34.104
+            },
+            {
+              "code": "5803",
+              "rank": 3,
+              "entry_price": 2348.0,
+              "lots": 2,
+              "shares": 200,
+              "cost": 469600,
+              "return_pct": 116.381
+            }
+          ]
+        },
+        {
+          "date": "2025-04-08",
+          "available": 5,
+          "invested_yen": 1281800,
+          "cash_yen": 218200,
+          "utilization_pct": 85.45,
+          "portfolio_return_pct": 35.695,
+          "end_value_yen": 2035429,
+          "holdings": [
+            {
+              "code": "6323",
+              "rank": 1,
+              "entry_price": 1102.0,
+              "lots": 4,
+              "shares": 400,
+              "cost": 440800,
+              "return_pct": 55.172
+            },
+            {
+              "code": "5802",
+              "rank": 2,
+              "entry_price": 1884.5,
+              "lots": 2,
+              "shares": 200,
+              "cost": 376900,
+              "return_pct": 60.263
+            },
+            {
+              "code": "6298",
+              "rank": 3,
+              "entry_price": 663.0,
+              "lots": 7,
+              "shares": 700,
+              "cost": 464100,
+              "return_pct": 14.027
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "policy": "rank_priority_top3",
+      "capital_yen": 1500000,
+      "event_avg_return_pct": 55.51,
+      "event_median_return_pct": 48.72,
+      "worst_event_return_pct": 22.95,
+      "best_event_return_pct": 116.688,
+      "event_stdev_pct": 32.37,
+      "positive_events": 5,
+      "avg_utilization_pct": 96.82,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "available": 2,
+          "invested_yen": 1453200,
+          "cash_yen": 46800,
+          "utilization_pct": 96.88,
+          "portfolio_return_pct": 48.72,
+          "end_value_yen": 2230800,
+          "holdings": [
+            {
+              "code": "3649",
+              "rank": 1,
+              "entry_price": 519.0,
+              "lots": 28,
+              "shares": 2800,
+              "cost": 1453200,
+              "return_pct": 50.289
+            }
+          ]
+        },
+        {
+          "date": "2020-04-06",
+          "available": 5,
+          "invested_yen": 1450000,
+          "cash_yen": 50000,
+          "utilization_pct": 96.67,
+          "portfolio_return_pct": 116.688,
+          "end_value_yen": 3250324,
+          "holdings": [
+            {
+              "code": "7172",
+              "rank": 1,
+              "entry_price": 580.0,
+              "lots": 25,
+              "shares": 2500,
+              "cost": 1450000,
+              "return_pct": 120.712
+            }
+          ]
+        },
+        {
+          "date": "2022-03-10",
+          "available": 3,
+          "invested_yen": 1476600,
+          "cash_yen": 23400,
+          "utilization_pct": 98.44,
+          "portfolio_return_pct": 35.88,
+          "end_value_yen": 2038206,
+          "holdings": [
+            {
+              "code": "8011",
+              "rank": 1,
+              "entry_price": 642.0,
+              "lots": 23,
+              "shares": 2300,
+              "cost": 1476600,
+              "return_pct": 36.449
+            }
+          ]
+        },
+        {
+          "date": "2024-08-06",
+          "available": 5,
+          "invested_yen": 1382400,
+          "cash_yen": 117600,
+          "utilization_pct": 92.16,
+          "portfolio_return_pct": 22.95,
+          "end_value_yen": 1844245,
+          "holdings": [
+            {
+              "code": "9984",
+              "rank": 1,
+              "entry_price": 6912.0,
+              "lots": 2,
+              "shares": 200,
+              "cost": 1382400,
+              "return_pct": 24.902
+            }
+          ]
+        },
+        {
+          "date": "2025-04-08",
+          "available": 5,
+          "invested_yen": 1498900,
+          "cash_yen": 1100,
+          "utilization_pct": 99.93,
+          "portfolio_return_pct": 53.313,
+          "end_value_yen": 2299694,
+          "holdings": [
+            {
+              "code": "6323",
+              "rank": 1,
+              "entry_price": 1102.0,
+              "lots": 13,
+              "shares": 1300,
+              "cost": 1432600,
+              "return_pct": 55.172
+            },
+            {
+              "code": "6298",
+              "rank": 3,
+              "entry_price": 663.0,
+              "lots": 1,
+              "shares": 100,
+              "cost": 66300,
+              "return_pct": 14.027
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "policy": "one_lot_each_then_rank_top3",
+      "capital_yen": 1500000,
+      "event_avg_return_pct": 43.475,
+      "event_median_return_pct": 48.977,
+      "worst_event_return_pct": 6.133,
+      "best_event_return_pct": 87.299,
+      "event_stdev_pct": 28.537,
+      "positive_events": 5,
+      "avg_utilization_pct": 98.19,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "available": 2,
+          "invested_yen": 1459200,
+          "cash_yen": 40800,
+          "utilization_pct": 97.28,
+          "portfolio_return_pct": 19.39,
+          "end_value_yen": 1790848,
+          "holdings": [
+            {
+              "code": "3649",
+              "rank": 1,
+              "entry_price": 519.0,
+              "lots": 8,
+              "shares": 800,
+              "cost": 415200,
+              "return_pct": 50.289
+            },
+            {
+              "code": "9960",
+              "rank": 2,
+              "entry_price": 2088.0,
+              "lots": 5,
+              "shares": 500,
+              "cost": 1044000,
+              "return_pct": 7.859
+            }
+          ]
+        },
+        {
+          "date": "2020-04-06",
+          "available": 5,
+          "invested_yen": 1472800,
+          "cash_yen": 27200,
+          "utilization_pct": 98.19,
+          "portfolio_return_pct": 87.299,
+          "end_value_yen": 2809478,
+          "holdings": [
+            {
+              "code": "7172",
+              "rank": 1,
+              "entry_price": 580.0,
+              "lots": 6,
+              "shares": 600,
+              "cost": 348000,
+              "return_pct": 120.712
+            },
+            {
+              "code": "4337",
+              "rank": 2,
+              "entry_price": 2026.0,
+              "lots": 4,
+              "shares": 400,
+              "cost": 810400,
+              "return_pct": 91.017
+            },
+            {
+              "code": "3561",
+              "rank": 3,
+              "entry_price": 524.0,
+              "lots": 6,
+              "shares": 600,
+              "cost": 314400,
+              "return_pct": 48.282
+            }
+          ]
+        },
+        {
+          "date": "2022-03-10",
+          "available": 3,
+          "invested_yen": 1474300,
+          "cash_yen": 25700,
+          "utilization_pct": 98.29,
+          "portfolio_return_pct": 6.133,
+          "end_value_yen": 1592000,
+          "holdings": [
+            {
+              "code": "8011",
+              "rank": 1,
+              "entry_price": 642.0,
+              "lots": 4,
+              "shares": 400,
+              "cost": 256800,
+              "return_pct": 36.449
+            },
+            {
+              "code": "7269",
+              "rank": 2,
+              "entry_price": 3761.0,
+              "lots": 2,
+              "shares": 200,
+              "cost": 752200,
+              "return_pct": 2.499
+            },
+            {
+              "code": "7723",
+              "rank": 3,
+              "entry_price": 1551.0,
+              "lots": 3,
+              "shares": 300,
+              "cost": 465300,
+              "return_pct": -4.384
+            }
+          ]
+        },
+        {
+          "date": "2024-08-06",
+          "available": 5,
+          "invested_yen": 1498000,
+          "cash_yen": 2000,
+          "utilization_pct": 99.87,
+          "portfolio_return_pct": 55.576,
+          "end_value_yen": 2333646,
+          "holdings": [
+            {
+              "code": "9984",
+              "rank": 1,
+              "entry_price": 6912.0,
+              "lots": 1,
+              "shares": 100,
+              "cost": 691200,
+              "return_pct": 24.902
+            },
+            {
+              "code": "6298",
+              "rank": 2,
+              "entry_price": 1686.0,
+              "lots": 2,
+              "shares": 200,
+              "cost": 337200,
+              "return_pct": 34.104
+            },
+            {
+              "code": "5803",
+              "rank": 3,
+              "entry_price": 2348.0,
+              "lots": 2,
+              "shares": 200,
+              "cost": 469600,
+              "return_pct": 116.381
+            }
+          ]
+        },
+        {
+          "date": "2025-04-08",
+          "available": 5,
+          "invested_yen": 1459800,
+          "cash_yen": 40200,
+          "utilization_pct": 97.32,
+          "portfolio_return_pct": 48.977,
+          "end_value_yen": 2234660,
+          "holdings": [
+            {
+              "code": "6323",
+              "rank": 1,
+              "entry_price": 1102.0,
+              "lots": 4,
+              "shares": 400,
+              "cost": 440800,
+              "return_pct": 55.172
+            },
+            {
+              "code": "5802",
+              "rank": 2,
+              "entry_price": 1884.5,
+              "lots": 4,
+              "shares": 400,
+              "cost": 753800,
+              "return_pct": 60.263
+            },
+            {
+              "code": "6298",
+              "rank": 3,
+              "entry_price": 663.0,
+              "lots": 4,
+              "shares": 400,
+              "cost": 265200,
+              "return_pct": 14.027
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "policy": "cap50_backfill_top5",
+      "capital_yen": 1500000,
+      "event_avg_return_pct": 43.901,
+      "event_median_return_pct": 27.642,
+      "worst_event_return_pct": 16.88,
+      "best_event_return_pct": 97.95,
+      "event_stdev_pct": 29.036,
+      "positive_events": 5,
+      "avg_utilization_pct": 95.8,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "available": 2,
+          "invested_yen": 1353000,
+          "cash_yen": 147000,
+          "utilization_pct": 90.2,
+          "portfolio_return_pct": 27.642,
+          "end_value_yen": 1914629,
+          "holdings": [
+            {
+              "code": "3649",
+              "rank": 1,
+              "entry_price": 519.0,
+              "lots": 14,
+              "shares": 1400,
+              "cost": 726600,
+              "return_pct": 50.289
+            },
+            {
+              "code": "9960",
+              "rank": 2,
+              "entry_price": 2088.0,
+              "lots": 3,
+              "shares": 300,
+              "cost": 626400,
+              "return_pct": 7.859
+            }
+          ]
+        },
+        {
+          "date": "2020-04-06",
+          "available": 5,
+          "invested_yen": 1461000,
+          "cash_yen": 39000,
+          "utilization_pct": 97.4,
+          "portfolio_return_pct": 97.95,
+          "end_value_yen": 2969256,
+          "holdings": [
+            {
+              "code": "7172",
+              "rank": 1,
+              "entry_price": 580.0,
+              "lots": 12,
+              "shares": 1200,
+              "cost": 696000,
+              "return_pct": 120.712
+            },
+            {
+              "code": "4337",
+              "rank": 2,
+              "entry_price": 2026.0,
+              "lots": 3,
+              "shares": 300,
+              "cost": 607800,
+              "return_pct": 91.017
+            },
+            {
+              "code": "3561",
+              "rank": 3,
+              "entry_price": 524.0,
+              "lots": 3,
+              "shares": 300,
+              "cost": 157200,
+              "return_pct": 48.282
+            }
+          ]
+        },
+        {
+          "date": "2022-03-10",
+          "available": 3,
+          "invested_yen": 1392500,
+          "cash_yen": 107500,
+          "utilization_pct": 92.83,
+          "portfolio_return_pct": 16.88,
+          "end_value_yen": 1753202,
+          "holdings": [
+            {
+              "code": "8011",
+              "rank": 1,
+              "entry_price": 642.0,
+              "lots": 11,
+              "shares": 1100,
+              "cost": 706200,
+              "return_pct": 36.449
+            },
+            {
+              "code": "7269",
+              "rank": 2,
+              "entry_price": 3761.0,
+              "lots": 1,
+              "shares": 100,
+              "cost": 376100,
+              "return_pct": 2.499
+            },
+            {
+              "code": "7723",
+              "rank": 3,
+              "entry_price": 1551.0,
+              "lots": 2,
+              "shares": 200,
+              "cost": 310200,
+              "return_pct": -4.384
+            }
+          ]
+        },
+        {
+          "date": "2024-08-06",
+          "available": 5,
+          "invested_yen": 1486700,
+          "cash_yen": 13300,
+          "utilization_pct": 99.11,
+          "portfolio_return_pct": 27.521,
+          "end_value_yen": 1912820,
+          "holdings": [
+            {
+              "code": "9984",
+              "rank": 1,
+              "entry_price": 6912.0,
+              "lots": 1,
+              "shares": 100,
+              "cost": 691200,
+              "return_pct": 24.902
+            },
+            {
+              "code": "6298",
+              "rank": 2,
+              "entry_price": 1686.0,
+              "lots": 4,
+              "shares": 400,
+              "cost": 674400,
+              "return_pct": 34.104
+            },
+            {
+              "code": "7280",
+              "rank": 4,
+              "entry_price": 800.0,
+              "lots": 1,
+              "shares": 100,
+              "cost": 80000,
+              "return_pct": 12.75
+            },
+            {
+              "code": "6958",
+              "rank": 5,
+              "entry_price": 411.0,
+              "lots": 1,
+              "shares": 100,
+              "cost": 41100,
+              "return_pct": 1.217
+            }
+          ]
+        },
+        {
+          "date": "2025-04-08",
+          "available": 5,
+          "invested_yen": 1491750,
+          "cash_yen": 8250,
+          "utilization_pct": 99.45,
+          "portfolio_return_pct": 49.513,
+          "end_value_yen": 2242694,
+          "holdings": [
+            {
+              "code": "6323",
+              "rank": 1,
+              "entry_price": 1102.0,
+              "lots": 6,
+              "shares": 600,
+              "cost": 661200,
+              "return_pct": 55.172
+            },
+            {
+              "code": "5802",
+              "rank": 2,
+              "entry_price": 1884.5,
+              "lots": 3,
+              "shares": 300,
+              "cost": 565350,
+              "return_pct": 60.263
+            },
+            {
+              "code": "6298",
+              "rank": 3,
+              "entry_price": 663.0,
+              "lots": 4,
+              "shares": 400,
+              "cost": 265200,
+              "return_pct": 14.027
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "policy": "equal_target_top3",
+      "capital_yen": 2000000,
+      "event_avg_return_pct": 37.231,
+      "event_median_return_pct": 35.951,
+      "worst_event_return_pct": 10.81,
+      "best_event_return_pct": 81.347,
+      "event_stdev_pct": 24.57,
+      "positive_events": 5,
+      "avg_utilization_pct": 76.27,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "available": 2,
+          "invested_yen": 1249200,
+          "cash_yen": 750800,
+          "utilization_pct": 62.46,
+          "portfolio_return_pct": 18.121,
+          "end_value_yen": 2362429,
+          "holdings": [
+            {
+              "code": "3649",
+              "rank": 1,
+              "entry_price": 519.0,
+              "lots": 12,
+              "shares": 1200,
+              "cost": 622800,
+              "return_pct": 50.289
+            },
+            {
+              "code": "9960",
+              "rank": 2,
+              "entry_price": 2088.0,
+              "lots": 3,
+              "shares": 300,
+              "cost": 626400,
+              "return_pct": 7.859
+            }
+          ]
+        },
+        {
+          "date": "2020-04-06",
+          "available": 5,
+          "invested_yen": 1874600,
+          "cash_yen": 125400,
+          "utilization_pct": 93.73,
+          "portfolio_return_pct": 81.347,
+          "end_value_yen": 3626941,
+          "holdings": [
+            {
+              "code": "7172",
+              "rank": 1,
+              "entry_price": 580.0,
+              "lots": 11,
+              "shares": 1100,
+              "cost": 638000,
+              "return_pct": 120.712
+            },
+            {
+              "code": "4337",
+              "rank": 2,
+              "entry_price": 2026.0,
+              "lots": 3,
+              "shares": 300,
+              "cost": 607800,
+              "return_pct": 91.017
+            },
+            {
+              "code": "3561",
+              "rank": 3,
+              "entry_price": 524.0,
+              "lots": 12,
+              "shares": 1200,
+              "cost": 628800,
+              "return_pct": 48.282
+            }
+          ]
+        },
+        {
+          "date": "2022-03-10",
+          "available": 3,
+          "invested_yen": 1638500,
+          "cash_yen": 361500,
+          "utilization_pct": 81.92,
+          "portfolio_return_pct": 10.81,
+          "end_value_yen": 2216203,
+          "holdings": [
+            {
+              "code": "8011",
+              "rank": 1,
+              "entry_price": 642.0,
+              "lots": 10,
+              "shares": 1000,
+              "cost": 642000,
+              "return_pct": 36.449
+            },
+            {
+              "code": "7269",
+              "rank": 2,
+              "entry_price": 3761.0,
+              "lots": 1,
+              "shares": 100,
+              "cost": 376100,
+              "return_pct": 2.499
+            },
+            {
+              "code": "7723",
+              "rank": 3,
+              "entry_price": 1551.0,
+              "lots": 4,
+              "shares": 400,
+              "cost": 620400,
+              "return_pct": -4.384
+            }
+          ]
+        },
+        {
+          "date": "2024-08-06",
+          "available": 5,
+          "invested_yen": 975400,
+          "cash_yen": 1024600,
+          "utilization_pct": 48.77,
+          "portfolio_return_pct": 35.951,
+          "end_value_yen": 2719023,
+          "holdings": [
+            {
+              "code": "6298",
+              "rank": 2,
+              "entry_price": 1686.0,
+              "lots": 3,
+              "shares": 300,
+              "cost": 505800,
+              "return_pct": 34.104
+            },
+            {
+              "code": "5803",
+              "rank": 3,
+              "entry_price": 2348.0,
+              "lots": 2,
+              "shares": 200,
+              "cost": 469600,
+              "return_pct": 116.381
+            }
+          ]
+        },
+        {
+          "date": "2025-04-08",
+          "available": 5,
+          "invested_yen": 1889550,
+          "cash_yen": 110450,
+          "utilization_pct": 94.48,
+          "portfolio_return_pct": 39.925,
+          "end_value_yen": 2798493,
+          "holdings": [
+            {
+              "code": "6323",
+              "rank": 1,
+              "entry_price": 1102.0,
+              "lots": 6,
+              "shares": 600,
+              "cost": 661200,
+              "return_pct": 55.172
+            },
+            {
+              "code": "5802",
+              "rank": 2,
+              "entry_price": 1884.5,
+              "lots": 3,
+              "shares": 300,
+              "cost": 565350,
+              "return_pct": 60.263
+            },
+            {
+              "code": "6298",
+              "rank": 3,
+              "entry_price": 663.0,
+              "lots": 10,
+              "shares": 1000,
+              "cost": 663000,
+              "return_pct": 14.027
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "policy": "rank_priority_top3",
+      "capital_yen": 2000000,
+      "event_avg_return_pct": 57.088,
+      "event_median_return_pct": 49.59,
+      "worst_event_return_pct": 25.837,
+      "best_event_return_pct": 119.022,
+      "event_stdev_pct": 32.581,
+      "positive_events": 5,
+      "avg_utilization_pct": 98.06,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "available": 2,
+          "invested_yen": 1972200,
+          "cash_yen": 27800,
+          "utilization_pct": 98.61,
+          "portfolio_return_pct": 49.59,
+          "end_value_yen": 2991800,
+          "holdings": [
+            {
+              "code": "3649",
+              "rank": 1,
+              "entry_price": 519.0,
+              "lots": 38,
+              "shares": 3800,
+              "cost": 1972200,
+              "return_pct": 50.289
+            }
+          ]
+        },
+        {
+          "date": "2020-04-06",
+          "available": 5,
+          "invested_yen": 1972000,
+          "cash_yen": 28000,
+          "utilization_pct": 98.6,
+          "portfolio_return_pct": 119.022,
+          "end_value_yen": 4380441,
+          "holdings": [
+            {
+              "code": "7172",
+              "rank": 1,
+              "entry_price": 580.0,
+              "lots": 34,
+              "shares": 3400,
+              "cost": 1972000,
+              "return_pct": 120.712
+            }
+          ]
+        },
+        {
+          "date": "2022-03-10",
+          "available": 3,
+          "invested_yen": 1990200,
+          "cash_yen": 9800,
+          "utilization_pct": 99.51,
+          "portfolio_return_pct": 36.27,
+          "end_value_yen": 2725408,
+          "holdings": [
+            {
+              "code": "8011",
+              "rank": 1,
+              "entry_price": 642.0,
+              "lots": 31,
+              "shares": 3100,
+              "cost": 1990200,
+              "return_pct": 36.449
+            }
+          ]
+        },
+        {
+          "date": "2024-08-06",
+          "available": 5,
+          "invested_yen": 1888200,
+          "cash_yen": 111800,
+          "utilization_pct": 94.41,
+          "portfolio_return_pct": 25.837,
+          "end_value_yen": 2516743,
+          "holdings": [
+            {
+              "code": "9984",
+              "rank": 1,
+              "entry_price": 6912.0,
+              "lots": 2,
+              "shares": 200,
+              "cost": 1382400,
+              "return_pct": 24.902
+            },
+            {
+              "code": "6298",
+              "rank": 2,
+              "entry_price": 1686.0,
+              "lots": 3,
+              "shares": 300,
+              "cost": 505800,
+              "return_pct": 34.104
+            }
+          ]
+        },
+        {
+          "date": "2025-04-08",
+          "available": 5,
+          "invested_yen": 1983600,
+          "cash_yen": 16400,
+          "utilization_pct": 99.18,
+          "portfolio_return_pct": 54.72,
+          "end_value_yen": 3094392,
+          "holdings": [
+            {
+              "code": "6323",
+              "rank": 1,
+              "entry_price": 1102.0,
+              "lots": 18,
+              "shares": 1800,
+              "cost": 1983600,
+              "return_pct": 55.172
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "policy": "one_lot_each_then_rank_top3",
+      "capital_yen": 2000000,
+      "event_avg_return_pct": 40.093,
+      "event_median_return_pct": 36.625,
+      "worst_event_return_pct": 7.41,
+      "best_event_return_pct": 88.68,
+      "event_stdev_pct": 28.189,
+      "positive_events": 5,
+      "avg_utilization_pct": 98.37,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "available": 2,
+          "invested_yen": 1980600,
+          "cash_yen": 19400,
+          "utilization_pct": 99.03,
+          "portfolio_return_pct": 18.793,
+          "end_value_yen": 2375867,
+          "holdings": [
+            {
+              "code": "3649",
+              "rank": 1,
+              "entry_price": 519.0,
+              "lots": 10,
+              "shares": 1000,
+              "cost": 519000,
+              "return_pct": 50.289
+            },
+            {
+              "code": "9960",
+              "rank": 2,
+              "entry_price": 2088.0,
+              "lots": 7,
+              "shares": 700,
+              "cost": 1461600,
+              "return_pct": 7.859
+            }
+          ]
+        },
+        {
+          "date": "2020-04-06",
+          "available": 5,
+          "invested_yen": 1988400,
+          "cash_yen": 11600,
+          "utilization_pct": 99.42,
+          "portfolio_return_pct": 88.68,
+          "end_value_yen": 3773592,
+          "holdings": [
+            {
+              "code": "7172",
+              "rank": 1,
+              "entry_price": 580.0,
+              "lots": 7,
+              "shares": 700,
+              "cost": 406000,
+              "return_pct": 120.712
+            },
+            {
+              "code": "4337",
+              "rank": 2,
+              "entry_price": 2026.0,
+              "lots": 6,
+              "shares": 600,
+              "cost": 1215600,
+              "return_pct": 91.017
+            },
+            {
+              "code": "3561",
+              "rank": 3,
+              "entry_price": 524.0,
+              "lots": 7,
+              "shares": 700,
+              "cost": 366800,
+              "return_pct": 48.282
+            }
+          ]
+        },
+        {
+          "date": "2022-03-10",
+          "available": 3,
+          "invested_yen": 1978800,
+          "cash_yen": 21200,
+          "utilization_pct": 98.94,
+          "portfolio_return_pct": 7.41,
+          "end_value_yen": 2148199,
+          "holdings": [
+            {
+              "code": "8011",
+              "rank": 1,
+              "entry_price": 642.0,
+              "lots": 6,
+              "shares": 600,
+              "cost": 385200,
+              "return_pct": 36.449
+            },
+            {
+              "code": "7269",
+              "rank": 2,
+              "entry_price": 3761.0,
+              "lots": 3,
+              "shares": 300,
+              "cost": 1128300,
+              "return_pct": 2.499
+            },
+            {
+              "code": "7723",
+              "rank": 3,
+              "entry_price": 1551.0,
+              "lots": 3,
+              "shares": 300,
+              "cost": 465300,
+              "return_pct": -4.384
+            }
+          ]
+        },
+        {
+          "date": "2024-08-06",
+          "available": 5,
+          "invested_yen": 1954400,
+          "cash_yen": 45600,
+          "utilization_pct": 97.72,
+          "portfolio_return_pct": 36.625,
+          "end_value_yen": 2732507,
+          "holdings": [
+            {
+              "code": "9984",
+              "rank": 1,
+              "entry_price": 6912.0,
+              "lots": 2,
+              "shares": 200,
+              "cost": 1382400,
+              "return_pct": 24.902
+            },
+            {
+              "code": "6298",
+              "rank": 2,
+              "entry_price": 1686.0,
+              "lots": 2,
+              "shares": 200,
+              "cost": 337200,
+              "return_pct": 34.104
+            },
+            {
+              "code": "5803",
+              "rank": 3,
+              "entry_price": 2348.0,
+              "lots": 1,
+              "shares": 100,
+              "cost": 234800,
+              "return_pct": 116.381
+            }
+          ]
+        },
+        {
+          "date": "2025-04-08",
+          "available": 5,
+          "invested_yen": 1934950,
+          "cash_yen": 65050,
+          "utilization_pct": 96.75,
+          "portfolio_return_pct": 48.956,
+          "end_value_yen": 2979125,
+          "holdings": [
+            {
+              "code": "6323",
+              "rank": 1,
+              "entry_price": 1102.0,
+              "lots": 6,
+              "shares": 600,
+              "cost": 661200,
+              "return_pct": 55.172
+            },
+            {
+              "code": "5802",
+              "rank": 2,
+              "entry_price": 1884.5,
+              "lots": 5,
+              "shares": 500,
+              "cost": 942250,
+              "return_pct": 60.263
+            },
+            {
+              "code": "6298",
+              "rank": 3,
+              "entry_price": 663.0,
+              "lots": 5,
+              "shares": 500,
+              "cost": 331500,
+              "return_pct": 14.027
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "policy": "cap50_backfill_top5",
+      "capital_yen": 2000000,
+      "event_avg_return_pct": 47.971,
+      "event_median_return_pct": 37.689,
+      "worst_event_return_pct": 18.15,
+      "best_event_return_pct": 100.186,
+      "event_stdev_pct": 28.906,
+      "positive_events": 5,
+      "avg_utilization_pct": 95.49,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "available": 2,
+          "invested_yen": 1821300,
+          "cash_yen": 178700,
+          "utilization_pct": 91.06,
+          "portfolio_return_pct": 28.077,
+          "end_value_yen": 2561538,
+          "holdings": [
+            {
+              "code": "3649",
+              "rank": 1,
+              "entry_price": 519.0,
+              "lots": 19,
+              "shares": 1900,
+              "cost": 986100,
+              "return_pct": 50.289
+            },
+            {
+              "code": "9960",
+              "rank": 2,
+              "entry_price": 2088.0,
+              "lots": 4,
+              "shares": 400,
+              "cost": 835200,
+              "return_pct": 7.859
+            }
+          ]
+        },
+        {
+          "date": "2020-04-06",
+          "available": 5,
+          "invested_yen": 1953600,
+          "cash_yen": 46400,
+          "utilization_pct": 97.68,
+          "portfolio_return_pct": 100.186,
+          "end_value_yen": 4003721,
+          "holdings": [
+            {
+              "code": "7172",
+              "rank": 1,
+              "entry_price": 580.0,
+              "lots": 17,
+              "shares": 1700,
+              "cost": 986000,
+              "return_pct": 120.712
+            },
+            {
+              "code": "4337",
+              "rank": 2,
+              "entry_price": 2026.0,
+              "lots": 4,
+              "shares": 400,
+              "cost": 810400,
+              "return_pct": 91.017
+            },
+            {
+              "code": "3561",
+              "rank": 3,
+              "entry_price": 524.0,
+              "lots": 3,
+              "shares": 300,
+              "cost": 157200,
+              "return_pct": 48.282
+            }
+          ]
+        },
+        {
+          "date": "2022-03-10",
+          "available": 3,
+          "invested_yen": 1870300,
+          "cash_yen": 129700,
+          "utilization_pct": 93.52,
+          "portfolio_return_pct": 18.15,
+          "end_value_yen": 2363002,
+          "holdings": [
+            {
+              "code": "8011",
+              "rank": 1,
+              "entry_price": 642.0,
+              "lots": 15,
+              "shares": 1500,
+              "cost": 963000,
+              "return_pct": 36.449
+            },
+            {
+              "code": "7269",
+              "rank": 2,
+              "entry_price": 3761.0,
+              "lots": 2,
+              "shares": 200,
+              "cost": 752200,
+              "return_pct": 2.499
+            },
+            {
+              "code": "7723",
+              "rank": 3,
+              "entry_price": 1551.0,
+              "lots": 1,
+              "shares": 100,
+              "cost": 155100,
+              "return_pct": -4.384
+            }
+          ]
+        },
+        {
+          "date": "2024-08-06",
+          "available": 5,
+          "invested_yen": 1970100,
+          "cash_yen": 29900,
+          "utilization_pct": 98.5,
+          "portfolio_return_pct": 37.689,
+          "end_value_yen": 2753782,
+          "holdings": [
+            {
+              "code": "9984",
+              "rank": 1,
+              "entry_price": 6912.0,
+              "lots": 1,
+              "shares": 100,
+              "cost": 691200,
+              "return_pct": 24.902
+            },
+            {
+              "code": "6298",
+              "rank": 2,
+              "entry_price": 1686.0,
+              "lots": 5,
+              "shares": 500,
+              "cost": 843000,
+              "return_pct": 34.104
+            },
+            {
+              "code": "5803",
+              "rank": 3,
+              "entry_price": 2348.0,
+              "lots": 1,
+              "shares": 100,
+              "cost": 234800,
+              "return_pct": 116.381
+            },
+            {
+              "code": "7280",
+              "rank": 4,
+              "entry_price": 800.0,
+              "lots": 2,
+              "shares": 200,
+              "cost": 160000,
+              "return_pct": 12.75
+            },
+            {
+              "code": "6958",
+              "rank": 5,
+              "entry_price": 411.0,
+              "lots": 1,
+              "shares": 100,
+              "cost": 41100,
+              "return_pct": 1.217
+            }
+          ]
+        },
+        {
+          "date": "2025-04-08",
+          "available": 5,
+          "invested_yen": 1934050,
+          "cash_yen": 65950,
+          "utilization_pct": 96.7,
+          "portfolio_return_pct": 55.751,
+          "end_value_yen": 3115024,
+          "holdings": [
+            {
+              "code": "6323",
+              "rank": 1,
+              "entry_price": 1102.0,
+              "lots": 9,
+              "shares": 900,
+              "cost": 991800,
+              "return_pct": 55.172
+            },
+            {
+              "code": "5802",
+              "rank": 2,
+              "entry_price": 1884.5,
+              "lots": 5,
+              "shares": 500,
+              "cost": 942250,
+              "return_pct": 60.263
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "ranking_by_capital": {
+    "300000": [
+      {
+        "policy": "rank_priority_top3",
+        "capital_yen": 300000,
+        "event_avg_return_pct": 50.837,
+        "event_median_return_pct": 43.5,
+        "worst_event_return_pct": 19.166,
+        "best_event_return_pct": 116.688,
+        "event_stdev_pct": 34.149,
+        "positive_events": 5,
+        "avg_utilization_pct": 84.11,
+        "events": [
+          {
+            "date": "2018-12-27",
+            "available": 2,
+            "invested_yen": 259500,
+            "cash_yen": 40500,
+            "utilization_pct": 86.5,
+            "portfolio_return_pct": 43.5,
+            "end_value_yen": 430500,
+            "holdings": [
+              {
+                "code": "3649",
+                "rank": 1,
+                "entry_price": 519.0,
+                "lots": 5,
+                "shares": 500,
+                "cost": 259500,
+                "return_pct": 50.289
+              }
+            ]
+          },
+          {
+            "date": "2020-04-06",
+            "available": 5,
+            "invested_yen": 290000,
+            "cash_yen": 10000,
+            "utilization_pct": 96.67,
+            "portfolio_return_pct": 116.688,
+            "end_value_yen": 650065,
+            "holdings": [
+              {
+                "code": "7172",
+                "rank": 1,
+                "entry_price": 580.0,
+                "lots": 5,
+                "shares": 500,
+                "cost": 290000,
+                "return_pct": 120.712
+              }
+            ]
+          },
+          {
+            "date": "2022-03-10",
+            "available": 3,
+            "invested_yen": 256800,
+            "cash_yen": 43200,
+            "utilization_pct": 85.6,
+            "portfolio_return_pct": 31.2,
+            "end_value_yen": 393601,
+            "holdings": [
+              {
+                "code": "8011",
+                "rank": 1,
+                "entry_price": 642.0,
+                "lots": 4,
+                "shares": 400,
+                "cost": 256800,
+                "return_pct": 36.449
+              }
+            ]
+          },
+          {
+            "date": "2024-08-06",
+            "available": 5,
+            "invested_yen": 168600,
+            "cash_yen": 131400,
+            "utilization_pct": 56.2,
+            "portfolio_return_pct": 19.166,
+            "end_value_yen": 357499,
+            "holdings": [
+              {
+                "code": "6298",
+                "rank": 2,
+                "entry_price": 1686.0,
+                "lots": 1,
+                "shares": 100,
+                "cost": 168600,
+                "return_pct": 34.104
+              }
+            ]
+          },
+          {
+            "date": "2025-04-08",
+            "available": 5,
+            "invested_yen": 286700,
+            "cash_yen": 13300,
+            "utilization_pct": 95.57,
+            "portfolio_return_pct": 43.633,
+            "end_value_yen": 430899,
+            "holdings": [
+              {
+                "code": "6323",
+                "rank": 1,
+                "entry_price": 1102.0,
+                "lots": 2,
+                "shares": 200,
+                "cost": 220400,
+                "return_pct": 55.172
+              },
+              {
+                "code": "6298",
+                "rank": 3,
+                "entry_price": 663.0,
+                "lots": 1,
+                "shares": 100,
+                "cost": 66300,
+                "return_pct": 14.027
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "policy": "one_lot_each_then_rank_top3",
+        "capital_yen": 300000,
+        "event_avg_return_pct": 37.919,
+        "event_median_return_pct": 19.166,
+        "worst_event_return_pct": 13.334,
+        "best_event_return_pct": 84.804,
+        "event_stdev_pct": 28.728,
+        "positive_events": 5,
+        "avg_utilization_pct": 84.8,
+        "events": [
+          {
+            "date": "2018-12-27",
+            "available": 2,
+            "invested_yen": 260700,
+            "cash_yen": 39300,
+            "utilization_pct": 86.9,
+            "portfolio_return_pct": 14.17,
+            "end_value_yen": 342510,
+            "holdings": [
+              {
+                "code": "3649",
+                "rank": 1,
+                "entry_price": 519.0,
+                "lots": 1,
+                "shares": 100,
+                "cost": 51900,
+                "return_pct": 50.289
+              },
+              {
+                "code": "9960",
+                "rank": 2,
+                "entry_price": 2088.0,
+                "lots": 1,
+                "shares": 100,
+                "cost": 208800,
+                "return_pct": 7.859
+              }
+            ]
+          },
+          {
+            "date": "2020-04-06",
+            "available": 5,
+            "invested_yen": 260600,
+            "cash_yen": 39400,
+            "utilization_pct": 86.87,
+            "portfolio_return_pct": 84.804,
+            "end_value_yen": 554413,
+            "holdings": [
+              {
+                "code": "7172",
+                "rank": 1,
+                "entry_price": 580.0,
+                "lots": 1,
+                "shares": 100,
+                "cost": 58000,
+                "return_pct": 120.712
+              },
+              {
+                "code": "4337",
+                "rank": 2,
+                "entry_price": 2026.0,
+                "lots": 1,
+                "shares": 100,
+                "cost": 202600,
+                "return_pct": 91.017
+              }
+            ]
+          },
+          {
+            "date": "2022-03-10",
+            "available": 3,
+            "invested_yen": 283500,
+            "cash_yen": 16500,
+            "utilization_pct": 94.5,
+            "portfolio_return_pct": 13.334,
+            "end_value_yen": 340001,
+            "holdings": [
+              {
+                "code": "8011",
+                "rank": 1,
+                "entry_price": 642.0,
+                "lots": 2,
+                "shares": 200,
+                "cost": 128400,
+                "return_pct": 36.449
+              },
+              {
+                "code": "7723",
+                "rank": 3,
+                "entry_price": 1551.0,
+                "lots": 1,
+                "shares": 100,
+                "cost": 155100,
+                "return_pct": -4.384
+              }
+            ]
+          },
+          {
+            "date": "2024-08-06",
+            "available": 5,
+            "invested_yen": 168600,
+            "cash_yen": 131400,
+            "utilization_pct": 56.2,
+            "portfolio_return_pct": 19.166,
+            "end_value_yen": 357499,
+            "holdings": [
+              {
+                "code": "6298",
+                "rank": 2,
+                "entry_price": 1686.0,
+                "lots": 1,
+                "shares": 100,
+                "cost": 168600,
+                "return_pct": 34.104
+              }
+            ]
+          },
+          {
+            "date": "2025-04-08",
+            "available": 5,
+            "invested_yen": 298650,
+            "cash_yen": 1350,
+            "utilization_pct": 99.55,
+            "portfolio_return_pct": 58.122,
+            "end_value_yen": 474365,
+            "holdings": [
+              {
+                "code": "6323",
+                "rank": 1,
+                "entry_price": 1102.0,
+                "lots": 1,
+                "shares": 100,
+                "cost": 110200,
+                "return_pct": 55.172
+              },
+              {
+                "code": "5802",
+                "rank": 2,
+                "entry_price": 1884.5,
+                "lots": 1,
+                "shares": 100,
+                "cost": 188450,
+                "return_pct": 60.263
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "policy": "cap50_backfill_top5",
+        "capital_yen": 300000,
+        "event_avg_return_pct": 25.382,
+        "event_median_return_pct": 17.4,
+        "worst_event_return_pct": 3.9,
+        "best_event_return_pct": 63.542,
+        "event_stdev_pct": 20.387,
+        "positive_events": 5,
+        "avg_utilization_pct": 59.94,
+        "events": [
+          {
+            "date": "2018-12-27",
+            "available": 2,
+            "invested_yen": 103800,
+            "cash_yen": 196200,
+            "utilization_pct": 34.6,
+            "portfolio_return_pct": 17.4,
+            "end_value_yen": 352200,
+            "holdings": [
+              {
+                "code": "3649",
+                "rank": 1,
+                "entry_price": 519.0,
+                "lots": 2,
+                "shares": 200,
+                "cost": 103800,
+                "return_pct": 50.289
+              }
+            ]
+          },
+          {
+            "date": "2020-04-06",
+            "available": 5,
+            "invested_yen": 220800,
+            "cash_yen": 79200,
+            "utilization_pct": 73.6,
+            "portfolio_return_pct": 63.542,
+            "end_value_yen": 490625,
+            "holdings": [
+              {
+                "code": "7172",
+                "rank": 1,
+                "entry_price": 580.0,
+                "lots": 2,
+                "shares": 200,
+                "cost": 116000,
+                "return_pct": 120.712
+              },
+              {
+                "code": "3561",
+                "rank": 3,
+                "entry_price": 524.0,
+                "lots": 2,
+                "shares": 200,
+                "cost": 104800,
+                "return_pct": 48.282
+              }
+            ]
+          },
+          {
+            "date": "2022-03-10",
+            "available": 3,
+            "invested_yen": 128400,
+            "cash_yen": 171600,
+            "utilization_pct": 42.8,
+            "portfolio_return_pct": 15.6,
+            "end_value_yen": 346801,
+            "holdings": [
+              {
+                "code": "8011",
+                "rank": 1,
+                "entry_price": 642.0,
+                "lots": 2,
+                "shares": 200,
+                "cost": 128400,
+                "return_pct": 36.449
+              }
+            ]
+          },
+          {
+            "date": "2024-08-06",
+            "available": 5,
+            "invested_yen": 203300,
+            "cash_yen": 96700,
+            "utilization_pct": 67.77,
+            "portfolio_return_pct": 3.9,
+            "end_value_yen": 311701,
+            "holdings": [
+              {
+                "code": "7280",
+                "rank": 4,
+                "entry_price": 800.0,
+                "lots": 1,
+                "shares": 100,
+                "cost": 80000,
+                "return_pct": 12.75
+              },
+              {
+                "code": "6958",
+                "rank": 5,
+                "entry_price": 411.0,
+                "lots": 3,
+                "shares": 300,
+                "cost": 123300,
+                "return_pct": 1.217
+              }
+            ]
+          },
+          {
+            "date": "2025-04-08",
+            "available": 5,
+            "invested_yen": 242800,
+            "cash_yen": 57200,
+            "utilization_pct": 80.93,
+            "portfolio_return_pct": 26.466,
+            "end_value_yen": 379399,
+            "holdings": [
+              {
+                "code": "6323",
+                "rank": 1,
+                "entry_price": 1102.0,
+                "lots": 1,
+                "shares": 100,
+                "cost": 110200,
+                "return_pct": 55.172
+              },
+              {
+                "code": "6298",
+                "rank": 3,
+                "entry_price": 663.0,
+                "lots": 2,
+                "shares": 200,
+                "cost": 132600,
+                "return_pct": 14.027
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "policy": "equal_target_top3",
+        "capital_yen": 300000,
+        "event_avg_return_pct": 10.274,
+        "event_median_return_pct": 7.8,
+        "worst_event_return_pct": 0.0,
+        "best_event_return_pct": 31.771,
+        "event_stdev_pct": 11.205,
+        "positive_events": 4,
+        "avg_utilization_pct": 19.52,
+        "events": [
+          {
+            "date": "2018-12-27",
+            "available": 2,
+            "invested_yen": 51900,
+            "cash_yen": 248100,
+            "utilization_pct": 17.3,
+            "portfolio_return_pct": 8.7,
+            "end_value_yen": 326100,
+            "holdings": [
+              {
+                "code": "3649",
+                "rank": 1,
+                "entry_price": 519.0,
+                "lots": 1,
+                "shares": 100,
+                "cost": 51900,
+                "return_pct": 50.289
+              }
+            ]
+          },
+          {
+            "date": "2020-04-06",
+            "available": 5,
+            "invested_yen": 110400,
+            "cash_yen": 189600,
+            "utilization_pct": 36.8,
+            "portfolio_return_pct": 31.771,
+            "end_value_yen": 395313,
+            "holdings": [
+              {
+                "code": "7172",
+                "rank": 1,
+                "entry_price": 580.0,
+                "lots": 1,
+                "shares": 100,
+                "cost": 58000,
+                "return_pct": 120.712
+              },
+              {
+                "code": "3561",
+                "rank": 3,
+                "entry_price": 524.0,
+                "lots": 1,
+                "shares": 100,
+                "cost": 52400,
+                "return_pct": 48.282
+              }
+            ]
+          },
+          {
+            "date": "2022-03-10",
+            "available": 3,
+            "invested_yen": 64200,
+            "cash_yen": 235800,
+            "utilization_pct": 21.4,
+            "portfolio_return_pct": 7.8,
+            "end_value_yen": 323400,
+            "holdings": [
+              {
+                "code": "8011",
+                "rank": 1,
+                "entry_price": 642.0,
+                "lots": 1,
+                "shares": 100,
+                "cost": 64200,
+                "return_pct": 36.449
+              }
+            ]
+          },
+          {
+            "date": "2024-08-06",
+            "available": 5,
+            "invested_yen": 0,
+            "cash_yen": 300000,
+            "utilization_pct": 0.0,
+            "portfolio_return_pct": 0.0,
+            "end_value_yen": 300000,
+            "holdings": []
+          },
+          {
+            "date": "2025-04-08",
+            "available": 5,
+            "invested_yen": 66300,
+            "cash_yen": 233700,
+            "utilization_pct": 22.1,
+            "portfolio_return_pct": 3.1,
+            "end_value_yen": 309300,
+            "holdings": [
+              {
+                "code": "6298",
+                "rank": 3,
+                "entry_price": 663.0,
+                "lots": 1,
+                "shares": 100,
+                "cost": 66300,
+                "return_pct": 14.027
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "500000": [
+      {
+        "policy": "rank_priority_top3",
+        "capital_yen": 500000,
+        "event_avg_return_pct": 52.68,
+        "event_median_return_pct": 46.98,
+        "worst_event_return_pct": 23.0,
+        "best_event_return_pct": 112.021,
+        "event_stdev_pct": 31.138,
+        "positive_events": 5,
+        "avg_utilization_pct": 86.34,
+        "events": [
+          {
+            "date": "2018-12-27",
+            "available": 2,
+            "invested_yen": 467100,
+            "cash_yen": 32900,
+            "utilization_pct": 93.42,
+            "portfolio_return_pct": 46.98,
+            "end_value_yen": 734900,
+            "holdings": [
+              {
+                "code": "3649",
+                "rank": 1,
+                "entry_price": 519.0,
+                "lots": 9,
+                "shares": 900,
+                "cost": 467100,
+                "return_pct": 50.289
+              }
+            ]
+          },
+          {
+            "date": "2020-04-06",
+            "available": 5,
+            "invested_yen": 464000,
+            "cash_yen": 36000,
+            "utilization_pct": 92.8,
+            "portfolio_return_pct": 112.021,
+            "end_value_yen": 1060104,
+            "holdings": [
+              {
+                "code": "7172",
+                "rank": 1,
+                "entry_price": 580.0,
+                "lots": 8,
+                "shares": 800,
+                "cost": 464000,
+                "return_pct": 120.712
+              }
+            ]
+          },
+          {
+            "date": "2022-03-10",
+            "available": 3,
+            "invested_yen": 449400,
+            "cash_yen": 50600,
+            "utilization_pct": 89.88,
+            "portfolio_return_pct": 32.76,
+            "end_value_yen": 663802,
+            "holdings": [
+              {
+                "code": "8011",
+                "rank": 1,
+                "entry_price": 642.0,
+                "lots": 7,
+                "shares": 700,
+                "cost": 449400,
+                "return_pct": 36.449
+              }
+            ]
+          },
+          {
+            "date": "2024-08-06",
+            "available": 5,
+            "invested_yen": 337200,
+            "cash_yen": 162800,
+            "utilization_pct": 67.44,
+            "portfolio_return_pct": 23.0,
+            "end_value_yen": 614999,
+            "holdings": [
+              {
+                "code": "6298",
+                "rank": 2,
+                "entry_price": 1686.0,
+                "lots": 2,
+                "shares": 200,
+                "cost": 337200,
+                "return_pct": 34.104
+              }
+            ]
+          },
+          {
+            "date": "2025-04-08",
+            "available": 5,
+            "invested_yen": 440800,
+            "cash_yen": 59200,
+            "utilization_pct": 88.16,
+            "portfolio_return_pct": 48.64,
+            "end_value_yen": 743198,
+            "holdings": [
+              {
+                "code": "6323",
+                "rank": 1,
+                "entry_price": 1102.0,
+                "lots": 4,
+                "shares": 400,
+                "cost": 440800,
+                "return_pct": 55.172
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "policy": "cap50_backfill_top5",
+        "capital_yen": 500000,
+        "event_avg_return_pct": 50.375,
+        "event_median_return_pct": 48.893,
+        "worst_event_return_pct": 12.68,
+        "best_event_return_pct": 97.95,
+        "event_stdev_pct": 30.63,
+        "positive_events": 5,
+        "avg_utilization_pct": 88.39,
+        "events": [
+          {
+            "date": "2018-12-27",
+            "available": 2,
+            "invested_yen": 416400,
+            "cash_yen": 83600,
+            "utilization_pct": 83.28,
+            "portfolio_return_pct": 24.162,
+            "end_value_yen": 620810,
+            "holdings": [
+              {
+                "code": "3649",
+                "rank": 1,
+                "entry_price": 519.0,
+                "lots": 4,
+                "shares": 400,
+                "cost": 207600,
+                "return_pct": 50.289
+              },
+              {
+                "code": "9960",
+                "rank": 2,
+                "entry_price": 2088.0,
+                "lots": 1,
+                "shares": 100,
+                "cost": 208800,
+                "return_pct": 7.859
+              }
+            ]
+          },
+          {
+            "date": "2020-04-06",
+            "available": 5,
+            "invested_yen": 487000,
+            "cash_yen": 13000,
+            "utilization_pct": 97.4,
+            "portfolio_return_pct": 97.95,
+            "end_value_yen": 989752,
+            "holdings": [
+              {
+                "code": "7172",
+                "rank": 1,
+                "entry_price": 580.0,
+                "lots": 4,
+                "shares": 400,
+                "cost": 232000,
+                "return_pct": 120.712
+              },
+              {
+                "code": "4337",
+                "rank": 2,
+                "entry_price": 2026.0,
+                "lots": 1,
+                "shares": 100,
+                "cost": 202600,
+                "return_pct": 91.017
+              },
+              {
+                "code": "3561",
+                "rank": 3,
+                "entry_price": 524.0,
+                "lots": 1,
+                "shares": 100,
+                "cost": 52400,
+                "return_pct": 48.282
+              }
+            ]
+          },
+          {
+            "date": "2022-03-10",
+            "available": 3,
+            "invested_yen": 347700,
+            "cash_yen": 152300,
+            "utilization_pct": 69.54,
+            "portfolio_return_pct": 12.68,
+            "end_value_yen": 563401,
+            "holdings": [
+              {
+                "code": "8011",
+                "rank": 1,
+                "entry_price": 642.0,
+                "lots": 3,
+                "shares": 300,
+                "cost": 192600,
+                "return_pct": 36.449
+              },
+              {
+                "code": "7723",
+                "rank": 3,
+                "entry_price": 1551.0,
+                "lots": 1,
+                "shares": 100,
+                "cost": 155100,
+                "return_pct": -4.384
+              }
+            ]
+          },
+          {
+            "date": "2024-08-06",
+            "available": 5,
+            "invested_yen": 483400,
+            "cash_yen": 16600,
+            "utilization_pct": 96.68,
+            "portfolio_return_pct": 68.192,
+            "end_value_yen": 840962,
+            "holdings": [
+              {
+                "code": "6298",
+                "rank": 2,
+                "entry_price": 1686.0,
+                "lots": 1,
+                "shares": 100,
+                "cost": 168600,
+                "return_pct": 34.104
+              },
+              {
+                "code": "5803",
+                "rank": 3,
+                "entry_price": 2348.0,
+                "lots": 1,
+                "shares": 100,
+                "cost": 234800,
+                "return_pct": 116.381
+              },
+              {
+                "code": "7280",
+                "rank": 4,
+                "entry_price": 800.0,
+                "lots": 1,
+                "shares": 100,
+                "cost": 80000,
+                "return_pct": 12.75
+              }
+            ]
+          },
+          {
+            "date": "2025-04-08",
+            "available": 5,
+            "invested_yen": 475150,
+            "cash_yen": 24850,
+            "utilization_pct": 95.03,
+            "portfolio_return_pct": 48.893,
+            "end_value_yen": 744465,
+            "holdings": [
+              {
+                "code": "6323",
+                "rank": 1,
+                "entry_price": 1102.0,
+                "lots": 2,
+                "shares": 200,
+                "cost": 220400,
+                "return_pct": 55.172
+              },
+              {
+                "code": "5802",
+                "rank": 2,
+                "entry_price": 1884.5,
+                "lots": 1,
+                "shares": 100,
+                "cost": 188450,
+                "return_pct": 60.263
+              },
+              {
+                "code": "6298",
+                "rank": 3,
+                "entry_price": 663.0,
+                "lots": 1,
+                "shares": 100,
+                "cost": 66300,
+                "return_pct": 14.027
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "policy": "one_lot_each_then_rank_top3",
+        "capital_yen": 500000,
+        "event_avg_return_pct": 47.999,
+        "event_median_return_pct": 48.893,
+        "worst_event_return_pct": 6.56,
+        "best_event_return_pct": 89.008,
+        "event_stdev_pct": 28.551,
+        "positive_events": 5,
+        "avg_utilization_pct": 90.74,
+        "events": [
+          {
+            "date": "2018-12-27",
+            "available": 2,
+            "invested_yen": 468300,
+            "cash_yen": 31700,
+            "utilization_pct": 93.66,
+            "portfolio_return_pct": 29.382,
+            "end_value_yen": 646910,
+            "holdings": [
+              {
+                "code": "3649",
+                "rank": 1,
+                "entry_price": 519.0,
+                "lots": 5,
+                "shares": 500,
+                "cost": 259500,
+                "return_pct": 50.289
+              },
+              {
+                "code": "9960",
+                "rank": 2,
+                "entry_price": 2088.0,
+                "lots": 1,
+                "shares": 100,
+                "cost": 208800,
+                "return_pct": 7.859
+              }
+            ]
+          },
+          {
+            "date": "2020-04-06",
+            "available": 5,
+            "invested_yen": 481400,
+            "cash_yen": 18600,
+            "utilization_pct": 96.28,
+            "portfolio_return_pct": 89.008,
+            "end_value_yen": 945039,
+            "holdings": [
+              {
+                "code": "7172",
+                "rank": 1,
+                "entry_price": 580.0,
+                "lots": 3,
+                "shares": 300,
+                "cost": 174000,
+                "return_pct": 120.712
+              },
+              {
+                "code": "4337",
+                "rank": 2,
+                "entry_price": 2026.0,
+                "lots": 1,
+                "shares": 100,
+                "cost": 202600,
+                "return_pct": 91.017
+              },
+              {
+                "code": "3561",
+                "rank": 3,
+                "entry_price": 524.0,
+                "lots": 2,
+                "shares": 200,
+                "cost": 104800,
+                "return_pct": 48.282
+              }
+            ]
+          },
+          {
+            "date": "2022-03-10",
+            "available": 3,
+            "invested_yen": 440300,
+            "cash_yen": 59700,
+            "utilization_pct": 88.06,
+            "portfolio_return_pct": 6.56,
+            "end_value_yen": 532799,
+            "holdings": [
+              {
+                "code": "8011",
+                "rank": 1,
+                "entry_price": 642.0,
+                "lots": 1,
+                "shares": 100,
+                "cost": 64200,
+                "return_pct": 36.449
+              },
+              {
+                "code": "7269",
+                "rank": 2,
+                "entry_price": 3761.0,
+                "lots": 1,
+                "shares": 100,
+                "cost": 376100,
+                "return_pct": 2.499
+              }
+            ]
+          },
+          {
+            "date": "2024-08-06",
+            "available": 5,
+            "invested_yen": 403400,
+            "cash_yen": 96600,
+            "utilization_pct": 80.68,
+            "portfolio_return_pct": 66.152,
+            "end_value_yen": 830762,
+            "holdings": [
+              {
+                "code": "6298",
+                "rank": 2,
+                "entry_price": 1686.0,
+                "lots": 1,
+                "shares": 100,
+                "cost": 168600,
+                "return_pct": 34.104
+              },
+              {
+                "code": "5803",
+                "rank": 3,
+                "entry_price": 2348.0,
+                "lots": 1,
+                "shares": 100,
+                "cost": 234800,
+                "return_pct": 116.381
+              }
+            ]
+          },
+          {
+            "date": "2025-04-08",
+            "available": 5,
+            "invested_yen": 475150,
+            "cash_yen": 24850,
+            "utilization_pct": 95.03,
+            "portfolio_return_pct": 48.893,
+            "end_value_yen": 744465,
+            "holdings": [
+              {
+                "code": "6323",
+                "rank": 1,
+                "entry_price": 1102.0,
+                "lots": 2,
+                "shares": 200,
+                "cost": 220400,
+                "return_pct": 55.172
+              },
+              {
+                "code": "5802",
+                "rank": 2,
+                "entry_price": 1884.5,
+                "lots": 1,
+                "shares": 100,
+                "cost": 188450,
+                "return_pct": 60.263
+              },
+              {
+                "code": "6298",
+                "rank": 3,
+                "entry_price": 663.0,
+                "lots": 1,
+                "shares": 100,
+                "cost": 66300,
+                "return_pct": 14.027
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "policy": "equal_target_top3",
+        "capital_yen": 500000,
+        "event_avg_return_pct": 16.545,
+        "event_median_return_pct": 15.66,
+        "worst_event_return_pct": 0.0,
+        "best_event_return_pct": 43.185,
+        "event_stdev_pct": 14.544,
+        "positive_events": 4,
+        "avg_utilization_pct": 38.21,
+        "events": [
+          {
+            "date": "2018-12-27",
+            "available": 2,
+            "invested_yen": 155700,
+            "cash_yen": 344300,
+            "utilization_pct": 31.14,
+            "portfolio_return_pct": 15.66,
+            "end_value_yen": 578300,
+            "holdings": [
+              {
+                "code": "3649",
+                "rank": 1,
+                "entry_price": 519.0,
+                "lots": 3,
+                "shares": 300,
+                "cost": 155700,
+                "return_pct": 50.289
+              }
+            ]
+          },
+          {
+            "date": "2020-04-06",
+            "available": 5,
+            "invested_yen": 273200,
+            "cash_yen": 226800,
+            "utilization_pct": 54.64,
+            "portfolio_return_pct": 43.185,
+            "end_value_yen": 715925,
+            "holdings": [
+              {
+                "code": "7172",
+                "rank": 1,
+                "entry_price": 580.0,
+                "lots": 2,
+                "shares": 200,
+                "cost": 116000,
+                "return_pct": 120.712
+              },
+              {
+                "code": "3561",
+                "rank": 3,
+                "entry_price": 524.0,
+                "lots": 3,
+                "shares": 300,
+                "cost": 157200,
+                "return_pct": 48.282
+              }
+            ]
+          },
+          {
+            "date": "2022-03-10",
+            "available": 3,
+            "invested_yen": 283500,
+            "cash_yen": 216500,
+            "utilization_pct": 56.7,
+            "portfolio_return_pct": 8.0,
+            "end_value_yen": 540001,
+            "holdings": [
+              {
+                "code": "8011",
+                "rank": 1,
+                "entry_price": 642.0,
+                "lots": 2,
+                "shares": 200,
+                "cost": 128400,
+                "return_pct": 36.449
+              },
+              {
+                "code": "7723",
+                "rank": 3,
+                "entry_price": 1551.0,
+                "lots": 1,
+                "shares": 100,
+                "cost": 155100,
+                "return_pct": -4.384
+              }
+            ]
+          },
+          {
+            "date": "2024-08-06",
+            "available": 5,
+            "invested_yen": 0,
+            "cash_yen": 500000,
+            "utilization_pct": 0.0,
+            "portfolio_return_pct": 0.0,
+            "end_value_yen": 500000,
+            "holdings": []
+          },
+          {
+            "date": "2025-04-08",
+            "available": 5,
+            "invested_yen": 242800,
+            "cash_yen": 257200,
+            "utilization_pct": 48.56,
+            "portfolio_return_pct": 15.88,
+            "end_value_yen": 579399,
+            "holdings": [
+              {
+                "code": "6323",
+                "rank": 1,
+                "entry_price": 1102.0,
+                "lots": 1,
+                "shares": 100,
+                "cost": 110200,
+                "return_pct": 55.172
+              },
+              {
+                "code": "6298",
+                "rank": 3,
+                "entry_price": 663.0,
+                "lots": 2,
+                "shares": 200,
+                "cost": 132600,
+                "return_pct": 14.027
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "1000000": [
+      {
+        "policy": "rank_priority_top3",
+        "capital_yen": 1000000,
+        "event_avg_return_pct": 56.279,
+        "event_median_return_pct": 49.59,
+        "worst_event_return_pct": 22.962,
+        "best_event_return_pct": 119.022,
+        "event_stdev_pct": 33.294,
+        "positive_events": 5,
+        "avg_utilization_pct": 95.73,
+        "events": [
+          {
+            "date": "2018-12-27",
+            "available": 2,
+            "invested_yen": 986100,
+            "cash_yen": 13900,
+            "utilization_pct": 98.61,
+            "portfolio_return_pct": 49.59,
+            "end_value_yen": 1495900,
+            "holdings": [
+              {
+                "code": "3649",
+                "rank": 1,
+                "entry_price": 519.0,
+                "lots": 19,
+                "shares": 1900,
+                "cost": 986100,
+                "return_pct": 50.289
+              }
+            ]
+          },
+          {
+            "date": "2020-04-06",
+            "available": 5,
+            "invested_yen": 986000,
+            "cash_yen": 14000,
+            "utilization_pct": 98.6,
+            "portfolio_return_pct": 119.022,
+            "end_value_yen": 2190220,
+            "holdings": [
+              {
+                "code": "7172",
+                "rank": 1,
+                "entry_price": 580.0,
+                "lots": 17,
+                "shares": 1700,
+                "cost": 986000,
+                "return_pct": 120.712
+              }
+            ]
+          },
+          {
+            "date": "2022-03-10",
+            "available": 3,
+            "invested_yen": 963000,
+            "cash_yen": 37000,
+            "utilization_pct": 96.3,
+            "portfolio_return_pct": 35.1,
+            "end_value_yen": 1351004,
+            "holdings": [
+              {
+                "code": "8011",
+                "rank": 1,
+                "entry_price": 642.0,
+                "lots": 15,
+                "shares": 1500,
+                "cost": 963000,
+                "return_pct": 36.449
+              }
+            ]
+          },
+          {
+            "date": "2024-08-06",
+            "available": 5,
+            "invested_yen": 859800,
+            "cash_yen": 140200,
+            "utilization_pct": 85.98,
+            "portfolio_return_pct": 22.962,
+            "end_value_yen": 1229622,
+            "holdings": [
+              {
+                "code": "9984",
+                "rank": 1,
+                "entry_price": 6912.0,
+                "lots": 1,
+                "shares": 100,
+                "cost": 691200,
+                "return_pct": 24.902
+              },
+              {
+                "code": "6298",
+                "rank": 2,
+                "entry_price": 1686.0,
+                "lots": 1,
+                "shares": 100,
+                "cost": 168600,
+                "return_pct": 34.104
+              }
+            ]
+          },
+          {
+            "date": "2025-04-08",
+            "available": 5,
+            "invested_yen": 991800,
+            "cash_yen": 8200,
+            "utilization_pct": 99.18,
+            "portfolio_return_pct": 54.72,
+            "end_value_yen": 1547196,
+            "holdings": [
+              {
+                "code": "6323",
+                "rank": 1,
+                "entry_price": 1102.0,
+                "lots": 9,
+                "shares": 900,
+                "cost": 991800,
+                "return_pct": 55.172
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "policy": "cap50_backfill_top5",
+        "capital_yen": 1000000,
+        "event_avg_return_pct": 51.689,
+        "event_median_return_pct": 48.893,
+        "worst_event_return_pct": 16.64,
+        "best_event_return_pct": 97.95,
+        "event_stdev_pct": 29.222,
+        "positive_events": 5,
+        "avg_utilization_pct": 95.13,
+        "events": [
+          {
+            "date": "2018-12-27",
+            "available": 2,
+            "invested_yen": 884700,
+            "cash_yen": 115300,
+            "utilization_pct": 88.47,
+            "portfolio_return_pct": 26.772,
+            "end_value_yen": 1267719,
+            "holdings": [
+              {
+                "code": "3649",
+                "rank": 1,
+                "entry_price": 519.0,
+                "lots": 9,
+                "shares": 900,
+                "cost": 467100,
+                "return_pct": 50.289
+              },
+              {
+                "code": "9960",
+                "rank": 2,
+                "entry_price": 2088.0,
+                "lots": 2,
+                "shares": 200,
+                "cost": 417600,
+                "return_pct": 7.859
+              }
+            ]
+          },
+          {
+            "date": "2020-04-06",
+            "available": 5,
+            "invested_yen": 974000,
+            "cash_yen": 26000,
+            "utilization_pct": 97.4,
+            "portfolio_return_pct": 97.95,
+            "end_value_yen": 1979504,
+            "holdings": [
+              {
+                "code": "7172",
+                "rank": 1,
+                "entry_price": 580.0,
+                "lots": 8,
+                "shares": 800,
+                "cost": 464000,
+                "return_pct": 120.712
+              },
+              {
+                "code": "4337",
+                "rank": 2,
+                "entry_price": 2026.0,
+                "lots": 2,
+                "shares": 200,
+                "cost": 405200,
+                "return_pct": 91.017
+              },
+              {
+                "code": "3561",
+                "rank": 3,
+                "entry_price": 524.0,
+                "lots": 2,
+                "shares": 200,
+                "cost": 104800,
+                "return_pct": 48.282
+              }
+            ]
+          },
+          {
+            "date": "2022-03-10",
+            "available": 3,
+            "invested_yen": 980600,
+            "cash_yen": 19400,
+            "utilization_pct": 98.06,
+            "portfolio_return_pct": 16.64,
+            "end_value_yen": 1166401,
+            "holdings": [
+              {
+                "code": "8011",
+                "rank": 1,
+                "entry_price": 642.0,
+                "lots": 7,
+                "shares": 700,
+                "cost": 449400,
+                "return_pct": 36.449
+              },
+              {
+                "code": "7269",
+                "rank": 2,
+                "entry_price": 3761.0,
+                "lots": 1,
+                "shares": 100,
+                "cost": 376100,
+                "return_pct": 2.499
+              },
+              {
+                "code": "7723",
+                "rank": 3,
+                "entry_price": 1551.0,
+                "lots": 1,
+                "shares": 100,
+                "cost": 155100,
+                "return_pct": -4.384
+              }
+            ]
+          },
+          {
+            "date": "2024-08-06",
+            "available": 5,
+            "invested_yen": 966800,
+            "cash_yen": 33200,
+            "utilization_pct": 96.68,
+            "portfolio_return_pct": 68.192,
+            "end_value_yen": 1681924,
+            "holdings": [
+              {
+                "code": "6298",
+                "rank": 2,
+                "entry_price": 1686.0,
+                "lots": 2,
+                "shares": 200,
+                "cost": 337200,
+                "return_pct": 34.104
+              },
+              {
+                "code": "5803",
+                "rank": 3,
+                "entry_price": 2348.0,
+                "lots": 2,
+                "shares": 200,
+                "cost": 469600,
+                "return_pct": 116.381
+              },
+              {
+                "code": "7280",
+                "rank": 4,
+                "entry_price": 800.0,
+                "lots": 2,
+                "shares": 200,
+                "cost": 160000,
+                "return_pct": 12.75
+              }
+            ]
+          },
+          {
+            "date": "2025-04-08",
+            "available": 5,
+            "invested_yen": 950300,
+            "cash_yen": 49700,
+            "utilization_pct": 95.03,
+            "portfolio_return_pct": 48.893,
+            "end_value_yen": 1488929,
+            "holdings": [
+              {
+                "code": "6323",
+                "rank": 1,
+                "entry_price": 1102.0,
+                "lots": 4,
+                "shares": 400,
+                "cost": 440800,
+                "return_pct": 55.172
+              },
+              {
+                "code": "5802",
+                "rank": 2,
+                "entry_price": 1884.5,
+                "lots": 2,
+                "shares": 200,
+                "cost": 376900,
+                "return_pct": 60.263
+              },
+              {
+                "code": "6298",
+                "rank": 3,
+                "entry_price": 663.0,
+                "lots": 2,
+                "shares": 200,
+                "cost": 132600,
+                "return_pct": 14.027
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "policy": "one_lot_each_then_rank_top3",
+        "capital_yen": 1000000,
+        "event_avg_return_pct": 38.137,
+        "event_median_return_pct": 23.193,
+        "worst_event_return_pct": 8.94,
+        "best_event_return_pct": 90.915,
+        "event_stdev_pct": 28.755,
+        "positive_events": 5,
+        "avg_utilization_pct": 95.25,
+        "events": [
+          {
+            "date": "2018-12-27",
+            "available": 2,
+            "invested_yen": 989700,
+            "cash_yen": 10300,
+            "utilization_pct": 98.97,
+            "portfolio_return_pct": 23.193,
+            "end_value_yen": 1231929,
+            "holdings": [
+              {
+                "code": "3649",
+                "rank": 1,
+                "entry_price": 519.0,
+                "lots": 7,
+                "shares": 700,
+                "cost": 363300,
+                "return_pct": 50.289
+              },
+              {
+                "code": "9960",
+                "rank": 2,
+                "entry_price": 2088.0,
+                "lots": 3,
+                "shares": 300,
+                "cost": 626400,
+                "return_pct": 7.859
+              }
+            ]
+          },
+          {
+            "date": "2020-04-06",
+            "available": 5,
+            "invested_yen": 997000,
+            "cash_yen": 3000,
+            "utilization_pct": 99.7,
+            "portfolio_return_pct": 90.915,
+            "end_value_yen": 1909152,
+            "holdings": [
+              {
+                "code": "7172",
+                "rank": 1,
+                "entry_price": 580.0,
+                "lots": 4,
+                "shares": 400,
+                "cost": 232000,
+                "return_pct": 120.712
+              },
+              {
+                "code": "4337",
+                "rank": 2,
+                "entry_price": 2026.0,
+                "lots": 3,
+                "shares": 300,
+                "cost": 607800,
+                "return_pct": 91.017
+              },
+              {
+                "code": "3561",
+                "rank": 3,
+                "entry_price": 524.0,
+                "lots": 3,
+                "shares": 300,
+                "cost": 157200,
+                "return_pct": 48.282
+              }
+            ]
+          },
+          {
+            "date": "2022-03-10",
+            "available": 3,
+            "invested_yen": 943100,
+            "cash_yen": 56900,
+            "utilization_pct": 94.31,
+            "portfolio_return_pct": 8.94,
+            "end_value_yen": 1089401,
+            "holdings": [
+              {
+                "code": "8011",
+                "rank": 1,
+                "entry_price": 642.0,
+                "lots": 4,
+                "shares": 400,
+                "cost": 256800,
+                "return_pct": 36.449
+              },
+              {
+                "code": "7269",
+                "rank": 2,
+                "entry_price": 3761.0,
+                "lots": 1,
+                "shares": 100,
+                "cost": 376100,
+                "return_pct": 2.499
+              },
+              {
+                "code": "7723",
+                "rank": 3,
+                "entry_price": 1551.0,
+                "lots": 2,
+                "shares": 200,
+                "cost": 310200,
+                "return_pct": -4.384
+              }
+            ]
+          },
+          {
+            "date": "2024-08-06",
+            "available": 5,
+            "invested_yen": 859800,
+            "cash_yen": 140200,
+            "utilization_pct": 85.98,
+            "portfolio_return_pct": 22.962,
+            "end_value_yen": 1229622,
+            "holdings": [
+              {
+                "code": "9984",
+                "rank": 1,
+                "entry_price": 6912.0,
+                "lots": 1,
+                "shares": 100,
+                "cost": 691200,
+                "return_pct": 24.902
+              },
+              {
+                "code": "6298",
+                "rank": 2,
+                "entry_price": 1686.0,
+                "lots": 1,
+                "shares": 100,
+                "cost": 168600,
+                "return_pct": 34.104
+              }
+            ]
+          },
+          {
+            "date": "2025-04-08",
+            "available": 5,
+            "invested_yen": 972700,
+            "cash_yen": 27300,
+            "utilization_pct": 97.27,
+            "portfolio_return_pct": 44.673,
+            "end_value_yen": 1446729,
+            "holdings": [
+              {
+                "code": "6323",
+                "rank": 1,
+                "entry_price": 1102.0,
+                "lots": 3,
+                "shares": 300,
+                "cost": 330600,
+                "return_pct": 55.172
+              },
+              {
+                "code": "5802",
+                "rank": 2,
+                "entry_price": 1884.5,
+                "lots": 2,
+                "shares": 200,
+                "cost": 376900,
+                "return_pct": 60.263
+              },
+              {
+                "code": "6298",
+                "rank": 3,
+                "entry_price": 663.0,
+                "lots": 4,
+                "shares": 400,
+                "cost": 265200,
+                "return_pct": 14.027
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "policy": "equal_target_top3",
+        "capital_yen": 1000000,
+        "event_avg_return_pct": 32.718,
+        "event_median_return_pct": 33.076,
+        "worst_event_return_pct": 10.34,
+        "best_event_return_pct": 68.626,
+        "event_stdev_pct": 20.151,
+        "positive_events": 5,
+        "avg_utilization_pct": 64.25,
+        "events": [
+          {
+            "date": "2018-12-27",
+            "available": 2,
+            "invested_yen": 520200,
+            "cash_yen": 479800,
+            "utilization_pct": 52.02,
+            "portfolio_return_pct": 17.301,
+            "end_value_yen": 1173010,
+            "holdings": [
+              {
+                "code": "3649",
+                "rank": 1,
+                "entry_price": 519.0,
+                "lots": 6,
+                "shares": 600,
+                "cost": 311400,
+                "return_pct": 50.289
+              },
+              {
+                "code": "9960",
+                "rank": 2,
+                "entry_price": 2088.0,
+                "lots": 1,
+                "shares": 100,
+                "cost": 208800,
+                "return_pct": 7.859
+              }
+            ]
+          },
+          {
+            "date": "2020-04-06",
+            "available": 5,
+            "invested_yen": 807000,
+            "cash_yen": 193000,
+            "utilization_pct": 80.7,
+            "portfolio_return_pct": 68.626,
+            "end_value_yen": 1686264,
+            "holdings": [
+              {
+                "code": "7172",
+                "rank": 1,
+                "entry_price": 580.0,
+                "lots": 5,
+                "shares": 500,
+                "cost": 290000,
+                "return_pct": 120.712
+              },
+              {
+                "code": "4337",
+                "rank": 2,
+                "entry_price": 2026.0,
+                "lots": 1,
+                "shares": 100,
+                "cost": 202600,
+                "return_pct": 91.017
+              },
+              {
+                "code": "3561",
+                "rank": 3,
+                "entry_price": 524.0,
+                "lots": 6,
+                "shares": 600,
+                "cost": 314400,
+                "return_pct": 48.282
+              }
+            ]
+          },
+          {
+            "date": "2022-03-10",
+            "available": 3,
+            "invested_yen": 631200,
+            "cash_yen": 368800,
+            "utilization_pct": 63.12,
+            "portfolio_return_pct": 10.34,
+            "end_value_yen": 1103402,
+            "holdings": [
+              {
+                "code": "8011",
+                "rank": 1,
+                "entry_price": 642.0,
+                "lots": 5,
+                "shares": 500,
+                "cost": 321000,
+                "return_pct": 36.449
+              },
+              {
+                "code": "7723",
+                "rank": 3,
+                "entry_price": 1551.0,
+                "lots": 2,
+                "shares": 200,
+                "cost": 310200,
+                "return_pct": -4.384
+              }
+            ]
+          },
+          {
+            "date": "2024-08-06",
+            "available": 5,
+            "invested_yen": 403400,
+            "cash_yen": 596600,
+            "utilization_pct": 40.34,
+            "portfolio_return_pct": 33.076,
+            "end_value_yen": 1330762,
+            "holdings": [
+              {
+                "code": "6298",
+                "rank": 2,
+                "entry_price": 1686.0,
+                "lots": 1,
+                "shares": 100,
+                "cost": 168600,
+                "return_pct": 34.104
+              },
+              {
+                "code": "5803",
+                "rank": 3,
+                "entry_price": 2348.0,
+                "lots": 1,
+                "shares": 100,
+                "cost": 234800,
+                "return_pct": 116.381
+              }
+            ]
+          },
+          {
+            "date": "2025-04-08",
+            "available": 5,
+            "invested_yen": 850550,
+            "cash_yen": 149450,
+            "utilization_pct": 85.06,
+            "portfolio_return_pct": 34.246,
+            "end_value_yen": 1342464,
+            "holdings": [
+              {
+                "code": "6323",
+                "rank": 1,
+                "entry_price": 1102.0,
+                "lots": 3,
+                "shares": 300,
+                "cost": 330600,
+                "return_pct": 55.172
+              },
+              {
+                "code": "5802",
+                "rank": 2,
+                "entry_price": 1884.5,
+                "lots": 1,
+                "shares": 100,
+                "cost": 188450,
+                "return_pct": 60.263
+              },
+              {
+                "code": "6298",
+                "rank": 3,
+                "entry_price": 663.0,
+                "lots": 5,
+                "shares": 500,
+                "cost": 331500,
+                "return_pct": 14.027
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "1500000": [
+      {
+        "policy": "rank_priority_top3",
+        "capital_yen": 1500000,
+        "event_avg_return_pct": 55.51,
+        "event_median_return_pct": 48.72,
+        "worst_event_return_pct": 22.95,
+        "best_event_return_pct": 116.688,
+        "event_stdev_pct": 32.37,
+        "positive_events": 5,
+        "avg_utilization_pct": 96.82,
+        "events": [
+          {
+            "date": "2018-12-27",
+            "available": 2,
+            "invested_yen": 1453200,
+            "cash_yen": 46800,
+            "utilization_pct": 96.88,
+            "portfolio_return_pct": 48.72,
+            "end_value_yen": 2230800,
+            "holdings": [
+              {
+                "code": "3649",
+                "rank": 1,
+                "entry_price": 519.0,
+                "lots": 28,
+                "shares": 2800,
+                "cost": 1453200,
+                "return_pct": 50.289
+              }
+            ]
+          },
+          {
+            "date": "2020-04-06",
+            "available": 5,
+            "invested_yen": 1450000,
+            "cash_yen": 50000,
+            "utilization_pct": 96.67,
+            "portfolio_return_pct": 116.688,
+            "end_value_yen": 3250324,
+            "holdings": [
+              {
+                "code": "7172",
+                "rank": 1,
+                "entry_price": 580.0,
+                "lots": 25,
+                "shares": 2500,
+                "cost": 1450000,
+                "return_pct": 120.712
+              }
+            ]
+          },
+          {
+            "date": "2022-03-10",
+            "available": 3,
+            "invested_yen": 1476600,
+            "cash_yen": 23400,
+            "utilization_pct": 98.44,
+            "portfolio_return_pct": 35.88,
+            "end_value_yen": 2038206,
+            "holdings": [
+              {
+                "code": "8011",
+                "rank": 1,
+                "entry_price": 642.0,
+                "lots": 23,
+                "shares": 2300,
+                "cost": 1476600,
+                "return_pct": 36.449
+              }
+            ]
+          },
+          {
+            "date": "2024-08-06",
+            "available": 5,
+            "invested_yen": 1382400,
+            "cash_yen": 117600,
+            "utilization_pct": 92.16,
+            "portfolio_return_pct": 22.95,
+            "end_value_yen": 1844245,
+            "holdings": [
+              {
+                "code": "9984",
+                "rank": 1,
+                "entry_price": 6912.0,
+                "lots": 2,
+                "shares": 200,
+                "cost": 1382400,
+                "return_pct": 24.902
+              }
+            ]
+          },
+          {
+            "date": "2025-04-08",
+            "available": 5,
+            "invested_yen": 1498900,
+            "cash_yen": 1100,
+            "utilization_pct": 99.93,
+            "portfolio_return_pct": 53.313,
+            "end_value_yen": 2299694,
+            "holdings": [
+              {
+                "code": "6323",
+                "rank": 1,
+                "entry_price": 1102.0,
+                "lots": 13,
+                "shares": 1300,
+                "cost": 1432600,
+                "return_pct": 55.172
+              },
+              {
+                "code": "6298",
+                "rank": 3,
+                "entry_price": 663.0,
+                "lots": 1,
+                "shares": 100,
+                "cost": 66300,
+                "return_pct": 14.027
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "policy": "cap50_backfill_top5",
+        "capital_yen": 1500000,
+        "event_avg_return_pct": 43.901,
+        "event_median_return_pct": 27.642,
+        "worst_event_return_pct": 16.88,
+        "best_event_return_pct": 97.95,
+        "event_stdev_pct": 29.036,
+        "positive_events": 5,
+        "avg_utilization_pct": 95.8,
+        "events": [
+          {
+            "date": "2018-12-27",
+            "available": 2,
+            "invested_yen": 1353000,
+            "cash_yen": 147000,
+            "utilization_pct": 90.2,
+            "portfolio_return_pct": 27.642,
+            "end_value_yen": 1914629,
+            "holdings": [
+              {
+                "code": "3649",
+                "rank": 1,
+                "entry_price": 519.0,
+                "lots": 14,
+                "shares": 1400,
+                "cost": 726600,
+                "return_pct": 50.289
+              },
+              {
+                "code": "9960",
+                "rank": 2,
+                "entry_price": 2088.0,
+                "lots": 3,
+                "shares": 300,
+                "cost": 626400,
+                "return_pct": 7.859
+              }
+            ]
+          },
+          {
+            "date": "2020-04-06",
+            "available": 5,
+            "invested_yen": 1461000,
+            "cash_yen": 39000,
+            "utilization_pct": 97.4,
+            "portfolio_return_pct": 97.95,
+            "end_value_yen": 2969256,
+            "holdings": [
+              {
+                "code": "7172",
+                "rank": 1,
+                "entry_price": 580.0,
+                "lots": 12,
+                "shares": 1200,
+                "cost": 696000,
+                "return_pct": 120.712
+              },
+              {
+                "code": "4337",
+                "rank": 2,
+                "entry_price": 2026.0,
+                "lots": 3,
+                "shares": 300,
+                "cost": 607800,
+                "return_pct": 91.017
+              },
+              {
+                "code": "3561",
+                "rank": 3,
+                "entry_price": 524.0,
+                "lots": 3,
+                "shares": 300,
+                "cost": 157200,
+                "return_pct": 48.282
+              }
+            ]
+          },
+          {
+            "date": "2022-03-10",
+            "available": 3,
+            "invested_yen": 1392500,
+            "cash_yen": 107500,
+            "utilization_pct": 92.83,
+            "portfolio_return_pct": 16.88,
+            "end_value_yen": 1753202,
+            "holdings": [
+              {
+                "code": "8011",
+                "rank": 1,
+                "entry_price": 642.0,
+                "lots": 11,
+                "shares": 1100,
+                "cost": 706200,
+                "return_pct": 36.449
+              },
+              {
+                "code": "7269",
+                "rank": 2,
+                "entry_price": 3761.0,
+                "lots": 1,
+                "shares": 100,
+                "cost": 376100,
+                "return_pct": 2.499
+              },
+              {
+                "code": "7723",
+                "rank": 3,
+                "entry_price": 1551.0,
+                "lots": 2,
+                "shares": 200,
+                "cost": 310200,
+                "return_pct": -4.384
+              }
+            ]
+          },
+          {
+            "date": "2024-08-06",
+            "available": 5,
+            "invested_yen": 1486700,
+            "cash_yen": 13300,
+            "utilization_pct": 99.11,
+            "portfolio_return_pct": 27.521,
+            "end_value_yen": 1912820,
+            "holdings": [
+              {
+                "code": "9984",
+                "rank": 1,
+                "entry_price": 6912.0,
+                "lots": 1,
+                "shares": 100,
+                "cost": 691200,
+                "return_pct": 24.902
+              },
+              {
+                "code": "6298",
+                "rank": 2,
+                "entry_price": 1686.0,
+                "lots": 4,
+                "shares": 400,
+                "cost": 674400,
+                "return_pct": 34.104
+              },
+              {
+                "code": "7280",
+                "rank": 4,
+                "entry_price": 800.0,
+                "lots": 1,
+                "shares": 100,
+                "cost": 80000,
+                "return_pct": 12.75
+              },
+              {
+                "code": "6958",
+                "rank": 5,
+                "entry_price": 411.0,
+                "lots": 1,
+                "shares": 100,
+                "cost": 41100,
+                "return_pct": 1.217
+              }
+            ]
+          },
+          {
+            "date": "2025-04-08",
+            "available": 5,
+            "invested_yen": 1491750,
+            "cash_yen": 8250,
+            "utilization_pct": 99.45,
+            "portfolio_return_pct": 49.513,
+            "end_value_yen": 2242694,
+            "holdings": [
+              {
+                "code": "6323",
+                "rank": 1,
+                "entry_price": 1102.0,
+                "lots": 6,
+                "shares": 600,
+                "cost": 661200,
+                "return_pct": 55.172
+              },
+              {
+                "code": "5802",
+                "rank": 2,
+                "entry_price": 1884.5,
+                "lots": 3,
+                "shares": 300,
+                "cost": 565350,
+                "return_pct": 60.263
+              },
+              {
+                "code": "6298",
+                "rank": 3,
+                "entry_price": 663.0,
+                "lots": 4,
+                "shares": 400,
+                "cost": 265200,
+                "return_pct": 14.027
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "policy": "one_lot_each_then_rank_top3",
+        "capital_yen": 1500000,
+        "event_avg_return_pct": 43.475,
+        "event_median_return_pct": 48.977,
+        "worst_event_return_pct": 6.133,
+        "best_event_return_pct": 87.299,
+        "event_stdev_pct": 28.537,
+        "positive_events": 5,
+        "avg_utilization_pct": 98.19,
+        "events": [
+          {
+            "date": "2018-12-27",
+            "available": 2,
+            "invested_yen": 1459200,
+            "cash_yen": 40800,
+            "utilization_pct": 97.28,
+            "portfolio_return_pct": 19.39,
+            "end_value_yen": 1790848,
+            "holdings": [
+              {
+                "code": "3649",
+                "rank": 1,
+                "entry_price": 519.0,
+                "lots": 8,
+                "shares": 800,
+                "cost": 415200,
+                "return_pct": 50.289
+              },
+              {
+                "code": "9960",
+                "rank": 2,
+                "entry_price": 2088.0,
+                "lots": 5,
+                "shares": 500,
+                "cost": 1044000,
+                "return_pct": 7.859
+              }
+            ]
+          },
+          {
+            "date": "2020-04-06",
+            "available": 5,
+            "invested_yen": 1472800,
+            "cash_yen": 27200,
+            "utilization_pct": 98.19,
+            "portfolio_return_pct": 87.299,
+            "end_value_yen": 2809478,
+            "holdings": [
+              {
+                "code": "7172",
+                "rank": 1,
+                "entry_price": 580.0,
+                "lots": 6,
+                "shares": 600,
+                "cost": 348000,
+                "return_pct": 120.712
+              },
+              {
+                "code": "4337",
+                "rank": 2,
+                "entry_price": 2026.0,
+                "lots": 4,
+                "shares": 400,
+                "cost": 810400,
+                "return_pct": 91.017
+              },
+              {
+                "code": "3561",
+                "rank": 3,
+                "entry_price": 524.0,
+                "lots": 6,
+                "shares": 600,
+                "cost": 314400,
+                "return_pct": 48.282
+              }
+            ]
+          },
+          {
+            "date": "2022-03-10",
+            "available": 3,
+            "invested_yen": 1474300,
+            "cash_yen": 25700,
+            "utilization_pct": 98.29,
+            "portfolio_return_pct": 6.133,
+            "end_value_yen": 1592000,
+            "holdings": [
+              {
+                "code": "8011",
+                "rank": 1,
+                "entry_price": 642.0,
+                "lots": 4,
+                "shares": 400,
+                "cost": 256800,
+                "return_pct": 36.449
+              },
+              {
+                "code": "7269",
+                "rank": 2,
+                "entry_price": 3761.0,
+                "lots": 2,
+                "shares": 200,
+                "cost": 752200,
+                "return_pct": 2.499
+              },
+              {
+                "code": "7723",
+                "rank": 3,
+                "entry_price": 1551.0,
+                "lots": 3,
+                "shares": 300,
+                "cost": 465300,
+                "return_pct": -4.384
+              }
+            ]
+          },
+          {
+            "date": "2024-08-06",
+            "available": 5,
+            "invested_yen": 1498000,
+            "cash_yen": 2000,
+            "utilization_pct": 99.87,
+            "portfolio_return_pct": 55.576,
+            "end_value_yen": 2333646,
+            "holdings": [
+              {
+                "code": "9984",
+                "rank": 1,
+                "entry_price": 6912.0,
+                "lots": 1,
+                "shares": 100,
+                "cost": 691200,
+                "return_pct": 24.902
+              },
+              {
+                "code": "6298",
+                "rank": 2,
+                "entry_price": 1686.0,
+                "lots": 2,
+                "shares": 200,
+                "cost": 337200,
+                "return_pct": 34.104
+              },
+              {
+                "code": "5803",
+                "rank": 3,
+                "entry_price": 2348.0,
+                "lots": 2,
+                "shares": 200,
+                "cost": 469600,
+                "return_pct": 116.381
+              }
+            ]
+          },
+          {
+            "date": "2025-04-08",
+            "available": 5,
+            "invested_yen": 1459800,
+            "cash_yen": 40200,
+            "utilization_pct": 97.32,
+            "portfolio_return_pct": 48.977,
+            "end_value_yen": 2234660,
+            "holdings": [
+              {
+                "code": "6323",
+                "rank": 1,
+                "entry_price": 1102.0,
+                "lots": 4,
+                "shares": 400,
+                "cost": 440800,
+                "return_pct": 55.172
+              },
+              {
+                "code": "5802",
+                "rank": 2,
+                "entry_price": 1884.5,
+                "lots": 4,
+                "shares": 400,
+                "cost": 753800,
+                "return_pct": 60.263
+              },
+              {
+                "code": "6298",
+                "rank": 3,
+                "entry_price": 663.0,
+                "lots": 4,
+                "shares": 400,
+                "cost": 265200,
+                "return_pct": 14.027
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "policy": "equal_target_top3",
+        "capital_yen": 1500000,
+        "event_avg_return_pct": 36.988,
+        "event_median_return_pct": 35.695,
+        "worst_event_return_pct": 10.187,
+        "best_event_return_pct": 77.107,
+        "event_stdev_pct": 23.437,
+        "positive_events": 5,
+        "avg_utilization_pct": 74.73,
+        "events": [
+          {
+            "date": "2018-12-27",
+            "available": 2,
+            "invested_yen": 884700,
+            "cash_yen": 615300,
+            "utilization_pct": 58.98,
+            "portfolio_return_pct": 17.848,
+            "end_value_yen": 1767719,
+            "holdings": [
+              {
+                "code": "3649",
+                "rank": 1,
+                "entry_price": 519.0,
+                "lots": 9,
+                "shares": 900,
+                "cost": 467100,
+                "return_pct": 50.289
+              },
+              {
+                "code": "9960",
+                "rank": 2,
+                "entry_price": 2088.0,
+                "lots": 2,
+                "shares": 200,
+                "cost": 417600,
+                "return_pct": 7.859
+              }
+            ]
+          },
+          {
+            "date": "2020-04-06",
+            "available": 5,
+            "invested_yen": 1340800,
+            "cash_yen": 159200,
+            "utilization_pct": 89.39,
+            "portfolio_return_pct": 77.107,
+            "end_value_yen": 2656602,
+            "holdings": [
+              {
+                "code": "7172",
+                "rank": 1,
+                "entry_price": 580.0,
+                "lots": 8,
+                "shares": 800,
+                "cost": 464000,
+                "return_pct": 120.712
+              },
+              {
+                "code": "4337",
+                "rank": 2,
+                "entry_price": 2026.0,
+                "lots": 2,
+                "shares": 200,
+                "cost": 405200,
+                "return_pct": 91.017
+              },
+              {
+                "code": "3561",
+                "rank": 3,
+                "entry_price": 524.0,
+                "lots": 9,
+                "shares": 900,
+                "cost": 471600,
+                "return_pct": 48.282
+              }
+            ]
+          },
+          {
+            "date": "2022-03-10",
+            "available": 3,
+            "invested_yen": 1290800,
+            "cash_yen": 209200,
+            "utilization_pct": 86.05,
+            "portfolio_return_pct": 10.187,
+            "end_value_yen": 1652802,
+            "holdings": [
+              {
+                "code": "8011",
+                "rank": 1,
+                "entry_price": 642.0,
+                "lots": 7,
+                "shares": 700,
+                "cost": 449400,
+                "return_pct": 36.449
+              },
+              {
+                "code": "7269",
+                "rank": 2,
+                "entry_price": 3761.0,
+                "lots": 1,
+                "shares": 100,
+                "cost": 376100,
+                "return_pct": 2.499
+              },
+              {
+                "code": "7723",
+                "rank": 3,
+                "entry_price": 1551.0,
+                "lots": 3,
+                "shares": 300,
+                "cost": 465300,
+                "return_pct": -4.384
+              }
+            ]
+          },
+          {
+            "date": "2024-08-06",
+            "available": 5,
+            "invested_yen": 806800,
+            "cash_yen": 693200,
+            "utilization_pct": 53.79,
+            "portfolio_return_pct": 44.102,
+            "end_value_yen": 2161524,
+            "holdings": [
+              {
+                "code": "6298",
+                "rank": 2,
+                "entry_price": 1686.0,
+                "lots": 2,
+                "shares": 200,
+                "cost": 337200,
+                "return_pct": 34.104
+              },
+              {
+                "code": "5803",
+                "rank": 3,
+                "entry_price": 2348.0,
+                "lots": 2,
+                "shares": 200,
+                "cost": 469600,
+                "return_pct": 116.381
+              }
+            ]
+          },
+          {
+            "date": "2025-04-08",
+            "available": 5,
+            "invested_yen": 1281800,
+            "cash_yen": 218200,
+            "utilization_pct": 85.45,
+            "portfolio_return_pct": 35.695,
+            "end_value_yen": 2035429,
+            "holdings": [
+              {
+                "code": "6323",
+                "rank": 1,
+                "entry_price": 1102.0,
+                "lots": 4,
+                "shares": 400,
+                "cost": 440800,
+                "return_pct": 55.172
+              },
+              {
+                "code": "5802",
+                "rank": 2,
+                "entry_price": 1884.5,
+                "lots": 2,
+                "shares": 200,
+                "cost": 376900,
+                "return_pct": 60.263
+              },
+              {
+                "code": "6298",
+                "rank": 3,
+                "entry_price": 663.0,
+                "lots": 7,
+                "shares": 700,
+                "cost": 464100,
+                "return_pct": 14.027
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "2000000": [
+      {
+        "policy": "rank_priority_top3",
+        "capital_yen": 2000000,
+        "event_avg_return_pct": 57.088,
+        "event_median_return_pct": 49.59,
+        "worst_event_return_pct": 25.837,
+        "best_event_return_pct": 119.022,
+        "event_stdev_pct": 32.581,
+        "positive_events": 5,
+        "avg_utilization_pct": 98.06,
+        "events": [
+          {
+            "date": "2018-12-27",
+            "available": 2,
+            "invested_yen": 1972200,
+            "cash_yen": 27800,
+            "utilization_pct": 98.61,
+            "portfolio_return_pct": 49.59,
+            "end_value_yen": 2991800,
+            "holdings": [
+              {
+                "code": "3649",
+                "rank": 1,
+                "entry_price": 519.0,
+                "lots": 38,
+                "shares": 3800,
+                "cost": 1972200,
+                "return_pct": 50.289
+              }
+            ]
+          },
+          {
+            "date": "2020-04-06",
+            "available": 5,
+            "invested_yen": 1972000,
+            "cash_yen": 28000,
+            "utilization_pct": 98.6,
+            "portfolio_return_pct": 119.022,
+            "end_value_yen": 4380441,
+            "holdings": [
+              {
+                "code": "7172",
+                "rank": 1,
+                "entry_price": 580.0,
+                "lots": 34,
+                "shares": 3400,
+                "cost": 1972000,
+                "return_pct": 120.712
+              }
+            ]
+          },
+          {
+            "date": "2022-03-10",
+            "available": 3,
+            "invested_yen": 1990200,
+            "cash_yen": 9800,
+            "utilization_pct": 99.51,
+            "portfolio_return_pct": 36.27,
+            "end_value_yen": 2725408,
+            "holdings": [
+              {
+                "code": "8011",
+                "rank": 1,
+                "entry_price": 642.0,
+                "lots": 31,
+                "shares": 3100,
+                "cost": 1990200,
+                "return_pct": 36.449
+              }
+            ]
+          },
+          {
+            "date": "2024-08-06",
+            "available": 5,
+            "invested_yen": 1888200,
+            "cash_yen": 111800,
+            "utilization_pct": 94.41,
+            "portfolio_return_pct": 25.837,
+            "end_value_yen": 2516743,
+            "holdings": [
+              {
+                "code": "9984",
+                "rank": 1,
+                "entry_price": 6912.0,
+                "lots": 2,
+                "shares": 200,
+                "cost": 1382400,
+                "return_pct": 24.902
+              },
+              {
+                "code": "6298",
+                "rank": 2,
+                "entry_price": 1686.0,
+                "lots": 3,
+                "shares": 300,
+                "cost": 505800,
+                "return_pct": 34.104
+              }
+            ]
+          },
+          {
+            "date": "2025-04-08",
+            "available": 5,
+            "invested_yen": 1983600,
+            "cash_yen": 16400,
+            "utilization_pct": 99.18,
+            "portfolio_return_pct": 54.72,
+            "end_value_yen": 3094392,
+            "holdings": [
+              {
+                "code": "6323",
+                "rank": 1,
+                "entry_price": 1102.0,
+                "lots": 18,
+                "shares": 1800,
+                "cost": 1983600,
+                "return_pct": 55.172
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "policy": "cap50_backfill_top5",
+        "capital_yen": 2000000,
+        "event_avg_return_pct": 47.971,
+        "event_median_return_pct": 37.689,
+        "worst_event_return_pct": 18.15,
+        "best_event_return_pct": 100.186,
+        "event_stdev_pct": 28.906,
+        "positive_events": 5,
+        "avg_utilization_pct": 95.49,
+        "events": [
+          {
+            "date": "2018-12-27",
+            "available": 2,
+            "invested_yen": 1821300,
+            "cash_yen": 178700,
+            "utilization_pct": 91.06,
+            "portfolio_return_pct": 28.077,
+            "end_value_yen": 2561538,
+            "holdings": [
+              {
+                "code": "3649",
+                "rank": 1,
+                "entry_price": 519.0,
+                "lots": 19,
+                "shares": 1900,
+                "cost": 986100,
+                "return_pct": 50.289
+              },
+              {
+                "code": "9960",
+                "rank": 2,
+                "entry_price": 2088.0,
+                "lots": 4,
+                "shares": 400,
+                "cost": 835200,
+                "return_pct": 7.859
+              }
+            ]
+          },
+          {
+            "date": "2020-04-06",
+            "available": 5,
+            "invested_yen": 1953600,
+            "cash_yen": 46400,
+            "utilization_pct": 97.68,
+            "portfolio_return_pct": 100.186,
+            "end_value_yen": 4003721,
+            "holdings": [
+              {
+                "code": "7172",
+                "rank": 1,
+                "entry_price": 580.0,
+                "lots": 17,
+                "shares": 1700,
+                "cost": 986000,
+                "return_pct": 120.712
+              },
+              {
+                "code": "4337",
+                "rank": 2,
+                "entry_price": 2026.0,
+                "lots": 4,
+                "shares": 400,
+                "cost": 810400,
+                "return_pct": 91.017
+              },
+              {
+                "code": "3561",
+                "rank": 3,
+                "entry_price": 524.0,
+                "lots": 3,
+                "shares": 300,
+                "cost": 157200,
+                "return_pct": 48.282
+              }
+            ]
+          },
+          {
+            "date": "2022-03-10",
+            "available": 3,
+            "invested_yen": 1870300,
+            "cash_yen": 129700,
+            "utilization_pct": 93.52,
+            "portfolio_return_pct": 18.15,
+            "end_value_yen": 2363002,
+            "holdings": [
+              {
+                "code": "8011",
+                "rank": 1,
+                "entry_price": 642.0,
+                "lots": 15,
+                "shares": 1500,
+                "cost": 963000,
+                "return_pct": 36.449
+              },
+              {
+                "code": "7269",
+                "rank": 2,
+                "entry_price": 3761.0,
+                "lots": 2,
+                "shares": 200,
+                "cost": 752200,
+                "return_pct": 2.499
+              },
+              {
+                "code": "7723",
+                "rank": 3,
+                "entry_price": 1551.0,
+                "lots": 1,
+                "shares": 100,
+                "cost": 155100,
+                "return_pct": -4.384
+              }
+            ]
+          },
+          {
+            "date": "2024-08-06",
+            "available": 5,
+            "invested_yen": 1970100,
+            "cash_yen": 29900,
+            "utilization_pct": 98.5,
+            "portfolio_return_pct": 37.689,
+            "end_value_yen": 2753782,
+            "holdings": [
+              {
+                "code": "9984",
+                "rank": 1,
+                "entry_price": 6912.0,
+                "lots": 1,
+                "shares": 100,
+                "cost": 691200,
+                "return_pct": 24.902
+              },
+              {
+                "code": "6298",
+                "rank": 2,
+                "entry_price": 1686.0,
+                "lots": 5,
+                "shares": 500,
+                "cost": 843000,
+                "return_pct": 34.104
+              },
+              {
+                "code": "5803",
+                "rank": 3,
+                "entry_price": 2348.0,
+                "lots": 1,
+                "shares": 100,
+                "cost": 234800,
+                "return_pct": 116.381
+              },
+              {
+                "code": "7280",
+                "rank": 4,
+                "entry_price": 800.0,
+                "lots": 2,
+                "shares": 200,
+                "cost": 160000,
+                "return_pct": 12.75
+              },
+              {
+                "code": "6958",
+                "rank": 5,
+                "entry_price": 411.0,
+                "lots": 1,
+                "shares": 100,
+                "cost": 41100,
+                "return_pct": 1.217
+              }
+            ]
+          },
+          {
+            "date": "2025-04-08",
+            "available": 5,
+            "invested_yen": 1934050,
+            "cash_yen": 65950,
+            "utilization_pct": 96.7,
+            "portfolio_return_pct": 55.751,
+            "end_value_yen": 3115024,
+            "holdings": [
+              {
+                "code": "6323",
+                "rank": 1,
+                "entry_price": 1102.0,
+                "lots": 9,
+                "shares": 900,
+                "cost": 991800,
+                "return_pct": 55.172
+              },
+              {
+                "code": "5802",
+                "rank": 2,
+                "entry_price": 1884.5,
+                "lots": 5,
+                "shares": 500,
+                "cost": 942250,
+                "return_pct": 60.263
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "policy": "one_lot_each_then_rank_top3",
+        "capital_yen": 2000000,
+        "event_avg_return_pct": 40.093,
+        "event_median_return_pct": 36.625,
+        "worst_event_return_pct": 7.41,
+        "best_event_return_pct": 88.68,
+        "event_stdev_pct": 28.189,
+        "positive_events": 5,
+        "avg_utilization_pct": 98.37,
+        "events": [
+          {
+            "date": "2018-12-27",
+            "available": 2,
+            "invested_yen": 1980600,
+            "cash_yen": 19400,
+            "utilization_pct": 99.03,
+            "portfolio_return_pct": 18.793,
+            "end_value_yen": 2375867,
+            "holdings": [
+              {
+                "code": "3649",
+                "rank": 1,
+                "entry_price": 519.0,
+                "lots": 10,
+                "shares": 1000,
+                "cost": 519000,
+                "return_pct": 50.289
+              },
+              {
+                "code": "9960",
+                "rank": 2,
+                "entry_price": 2088.0,
+                "lots": 7,
+                "shares": 700,
+                "cost": 1461600,
+                "return_pct": 7.859
+              }
+            ]
+          },
+          {
+            "date": "2020-04-06",
+            "available": 5,
+            "invested_yen": 1988400,
+            "cash_yen": 11600,
+            "utilization_pct": 99.42,
+            "portfolio_return_pct": 88.68,
+            "end_value_yen": 3773592,
+            "holdings": [
+              {
+                "code": "7172",
+                "rank": 1,
+                "entry_price": 580.0,
+                "lots": 7,
+                "shares": 700,
+                "cost": 406000,
+                "return_pct": 120.712
+              },
+              {
+                "code": "4337",
+                "rank": 2,
+                "entry_price": 2026.0,
+                "lots": 6,
+                "shares": 600,
+                "cost": 1215600,
+                "return_pct": 91.017
+              },
+              {
+                "code": "3561",
+                "rank": 3,
+                "entry_price": 524.0,
+                "lots": 7,
+                "shares": 700,
+                "cost": 366800,
+                "return_pct": 48.282
+              }
+            ]
+          },
+          {
+            "date": "2022-03-10",
+            "available": 3,
+            "invested_yen": 1978800,
+            "cash_yen": 21200,
+            "utilization_pct": 98.94,
+            "portfolio_return_pct": 7.41,
+            "end_value_yen": 2148199,
+            "holdings": [
+              {
+                "code": "8011",
+                "rank": 1,
+                "entry_price": 642.0,
+                "lots": 6,
+                "shares": 600,
+                "cost": 385200,
+                "return_pct": 36.449
+              },
+              {
+                "code": "7269",
+                "rank": 2,
+                "entry_price": 3761.0,
+                "lots": 3,
+                "shares": 300,
+                "cost": 1128300,
+                "return_pct": 2.499
+              },
+              {
+                "code": "7723",
+                "rank": 3,
+                "entry_price": 1551.0,
+                "lots": 3,
+                "shares": 300,
+                "cost": 465300,
+                "return_pct": -4.384
+              }
+            ]
+          },
+          {
+            "date": "2024-08-06",
+            "available": 5,
+            "invested_yen": 1954400,
+            "cash_yen": 45600,
+            "utilization_pct": 97.72,
+            "portfolio_return_pct": 36.625,
+            "end_value_yen": 2732507,
+            "holdings": [
+              {
+                "code": "9984",
+                "rank": 1,
+                "entry_price": 6912.0,
+                "lots": 2,
+                "shares": 200,
+                "cost": 1382400,
+                "return_pct": 24.902
+              },
+              {
+                "code": "6298",
+                "rank": 2,
+                "entry_price": 1686.0,
+                "lots": 2,
+                "shares": 200,
+                "cost": 337200,
+                "return_pct": 34.104
+              },
+              {
+                "code": "5803",
+                "rank": 3,
+                "entry_price": 2348.0,
+                "lots": 1,
+                "shares": 100,
+                "cost": 234800,
+                "return_pct": 116.381
+              }
+            ]
+          },
+          {
+            "date": "2025-04-08",
+            "available": 5,
+            "invested_yen": 1934950,
+            "cash_yen": 65050,
+            "utilization_pct": 96.75,
+            "portfolio_return_pct": 48.956,
+            "end_value_yen": 2979125,
+            "holdings": [
+              {
+                "code": "6323",
+                "rank": 1,
+                "entry_price": 1102.0,
+                "lots": 6,
+                "shares": 600,
+                "cost": 661200,
+                "return_pct": 55.172
+              },
+              {
+                "code": "5802",
+                "rank": 2,
+                "entry_price": 1884.5,
+                "lots": 5,
+                "shares": 500,
+                "cost": 942250,
+                "return_pct": 60.263
+              },
+              {
+                "code": "6298",
+                "rank": 3,
+                "entry_price": 663.0,
+                "lots": 5,
+                "shares": 500,
+                "cost": 331500,
+                "return_pct": 14.027
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "policy": "equal_target_top3",
+        "capital_yen": 2000000,
+        "event_avg_return_pct": 37.231,
+        "event_median_return_pct": 35.951,
+        "worst_event_return_pct": 10.81,
+        "best_event_return_pct": 81.347,
+        "event_stdev_pct": 24.57,
+        "positive_events": 5,
+        "avg_utilization_pct": 76.27,
+        "events": [
+          {
+            "date": "2018-12-27",
+            "available": 2,
+            "invested_yen": 1249200,
+            "cash_yen": 750800,
+            "utilization_pct": 62.46,
+            "portfolio_return_pct": 18.121,
+            "end_value_yen": 2362429,
+            "holdings": [
+              {
+                "code": "3649",
+                "rank": 1,
+                "entry_price": 519.0,
+                "lots": 12,
+                "shares": 1200,
+                "cost": 622800,
+                "return_pct": 50.289
+              },
+              {
+                "code": "9960",
+                "rank": 2,
+                "entry_price": 2088.0,
+                "lots": 3,
+                "shares": 300,
+                "cost": 626400,
+                "return_pct": 7.859
+              }
+            ]
+          },
+          {
+            "date": "2020-04-06",
+            "available": 5,
+            "invested_yen": 1874600,
+            "cash_yen": 125400,
+            "utilization_pct": 93.73,
+            "portfolio_return_pct": 81.347,
+            "end_value_yen": 3626941,
+            "holdings": [
+              {
+                "code": "7172",
+                "rank": 1,
+                "entry_price": 580.0,
+                "lots": 11,
+                "shares": 1100,
+                "cost": 638000,
+                "return_pct": 120.712
+              },
+              {
+                "code": "4337",
+                "rank": 2,
+                "entry_price": 2026.0,
+                "lots": 3,
+                "shares": 300,
+                "cost": 607800,
+                "return_pct": 91.017
+              },
+              {
+                "code": "3561",
+                "rank": 3,
+                "entry_price": 524.0,
+                "lots": 12,
+                "shares": 1200,
+                "cost": 628800,
+                "return_pct": 48.282
+              }
+            ]
+          },
+          {
+            "date": "2022-03-10",
+            "available": 3,
+            "invested_yen": 1638500,
+            "cash_yen": 361500,
+            "utilization_pct": 81.92,
+            "portfolio_return_pct": 10.81,
+            "end_value_yen": 2216203,
+            "holdings": [
+              {
+                "code": "8011",
+                "rank": 1,
+                "entry_price": 642.0,
+                "lots": 10,
+                "shares": 1000,
+                "cost": 642000,
+                "return_pct": 36.449
+              },
+              {
+                "code": "7269",
+                "rank": 2,
+                "entry_price": 3761.0,
+                "lots": 1,
+                "shares": 100,
+                "cost": 376100,
+                "return_pct": 2.499
+              },
+              {
+                "code": "7723",
+                "rank": 3,
+                "entry_price": 1551.0,
+                "lots": 4,
+                "shares": 400,
+                "cost": 620400,
+                "return_pct": -4.384
+              }
+            ]
+          },
+          {
+            "date": "2024-08-06",
+            "available": 5,
+            "invested_yen": 975400,
+            "cash_yen": 1024600,
+            "utilization_pct": 48.77,
+            "portfolio_return_pct": 35.951,
+            "end_value_yen": 2719023,
+            "holdings": [
+              {
+                "code": "6298",
+                "rank": 2,
+                "entry_price": 1686.0,
+                "lots": 3,
+                "shares": 300,
+                "cost": 505800,
+                "return_pct": 34.104
+              },
+              {
+                "code": "5803",
+                "rank": 3,
+                "entry_price": 2348.0,
+                "lots": 2,
+                "shares": 200,
+                "cost": 469600,
+                "return_pct": 116.381
+              }
+            ]
+          },
+          {
+            "date": "2025-04-08",
+            "available": 5,
+            "invested_yen": 1889550,
+            "cash_yen": 110450,
+            "utilization_pct": 94.48,
+            "portfolio_return_pct": 39.925,
+            "end_value_yen": 2798493,
+            "holdings": [
+              {
+                "code": "6323",
+                "rank": 1,
+                "entry_price": 1102.0,
+                "lots": 6,
+                "shares": 600,
+                "cost": 661200,
+                "return_pct": 55.172
+              },
+              {
+                "code": "5802",
+                "rank": 2,
+                "entry_price": 1884.5,
+                "lots": 3,
+                "shares": 300,
+                "cost": 565350,
+                "return_pct": 60.263
+              },
+              {
+                "code": "6298",
+                "rank": 3,
+                "entry_price": 663.0,
+                "lots": 10,
+                "shares": 1000,
+                "cost": 663000,
+                "return_pct": 14.027
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "caveat": "Only five independent crash events. Fees/slippage/taxes excluded; 100-share standard unit is appropriate for these post-Oct-2018 events."
+}
