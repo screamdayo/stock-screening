@@ -1,6 +1,6 @@
 """Unified forward-test journal for production signals.
 
-Kuitto, GC strong breakout, and Pinch-to-Chance signals are stored in one log.
+Kuitto, GC strong breakout, Pinch-to-Chance, and Selling Climax signals are stored in one log.
 Existing rows are never re-selected with hindsight; later daily runs only fill in
 facts that became available after the signal (next-open entry, future returns,
 MFE/MAE, and each strategy's frozen exit result).
@@ -33,6 +33,8 @@ GC_RULE_VERSION = "gc_strong_breakout_v1_2026-09-22"
 GC_HOLD_DAYS = 10
 PINCH_RULE_VERSION = "pinch_to_chance_v1_2026-09-22_top3_41d"
 PINCH_HOLD_DAYS = 41
+SELLING_RULE_VERSION = "selling_climax_v1_2026-09-23_top3_41d"
+SELLING_HOLD_DAYS = 41
 
 GC_RULE_SNAPSHOT = {
     "version": GC_RULE_VERSION,
@@ -40,6 +42,14 @@ GC_RULE_SNAPSHOT = {
     "strategy": "gc_strong_breakout",
     "entry": {"signal": "production gc_strong_breakout", "entry": "next trading-day open", "gap_cap": None},
     "exit": {"fixed_hold_days": GC_HOLD_DAYS, "exit": "open after 10 trading days from entry", "stop_loss": None},
+}
+
+SELLING_RULE_SNAPSHOT = {
+    "version": SELLING_RULE_VERSION,
+    "effective_from": "2026-09-23",
+    "strategy": "selling_climax",
+    "entry": {"signal": "selling climax market sensor active + individual anchor", "ranking": "DD20 deepest first", "selected": "top 3", "single_stock_cap_pct": 80, "lot_size": 100, "entry": "next trading-day open", "gap_cap": None},
+    "exit": {"fixed_hold_days": SELLING_HOLD_DAYS, "exit": "open after 41 trading days from entry", "stop_loss": None},
 }
 
 PINCH_RULE_SNAPSHOT = {
@@ -352,6 +362,48 @@ def _append_pinch_rows(rows, keyed, pinch_sensor, code_to_name):
         keyed.add(key)
 
 
+def _append_selling_rows(rows, keyed, selling_sensor, code_to_name):
+    if not selling_sensor or not selling_sensor.get("active"):
+        return
+    day = pd.Timestamp(selling_sensor.get("signal_date")).strftime("%Y-%m-%d")
+    for r in selling_sensor.get("main_candidates", []) or []:
+        code = str(r.get("code"))
+        key = (code, day, SELLING_RULE_VERSION)
+        if key in keyed:
+            continue
+        rows.append({
+            "strategy": "selling_climax",
+            "rule_version": SELLING_RULE_VERSION,
+            "code": code,
+            "name": r.get("name") or code_to_name.get(code, ""),
+            "signal_date": day,
+            "signal_close": r.get("close"),
+            "dd20_rank": r.get("dd20_rank"),
+            "ret5_pct": r.get("ret5_pct"),
+            "dd20_pct": r.get("dd20_pct"),
+            "bull_candle_pct": r.get("bull_candle_pct"),
+            "volume_ratio20": r.get("volume_ratio20"),
+            "topix_return_pct": selling_sensor.get("topix_return_pct"),
+            "topix_dd20_pct": selling_sensor.get("topix_dd20_pct"),
+            "anchor_share_pct": selling_sensor.get("anchor_share_pct"),
+            "anchor_count": selling_sensor.get("anchor_count"),
+            "coarse_reversal_count": selling_sensor.get("coarse_reversal_count"),
+            "single_stock_cap_pct": selling_sensor.get("single_stock_cap_pct", 80),
+            "lot_size": selling_sensor.get("lot_size", 100),
+            "planned_entry_date": selling_sensor.get("planned_entry_date"),
+            "planned_exit_date": selling_sensor.get("planned_exit_date"),
+            "rule_selected": True,
+            "actual_bought": None,
+            "entry_date": None, "entry_open": None, "next_open_gap_pct": None, "gap_pass": True,
+            "return_5d_pct": None, "return_10d_pct": None, "return_15d_pct": None,
+            "return_20d_pct": None, "return_41d_pct": None,
+            "mfe_pct": None, "mae_pct": None,
+            "exit_date": None, "exit_price": None, "exit_reason": None,
+            "exit_pnl_pct": None, "hold_days": None,
+        })
+        keyed.add(key)
+
+
 def _row_passes_entry_filters(row):
     if not row.get("volume_pass") or not row.get("gap_pass"):
         return False
@@ -391,7 +443,7 @@ def _mark_actual_buys(rows):
             row["actual_bought"] = True
 
 
-def update_forward_test(price_df, code_to_name=None, gc_results=None, pinch_sensor=None):
+def update_forward_test(price_df, code_to_name=None, gc_results=None, pinch_sensor=None, selling_sensor=None):
     code_to_name = code_to_name or {}
     rules = _load_json(RULES_PATH, {"versions": []})
     changed_rules = False
@@ -403,6 +455,9 @@ def update_forward_test(price_df, code_to_name=None, gc_results=None, pinch_sens
         changed_rules = True
     if not any(v.get("version") == PINCH_RULE_VERSION for v in rules.get("versions", [])):
         rules.setdefault("versions", []).append(PINCH_RULE_SNAPSHOT)
+        changed_rules = True
+    if not any(v.get("version") == SELLING_RULE_VERSION for v in rules.get("versions", [])):
+        rules.setdefault("versions", []).append(SELLING_RULE_SNAPSHOT)
         changed_rules = True
     if changed_rules:
         _save_json(RULES_PATH, rules)
@@ -459,6 +514,13 @@ def update_forward_test(price_df, code_to_name=None, gc_results=None, pinch_sens
             })
             keyed.add(key)
 
+    # Append today's sparse production signals.
+    latest_signal_date = pd.to_datetime(price_df["Date"]).max() if not price_df.empty else None
+    if latest_signal_date is not None:
+        _append_gc_rows(rows, keyed, gc_results, latest_signal_date, code_to_name)
+    _append_pinch_rows(rows, keyed, pinch_sensor, code_to_name)
+    _append_selling_rows(rows, keyed, selling_sensor, code_to_name)
+
     # Fill future facts for all historical rule versions so old forward-test rows keep progressing.
     for row in rows:
         g = groups.get(str(row.get("code")))
@@ -472,6 +534,8 @@ def update_forward_test(price_df, code_to_name=None, gc_results=None, pinch_sens
             _update_fixed_exit_future(row, g, matches[0], GC_HOLD_DAYS, "fixed10_next_open")
         elif strategy == "pinch_to_chance":
             _update_fixed_exit_future(row, g, matches[0], PINCH_HOLD_DAYS, "fixed41_next_open")
+        elif strategy == "selling_climax":
+            _update_fixed_exit_future(row, g, matches[0], SELLING_HOLD_DAYS, "fixed41_next_open")
         else:
             _update_future(row, g, matches[0])
 
