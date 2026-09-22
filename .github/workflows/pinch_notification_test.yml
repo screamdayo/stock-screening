@@ -1,0 +1,44 @@
+name: Pinch Notification Test
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'trigger/pinch_notification_test.txt'
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install requests
+      - name: Send mock pinch notification
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        run: |
+          python - <<'PY'
+          import notifier
+          sensor = {
+              "active": True,
+              "signal_date": "2026-09-22",
+              "reversal_rate_pct": 4.321,
+              "coarse_reversal_count": 67,
+              "universe_n": 1548,
+              "topix_return_pct": 4.87,
+              "topix_low_up": True,
+              "exit_guide_business_days": 15,
+              "candidate_count": 8,
+              "main_candidates": [
+                  {"code":"7203","name":"トヨタ自動車","dd20_rank":1,"dd20_pct":-31.8,"ret5_pct":-16.4,"bull_candle_pct":5.2,"volume_ratio20":2.4,"selection_tier":"main"},
+                  {"code":"6758","name":"ソニーグループ","dd20_rank":2,"dd20_pct":-28.6,"ret5_pct":-14.7,"bull_candle_pct":4.1,"volume_ratio20":2.0,"selection_tier":"main"},
+                  {"code":"8306","name":"三菱UFJフィナンシャル・グループ","dd20_rank":3,"dd20_pct":-26.9,"ret5_pct":-13.8,"bull_candle_pct":3.6,"volume_ratio20":1.9,"selection_tier":"main"}
+              ],
+              "reference_candidates": [
+                  {"code":"6861","name":"キーエンス","dd20_rank":4,"dd20_pct":-25.7,"ret5_pct":-13.2,"bull_candle_pct":3.4,"volume_ratio20":1.8,"selection_tier":"reference"},
+                  {"code":"6098","name":"リクルートホールディングス","dd20_rank":5,"dd20_pct":-24.9,"ret5_pct":-12.9,"bull_candle_pct":3.1,"volume_ratio20":1.7,"selection_tier":"reference"}
+              ],
+          }
+          sensor["candidates"] = sensor["main_candidates"] + sensor["reference_candidates"]
+          notifier.notify_pinch_to_chance(sensor)
+          PY
