@@ -43,6 +43,8 @@ CANDIDATE_CANDLE_MIN = 2.0
 CANDIDATE_VOL_RATIO20_MIN = 1.5
 
 EXIT_GUIDE_BUSINESS_DAYS = 15
+MAIN_PICK_COUNT = 3
+REFERENCE_PICK_COUNT = 2
 
 
 def _prepare(group):
@@ -130,6 +132,17 @@ def evaluate(price_df, target_codes):
                 "signal_label": SIGNAL_LABEL,
             })
 
+    # 実運用の選別はDD20が深い順。過去検証では上位3が資金効率の山だった。
+    candidates.sort(key=lambda x: (x["dd20_pct"], x["code"]))
+    for i, item in enumerate(candidates, start=1):
+        item["dd20_rank"] = i
+        if i <= MAIN_PICK_COUNT:
+            item["selection_tier"] = "main"
+        elif i <= MAIN_PICK_COUNT + REFERENCE_PICK_COUNT:
+            item["selection_tier"] = "reference"
+        else:
+            item["selection_tier"] = "other"
+
     reversal_rate = (coarse_count / universe_n * 100) if universe_n else 0.0
 
     topix = _fetch_topix(latest_date)
@@ -172,7 +185,12 @@ def evaluate(price_df, target_codes):
             "topix_low_up_ok": low_up,
         },
         "exit_guide_business_days": EXIT_GUIDE_BUSINESS_DAYS,
+        "ranking_rule": "DD20が深い順",
+        "main_pick_count": MAIN_PICK_COUNT,
+        "reference_pick_count": REFERENCE_PICK_COUNT,
         "candidate_count": len(candidates) if active else 0,
+        "main_candidates": [x for x in candidates if x["selection_tier"] == "main"] if active else [],
+        "reference_candidates": [x for x in candidates if x["selection_tier"] == "reference"] if active else [],
         "candidates": candidates if active else [],
     }
     if not active:
