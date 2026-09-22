@@ -15,7 +15,11 @@
     "topix_return_ok": false,
     "topix_low_up_ok": false
   },
-  "exit_guide_business_days": 15,
+  "entry_rule": "翌営業日寄り",
+  "exit_rule": "41営業日目の寄り",
+  "exit_guide_business_days": 41,
+  "planned_entry_date": null,
+  "planned_exit_date": null,
   "ranking_rule": "DD20が深い順",
   "main_pick_count": 3,
   "reference_pick_count": 2,
@@ -24,5 +28,5 @@
   "reference_candidates": [],
   "candidates": [],
   "reason": "市場センサー条件未成立",
-  "generated_at": "2026-09-22T12:41:17"
+  "generated_at": "2026-09-22T13:47:32"
 }
