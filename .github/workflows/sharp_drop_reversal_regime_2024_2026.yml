@@ -1,0 +1,25 @@
+name: Sharp Drop Reversal Regime 2024-2026
+on:
+  workflow_dispatch:
+  push:
+    paths: ['scripts/analyze_sharp_drop_reversal_regime_2024_2026.py']
+permissions:
+  contents: write
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.11"}
+      - run: pip install pandas numpy
+      - run: python scripts/analyze_sharp_drop_reversal_regime_2024_2026.py
+      - run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add results/sharp_drop_reversal_regime_2024_2026.json
+          git diff --cached --quiet && exit 0
+          git commit -m "Run reversal regime comparison"
+          git pull --rebase origin main
+          git push
