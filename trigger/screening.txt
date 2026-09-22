@@ -1,9 +1,1 @@
-manual-chatgpt-trigger-forward-test-2026-09-09
-
-2026-09-22 pinch sensor integration test
-
-2026-09-22 pinch top3 ranking integration test
-
-refresh pinch 41d plan + rounded pages 2026-09-22
-
-unified forward log gc pinch 2026-09-23
+selling climax production implementation 2026-09-23
