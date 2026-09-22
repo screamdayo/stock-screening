@@ -1,0 +1,48 @@
+<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>売り尽くしセンサー</title>
+<link href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" rel="stylesheet">
+<style>
+:root{--a:#163b3f;--b:#260b29;--c:#fff6c9;--d:#74d9d7;--e:#ff8a3d}
+*{box-sizing:border-box}html{min-height:100%;background:conic-gradient(#d7efe4 0 25%,#c6dfd5 25% 50%,#d7efe4 50% 75%,#c6dfd5 75%) 0 0/64px 64px}
+body{max-width:760px;margin:auto;padding:18px 10px 40px;font-family:"DotGothic16",monospace;color:var(--c)}
+.box{background:linear-gradient(#32113a,var(--b));border:4px solid var(--d);border-radius:18px;overflow:hidden;box-shadow:0 0 0 2px var(--a),0 0 0 5px #8fb7aa,7px 7px 0 #0004;margin:7px 5px 16px;padding:16px;position:relative}
+h1{font-size:23px;margin:4px 0 8px}.sub{font-size:11px;color:#d9c7c9}.status{font-size:28px;margin:14px 0}.on{color:var(--e)}.off{color:#9df0c5}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.cell{border:2px solid #4a706f;border-radius:12px;background:#32113a;padding:10px}.k{font-size:10px;color:var(--d)}.v{font-size:17px;margin-top:4px}
+.note{border:2px solid #4a706f;border-radius:12px;padding:12px;margin-top:10px;font-size:11px;line-height:1.7}
+table{width:100%;border-collapse:collapse;font-size:11px}th,td{padding:8px;border-bottom:1px solid #4a706f;text-align:right}th:first-child,td:first-child{text-align:left}
+a{color:var(--d)}.nav{text-align:center;font-size:11px}.empty{padding:18px;text-align:center;color:#d9c7c9}
+@media(max-width:430px){.grid{grid-template-columns:1fr 1fr}h1{font-size:20px}.status{font-size:23px}}
+</style></head><body>
+<div class="box"><div class="sub">SELLING CLIMAX LEAD SENSOR</div><h1>🔥 売り尽くしセンサー</h1><div id="meta" class="sub">読込中…</div><div id="status" class="status">—</div>
+<div class="grid">
+<div class="cell"><div class="k">TOPIX 当日</div><div id="ret" class="v">—</div></div>
+<div class="cell"><div class="k">TOPIX DD20</div><div id="dd" class="v">—</div></div>
+<div class="cell"><div class="k">強反転比率</div><div id="share" class="v">—</div></div>
+<div class="cell"><div class="k">資金上限</div><div id="cap" class="v">80%</div></div>
+<div class="cell"><div class="k">仕掛け予定日</div><div id="entryDate" class="v">—</div></div>
+<div class="cell"><div class="k">決済予定日</div><div id="exitDate" class="v">—</div></div>
+</div>
+<div class="note">先行センサー。発動後は <a href="pinch.html">ピンチをチャンスにセンサー</a> の底打ち確認待ち。固定条件：TOPIX -2%以下 / DD20 -15%以下 / 強反転比率10%以上。</div>
+</div>
+<div class="box"><div class="sub">PRIMARY PICKS</div><h1>🏆 本命 TOP3</h1><div class="sub">DD20が深い順。1銘柄最大80%、100株単位で #1 → #2 → #3。</div><div id="maincand" class="empty">読込中…</div></div>
+<div class="box"><div class="sub">REFERENCE</div><h1>👀 4〜5位</h1><div id="refcand" class="empty">読込中…</div></div>
+<div class="box"><div class="sub">ALL CANDIDATES</div><h1>全候補</h1><div id="cand" class="empty">読込中…</div></div>
+<div class="box nav"><a href="screening.html">← くいっと</a>　/　<a href="gc.html">GC強ブレイク</a>　/　<a href="pinch.html">ピンチ</a></div>
+<script>
+const f=(n,d=2)=>n==null?'—':Number(n).toFixed(d);
+async function load(){try{
+let r=await fetch('selling_climax_sensor.json?v='+Date.now(),{cache:'no-store'});if(!r.ok)throw Error(r.status);let x=await r.json();
+meta.textContent=(x.signal_date||'').slice(0,10)+' / '+(x.generated_at||'').replace('T',' ').slice(0,19);
+status.textContent=x.active?'発動中':'待機中';status.className='status '+(x.active?'on':'off');
+ret.textContent=(x.topix_return_pct>=0?'+':'')+f(x.topix_return_pct,3)+'%';
+dd.textContent=f(x.topix_dd20_pct,3)+'%';
+share.textContent=f(x.anchor_share_pct,3)+'% ('+(x.anchor_count??0)+'/'+(x.coarse_reversal_count??0)+')';
+cap.textContent=(x.single_stock_cap_pct??80)+'%';
+entryDate.textContent=x.planned_entry_date||'発動時に算出';exitDate.textContent=x.planned_exit_date||'発動時に算出';
+let a=x.candidates||[],m=x.main_candidates||[],q=x.reference_candidates||[];
+const tbl=z=>'<table><thead><tr><th>順位 / 銘柄</th><th>DD20</th><th>5日</th><th>陽線</th><th>出来高</th></tr></thead><tbody>'+z.map(v=>'<tr><td>#'+(v.dd20_rank??'—')+' '+(v.name||'')+' ('+v.code+')</td><td>'+f(v.dd20_pct)+'%</td><td>'+f(v.ret5_pct)+'%</td><td>+'+f(v.bull_candle_pct)+'%</td><td>'+f(v.volume_ratio20)+'x</td></tr>').join('')+'</tbody></table>';
+if(!x.active){maincand.innerHTML=refcand.innerHTML=cand.innerHTML='<div class="empty">売り尽くしセンサー未発動。</div>';return}
+if(!a.length){maincand.innerHTML=refcand.innerHTML=cand.innerHTML='<div class="empty">市場センサーは発動したが個別候補なし。</div>';return}
+maincand.className='';maincand.innerHTML=tbl(m);refcand.className='';refcand.innerHTML=q.length?tbl(q):'<div class="empty">参考候補なし</div>';cand.className='';cand.innerHTML=tbl(a);
+}catch(e){status.textContent='読込失敗';cand.textContent=e.message}}load();
+</script></body></html>
