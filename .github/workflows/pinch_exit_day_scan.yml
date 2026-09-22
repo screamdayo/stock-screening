@@ -28,7 +28,7 @@ jobs:
       - run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add results/pinch_exit_day_scan.json
+          git add results/pinch_exit_day_scan_60d.json
           git diff --cached --quiet && exit 0
           git commit -m "Run pinch exit day scan"
           git pull --rebase origin main
