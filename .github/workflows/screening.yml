@@ -51,7 +51,7 @@ jobs:
           if [ -d docs/prices ]; then
             cp -a docs/prices "$tmpdir/docs/prices"
           fi
-          for f in screening.json gc_screening.json stock_names.json forward_test_log.json forward_test_rules.json market_breadth_log.json; do
+          for f in screening.json gc_screening.json pinch_sensor.json stock_names.json forward_test_log.json forward_test_rules.json market_breadth_log.json; do
             if [ -f "docs/$f" ]; then
               cp "docs/$f" "$tmpdir/docs/$f"
             fi
@@ -66,14 +66,14 @@ jobs:
               mkdir -p docs
               cp -a "$tmpdir/docs/prices" docs/prices
             fi
-            for f in screening.json stock_names.json forward_test_log.json forward_test_rules.json market_breadth_log.json; do
+            for f in screening.json gc_screening.json pinch_sensor.json stock_names.json forward_test_log.json forward_test_rules.json market_breadth_log.json; do
               if [ -f "$tmpdir/docs/$f" ]; then
                 mkdir -p docs
                 cp "$tmpdir/docs/$f" "docs/$f"
               fi
             done
 
-            git add docs/prices/ docs/screening.json docs/gc_screening.json docs/stock_names.json docs/forward_test_log.json docs/forward_test_rules.json docs/market_breadth_log.json 2>/dev/null || true
+            git add docs/prices/ docs/screening.json docs/gc_screening.json docs/pinch_sensor.json docs/stock_names.json docs/forward_test_log.json docs/forward_test_rules.json docs/market_breadth_log.json 2>/dev/null || true
             if git diff --cached --quiet; then
               echo "No generated docs changes to commit."
               exit 0
