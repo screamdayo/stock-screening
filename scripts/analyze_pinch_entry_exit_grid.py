@@ -147,3 +147,5 @@ def main():
     OUT.write_text(json.dumps(out,ensure_ascii=False,indent=2),encoding="utf-8")
     print(json.dumps({"top10":ranked[:10]},ensure_ascii=False,indent=2))
 if __name__=="__main__":main()
+
+# trigger
