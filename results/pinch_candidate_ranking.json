@@ -1,0 +1,1124 @@
+{
+  "study": "pinch sensor candidate ranking",
+  "sensor_dates": [
+    "2018-12-27",
+    "2020-04-06",
+    "2022-03-10",
+    "2024-08-06",
+    "2025-04-08"
+  ],
+  "candidate_rule": "ret5<=-12, dd20<=-20, candle>=2, vol_ratio20>=1.5",
+  "baseline_all": {
+    "r5": {
+      "n": 134,
+      "win": 94.78,
+      "avg": 9.717,
+      "med": 8.757,
+      "pf": 37.204
+    },
+    "r10": {
+      "n": 134,
+      "win": 97.01,
+      "avg": 14.308,
+      "med": 12.567,
+      "pf": 90.295
+    },
+    "r15": {
+      "n": 134,
+      "win": 97.01,
+      "avg": 15.458,
+      "med": 13.377,
+      "pf": 146.035
+    },
+    "events": [
+      {
+        "date": "2018-12-27",
+        "available": 2,
+        "win15": 100.0,
+        "avg15": 7.38,
+        "med15": 7.38
+      },
+      {
+        "date": "2020-04-06",
+        "available": 11,
+        "win15": 81.82,
+        "avg15": 12.494,
+        "med15": 12.023
+      },
+      {
+        "date": "2022-03-10",
+        "available": 3,
+        "win15": 100.0,
+        "avg15": 9.75,
+        "med15": 9.061
+      },
+      {
+        "date": "2024-08-06",
+        "available": 91,
+        "win15": 97.8,
+        "avg15": 15.9,
+        "med15": 14.096
+      },
+      {
+        "date": "2025-04-08",
+        "available": 27,
+        "win15": 100.0,
+        "avg15": 16.406,
+        "med15": 15.607
+      }
+    ]
+  },
+  "rankings": [
+    {
+      "ranker": "composite",
+      "top_k": 3,
+      "r5": {
+        "n": 14,
+        "win": 92.86,
+        "avg": 6.218,
+        "med": 6.191,
+        "pf": 26.244
+      },
+      "r10": {
+        "n": 14,
+        "win": 92.86,
+        "avg": 13.848,
+        "med": 10.687,
+        "pf": 39.225
+      },
+      "r15": {
+        "n": 14,
+        "win": 100.0,
+        "avg": 14.538,
+        "med": 11.757,
+        "pf": null
+      },
+      "events": [
+        {
+          "date": "2018-12-27",
+          "available": 2,
+          "picked": 2,
+          "win15": 100.0,
+          "avg15": 7.38,
+          "med15": 7.38
+        },
+        {
+          "date": "2020-04-06",
+          "available": 11,
+          "picked": 3,
+          "win15": 100.0,
+          "avg15": 23.931,
+          "med15": 21.907
+        },
+        {
+          "date": "2022-03-10",
+          "available": 3,
+          "picked": 3,
+          "win15": 100.0,
+          "avg15": 9.75,
+          "med15": 9.061
+        },
+        {
+          "date": "2024-08-06",
+          "available": 91,
+          "picked": 3,
+          "win15": 100.0,
+          "avg15": 14.767,
+          "med15": 16.039
+        },
+        {
+          "date": "2025-04-08",
+          "available": 27,
+          "picked": 3,
+          "win15": 100.0,
+          "avg15": 14.474,
+          "med15": 13.222
+        }
+      ],
+      "event_median_of_medians": 13.222,
+      "worst_event_median15": 7.38,
+      "worst_event_avg15": 7.38
+    },
+    {
+      "ranker": "deep_dd20",
+      "top_k": 3,
+      "r5": {
+        "n": 14,
+        "win": 92.86,
+        "avg": 13.137,
+        "med": 10.883,
+        "pf": 54.335
+      },
+      "r10": {
+        "n": 14,
+        "win": 92.86,
+        "avg": 20.84,
+        "med": 15.533,
+        "pf": 58.526
+      },
+      "r15": {
+        "n": 14,
+        "win": 100.0,
+        "avg": 21.288,
+        "med": 19.534,
+        "pf": null
+      },
+      "events": [
+        {
+          "date": "2018-12-27",
+          "available": 2,
+          "picked": 2,
+          "win15": 100.0,
+          "avg15": 7.38,
+          "med15": 7.38
+        },
+        {
+          "date": "2020-04-06",
+          "available": 11,
+          "picked": 3,
+          "win15": 100.0,
+          "avg15": 24.785,
+          "med15": 21.907
+        },
+        {
+          "date": "2022-03-10",
+          "available": 3,
+          "picked": 3,
+          "win15": 100.0,
+          "avg15": 9.75,
+          "med15": 9.061
+        },
+        {
+          "date": "2024-08-06",
+          "available": 91,
+          "picked": 3,
+          "win15": 100.0,
+          "avg15": 36.404,
+          "med15": 22.183
+        },
+        {
+          "date": "2025-04-08",
+          "available": 27,
+          "picked": 3,
+          "win15": 100.0,
+          "avg15": 23.486,
+          "med15": 21.376
+        }
+      ],
+      "event_median_of_medians": 21.376,
+      "worst_event_median15": 7.38,
+      "worst_event_avg15": 7.38
+    },
+    {
+      "ranker": "deep_ret5",
+      "top_k": 3,
+      "r5": {
+        "n": 14,
+        "win": 92.86,
+        "avg": 8.449,
+        "med": 8.04,
+        "pf": 35.304
+      },
+      "r10": {
+        "n": 14,
+        "win": 92.86,
+        "avg": 15.232,
+        "med": 14.567,
+        "pf": 43.046
+      },
+      "r15": {
+        "n": 14,
+        "win": 100.0,
+        "avg": 16.748,
+        "med": 15.441,
+        "pf": null
+      },
+      "events": [
+        {
+          "date": "2018-12-27",
+          "available": 2,
+          "picked": 2,
+          "win15": 100.0,
+          "avg15": 7.38,
+          "med15": 7.38
+        },
+        {
+          "date": "2020-04-06",
+          "available": 11,
+          "picked": 3,
+          "win15": 100.0,
+          "avg15": 23.342,
+          "med15": 20.14
+        },
+        {
+          "date": "2022-03-10",
+          "available": 3,
+          "picked": 3,
+          "win15": 100.0,
+          "avg15": 9.75,
+          "med15": 9.061
+        },
+        {
+          "date": "2024-08-06",
+          "available": 91,
+          "picked": 3,
+          "win15": 100.0,
+          "avg15": 20.429,
+          "med15": 18.796
+        },
+        {
+          "date": "2025-04-08",
+          "available": 27,
+          "picked": 3,
+          "win15": 100.0,
+          "avg15": 19.716,
+          "med15": 23.141
+        }
+      ],
+      "event_median_of_medians": 18.796,
+      "worst_event_median15": 7.38,
+      "worst_event_avg15": 7.38
+    },
+    {
+      "ranker": "high_volume",
+      "top_k": 3,
+      "r5": {
+        "n": 14,
+        "win": 85.71,
+        "avg": 5.117,
+        "med": 5.08,
+        "pf": 6.119
+      },
+      "r10": {
+        "n": 14,
+        "win": 92.86,
+        "avg": 10.701,
+        "med": 7.858,
+        "pf": 30.539
+      },
+      "r15": {
+        "n": 14,
+        "win": 100.0,
+        "avg": 11.434,
+        "med": 10.155,
+        "pf": null
+      },
+      "events": [
+        {
+          "date": "2018-12-27",
+          "available": 2,
+          "picked": 2,
+          "win15": 100.0,
+          "avg15": 7.38,
+          "med15": 7.38
+        },
+        {
+          "date": "2020-04-06",
+          "available": 11,
+          "picked": 3,
+          "win15": 100.0,
+          "avg15": 17.619,
+          "med15": 12.367
+        },
+        {
+          "date": "2022-03-10",
+          "available": 3,
+          "picked": 3,
+          "win15": 100.0,
+          "avg15": 9.75,
+          "med15": 9.061
+        },
+        {
+          "date": "2024-08-06",
+          "available": 91,
+          "picked": 3,
+          "win15": 100.0,
+          "avg15": 7.546,
+          "med15": 8.854
+        },
+        {
+          "date": "2025-04-08",
+          "available": 27,
+          "picked": 3,
+          "win15": 100.0,
+          "avg15": 13.522,
+          "med15": 13.222
+        }
+      ],
+      "event_median_of_medians": 9.061,
+      "worst_event_median15": 7.38,
+      "worst_event_avg15": 7.38
+    },
+    {
+      "ranker": "strong_candle",
+      "top_k": 3,
+      "r5": {
+        "n": 14,
+        "win": 92.86,
+        "avg": 6.948,
+        "med": 6.675,
+        "pf": 29.207
+      },
+      "r10": {
+        "n": 14,
+        "win": 92.86,
+        "avg": 15.143,
+        "med": 12.987,
+        "pf": 42.8
+      },
+      "r15": {
+        "n": 14,
+        "win": 100.0,
+        "avg": 16.079,
+        "med": 13.077,
+        "pf": null
+      },
+      "events": [
+        {
+          "date": "2018-12-27",
+          "available": 2,
+          "picked": 2,
+          "win15": 100.0,
+          "avg15": 7.38,
+          "med15": 7.38
+        },
+        {
+          "date": "2020-04-06",
+          "available": 11,
+          "picked": 3,
+          "win15": 100.0,
+          "avg15": 23.931,
+          "med15": 21.907
+        },
+        {
+          "date": "2022-03-10",
+          "available": 3,
+          "picked": 3,
+          "win15": 100.0,
+          "avg15": 9.75,
+          "med15": 9.061
+        },
+        {
+          "date": "2024-08-06",
+          "available": 91,
+          "picked": 3,
+          "win15": 100.0,
+          "avg15": 21.885,
+          "med15": 16.326
+        },
+        {
+          "date": "2025-04-08",
+          "available": 27,
+          "picked": 3,
+          "win15": 100.0,
+          "avg15": 14.551,
+          "med15": 13.222
+        }
+      ],
+      "event_median_of_medians": 13.222,
+      "worst_event_median15": 7.38,
+      "worst_event_avg15": 7.38
+    },
+    {
+      "ranker": "composite",
+      "top_k": 5,
+      "r5": {
+        "n": 20,
+        "win": 90.0,
+        "avg": 7.22,
+        "med": 8.04,
+        "pf": 11.317
+      },
+      "r10": {
+        "n": 20,
+        "win": 95.0,
+        "avg": 13.569,
+        "med": 11.165,
+        "pf": 54.508
+      },
+      "r15": {
+        "n": 20,
+        "win": 100.0,
+        "avg": 15.38,
+        "med": 14.414,
+        "pf": null
+      },
+      "events": [
+        {
+          "date": "2018-12-27",
+          "available": 2,
+          "picked": 2,
+          "win15": 100.0,
+          "avg15": 7.38,
+          "med15": 7.38
+        },
+        {
+          "date": "2020-04-06",
+          "available": 11,
+          "picked": 5,
+          "win15": 100.0,
+          "avg15": 16.776,
+          "med15": 12.023
+        },
+        {
+          "date": "2022-03-10",
+          "available": 3,
+          "picked": 3,
+          "win15": 100.0,
+          "avg15": 9.75,
+          "med15": 9.061
+        },
+        {
+          "date": "2024-08-06",
+          "available": 91,
+          "picked": 5,
+          "win15": 100.0,
+          "avg15": 19.351,
+          "med15": 22.183
+        },
+        {
+          "date": "2025-04-08",
+          "available": 27,
+          "picked": 5,
+          "win15": 100.0,
+          "avg15": 16.59,
+          "med15": 15.607
+        }
+      ],
+      "event_median_of_medians": 12.023,
+      "worst_event_median15": 7.38,
+      "worst_event_avg15": 7.38
+    },
+    {
+      "ranker": "deep_dd20",
+      "top_k": 5,
+      "r5": {
+        "n": 20,
+        "win": 90.0,
+        "avg": 11.384,
+        "med": 8.281,
+        "pf": 32.09
+      },
+      "r10": {
+        "n": 20,
+        "win": 90.0,
+        "avg": 16.993,
+        "med": 11.394,
+        "pf": 29.494
+      },
+      "r15": {
+        "n": 20,
+        "win": 95.0,
+        "avg": 17.977,
+        "med": 15.441,
+        "pf": 59.133
+      },
+      "events": [
+        {
+          "date": "2018-12-27",
+          "available": 2,
+          "picked": 2,
+          "win15": 100.0,
+          "avg15": 7.38,
+          "med15": 7.38
+        },
+        {
+          "date": "2020-04-06",
+          "available": 11,
+          "picked": 5,
+          "win15": 80.0,
+          "avg15": 15.526,
+          "med15": 12.023
+        },
+        {
+          "date": "2022-03-10",
+          "available": 3,
+          "picked": 3,
+          "win15": 100.0,
+          "avg15": 9.75,
+          "med15": 9.061
+        },
+        {
+          "date": "2024-08-06",
+          "available": 91,
+          "picked": 5,
+          "win15": 100.0,
+          "avg15": 29.013,
+          "med15": 22.183
+        },
+        {
+          "date": "2025-04-08",
+          "available": 27,
+          "picked": 5,
+          "win15": 100.0,
+          "avg15": 18.567,
+          "med15": 19.91
+        }
+      ],
+      "event_median_of_medians": 12.023,
+      "worst_event_median15": 7.38,
+      "worst_event_avg15": 7.38
+    },
+    {
+      "ranker": "deep_ret5",
+      "top_k": 5,
+      "r5": {
+        "n": 20,
+        "win": 90.0,
+        "avg": 8.168,
+        "med": 8.355,
+        "pf": 23.309
+      },
+      "r10": {
+        "n": 20,
+        "win": 90.0,
+        "avg": 14.137,
+        "med": 14.567,
+        "pf": 24.705
+      },
+      "r15": {
+        "n": 20,
+        "win": 95.0,
+        "avg": 16.065,
+        "med": 16.727,
+        "pf": 52.951
+      },
+      "events": [
+        {
+          "date": "2018-12-27",
+          "available": 2,
+          "picked": 2,
+          "win15": 100.0,
+          "avg15": 7.38,
+          "med15": 7.38
+        },
+        {
+          "date": "2020-04-06",
+          "available": 11,
+          "picked": 5,
+          "win15": 80.0,
+          "avg15": 16.734,
+          "med15": 19.832
+        },
+        {
+          "date": "2022-03-10",
+          "available": 3,
+          "picked": 3,
+          "win15": 100.0,
+          "avg15": 9.75,
+          "med15": 9.061
+        },
+        {
+          "date": "2024-08-06",
+          "available": 91,
+          "picked": 5,
+          "win15": 100.0,
+          "avg15": 20.505,
+          "med15": 18.796
+        },
+        {
+          "date": "2025-04-08",
+          "available": 27,
+          "picked": 5,
+          "win15": 100.0,
+          "avg15": 18.22,
+          "med15": 22.887
+        }
+      ],
+      "event_median_of_medians": 18.796,
+      "worst_event_median15": 7.38,
+      "worst_event_avg15": 7.38
+    },
+    {
+      "ranker": "high_volume",
+      "top_k": 5,
+      "r5": {
+        "n": 20,
+        "win": 85.0,
+        "avg": 5.333,
+        "med": 5.89,
+        "pf": 5.828
+      },
+      "r10": {
+        "n": 20,
+        "win": 90.0,
+        "avg": 9.549,
+        "med": 8.055,
+        "pf": 14.539
+      },
+      "r15": {
+        "n": 20,
+        "win": 95.0,
+        "avg": 10.17,
+        "med": 9.74,
+        "pf": 33.646
+      },
+      "events": [
+        {
+          "date": "2018-12-27",
+          "available": 2,
+          "picked": 2,
+          "win15": 100.0,
+          "avg15": 7.38,
+          "med15": 7.38
+        },
+        {
+          "date": "2020-04-06",
+          "available": 11,
+          "picked": 5,
+          "win15": 100.0,
+          "avg15": 14.868,
+          "med15": 12.023
+        },
+        {
+          "date": "2022-03-10",
+          "available": 3,
+          "picked": 3,
+          "win15": 100.0,
+          "avg15": 9.75,
+          "med15": 9.061
+        },
+        {
+          "date": "2024-08-06",
+          "available": 91,
+          "picked": 5,
+          "win15": 80.0,
+          "avg15": 4.497,
+          "med15": 6.079
+        },
+        {
+          "date": "2025-04-08",
+          "available": 27,
+          "picked": 5,
+          "win15": 100.0,
+          "avg15": 12.512,
+          "med15": 12.933
+        }
+      ],
+      "event_median_of_medians": 9.061,
+      "worst_event_median15": 6.079,
+      "worst_event_avg15": 4.497
+    },
+    {
+      "ranker": "strong_candle",
+      "top_k": 5,
+      "r5": {
+        "n": 20,
+        "win": 85.0,
+        "avg": 7.346,
+        "med": 7.402,
+        "pf": 8.152
+      },
+      "r10": {
+        "n": 20,
+        "win": 90.0,
+        "avg": 13.852,
+        "med": 11.768,
+        "pf": 50.64
+      },
+      "r15": {
+        "n": 20,
+        "win": 100.0,
+        "avg": 15.384,
+        "med": 13.077,
+        "pf": null
+      },
+      "events": [
+        {
+          "date": "2018-12-27",
+          "available": 2,
+          "picked": 2,
+          "win15": 100.0,
+          "avg15": 7.38,
+          "med15": 7.38
+        },
+        {
+          "date": "2020-04-06",
+          "available": 11,
+          "picked": 5,
+          "win15": 100.0,
+          "avg15": 16.776,
+          "med15": 12.023
+        },
+        {
+          "date": "2022-03-10",
+          "available": 3,
+          "picked": 3,
+          "win15": 100.0,
+          "avg15": 9.75,
+          "med15": 9.061
+        },
+        {
+          "date": "2024-08-06",
+          "available": 91,
+          "picked": 5,
+          "win15": 100.0,
+          "avg15": 17.409,
+          "med15": 15.666
+        },
+        {
+          "date": "2025-04-08",
+          "available": 27,
+          "picked": 5,
+          "win15": 100.0,
+          "avg15": 18.548,
+          "med15": 17.5
+        }
+      ],
+      "event_median_of_medians": 12.023,
+      "worst_event_median15": 7.38,
+      "worst_event_avg15": 7.38
+    },
+    {
+      "ranker": "composite",
+      "top_k": 10,
+      "r5": {
+        "n": 35,
+        "win": 88.57,
+        "avg": 9.867,
+        "med": 10.657,
+        "pf": 19.739
+      },
+      "r10": {
+        "n": 35,
+        "win": 94.29,
+        "avg": 15.157,
+        "med": 14.626,
+        "pf": 45.478
+      },
+      "r15": {
+        "n": 35,
+        "win": 94.29,
+        "avg": 16.874,
+        "med": 19.159,
+        "pf": 87.261
+      },
+      "events": [
+        {
+          "date": "2018-12-27",
+          "available": 2,
+          "picked": 2,
+          "win15": 100.0,
+          "avg15": 7.38,
+          "med15": 7.38
+        },
+        {
+          "date": "2020-04-06",
+          "available": 11,
+          "picked": 10,
+          "win15": 80.0,
+          "avg15": 12.937,
+          "med15": 12.195
+        },
+        {
+          "date": "2022-03-10",
+          "available": 3,
+          "picked": 3,
+          "win15": 100.0,
+          "avg15": 9.75,
+          "med15": 9.061
+        },
+        {
+          "date": "2024-08-06",
+          "available": 91,
+          "picked": 10,
+          "win15": 100.0,
+          "avg15": 22.547,
+          "med15": 24.029
+        },
+        {
+          "date": "2025-04-08",
+          "available": 27,
+          "picked": 10,
+          "win15": 100.0,
+          "avg15": 19.173,
+          "med15": 20.643
+        }
+      ],
+      "event_median_of_medians": 12.195,
+      "worst_event_median15": 7.38,
+      "worst_event_avg15": 7.38
+    },
+    {
+      "ranker": "deep_dd20",
+      "top_k": 10,
+      "r5": {
+        "n": 35,
+        "win": 85.71,
+        "avg": 9.638,
+        "med": 9.249,
+        "pf": 14.506
+      },
+      "r10": {
+        "n": 35,
+        "win": 91.43,
+        "avg": 15.249,
+        "med": 13.853,
+        "pf": 43.914
+      },
+      "r15": {
+        "n": 35,
+        "win": 94.29,
+        "avg": 16.622,
+        "med": 16.039,
+        "pf": 85.972
+      },
+      "events": [
+        {
+          "date": "2018-12-27",
+          "available": 2,
+          "picked": 2,
+          "win15": 100.0,
+          "avg15": 7.38,
+          "med15": 7.38
+        },
+        {
+          "date": "2020-04-06",
+          "available": 11,
+          "picked": 10,
+          "win15": 80.0,
+          "avg15": 11.729,
+          "med15": 10.742
+        },
+        {
+          "date": "2022-03-10",
+          "available": 3,
+          "picked": 3,
+          "win15": 100.0,
+          "avg15": 9.75,
+          "med15": 9.061
+        },
+        {
+          "date": "2024-08-06",
+          "available": 91,
+          "picked": 10,
+          "win15": 100.0,
+          "avg15": 22.49,
+          "med15": 18.949
+        },
+        {
+          "date": "2025-04-08",
+          "available": 27,
+          "picked": 10,
+          "win15": 100.0,
+          "avg15": 19.556,
+          "med15": 20.643
+        }
+      ],
+      "event_median_of_medians": 10.742,
+      "worst_event_median15": 7.38,
+      "worst_event_avg15": 7.38
+    },
+    {
+      "ranker": "deep_ret5",
+      "top_k": 10,
+      "r5": {
+        "n": 35,
+        "win": 91.43,
+        "avg": 8.698,
+        "med": 9.314,
+        "pf": 39.627
+      },
+      "r10": {
+        "n": 35,
+        "win": 94.29,
+        "avg": 14.441,
+        "med": 14.626,
+        "pf": 43.377
+      },
+      "r15": {
+        "n": 35,
+        "win": 94.29,
+        "avg": 16.2,
+        "med": 16.239,
+        "pf": 83.815
+      },
+      "events": [
+        {
+          "date": "2018-12-27",
+          "available": 2,
+          "picked": 2,
+          "win15": 100.0,
+          "avg15": 7.38,
+          "med15": 7.38
+        },
+        {
+          "date": "2020-04-06",
+          "available": 11,
+          "picked": 10,
+          "win15": 80.0,
+          "avg15": 13.737,
+          "med15": 12.195
+        },
+        {
+          "date": "2022-03-10",
+          "available": 3,
+          "picked": 3,
+          "win15": 100.0,
+          "avg15": 9.75,
+          "med15": 9.061
+        },
+        {
+          "date": "2024-08-06",
+          "available": 91,
+          "picked": 10,
+          "win15": 100.0,
+          "avg15": 20.434,
+          "med15": 19.901
+        },
+        {
+          "date": "2025-04-08",
+          "available": 27,
+          "picked": 10,
+          "win15": 100.0,
+          "avg15": 18.128,
+          "med15": 20.643
+        }
+      ],
+      "event_median_of_medians": 12.195,
+      "worst_event_median15": 7.38,
+      "worst_event_avg15": 7.38
+    },
+    {
+      "ranker": "high_volume",
+      "top_k": 10,
+      "r5": {
+        "n": 35,
+        "win": 85.71,
+        "avg": 7.326,
+        "med": 7.24,
+        "pf": 10.666
+      },
+      "r10": {
+        "n": 35,
+        "win": 91.43,
+        "avg": 12.17,
+        "med": 10.026,
+        "pf": 21.321
+      },
+      "r15": {
+        "n": 35,
+        "win": 91.43,
+        "avg": 12.665,
+        "med": 12.367,
+        "pf": 34.896
+      },
+      "events": [
+        {
+          "date": "2018-12-27",
+          "available": 2,
+          "picked": 2,
+          "win15": 100.0,
+          "avg15": 7.38,
+          "med15": 7.38
+        },
+        {
+          "date": "2020-04-06",
+          "available": 11,
+          "picked": 10,
+          "win15": 80.0,
+          "avg15": 12.937,
+          "med15": 12.195
+        },
+        {
+          "date": "2022-03-10",
+          "available": 3,
+          "picked": 3,
+          "win15": 100.0,
+          "avg15": 9.75,
+          "med15": 9.061
+        },
+        {
+          "date": "2024-08-06",
+          "available": 91,
+          "picked": 10,
+          "win15": 90.0,
+          "avg15": 12.944,
+          "med15": 12.537
+        },
+        {
+          "date": "2025-04-08",
+          "available": 27,
+          "picked": 10,
+          "win15": 100.0,
+          "avg15": 14.044,
+          "med15": 13.077
+        }
+      ],
+      "event_median_of_medians": 12.195,
+      "worst_event_median15": 7.38,
+      "worst_event_avg15": 7.38
+    },
+    {
+      "ranker": "strong_candle",
+      "top_k": 10,
+      "r5": {
+        "n": 35,
+        "win": 85.71,
+        "avg": 8.657,
+        "med": 8.384,
+        "pf": 13.132
+      },
+      "r10": {
+        "n": 35,
+        "win": 91.43,
+        "avg": 13.929,
+        "med": 12.189,
+        "pf": 40.201
+      },
+      "r15": {
+        "n": 35,
+        "win": 94.29,
+        "avg": 15.627,
+        "med": 13.222,
+        "pf": 80.885
+      },
+      "events": [
+        {
+          "date": "2018-12-27",
+          "available": 2,
+          "picked": 2,
+          "win15": 100.0,
+          "avg15": 7.38,
+          "med15": 7.38
+        },
+        {
+          "date": "2020-04-06",
+          "available": 11,
+          "picked": 10,
+          "win15": 80.0,
+          "avg15": 11.729,
+          "med15": 10.742
+        },
+        {
+          "date": "2022-03-10",
+          "available": 3,
+          "picked": 3,
+          "win15": 100.0,
+          "avg15": 9.75,
+          "med15": 9.061
+        },
+        {
+          "date": "2024-08-06",
+          "available": 91,
+          "picked": 10,
+          "win15": 100.0,
+          "avg15": 20.68,
+          "med15": 19.254
+        },
+        {
+          "date": "2025-04-08",
+          "available": 27,
+          "picked": 10,
+          "win15": 100.0,
+          "avg15": 17.883,
+          "med15": 17.182
+        }
+      ],
+      "event_median_of_medians": 10.742,
+      "worst_event_median15": 7.38,
+      "worst_event_avg15": 7.38
+    }
+  ],
+  "note": "Rankers and top-k variants evaluated in parallel. No sector constraint yet; next step can add industry caps if ranking remains strong."
+}
