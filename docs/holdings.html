@@ -40,7 +40,7 @@ button,input,a{font:inherit}
   position:relative;
   background:linear-gradient(180deg,var(--panel2),var(--panel));
   border:4px solid var(--frame);
-  border-radius:3px;
+  border-radius:18px;
   box-shadow:
     0 0 0 2px #163b3f,
     0 0 0 5px var(--frame2),
@@ -51,7 +51,7 @@ button,input,a{font:inherit}
   margin:3px 5px 16px;padding:14px;
 }
 .top:after,.card:after,.holding:after{
-  content:"";position:absolute;inset:5px;border:1px solid rgba(116,217,215,.38);pointer-events:none;
+  content:"";position:absolute;inset:5px;border:1px solid rgba(116,217,215,.38);border-radius:13px;pointer-events:none;
 }
 .eyebrow{font-size:10px;color:var(--frame);letter-spacing:.14em}
 .title{font-size:23px;margin-top:5px;text-shadow:2px 2px 0 #100414}
@@ -77,14 +77,14 @@ input{
   width:100%;max-width:100%;min-width:0;
   border:2px solid #4a706f;
   background:var(--panel3);color:var(--ink);
-  border-radius:0;padding:12px 11px;
+  border-radius:12px;padding:12px 11px;
   font-size:16px;outline:none;
 }
 input::placeholder{color:#8f9c91}
 input:focus{border-color:var(--line);box-shadow:0 0 0 1px var(--frame)}
 input[type="date"]{width:100%;max-width:100%;min-width:0;color-scheme:dark}
 button{
-  width:100%;border:3px solid var(--frame);border-radius:2px;
+  width:100%;border:3px solid var(--frame);border-radius:12px;
   padding:13px;font:inherit;cursor:pointer;
   background:var(--panel);color:var(--ink);
   box-shadow:0 0 0 1px #173d40,0 0 0 3px var(--frame2);
@@ -102,7 +102,7 @@ button{
 .suggestions{
   position:absolute;left:0;right:0;top:74px;
   background:var(--panel3);border:2px solid var(--frame);
-  border-radius:0;overflow:hidden;z-index:20;
+  border-radius:12px;overflow:hidden;z-index:20;
   box-shadow:0 0 0 2px #173d40,6px 6px 0 rgba(0,0,0,.28);
   display:none;
 }
@@ -138,12 +138,14 @@ button{
   margin-top:12px;background:var(--panel3);color:var(--danger);
 }
 .empty,.err{
+  border-radius:18px;overflow:hidden;
   margin:10px 5px;padding:36px 16px;text-align:center;
   color:var(--ink);background:var(--panel);
   border:4px solid var(--frame);
   box-shadow:0 0 0 2px #163b3f,0 0 0 5px var(--frame2);
 }
 .foot{
+  border-radius:18px;overflow:hidden;
   margin:15px 5px 0;padding:10px 12px;text-align:center;
   color:var(--ink);font-size:10px;
   background:var(--panel);border:3px solid var(--frame);
