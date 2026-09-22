@@ -1,0 +1,905 @@
+{
+  "study": "Pinch exit final robustness: 40-43d",
+  "entry": "Next business day open, no gap cap, no fixed stop, DD20 top3",
+  "tests": [
+    "Leave one crash event out at a time",
+    "Remove the single best-returning stock from each event and leave that capital slot in cash"
+  ],
+  "summary": [
+    {
+      "hold_days": 40,
+      "full_avg_pct": 42.754,
+      "full_worst_event_pct": 5.3,
+      "worst_leave_one_out_avg_pct": 31.697,
+      "best_leave_one_out_avg_pct": 52.117,
+      "trimmed_avg_pct": 18.21,
+      "trimmed_worst_event_pct": -3.158,
+      "trimmed_positive_events": 4
+    },
+    {
+      "hold_days": 41,
+      "full_avg_pct": 43.838,
+      "full_worst_event_pct": 11.521,
+      "worst_leave_one_out_avg_pct": 33.13,
+      "best_leave_one_out_avg_pct": 51.917,
+      "trimmed_avg_pct": 18.232,
+      "trimmed_worst_event_pct": -0.628,
+      "trimmed_positive_events": 4
+    },
+    {
+      "hold_days": 42,
+      "full_avg_pct": 43.448,
+      "full_worst_event_pct": 9.325,
+      "worst_leave_one_out_avg_pct": 34.184,
+      "best_leave_one_out_avg_pct": 51.979,
+      "trimmed_avg_pct": 17.784,
+      "trimmed_worst_event_pct": -1.936,
+      "trimmed_positive_events": 4
+    },
+    {
+      "hold_days": 43,
+      "full_avg_pct": 43.41,
+      "full_worst_event_pct": 9.408,
+      "worst_leave_one_out_avg_pct": 34.538,
+      "best_leave_one_out_avg_pct": 51.91,
+      "trimmed_avg_pct": 17.92,
+      "trimmed_worst_event_pct": -1.34,
+      "trimmed_positive_events": 4
+    }
+  ],
+  "leave_one_event_out": [
+    {
+      "excluded_event": "2018-12-27",
+      "hold_days": 40,
+      "n_events": 4,
+      "avg_pct": 48.139,
+      "median_pct": 50.138,
+      "worst_pct": 5.3,
+      "best_pct": 86.981,
+      "stdev_pct": 29.493,
+      "positive_events": 4,
+      "events": [
+        {
+          "date": "2020-04-06",
+          "portfolio_return_pct": 86.981
+        },
+        {
+          "date": "2022-03-10",
+          "portfolio_return_pct": 5.3
+        },
+        {
+          "date": "2024-08-06",
+          "portfolio_return_pct": 58.121
+        },
+        {
+          "date": "2025-04-08",
+          "portfolio_return_pct": 42.155
+        }
+      ]
+    },
+    {
+      "excluded_event": "2018-12-27",
+      "hold_days": 41,
+      "n_events": 4,
+      "avg_pct": 49.952,
+      "median_pct": 50.808,
+      "worst_pct": 11.521,
+      "best_pct": 86.67,
+      "stdev_pct": 27.128,
+      "positive_events": 4,
+      "events": [
+        {
+          "date": "2020-04-06",
+          "portfolio_return_pct": 86.67
+        },
+        {
+          "date": "2022-03-10",
+          "portfolio_return_pct": 11.521
+        },
+        {
+          "date": "2024-08-06",
+          "portfolio_return_pct": 58.462
+        },
+        {
+          "date": "2025-04-08",
+          "portfolio_return_pct": 43.154
+        }
+      ]
+    },
+    {
+      "excluded_event": "2018-12-27",
+      "hold_days": 42,
+      "n_events": 4,
+      "avg_pct": 49.176,
+      "median_pct": 53.436,
+      "worst_pct": 9.325,
+      "best_pct": 80.507,
+      "stdev_pct": 26.188,
+      "positive_events": 4,
+      "events": [
+        {
+          "date": "2020-04-06",
+          "portfolio_return_pct": 80.507
+        },
+        {
+          "date": "2022-03-10",
+          "portfolio_return_pct": 9.325
+        },
+        {
+          "date": "2024-08-06",
+          "portfolio_return_pct": 61.717
+        },
+        {
+          "date": "2025-04-08",
+          "portfolio_return_pct": 45.154
+        }
+      ]
+    },
+    {
+      "excluded_event": "2018-12-27",
+      "hold_days": 43,
+      "n_events": 4,
+      "avg_pct": 49.5,
+      "median_pct": 54.848,
+      "worst_pct": 9.408,
+      "best_pct": 78.897,
+      "stdev_pct": 25.613,
+      "positive_events": 4,
+      "events": [
+        {
+          "date": "2020-04-06",
+          "portfolio_return_pct": 78.897
+        },
+        {
+          "date": "2022-03-10",
+          "portfolio_return_pct": 9.408
+        },
+        {
+          "date": "2024-08-06",
+          "portfolio_return_pct": 61.752
+        },
+        {
+          "date": "2025-04-08",
+          "portfolio_return_pct": 47.943
+        }
+      ]
+    },
+    {
+      "excluded_event": "2020-04-06",
+      "hold_days": 40,
+      "n_events": 4,
+      "avg_pct": 31.697,
+      "median_pct": 31.683,
+      "worst_pct": 5.3,
+      "best_pct": 58.121,
+      "stdev_pct": 20.089,
+      "positive_events": 4,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "portfolio_return_pct": 21.212
+        },
+        {
+          "date": "2022-03-10",
+          "portfolio_return_pct": 5.3
+        },
+        {
+          "date": "2024-08-06",
+          "portfolio_return_pct": 58.121
+        },
+        {
+          "date": "2025-04-08",
+          "portfolio_return_pct": 42.155
+        }
+      ]
+    },
+    {
+      "excluded_event": "2020-04-06",
+      "hold_days": 41,
+      "n_events": 4,
+      "avg_pct": 33.13,
+      "median_pct": 31.268,
+      "worst_pct": 11.521,
+      "best_pct": 58.462,
+      "stdev_pct": 18.696,
+      "positive_events": 4,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "portfolio_return_pct": 19.383
+        },
+        {
+          "date": "2022-03-10",
+          "portfolio_return_pct": 11.521
+        },
+        {
+          "date": "2024-08-06",
+          "portfolio_return_pct": 58.462
+        },
+        {
+          "date": "2025-04-08",
+          "portfolio_return_pct": 43.154
+        }
+      ]
+    },
+    {
+      "excluded_event": "2020-04-06",
+      "hold_days": 42,
+      "n_events": 4,
+      "avg_pct": 34.184,
+      "median_pct": 32.846,
+      "worst_pct": 9.325,
+      "best_pct": 61.717,
+      "stdev_pct": 20.51,
+      "positive_events": 4,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "portfolio_return_pct": 20.538
+        },
+        {
+          "date": "2022-03-10",
+          "portfolio_return_pct": 9.325
+        },
+        {
+          "date": "2024-08-06",
+          "portfolio_return_pct": 61.717
+        },
+        {
+          "date": "2025-04-08",
+          "portfolio_return_pct": 45.154
+        }
+      ]
+    },
+    {
+      "excluded_event": "2020-04-06",
+      "hold_days": 43,
+      "n_events": 4,
+      "avg_pct": 34.538,
+      "median_pct": 33.495,
+      "worst_pct": 9.408,
+      "best_pct": 61.752,
+      "stdev_pct": 21.165,
+      "positive_events": 4,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "portfolio_return_pct": 19.047
+        },
+        {
+          "date": "2022-03-10",
+          "portfolio_return_pct": 9.408
+        },
+        {
+          "date": "2024-08-06",
+          "portfolio_return_pct": 61.752
+        },
+        {
+          "date": "2025-04-08",
+          "portfolio_return_pct": 47.943
+        }
+      ]
+    },
+    {
+      "excluded_event": "2022-03-10",
+      "hold_days": 40,
+      "n_events": 4,
+      "avg_pct": 52.117,
+      "median_pct": 50.138,
+      "worst_pct": 21.212,
+      "best_pct": 86.981,
+      "stdev_pct": 24.01,
+      "positive_events": 4,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "portfolio_return_pct": 21.212
+        },
+        {
+          "date": "2020-04-06",
+          "portfolio_return_pct": 86.981
+        },
+        {
+          "date": "2024-08-06",
+          "portfolio_return_pct": 58.121
+        },
+        {
+          "date": "2025-04-08",
+          "portfolio_return_pct": 42.155
+        }
+      ]
+    },
+    {
+      "excluded_event": "2022-03-10",
+      "hold_days": 41,
+      "n_events": 4,
+      "avg_pct": 51.917,
+      "median_pct": 50.808,
+      "worst_pct": 19.383,
+      "best_pct": 86.67,
+      "stdev_pct": 24.423,
+      "positive_events": 4,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "portfolio_return_pct": 19.383
+        },
+        {
+          "date": "2020-04-06",
+          "portfolio_return_pct": 86.67
+        },
+        {
+          "date": "2024-08-06",
+          "portfolio_return_pct": 58.462
+        },
+        {
+          "date": "2025-04-08",
+          "portfolio_return_pct": 43.154
+        }
+      ]
+    },
+    {
+      "excluded_event": "2022-03-10",
+      "hold_days": 42,
+      "n_events": 4,
+      "avg_pct": 51.979,
+      "median_pct": 53.436,
+      "worst_pct": 20.538,
+      "best_pct": 80.507,
+      "stdev_pct": 22.044,
+      "positive_events": 4,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "portfolio_return_pct": 20.538
+        },
+        {
+          "date": "2020-04-06",
+          "portfolio_return_pct": 80.507
+        },
+        {
+          "date": "2024-08-06",
+          "portfolio_return_pct": 61.717
+        },
+        {
+          "date": "2025-04-08",
+          "portfolio_return_pct": 45.154
+        }
+      ]
+    },
+    {
+      "excluded_event": "2022-03-10",
+      "hold_days": 43,
+      "n_events": 4,
+      "avg_pct": 51.91,
+      "median_pct": 54.848,
+      "worst_pct": 19.047,
+      "best_pct": 78.897,
+      "stdev_pct": 21.914,
+      "positive_events": 4,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "portfolio_return_pct": 19.047
+        },
+        {
+          "date": "2020-04-06",
+          "portfolio_return_pct": 78.897
+        },
+        {
+          "date": "2024-08-06",
+          "portfolio_return_pct": 61.752
+        },
+        {
+          "date": "2025-04-08",
+          "portfolio_return_pct": 47.943
+        }
+      ]
+    },
+    {
+      "excluded_event": "2024-08-06",
+      "hold_days": 40,
+      "n_events": 4,
+      "avg_pct": 38.912,
+      "median_pct": 31.683,
+      "worst_pct": 5.3,
+      "best_pct": 86.981,
+      "stdev_pct": 30.677,
+      "positive_events": 4,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "portfolio_return_pct": 21.212
+        },
+        {
+          "date": "2020-04-06",
+          "portfolio_return_pct": 86.981
+        },
+        {
+          "date": "2022-03-10",
+          "portfolio_return_pct": 5.3
+        },
+        {
+          "date": "2025-04-08",
+          "portfolio_return_pct": 42.155
+        }
+      ]
+    },
+    {
+      "excluded_event": "2024-08-06",
+      "hold_days": 41,
+      "n_events": 4,
+      "avg_pct": 40.182,
+      "median_pct": 31.268,
+      "worst_pct": 11.521,
+      "best_pct": 86.67,
+      "stdev_pct": 29.258,
+      "positive_events": 4,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "portfolio_return_pct": 19.383
+        },
+        {
+          "date": "2020-04-06",
+          "portfolio_return_pct": 86.67
+        },
+        {
+          "date": "2022-03-10",
+          "portfolio_return_pct": 11.521
+        },
+        {
+          "date": "2025-04-08",
+          "portfolio_return_pct": 43.154
+        }
+      ]
+    },
+    {
+      "excluded_event": "2024-08-06",
+      "hold_days": 42,
+      "n_events": 4,
+      "avg_pct": 38.881,
+      "median_pct": 32.846,
+      "worst_pct": 9.325,
+      "best_pct": 80.507,
+      "stdev_pct": 27.304,
+      "positive_events": 4,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "portfolio_return_pct": 20.538
+        },
+        {
+          "date": "2020-04-06",
+          "portfolio_return_pct": 80.507
+        },
+        {
+          "date": "2022-03-10",
+          "portfolio_return_pct": 9.325
+        },
+        {
+          "date": "2025-04-08",
+          "portfolio_return_pct": 45.154
+        }
+      ]
+    },
+    {
+      "excluded_event": "2024-08-06",
+      "hold_days": 43,
+      "n_events": 4,
+      "avg_pct": 38.824,
+      "median_pct": 33.495,
+      "worst_pct": 9.408,
+      "best_pct": 78.897,
+      "stdev_pct": 27.136,
+      "positive_events": 4,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "portfolio_return_pct": 19.047
+        },
+        {
+          "date": "2020-04-06",
+          "portfolio_return_pct": 78.897
+        },
+        {
+          "date": "2022-03-10",
+          "portfolio_return_pct": 9.408
+        },
+        {
+          "date": "2025-04-08",
+          "portfolio_return_pct": 47.943
+        }
+      ]
+    },
+    {
+      "excluded_event": "2025-04-08",
+      "hold_days": 40,
+      "n_events": 4,
+      "avg_pct": 42.903,
+      "median_pct": 39.666,
+      "worst_pct": 5.3,
+      "best_pct": 86.981,
+      "stdev_pct": 31.855,
+      "positive_events": 4,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "portfolio_return_pct": 21.212
+        },
+        {
+          "date": "2020-04-06",
+          "portfolio_return_pct": 86.981
+        },
+        {
+          "date": "2022-03-10",
+          "portfolio_return_pct": 5.3
+        },
+        {
+          "date": "2024-08-06",
+          "portfolio_return_pct": 58.121
+        }
+      ]
+    },
+    {
+      "excluded_event": "2025-04-08",
+      "hold_days": 41,
+      "n_events": 4,
+      "avg_pct": 44.009,
+      "median_pct": 38.923,
+      "worst_pct": 11.521,
+      "best_pct": 86.67,
+      "stdev_pct": 30.376,
+      "positive_events": 4,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "portfolio_return_pct": 19.383
+        },
+        {
+          "date": "2020-04-06",
+          "portfolio_return_pct": 86.67
+        },
+        {
+          "date": "2022-03-10",
+          "portfolio_return_pct": 11.521
+        },
+        {
+          "date": "2024-08-06",
+          "portfolio_return_pct": 58.462
+        }
+      ]
+    },
+    {
+      "excluded_event": "2025-04-08",
+      "hold_days": 42,
+      "n_events": 4,
+      "avg_pct": 43.022,
+      "median_pct": 41.128,
+      "worst_pct": 9.325,
+      "best_pct": 80.507,
+      "stdev_pct": 29.136,
+      "positive_events": 4,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "portfolio_return_pct": 20.538
+        },
+        {
+          "date": "2020-04-06",
+          "portfolio_return_pct": 80.507
+        },
+        {
+          "date": "2022-03-10",
+          "portfolio_return_pct": 9.325
+        },
+        {
+          "date": "2024-08-06",
+          "portfolio_return_pct": 61.717
+        }
+      ]
+    },
+    {
+      "excluded_event": "2025-04-08",
+      "hold_days": 43,
+      "n_events": 4,
+      "avg_pct": 42.276,
+      "median_pct": 40.4,
+      "worst_pct": 9.408,
+      "best_pct": 78.897,
+      "stdev_pct": 28.898,
+      "positive_events": 4,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "portfolio_return_pct": 19.047
+        },
+        {
+          "date": "2020-04-06",
+          "portfolio_return_pct": 78.897
+        },
+        {
+          "date": "2022-03-10",
+          "portfolio_return_pct": 9.408
+        },
+        {
+          "date": "2024-08-06",
+          "portfolio_return_pct": 61.752
+        }
+      ]
+    }
+  ],
+  "remove_best_stock_each_event": [
+    {
+      "hold_days": 40,
+      "n_events": 5,
+      "avg_pct": 18.21,
+      "median_pct": 21.618,
+      "worst_pct": -3.158,
+      "best_pct": 47.439,
+      "stdev_pct": 17.808,
+      "positive_events": 4,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "removed": {
+            "code": "3649",
+            "rank": 1,
+            "return_pct": 55.877
+          },
+          "portfolio_return_pct_after_remove_best": 2.586
+        },
+        {
+          "date": "2020-04-06",
+          "removed": {
+            "code": "7172",
+            "rank": 1,
+            "return_pct": 118.627
+          },
+          "portfolio_return_pct_after_remove_best": 47.439
+        },
+        {
+          "date": "2022-03-10",
+          "removed": {
+            "code": "8011",
+            "rank": 1,
+            "return_pct": 25.374
+          },
+          "portfolio_return_pct_after_remove_best": -3.158
+        },
+        {
+          "date": "2024-08-06",
+          "removed": {
+            "code": "5803",
+            "rank": 3,
+            "return_pct": 109.507
+          },
+          "portfolio_return_pct_after_remove_best": 21.618
+        },
+        {
+          "date": "2025-04-08",
+          "removed": {
+            "code": "5802",
+            "rank": 2,
+            "return_pct": 58.777
+          },
+          "portfolio_return_pct_after_remove_best": 22.562
+        }
+      ]
+    },
+    {
+      "hold_days": 41,
+      "n_events": 5,
+      "avg_pct": 18.232,
+      "median_pct": 19.669,
+      "worst_pct": -0.628,
+      "best_pct": 46.433,
+      "stdev_pct": 16.853,
+      "positive_events": 4,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "removed": {
+            "code": "3649",
+            "rank": 1,
+            "return_pct": 50.289
+          },
+          "portfolio_return_pct_after_remove_best": 2.62
+        },
+        {
+          "date": "2020-04-06",
+          "removed": {
+            "code": "7172",
+            "rank": 1,
+            "return_pct": 120.712
+          },
+          "portfolio_return_pct_after_remove_best": 46.433
+        },
+        {
+          "date": "2022-03-10",
+          "removed": {
+            "code": "8011",
+            "rank": 1,
+            "return_pct": 36.449
+          },
+          "portfolio_return_pct_after_remove_best": -0.628
+        },
+        {
+          "date": "2024-08-06",
+          "removed": {
+            "code": "5803",
+            "rank": 3,
+            "return_pct": 116.381
+          },
+          "portfolio_return_pct_after_remove_best": 19.669
+        },
+        {
+          "date": "2025-04-08",
+          "removed": {
+            "code": "5802",
+            "rank": 2,
+            "return_pct": 60.263
+          },
+          "portfolio_return_pct_after_remove_best": 23.067
+        }
+      ]
+    },
+    {
+      "hold_days": 42,
+      "n_events": 5,
+      "avg_pct": 17.784,
+      "median_pct": 19.661,
+      "worst_pct": -1.936,
+      "best_pct": 43.949,
+      "stdev_pct": 16.404,
+      "positive_events": 4,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "removed": {
+            "code": "3649",
+            "rank": 1,
+            "return_pct": 53.179
+          },
+          "portfolio_return_pct_after_remove_best": 2.811
+        },
+        {
+          "date": "2020-04-06",
+          "removed": {
+            "code": "7172",
+            "rank": 1,
+            "return_pct": 109.675
+          },
+          "portfolio_return_pct_after_remove_best": 43.949
+        },
+        {
+          "date": "2022-03-10",
+          "removed": {
+            "code": "8011",
+            "rank": 1,
+            "return_pct": 33.785
+          },
+          "portfolio_return_pct_after_remove_best": -1.936
+        },
+        {
+          "date": "2024-08-06",
+          "removed": {
+            "code": "5803",
+            "rank": 3,
+            "return_pct": 126.169
+          },
+          "portfolio_return_pct_after_remove_best": 19.661
+        },
+        {
+          "date": "2025-04-08",
+          "removed": {
+            "code": "6323",
+            "rank": 1,
+            "return_pct": 62.16
+          },
+          "portfolio_return_pct_after_remove_best": 24.434
+        }
+      ]
+    },
+    {
+      "hold_days": 43,
+      "n_events": 5,
+      "avg_pct": 17.92,
+      "median_pct": 20.105,
+      "worst_pct": -1.34,
+      "best_pct": 43.321,
+      "stdev_pct": 16.241,
+      "positive_events": 4,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "removed": {
+            "code": "3649",
+            "rank": 1,
+            "return_pct": 50.289
+          },
+          "portfolio_return_pct_after_remove_best": 2.284
+        },
+        {
+          "date": "2020-04-06",
+          "removed": {
+            "code": "7172",
+            "rank": 1,
+            "return_pct": 106.728
+          },
+          "portfolio_return_pct_after_remove_best": 43.321
+        },
+        {
+          "date": "2022-03-10",
+          "removed": {
+            "code": "8011",
+            "rank": 1,
+            "return_pct": 32.243
+          },
+          "portfolio_return_pct_after_remove_best": -1.34
+        },
+        {
+          "date": "2024-08-06",
+          "removed": {
+            "code": "5803",
+            "rank": 3,
+            "return_pct": 124.942
+          },
+          "portfolio_return_pct_after_remove_best": 20.105
+        },
+        {
+          "date": "2025-04-08",
+          "removed": {
+            "code": "6323",
+            "rank": 1,
+            "return_pct": 68.149
+          },
+          "portfolio_return_pct_after_remove_best": 25.227
+        }
+      ]
+    }
+  ],
+  "full": [
+    {
+      "hold_days": 40,
+      "n_events": 5,
+      "avg_pct": 42.754,
+      "median_pct": 42.155,
+      "worst_pct": 5.3,
+      "best_pct": 86.981,
+      "stdev_pct": 28.493,
+      "positive_events": 5
+    },
+    {
+      "hold_days": 41,
+      "n_events": 5,
+      "avg_pct": 43.838,
+      "median_pct": 43.154,
+      "worst_pct": 11.521,
+      "best_pct": 86.67,
+      "stdev_pct": 27.171,
+      "positive_events": 5
+    },
+    {
+      "hold_days": 42,
+      "n_events": 5,
+      "avg_pct": 43.448,
+      "median_pct": 45.154,
+      "worst_pct": 9.325,
+      "best_pct": 80.507,
+      "stdev_pct": 26.074,
+      "positive_events": 5
+    },
+    {
+      "hold_days": 43,
+      "n_events": 5,
+      "avg_pct": 43.41,
+      "median_pct": 47.943,
+      "worst_pct": 9.408,
+      "best_pct": 78.897,
+      "stdev_pct": 25.946,
+      "positive_events": 5
+    }
+  ],
+  "caveat": "Only five independent crash events; this is a robustness check, not new independent evidence."
+}
