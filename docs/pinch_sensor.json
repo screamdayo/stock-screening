@@ -1,0 +1,23 @@
+{
+  "active": false,
+  "signal_date": "2026-09-18T00:00:00",
+  "universe_n": 1548,
+  "coarse_reversal_count": 0,
+  "reversal_rate_pct": 0.0,
+  "reversal_rate_threshold_pct": 1.0,
+  "topix_return_pct": -0.074,
+  "topix_return_threshold_pct": 3.0,
+  "topix_low": 4067.57,
+  "topix_prev_low": 4078.53,
+  "topix_low_up": false,
+  "market_conditions": {
+    "reversal_rate_ok": false,
+    "topix_return_ok": false,
+    "topix_low_up_ok": false
+  },
+  "exit_guide_business_days": 15,
+  "candidate_count": 0,
+  "candidates": [],
+  "reason": "市場センサー条件未成立",
+  "generated_at": "2026-09-22T07:07:21"
+}
