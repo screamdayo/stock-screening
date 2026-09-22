@@ -1,0 +1,4358 @@
+{
+  "study": "Selling-climax candidate ranking",
+  "sensor_dates": [
+    "2018-12-25",
+    "2020-03-13",
+    "2024-08-05",
+    "2025-04-07"
+  ],
+  "sensor_rule": "TOPIX ret1<=-2%, DD20<=-15%, strong-reversal share>=10% (observed production-candidate dates)",
+  "candidate_rule": "ret5<=-12%, dd20<=-20%, candle>=+2%, volume ratio20>=1.5",
+  "entry": "next business-day open",
+  "rankers": [
+    "deep_dd20",
+    "deep_ret5",
+    "high_volume",
+    "strong_candle",
+    "composite"
+  ],
+  "topks": [
+    1,
+    3,
+    5
+  ],
+  "holds_business_days": [
+    5,
+    10,
+    15,
+    20,
+    41
+  ],
+  "ranked_by_event_avg15": [
+    {
+      "ranker": "deep_ret5",
+      "top_k": 1,
+      "events": [
+        {
+          "date": "2018-12-25",
+          "available": 23,
+          "picked": 1,
+          "avg5": 2.883,
+          "avg10": 11.656,
+          "avg15": 10.552,
+          "avg20": 10.368,
+          "avg41": 29.018
+        },
+        {
+          "date": "2020-03-13",
+          "available": 293,
+          "picked": 1,
+          "avg5": 32.922,
+          "avg10": 39.481,
+          "avg15": 28.571,
+          "avg20": 42.857,
+          "avg41": 55.844
+        },
+        {
+          "date": "2024-08-05",
+          "available": 5,
+          "picked": 1,
+          "avg5": 23.3,
+          "avg10": 21.333,
+          "avg15": 24.367,
+          "avg20": 20.0,
+          "avg41": 50.967
+        },
+        {
+          "date": "2025-04-07",
+          "available": 102,
+          "picked": 1,
+          "avg5": 15.922,
+          "avg10": 3.301,
+          "avg15": 20.0,
+          "avg20": 32.233,
+          "avg41": 12.621
+        }
+      ],
+      "r5": {
+        "n": 4,
+        "win": 100.0,
+        "avg": 18.757,
+        "med": 19.611,
+        "pf": null
+      },
+      "event_avg5": 18.757,
+      "worst_event5": 2.883,
+      "positive_events5": 4,
+      "r10": {
+        "n": 4,
+        "win": 100.0,
+        "avg": 18.943,
+        "med": 16.495,
+        "pf": null
+      },
+      "event_avg10": 18.943,
+      "worst_event10": 3.301,
+      "positive_events10": 4,
+      "r15": {
+        "n": 4,
+        "win": 100.0,
+        "avg": 20.873,
+        "med": 22.183,
+        "pf": null
+      },
+      "event_avg15": 20.873,
+      "worst_event15": 10.552,
+      "positive_events15": 4,
+      "r20": {
+        "n": 4,
+        "win": 100.0,
+        "avg": 26.365,
+        "med": 26.117,
+        "pf": null
+      },
+      "event_avg20": 26.364,
+      "worst_event20": 10.368,
+      "positive_events20": 4,
+      "r41": {
+        "n": 4,
+        "win": 100.0,
+        "avg": 37.113,
+        "med": 39.993,
+        "pf": null
+      },
+      "event_avg41": 37.113,
+      "worst_event41": 12.621,
+      "positive_events41": 4
+    },
+    {
+      "ranker": "high_volume",
+      "top_k": 1,
+      "events": [
+        {
+          "date": "2018-12-25",
+          "available": 23,
+          "picked": 1,
+          "avg5": 12.689,
+          "avg10": 12.346,
+          "avg15": 14.952,
+          "avg20": 14.129,
+          "avg41": 27.435
+        },
+        {
+          "date": "2020-03-13",
+          "available": 293,
+          "picked": 1,
+          "avg5": 18.622,
+          "avg10": 23.836,
+          "avg15": 14.991,
+          "avg20": 21.974,
+          "avg41": 30.912
+        },
+        {
+          "date": "2024-08-05",
+          "available": 5,
+          "picked": 1,
+          "avg5": 29.885,
+          "avg10": 26.437,
+          "avg15": 17.241,
+          "avg20": 17.241,
+          "avg41": 0.0
+        },
+        {
+          "date": "2025-04-07",
+          "available": 102,
+          "picked": 1,
+          "avg5": 9.723,
+          "avg10": 4.068,
+          "avg15": 16.762,
+          "avg20": 32.262,
+          "avg41": 40.236
+        }
+      ],
+      "r5": {
+        "n": 4,
+        "win": 100.0,
+        "avg": 17.73,
+        "med": 15.655,
+        "pf": null
+      },
+      "event_avg5": 17.73,
+      "worst_event5": 9.723,
+      "positive_events5": 4,
+      "r10": {
+        "n": 4,
+        "win": 100.0,
+        "avg": 16.672,
+        "med": 18.091,
+        "pf": null
+      },
+      "event_avg10": 16.672,
+      "worst_event10": 4.068,
+      "positive_events10": 4,
+      "r15": {
+        "n": 4,
+        "win": 100.0,
+        "avg": 15.986,
+        "med": 15.876,
+        "pf": null
+      },
+      "event_avg15": 15.986,
+      "worst_event15": 14.952,
+      "positive_events15": 4,
+      "r20": {
+        "n": 4,
+        "win": 100.0,
+        "avg": 21.402,
+        "med": 19.608,
+        "pf": null
+      },
+      "event_avg20": 21.401,
+      "worst_event20": 14.129,
+      "positive_events20": 4,
+      "r41": {
+        "n": 4,
+        "win": 75.0,
+        "avg": 24.646,
+        "med": 29.174,
+        "pf": null
+      },
+      "event_avg41": 24.646,
+      "worst_event41": 0.0,
+      "positive_events41": 3
+    },
+    {
+      "ranker": "high_volume",
+      "top_k": 3,
+      "events": [
+        {
+          "date": "2018-12-25",
+          "available": 23,
+          "picked": 3,
+          "avg5": 11.574,
+          "avg10": 13.269,
+          "avg15": 12.892,
+          "avg20": 12.826,
+          "avg41": 20.371
+        },
+        {
+          "date": "2020-03-13",
+          "available": 293,
+          "picked": 3,
+          "avg5": 12.095,
+          "avg10": 16.559,
+          "avg15": 9.378,
+          "avg20": 15.941,
+          "avg41": 26.297
+        },
+        {
+          "date": "2024-08-05",
+          "available": 5,
+          "picked": 3,
+          "avg5": 11.422,
+          "avg10": 11.894,
+          "avg15": 8.005,
+          "avg20": 4.469,
+          "avg41": 11.174
+        },
+        {
+          "date": "2025-04-07",
+          "available": 102,
+          "picked": 3,
+          "avg5": 9.478,
+          "avg10": 20.614,
+          "avg15": 25.371,
+          "avg20": 31.91,
+          "avg41": 44.345
+        }
+      ],
+      "r5": {
+        "n": 12,
+        "win": 83.33,
+        "avg": 11.142,
+        "med": 11.746,
+        "pf": 5.987
+      },
+      "event_avg5": 11.142,
+      "worst_event5": 9.478,
+      "positive_events5": 4,
+      "r10": {
+        "n": 12,
+        "win": 83.33,
+        "avg": 15.584,
+        "med": 15.648,
+        "pf": 11.873
+      },
+      "event_avg10": 15.584,
+      "worst_event10": 11.894,
+      "positive_events10": 4,
+      "r15": {
+        "n": 12,
+        "win": 83.33,
+        "avg": 13.911,
+        "med": 15.566,
+        "pf": 8.353
+      },
+      "event_avg15": 13.912,
+      "worst_event15": 8.005,
+      "positive_events15": 4,
+      "r20": {
+        "n": 12,
+        "win": 91.67,
+        "avg": 16.287,
+        "med": 18.621,
+        "pf": 9.2
+      },
+      "event_avg20": 16.287,
+      "worst_event20": 4.469,
+      "positive_events20": 4,
+      "r41": {
+        "n": 12,
+        "win": 83.33,
+        "avg": 25.547,
+        "med": 28.227,
+        "pf": 18.573
+      },
+      "event_avg41": 25.547,
+      "worst_event41": 11.174,
+      "positive_events41": 4
+    },
+    {
+      "ranker": "deep_ret5",
+      "top_k": 5,
+      "events": [
+        {
+          "date": "2018-12-25",
+          "available": 23,
+          "picked": 5,
+          "avg5": 9.983,
+          "avg10": 12.209,
+          "avg15": 12.729,
+          "avg20": 13.585,
+          "avg41": 22.081
+        },
+        {
+          "date": "2020-03-13",
+          "available": 293,
+          "picked": 5,
+          "avg5": 19.538,
+          "avg10": 24.876,
+          "avg15": 17.87,
+          "avg20": 21.984,
+          "avg41": 46.714
+        },
+        {
+          "date": "2024-08-05",
+          "available": 5,
+          "picked": 5,
+          "avg5": 7.058,
+          "avg10": 8.596,
+          "avg15": 6.536,
+          "avg20": 4.914,
+          "avg41": 11.873
+        },
+        {
+          "date": "2025-04-07",
+          "available": 102,
+          "picked": 5,
+          "avg5": 8.746,
+          "avg10": 2.218,
+          "avg15": 13.459,
+          "avg20": 17.635,
+          "avg41": 33.365
+        }
+      ],
+      "r5": {
+        "n": 20,
+        "win": 85.0,
+        "avg": 11.331,
+        "med": 10.627,
+        "pf": 9.74
+      },
+      "event_avg5": 11.331,
+      "worst_event5": 7.058,
+      "positive_events5": 4,
+      "r10": {
+        "n": 20,
+        "win": 85.0,
+        "avg": 11.975,
+        "med": 11.262,
+        "pf": 14.682
+      },
+      "event_avg10": 11.975,
+      "worst_event10": 2.218,
+      "positive_events10": 4,
+      "r15": {
+        "n": 20,
+        "win": 85.0,
+        "avg": 12.648,
+        "med": 13.177,
+        "pf": 13.601
+      },
+      "event_avg15": 12.648,
+      "worst_event15": 6.536,
+      "positive_events15": 4,
+      "r20": {
+        "n": 20,
+        "win": 90.0,
+        "avg": 14.53,
+        "med": 13.36,
+        "pf": 10.427
+      },
+      "event_avg20": 14.53,
+      "worst_event20": 4.914,
+      "positive_events20": 4,
+      "r41": {
+        "n": 20,
+        "win": 90.0,
+        "avg": 28.508,
+        "med": 23.872,
+        "pf": 33.684
+      },
+      "event_avg41": 28.508,
+      "worst_event41": 11.873,
+      "positive_events41": 4
+    },
+    {
+      "ranker": "deep_ret5",
+      "top_k": 3,
+      "events": [
+        {
+          "date": "2018-12-25",
+          "available": 23,
+          "picked": 3,
+          "avg5": 7.75,
+          "avg10": 13.237,
+          "avg15": 11.408,
+          "avg20": 11.455,
+          "avg41": 19.871
+        },
+        {
+          "date": "2020-03-13",
+          "available": 293,
+          "picked": 3,
+          "avg5": 19.295,
+          "avg10": 21.477,
+          "avg15": 19.122,
+          "avg20": 27.114,
+          "avg41": 57.988
+        },
+        {
+          "date": "2024-08-05",
+          "available": 5,
+          "picked": 3,
+          "avg5": 11.422,
+          "avg10": 11.894,
+          "avg15": 8.005,
+          "avg20": 4.469,
+          "avg41": 11.174
+        },
+        {
+          "date": "2025-04-07",
+          "available": 102,
+          "picked": 3,
+          "avg5": 7.151,
+          "avg10": -0.705,
+          "avg15": 10.738,
+          "avg20": 17.62,
+          "avg41": 19.47
+        }
+      ],
+      "r5": {
+        "n": 12,
+        "win": 83.33,
+        "avg": 11.404,
+        "med": 10.183,
+        "pf": 6.988
+      },
+      "event_avg5": 11.404,
+      "worst_event5": 7.151,
+      "positive_events5": 4,
+      "r10": {
+        "n": 12,
+        "win": 75.0,
+        "avg": 11.476,
+        "med": 12.073,
+        "pf": 8.867
+      },
+      "event_avg10": 11.476,
+      "worst_event10": -0.705,
+      "positive_events10": 3,
+      "r15": {
+        "n": 12,
+        "win": 91.67,
+        "avg": 12.318,
+        "med": 13.177,
+        "pf": 9.403
+      },
+      "event_avg15": 12.318,
+      "worst_event15": 8.005,
+      "positive_events15": 4,
+      "r20": {
+        "n": 12,
+        "win": 91.67,
+        "avg": 15.165,
+        "med": 15.506,
+        "pf": 8.636
+      },
+      "event_avg20": 15.165,
+      "worst_event20": 4.469,
+      "positive_events20": 4,
+      "r41": {
+        "n": 12,
+        "win": 83.33,
+        "avg": 27.126,
+        "med": 22.895,
+        "pf": 19.66
+      },
+      "event_avg41": 27.126,
+      "worst_event41": 11.174,
+      "positive_events41": 4
+    },
+    {
+      "ranker": "deep_dd20",
+      "top_k": 3,
+      "events": [
+        {
+          "date": "2018-12-25",
+          "available": 23,
+          "picked": 3,
+          "avg5": 6.838,
+          "avg10": 9.193,
+          "avg15": 14.781,
+          "avg20": 18.67,
+          "avg41": 33.666
+        },
+        {
+          "date": "2020-03-13",
+          "available": 293,
+          "picked": 3,
+          "avg5": 12.526,
+          "avg10": 11.955,
+          "avg15": 14.252,
+          "avg20": 18.097,
+          "avg41": 48.303
+        },
+        {
+          "date": "2024-08-05",
+          "available": 5,
+          "picked": 3,
+          "avg5": 11.422,
+          "avg10": 11.894,
+          "avg15": 8.005,
+          "avg20": 4.469,
+          "avg41": 11.174
+        },
+        {
+          "date": "2025-04-07",
+          "available": 102,
+          "picked": 3,
+          "avg5": 13.456,
+          "avg10": 5.617,
+          "avg15": 12.137,
+          "avg20": 24.101,
+          "avg41": 38.708
+        }
+      ],
+      "r5": {
+        "n": 12,
+        "win": 83.33,
+        "avg": 11.061,
+        "med": 9.112,
+        "pf": 6.808
+      },
+      "event_avg5": 11.061,
+      "worst_event5": 6.838,
+      "positive_events5": 4,
+      "r10": {
+        "n": 12,
+        "win": 75.0,
+        "avg": 9.665,
+        "med": 11.285,
+        "pf": 7.782
+      },
+      "event_avg10": 9.665,
+      "worst_event10": 5.617,
+      "positive_events10": 4,
+      "r15": {
+        "n": 12,
+        "win": 91.67,
+        "avg": 12.294,
+        "med": 12.257,
+        "pf": 9.386
+      },
+      "event_avg15": 12.294,
+      "worst_event15": 8.005,
+      "positive_events15": 4,
+      "r20": {
+        "n": 12,
+        "win": 91.67,
+        "avg": 16.334,
+        "med": 18.621,
+        "pf": 9.224
+      },
+      "event_avg20": 16.334,
+      "worst_event20": 4.469,
+      "positive_events20": 4,
+      "r41": {
+        "n": 12,
+        "win": 83.33,
+        "avg": 32.963,
+        "med": 35.99,
+        "pf": 23.675
+      },
+      "event_avg41": 32.963,
+      "worst_event41": 11.174,
+      "positive_events41": 4
+    },
+    {
+      "ranker": "deep_dd20",
+      "top_k": 1,
+      "events": [
+        {
+          "date": "2018-12-25",
+          "available": 23,
+          "picked": 1,
+          "avg5": 2.883,
+          "avg10": 11.656,
+          "avg15": 10.552,
+          "avg20": 10.368,
+          "avg41": 29.018
+        },
+        {
+          "date": "2020-03-13",
+          "available": 293,
+          "picked": 1,
+          "avg5": -3.934,
+          "avg10": 3.279,
+          "avg15": 10.164,
+          "avg20": 13.77,
+          "avg41": 50.82
+        },
+        {
+          "date": "2024-08-05",
+          "available": 5,
+          "picked": 1,
+          "avg5": 23.3,
+          "avg10": 21.333,
+          "avg15": 24.367,
+          "avg20": 20.0,
+          "avg41": 50.967
+        },
+        {
+          "date": "2025-04-07",
+          "available": 102,
+          "picked": 1,
+          "avg5": 5.609,
+          "avg10": -3.532,
+          "avg15": 0.994,
+          "avg20": 20.465,
+          "avg41": 44.622
+        }
+      ],
+      "r5": {
+        "n": 4,
+        "win": 75.0,
+        "avg": 6.964,
+        "med": 4.246,
+        "pf": 8.081
+      },
+      "event_avg5": 6.965,
+      "worst_event5": -3.934,
+      "positive_events5": 3,
+      "r10": {
+        "n": 4,
+        "win": 75.0,
+        "avg": 8.184,
+        "med": 7.468,
+        "pf": 10.268
+      },
+      "event_avg10": 8.184,
+      "worst_event10": -3.532,
+      "positive_events10": 3,
+      "r15": {
+        "n": 4,
+        "win": 100.0,
+        "avg": 11.519,
+        "med": 10.358,
+        "pf": null
+      },
+      "event_avg15": 11.519,
+      "worst_event15": 0.994,
+      "positive_events15": 4,
+      "r20": {
+        "n": 4,
+        "win": 100.0,
+        "avg": 16.151,
+        "med": 16.885,
+        "pf": null
+      },
+      "event_avg20": 16.151,
+      "worst_event20": 10.368,
+      "positive_events20": 4,
+      "r41": {
+        "n": 4,
+        "win": 100.0,
+        "avg": 43.857,
+        "med": 47.721,
+        "pf": null
+      },
+      "event_avg41": 43.857,
+      "worst_event41": 29.018,
+      "positive_events41": 4
+    },
+    {
+      "ranker": "high_volume",
+      "top_k": 5,
+      "events": [
+        {
+          "date": "2018-12-25",
+          "available": 23,
+          "picked": 5,
+          "avg5": 5.764,
+          "avg10": 5.687,
+          "avg15": 6.643,
+          "avg20": 7.813,
+          "avg41": 16.402
+        },
+        {
+          "date": "2020-03-13",
+          "available": 293,
+          "picked": 5,
+          "avg5": 9.355,
+          "avg10": 16.76,
+          "avg15": 12.812,
+          "avg20": 17.654,
+          "avg41": 29.673
+        },
+        {
+          "date": "2024-08-05",
+          "available": 5,
+          "picked": 5,
+          "avg5": 7.058,
+          "avg10": 8.596,
+          "avg15": 6.536,
+          "avg20": 4.914,
+          "avg41": 11.873
+        },
+        {
+          "date": "2025-04-07",
+          "available": 102,
+          "picked": 5,
+          "avg5": 7.269,
+          "avg10": 13.217,
+          "avg15": 19.046,
+          "avg20": 23.23,
+          "avg41": 32.222
+        }
+      ],
+      "r5": {
+        "n": 20,
+        "win": 75.0,
+        "avg": 7.361,
+        "med": 6.457,
+        "pf": 4.358
+      },
+      "event_avg5": 7.361,
+      "worst_event5": 5.764,
+      "positive_events5": 4,
+      "r10": {
+        "n": 20,
+        "win": 80.0,
+        "avg": 11.065,
+        "med": 9.362,
+        "pf": 8.745
+      },
+      "event_avg10": 11.065,
+      "worst_event10": 5.687,
+      "positive_events10": 4,
+      "r15": {
+        "n": 20,
+        "win": 80.0,
+        "avg": 11.26,
+        "med": 11.862,
+        "pf": 8.684
+      },
+      "event_avg15": 11.259,
+      "worst_event15": 6.536,
+      "positive_events15": 4,
+      "r20": {
+        "n": 20,
+        "win": 90.0,
+        "avg": 13.403,
+        "med": 14.055,
+        "pf": 12.147
+      },
+      "event_avg20": 13.403,
+      "worst_event20": 4.914,
+      "positive_events20": 4,
+      "r41": {
+        "n": 20,
+        "win": 90.0,
+        "avg": 22.543,
+        "med": 22.123,
+        "pf": 26.845
+      },
+      "event_avg41": 22.543,
+      "worst_event41": 11.873,
+      "positive_events41": 4
+    },
+    {
+      "ranker": "composite",
+      "top_k": 5,
+      "events": [
+        {
+          "date": "2018-12-25",
+          "available": 23,
+          "picked": 5,
+          "avg5": 9.838,
+          "avg10": 13.3,
+          "avg15": 9.735,
+          "avg20": 15.567,
+          "avg41": 18.396
+        },
+        {
+          "date": "2020-03-13",
+          "available": 293,
+          "picked": 5,
+          "avg5": 11.466,
+          "avg10": 15.184,
+          "avg15": 8.524,
+          "avg20": 10.212,
+          "avg41": 30.073
+        },
+        {
+          "date": "2024-08-05",
+          "available": 5,
+          "picked": 5,
+          "avg5": 7.058,
+          "avg10": 8.596,
+          "avg15": 6.536,
+          "avg20": 4.914,
+          "avg41": 11.873
+        },
+        {
+          "date": "2025-04-07",
+          "available": 102,
+          "picked": 5,
+          "avg5": 9.412,
+          "avg10": 5.19,
+          "avg15": 14.197,
+          "avg20": 18.911,
+          "avg41": 34.828
+        }
+      ],
+      "r5": {
+        "n": 20,
+        "win": 80.0,
+        "avg": 9.443,
+        "med": 9.897,
+        "pf": 5.589
+      },
+      "event_avg5": 9.444,
+      "worst_event5": 7.058,
+      "positive_events5": 4,
+      "r10": {
+        "n": 20,
+        "win": 80.0,
+        "avg": 10.568,
+        "med": 8.991,
+        "pf": 8.786
+      },
+      "event_avg10": 10.567,
+      "worst_event10": 5.19,
+      "positive_events10": 4,
+      "r15": {
+        "n": 20,
+        "win": 75.0,
+        "avg": 9.748,
+        "med": 9.959,
+        "pf": 7.409
+      },
+      "event_avg15": 9.748,
+      "worst_event15": 6.536,
+      "positive_events15": 4,
+      "r20": {
+        "n": 20,
+        "win": 80.0,
+        "avg": 12.401,
+        "med": 11.274,
+        "pf": 7.961
+      },
+      "event_avg20": 12.401,
+      "worst_event20": 4.914,
+      "positive_events20": 4,
+      "r41": {
+        "n": 20,
+        "win": 90.0,
+        "avg": 23.792,
+        "med": 23.114,
+        "pf": 28.277
+      },
+      "event_avg41": 23.793,
+      "worst_event41": 11.873,
+      "positive_events41": 4
+    },
+    {
+      "ranker": "composite",
+      "top_k": 3,
+      "events": [
+        {
+          "date": "2018-12-25",
+          "available": 23,
+          "picked": 3,
+          "avg5": 1.586,
+          "avg10": 5.705,
+          "avg15": 4.699,
+          "avg20": 8.736,
+          "avg41": 22.585
+        },
+        {
+          "date": "2020-03-13",
+          "available": 293,
+          "picked": 3,
+          "avg5": 17.474,
+          "avg10": 23.62,
+          "avg15": 15.314,
+          "avg20": 14.794,
+          "avg41": 28.799
+        },
+        {
+          "date": "2024-08-05",
+          "available": 5,
+          "picked": 3,
+          "avg5": 11.422,
+          "avg10": 11.894,
+          "avg15": 8.005,
+          "avg20": 4.469,
+          "avg41": 11.174
+        },
+        {
+          "date": "2025-04-07",
+          "available": 102,
+          "picked": 3,
+          "avg5": 4.27,
+          "avg10": 0.643,
+          "avg15": 10.71,
+          "avg20": 14.867,
+          "avg41": 34.453
+        }
+      ],
+      "r5": {
+        "n": 12,
+        "win": 83.33,
+        "avg": 8.688,
+        "med": 9.897,
+        "pf": 4.496
+      },
+      "event_avg5": 8.688,
+      "worst_event5": 1.586,
+      "positive_events5": 4,
+      "r10": {
+        "n": 12,
+        "win": 75.0,
+        "avg": 10.465,
+        "med": 11.285,
+        "pf": 5.926
+      },
+      "event_avg10": 10.466,
+      "worst_event10": 0.643,
+      "positive_events10": 4,
+      "r15": {
+        "n": 12,
+        "win": 75.0,
+        "avg": 9.682,
+        "med": 10.145,
+        "pf": 5.65
+      },
+      "event_avg15": 9.682,
+      "worst_event15": 4.699,
+      "positive_events15": 4,
+      "r20": {
+        "n": 12,
+        "win": 75.0,
+        "avg": 10.717,
+        "med": 13.544,
+        "pf": 5.143
+      },
+      "event_avg20": 10.716,
+      "worst_event20": 4.469,
+      "positive_events20": 4,
+      "r41": {
+        "n": 12,
+        "win": 83.33,
+        "avg": 24.253,
+        "med": 25.232,
+        "pf": 17.683
+      },
+      "event_avg41": 24.253,
+      "worst_event41": 11.174,
+      "positive_events41": 4
+    },
+    {
+      "ranker": "deep_dd20",
+      "top_k": 5,
+      "events": [
+        {
+          "date": "2018-12-25",
+          "available": 23,
+          "picked": 5,
+          "avg5": 5.751,
+          "avg10": 6.783,
+          "avg15": 10.351,
+          "avg20": 13.956,
+          "avg41": 23.93
+        },
+        {
+          "date": "2020-03-13",
+          "available": 293,
+          "picked": 5,
+          "avg5": 3.757,
+          "avg10": 5.883,
+          "avg15": 6.398,
+          "avg20": 12.164,
+          "avg41": 41.94
+        },
+        {
+          "date": "2024-08-05",
+          "available": 5,
+          "picked": 5,
+          "avg5": 7.058,
+          "avg10": 8.596,
+          "avg15": 6.536,
+          "avg20": 4.914,
+          "avg41": 11.873
+        },
+        {
+          "date": "2025-04-07",
+          "available": 102,
+          "picked": 5,
+          "avg5": 12.694,
+          "avg10": 4.498,
+          "avg15": 14.667,
+          "avg20": 26.035,
+          "avg41": 36.436
+        }
+      ],
+      "r5": {
+        "n": 20,
+        "win": 75.0,
+        "avg": 7.315,
+        "med": 5.041,
+        "pf": 3.587
+      },
+      "event_avg5": 7.315,
+      "worst_event5": 3.757,
+      "positive_events5": 4,
+      "r10": {
+        "n": 20,
+        "win": 75.0,
+        "avg": 6.44,
+        "med": 5.185,
+        "pf": 4.1
+      },
+      "event_avg10": 6.44,
+      "worst_event10": 4.498,
+      "positive_events10": 4,
+      "r15": {
+        "n": 20,
+        "win": 80.0,
+        "avg": 9.488,
+        "med": 10.358,
+        "pf": 5.322
+      },
+      "event_avg15": 9.488,
+      "worst_event15": 6.398,
+      "positive_events15": 4,
+      "r20": {
+        "n": 20,
+        "win": 85.0,
+        "avg": 14.267,
+        "med": 15.176,
+        "pf": 9.9
+      },
+      "event_avg20": 14.267,
+      "worst_event20": 4.914,
+      "positive_events20": 4,
+      "r41": {
+        "n": 20,
+        "win": 90.0,
+        "avg": 28.545,
+        "med": 27.904,
+        "pf": 33.726
+      },
+      "event_avg41": 28.545,
+      "worst_event41": 11.873,
+      "positive_events41": 4
+    },
+    {
+      "ranker": "composite",
+      "top_k": 1,
+      "events": [
+        {
+          "date": "2018-12-25",
+          "available": 23,
+          "picked": 1,
+          "avg5": -10.906,
+          "avg10": -9.47,
+          "avg15": -5.758,
+          "avg20": -0.214,
+          "avg41": 13.991
+        },
+        {
+          "date": "2020-03-13",
+          "available": 293,
+          "picked": 1,
+          "avg5": 12.615,
+          "avg10": 10.914,
+          "avg15": 13.962,
+          "avg20": 15.804,
+          "avg41": 26.79
+        },
+        {
+          "date": "2024-08-05",
+          "available": 5,
+          "picked": 1,
+          "avg5": 29.885,
+          "avg10": 26.437,
+          "avg15": 17.241,
+          "avg20": 17.241,
+          "avg41": 0.0
+        },
+        {
+          "date": "2025-04-07",
+          "available": 102,
+          "picked": 1,
+          "avg5": 4.575,
+          "avg10": 3.524,
+          "avg15": 9.737,
+          "avg20": 11.283,
+          "avg41": 24.204
+        }
+      ],
+      "r5": {
+        "n": 4,
+        "win": 75.0,
+        "avg": 9.042,
+        "med": 8.595,
+        "pf": 4.317
+      },
+      "event_avg5": 9.042,
+      "worst_event5": -10.906,
+      "positive_events5": 3,
+      "r10": {
+        "n": 4,
+        "win": 75.0,
+        "avg": 7.851,
+        "med": 7.219,
+        "pf": 4.316
+      },
+      "event_avg10": 7.851,
+      "worst_event10": -9.47,
+      "positive_events10": 3,
+      "r15": {
+        "n": 4,
+        "win": 75.0,
+        "avg": 8.795,
+        "med": 11.849,
+        "pf": 7.11
+      },
+      "event_avg15": 8.796,
+      "worst_event15": -5.758,
+      "positive_events15": 3,
+      "r20": {
+        "n": 4,
+        "win": 75.0,
+        "avg": 11.029,
+        "med": 13.544,
+        "pf": 207.3
+      },
+      "event_avg20": 11.029,
+      "worst_event20": -0.214,
+      "positive_events20": 3,
+      "r41": {
+        "n": 4,
+        "win": 75.0,
+        "avg": 16.246,
+        "med": 19.098,
+        "pf": null
+      },
+      "event_avg41": 16.246,
+      "worst_event41": 0.0,
+      "positive_events41": 3
+    },
+    {
+      "ranker": "strong_candle",
+      "top_k": 5,
+      "events": [
+        {
+          "date": "2018-12-25",
+          "available": 23,
+          "picked": 5,
+          "avg5": 5.576,
+          "avg10": 8.65,
+          "avg15": 7.276,
+          "avg20": 15.601,
+          "avg41": 24.861
+        },
+        {
+          "date": "2020-03-13",
+          "available": 293,
+          "picked": 5,
+          "avg5": 9.587,
+          "avg10": 5.853,
+          "avg15": 1.788,
+          "avg20": 8.932,
+          "avg41": 27.567
+        },
+        {
+          "date": "2024-08-05",
+          "available": 5,
+          "picked": 5,
+          "avg5": 7.058,
+          "avg10": 8.596,
+          "avg15": 6.536,
+          "avg20": 4.914,
+          "avg41": 11.873
+        },
+        {
+          "date": "2025-04-07",
+          "available": 102,
+          "picked": 5,
+          "avg5": 4.745,
+          "avg10": 4.09,
+          "avg15": 12.51,
+          "avg20": 14.051,
+          "avg41": 24.598
+        }
+      ],
+      "r5": {
+        "n": 20,
+        "win": 70.0,
+        "avg": 6.741,
+        "med": 4.338,
+        "pf": 4.189
+      },
+      "event_avg5": 6.742,
+      "worst_event5": 4.745,
+      "positive_events5": 4,
+      "r10": {
+        "n": 20,
+        "win": 75.0,
+        "avg": 6.797,
+        "med": 3.614,
+        "pf": 5.557
+      },
+      "event_avg10": 6.797,
+      "worst_event10": 4.09,
+      "positive_events10": 4,
+      "r15": {
+        "n": 20,
+        "win": 70.0,
+        "avg": 7.028,
+        "med": 9.408,
+        "pf": 3.8
+      },
+      "event_avg15": 7.027,
+      "worst_event15": 1.788,
+      "positive_events15": 4,
+      "r20": {
+        "n": 20,
+        "win": 80.0,
+        "avg": 10.875,
+        "med": 11.173,
+        "pf": 7.796
+      },
+      "event_avg20": 10.875,
+      "worst_event20": 4.914,
+      "positive_events20": 4,
+      "r41": {
+        "n": 20,
+        "win": 90.0,
+        "avg": 22.225,
+        "med": 19.454,
+        "pf": 26.48
+      },
+      "event_avg41": 22.225,
+      "worst_event41": 11.873,
+      "positive_events41": 4
+    },
+    {
+      "ranker": "strong_candle",
+      "top_k": 3,
+      "events": [
+        {
+          "date": "2018-12-25",
+          "available": 23,
+          "picked": 3,
+          "avg5": 1.161,
+          "avg10": 1.989,
+          "avg15": 4.197,
+          "avg20": 12.042,
+          "avg41": 25.479
+        },
+        {
+          "date": "2020-03-13",
+          "available": 293,
+          "picked": 3,
+          "avg5": 10.315,
+          "avg10": 9.471,
+          "avg15": 4.468,
+          "avg20": 6.423,
+          "avg41": 21.765
+        },
+        {
+          "date": "2024-08-05",
+          "available": 5,
+          "picked": 3,
+          "avg5": 5.022,
+          "avg10": 7.139,
+          "avg15": 3.054,
+          "avg20": 1.293,
+          "avg41": -0.201
+        },
+        {
+          "date": "2025-04-07",
+          "available": 102,
+          "picked": 3,
+          "avg5": 2.766,
+          "avg10": 1.239,
+          "avg15": 9.063,
+          "avg20": 9.624,
+          "avg41": 20.536
+        }
+      ],
+      "r5": {
+        "n": 12,
+        "win": 66.67,
+        "avg": 4.816,
+        "med": 4.031,
+        "pf": 2.508
+      },
+      "event_avg5": 4.816,
+      "worst_event5": 1.161,
+      "positive_events5": 4,
+      "r10": {
+        "n": 12,
+        "win": 66.67,
+        "avg": 4.959,
+        "med": 2.842,
+        "pf": 3.364
+      },
+      "event_avg10": 4.96,
+      "worst_event10": 1.239,
+      "positive_events10": 4,
+      "r15": {
+        "n": 12,
+        "win": 66.67,
+        "avg": 5.195,
+        "med": 9.175,
+        "pf": 3.073
+      },
+      "event_avg15": 5.196,
+      "worst_event15": 3.054,
+      "positive_events15": 4,
+      "r20": {
+        "n": 12,
+        "win": 75.0,
+        "avg": 7.346,
+        "med": 10.768,
+        "pf": 4.078
+      },
+      "event_avg20": 7.345,
+      "worst_event20": 1.293,
+      "positive_events20": 4,
+      "r41": {
+        "n": 12,
+        "win": 83.33,
+        "avg": 16.895,
+        "med": 18.701,
+        "pf": 12.622
+      },
+      "event_avg41": 16.895,
+      "worst_event41": -0.201,
+      "positive_events41": 3
+    },
+    {
+      "ranker": "strong_candle",
+      "top_k": 1,
+      "events": [
+        {
+          "date": "2018-12-25",
+          "available": 23,
+          "picked": 1,
+          "avg5": -10.906,
+          "avg10": -9.47,
+          "avg15": -5.758,
+          "avg20": -0.214,
+          "avg41": 13.991
+        },
+        {
+          "date": "2020-03-13",
+          "available": 293,
+          "picked": 1,
+          "avg5": -8.257,
+          "avg10": -1.651,
+          "avg15": -4.587,
+          "avg20": -4.587,
+          "avg41": 7.89
+        },
+        {
+          "date": "2024-08-05",
+          "available": 5,
+          "picked": 1,
+          "avg5": 29.885,
+          "avg10": 26.437,
+          "avg15": 17.241,
+          "avg20": 17.241,
+          "avg41": 0.0
+        },
+        {
+          "date": "2025-04-07",
+          "available": 102,
+          "picked": 1,
+          "avg5": -0.238,
+          "avg10": -1.967,
+          "avg15": 7.271,
+          "avg20": 6.526,
+          "avg41": 18.057
+        }
+      ],
+      "r5": {
+        "n": 4,
+        "win": 25.0,
+        "avg": 2.621,
+        "med": -4.248,
+        "pf": 1.54
+      },
+      "event_avg5": 2.621,
+      "worst_event5": -10.906,
+      "positive_events5": 1,
+      "r10": {
+        "n": 4,
+        "win": 25.0,
+        "avg": 3.337,
+        "med": -1.809,
+        "pf": 2.02
+      },
+      "event_avg10": 3.337,
+      "worst_event10": -9.47,
+      "positive_events10": 1,
+      "r15": {
+        "n": 4,
+        "win": 50.0,
+        "avg": 3.542,
+        "med": 1.342,
+        "pf": 2.369
+      },
+      "event_avg15": 3.542,
+      "worst_event15": -5.758,
+      "positive_events15": 2,
+      "r20": {
+        "n": 4,
+        "win": 50.0,
+        "avg": 4.742,
+        "med": 3.156,
+        "pf": 4.95
+      },
+      "event_avg20": 4.742,
+      "worst_event20": -4.587,
+      "positive_events20": 2,
+      "r41": {
+        "n": 4,
+        "win": 75.0,
+        "avg": 9.985,
+        "med": 10.941,
+        "pf": null
+      },
+      "event_avg41": 9.985,
+      "worst_event41": 0.0,
+      "positive_events41": 3
+    }
+  ],
+  "ranked_by_event_avg41": [
+    {
+      "ranker": "deep_dd20",
+      "top_k": 1,
+      "events": [
+        {
+          "date": "2018-12-25",
+          "available": 23,
+          "picked": 1,
+          "avg5": 2.883,
+          "avg10": 11.656,
+          "avg15": 10.552,
+          "avg20": 10.368,
+          "avg41": 29.018
+        },
+        {
+          "date": "2020-03-13",
+          "available": 293,
+          "picked": 1,
+          "avg5": -3.934,
+          "avg10": 3.279,
+          "avg15": 10.164,
+          "avg20": 13.77,
+          "avg41": 50.82
+        },
+        {
+          "date": "2024-08-05",
+          "available": 5,
+          "picked": 1,
+          "avg5": 23.3,
+          "avg10": 21.333,
+          "avg15": 24.367,
+          "avg20": 20.0,
+          "avg41": 50.967
+        },
+        {
+          "date": "2025-04-07",
+          "available": 102,
+          "picked": 1,
+          "avg5": 5.609,
+          "avg10": -3.532,
+          "avg15": 0.994,
+          "avg20": 20.465,
+          "avg41": 44.622
+        }
+      ],
+      "r5": {
+        "n": 4,
+        "win": 75.0,
+        "avg": 6.964,
+        "med": 4.246,
+        "pf": 8.081
+      },
+      "event_avg5": 6.965,
+      "worst_event5": -3.934,
+      "positive_events5": 3,
+      "r10": {
+        "n": 4,
+        "win": 75.0,
+        "avg": 8.184,
+        "med": 7.468,
+        "pf": 10.268
+      },
+      "event_avg10": 8.184,
+      "worst_event10": -3.532,
+      "positive_events10": 3,
+      "r15": {
+        "n": 4,
+        "win": 100.0,
+        "avg": 11.519,
+        "med": 10.358,
+        "pf": null
+      },
+      "event_avg15": 11.519,
+      "worst_event15": 0.994,
+      "positive_events15": 4,
+      "r20": {
+        "n": 4,
+        "win": 100.0,
+        "avg": 16.151,
+        "med": 16.885,
+        "pf": null
+      },
+      "event_avg20": 16.151,
+      "worst_event20": 10.368,
+      "positive_events20": 4,
+      "r41": {
+        "n": 4,
+        "win": 100.0,
+        "avg": 43.857,
+        "med": 47.721,
+        "pf": null
+      },
+      "event_avg41": 43.857,
+      "worst_event41": 29.018,
+      "positive_events41": 4
+    },
+    {
+      "ranker": "deep_ret5",
+      "top_k": 1,
+      "events": [
+        {
+          "date": "2018-12-25",
+          "available": 23,
+          "picked": 1,
+          "avg5": 2.883,
+          "avg10": 11.656,
+          "avg15": 10.552,
+          "avg20": 10.368,
+          "avg41": 29.018
+        },
+        {
+          "date": "2020-03-13",
+          "available": 293,
+          "picked": 1,
+          "avg5": 32.922,
+          "avg10": 39.481,
+          "avg15": 28.571,
+          "avg20": 42.857,
+          "avg41": 55.844
+        },
+        {
+          "date": "2024-08-05",
+          "available": 5,
+          "picked": 1,
+          "avg5": 23.3,
+          "avg10": 21.333,
+          "avg15": 24.367,
+          "avg20": 20.0,
+          "avg41": 50.967
+        },
+        {
+          "date": "2025-04-07",
+          "available": 102,
+          "picked": 1,
+          "avg5": 15.922,
+          "avg10": 3.301,
+          "avg15": 20.0,
+          "avg20": 32.233,
+          "avg41": 12.621
+        }
+      ],
+      "r5": {
+        "n": 4,
+        "win": 100.0,
+        "avg": 18.757,
+        "med": 19.611,
+        "pf": null
+      },
+      "event_avg5": 18.757,
+      "worst_event5": 2.883,
+      "positive_events5": 4,
+      "r10": {
+        "n": 4,
+        "win": 100.0,
+        "avg": 18.943,
+        "med": 16.495,
+        "pf": null
+      },
+      "event_avg10": 18.943,
+      "worst_event10": 3.301,
+      "positive_events10": 4,
+      "r15": {
+        "n": 4,
+        "win": 100.0,
+        "avg": 20.873,
+        "med": 22.183,
+        "pf": null
+      },
+      "event_avg15": 20.873,
+      "worst_event15": 10.552,
+      "positive_events15": 4,
+      "r20": {
+        "n": 4,
+        "win": 100.0,
+        "avg": 26.365,
+        "med": 26.117,
+        "pf": null
+      },
+      "event_avg20": 26.364,
+      "worst_event20": 10.368,
+      "positive_events20": 4,
+      "r41": {
+        "n": 4,
+        "win": 100.0,
+        "avg": 37.113,
+        "med": 39.993,
+        "pf": null
+      },
+      "event_avg41": 37.113,
+      "worst_event41": 12.621,
+      "positive_events41": 4
+    },
+    {
+      "ranker": "deep_dd20",
+      "top_k": 3,
+      "events": [
+        {
+          "date": "2018-12-25",
+          "available": 23,
+          "picked": 3,
+          "avg5": 6.838,
+          "avg10": 9.193,
+          "avg15": 14.781,
+          "avg20": 18.67,
+          "avg41": 33.666
+        },
+        {
+          "date": "2020-03-13",
+          "available": 293,
+          "picked": 3,
+          "avg5": 12.526,
+          "avg10": 11.955,
+          "avg15": 14.252,
+          "avg20": 18.097,
+          "avg41": 48.303
+        },
+        {
+          "date": "2024-08-05",
+          "available": 5,
+          "picked": 3,
+          "avg5": 11.422,
+          "avg10": 11.894,
+          "avg15": 8.005,
+          "avg20": 4.469,
+          "avg41": 11.174
+        },
+        {
+          "date": "2025-04-07",
+          "available": 102,
+          "picked": 3,
+          "avg5": 13.456,
+          "avg10": 5.617,
+          "avg15": 12.137,
+          "avg20": 24.101,
+          "avg41": 38.708
+        }
+      ],
+      "r5": {
+        "n": 12,
+        "win": 83.33,
+        "avg": 11.061,
+        "med": 9.112,
+        "pf": 6.808
+      },
+      "event_avg5": 11.061,
+      "worst_event5": 6.838,
+      "positive_events5": 4,
+      "r10": {
+        "n": 12,
+        "win": 75.0,
+        "avg": 9.665,
+        "med": 11.285,
+        "pf": 7.782
+      },
+      "event_avg10": 9.665,
+      "worst_event10": 5.617,
+      "positive_events10": 4,
+      "r15": {
+        "n": 12,
+        "win": 91.67,
+        "avg": 12.294,
+        "med": 12.257,
+        "pf": 9.386
+      },
+      "event_avg15": 12.294,
+      "worst_event15": 8.005,
+      "positive_events15": 4,
+      "r20": {
+        "n": 12,
+        "win": 91.67,
+        "avg": 16.334,
+        "med": 18.621,
+        "pf": 9.224
+      },
+      "event_avg20": 16.334,
+      "worst_event20": 4.469,
+      "positive_events20": 4,
+      "r41": {
+        "n": 12,
+        "win": 83.33,
+        "avg": 32.963,
+        "med": 35.99,
+        "pf": 23.675
+      },
+      "event_avg41": 32.963,
+      "worst_event41": 11.174,
+      "positive_events41": 4
+    },
+    {
+      "ranker": "deep_dd20",
+      "top_k": 5,
+      "events": [
+        {
+          "date": "2018-12-25",
+          "available": 23,
+          "picked": 5,
+          "avg5": 5.751,
+          "avg10": 6.783,
+          "avg15": 10.351,
+          "avg20": 13.956,
+          "avg41": 23.93
+        },
+        {
+          "date": "2020-03-13",
+          "available": 293,
+          "picked": 5,
+          "avg5": 3.757,
+          "avg10": 5.883,
+          "avg15": 6.398,
+          "avg20": 12.164,
+          "avg41": 41.94
+        },
+        {
+          "date": "2024-08-05",
+          "available": 5,
+          "picked": 5,
+          "avg5": 7.058,
+          "avg10": 8.596,
+          "avg15": 6.536,
+          "avg20": 4.914,
+          "avg41": 11.873
+        },
+        {
+          "date": "2025-04-07",
+          "available": 102,
+          "picked": 5,
+          "avg5": 12.694,
+          "avg10": 4.498,
+          "avg15": 14.667,
+          "avg20": 26.035,
+          "avg41": 36.436
+        }
+      ],
+      "r5": {
+        "n": 20,
+        "win": 75.0,
+        "avg": 7.315,
+        "med": 5.041,
+        "pf": 3.587
+      },
+      "event_avg5": 7.315,
+      "worst_event5": 3.757,
+      "positive_events5": 4,
+      "r10": {
+        "n": 20,
+        "win": 75.0,
+        "avg": 6.44,
+        "med": 5.185,
+        "pf": 4.1
+      },
+      "event_avg10": 6.44,
+      "worst_event10": 4.498,
+      "positive_events10": 4,
+      "r15": {
+        "n": 20,
+        "win": 80.0,
+        "avg": 9.488,
+        "med": 10.358,
+        "pf": 5.322
+      },
+      "event_avg15": 9.488,
+      "worst_event15": 6.398,
+      "positive_events15": 4,
+      "r20": {
+        "n": 20,
+        "win": 85.0,
+        "avg": 14.267,
+        "med": 15.176,
+        "pf": 9.9
+      },
+      "event_avg20": 14.267,
+      "worst_event20": 4.914,
+      "positive_events20": 4,
+      "r41": {
+        "n": 20,
+        "win": 90.0,
+        "avg": 28.545,
+        "med": 27.904,
+        "pf": 33.726
+      },
+      "event_avg41": 28.545,
+      "worst_event41": 11.873,
+      "positive_events41": 4
+    },
+    {
+      "ranker": "deep_ret5",
+      "top_k": 5,
+      "events": [
+        {
+          "date": "2018-12-25",
+          "available": 23,
+          "picked": 5,
+          "avg5": 9.983,
+          "avg10": 12.209,
+          "avg15": 12.729,
+          "avg20": 13.585,
+          "avg41": 22.081
+        },
+        {
+          "date": "2020-03-13",
+          "available": 293,
+          "picked": 5,
+          "avg5": 19.538,
+          "avg10": 24.876,
+          "avg15": 17.87,
+          "avg20": 21.984,
+          "avg41": 46.714
+        },
+        {
+          "date": "2024-08-05",
+          "available": 5,
+          "picked": 5,
+          "avg5": 7.058,
+          "avg10": 8.596,
+          "avg15": 6.536,
+          "avg20": 4.914,
+          "avg41": 11.873
+        },
+        {
+          "date": "2025-04-07",
+          "available": 102,
+          "picked": 5,
+          "avg5": 8.746,
+          "avg10": 2.218,
+          "avg15": 13.459,
+          "avg20": 17.635,
+          "avg41": 33.365
+        }
+      ],
+      "r5": {
+        "n": 20,
+        "win": 85.0,
+        "avg": 11.331,
+        "med": 10.627,
+        "pf": 9.74
+      },
+      "event_avg5": 11.331,
+      "worst_event5": 7.058,
+      "positive_events5": 4,
+      "r10": {
+        "n": 20,
+        "win": 85.0,
+        "avg": 11.975,
+        "med": 11.262,
+        "pf": 14.682
+      },
+      "event_avg10": 11.975,
+      "worst_event10": 2.218,
+      "positive_events10": 4,
+      "r15": {
+        "n": 20,
+        "win": 85.0,
+        "avg": 12.648,
+        "med": 13.177,
+        "pf": 13.601
+      },
+      "event_avg15": 12.648,
+      "worst_event15": 6.536,
+      "positive_events15": 4,
+      "r20": {
+        "n": 20,
+        "win": 90.0,
+        "avg": 14.53,
+        "med": 13.36,
+        "pf": 10.427
+      },
+      "event_avg20": 14.53,
+      "worst_event20": 4.914,
+      "positive_events20": 4,
+      "r41": {
+        "n": 20,
+        "win": 90.0,
+        "avg": 28.508,
+        "med": 23.872,
+        "pf": 33.684
+      },
+      "event_avg41": 28.508,
+      "worst_event41": 11.873,
+      "positive_events41": 4
+    },
+    {
+      "ranker": "deep_ret5",
+      "top_k": 3,
+      "events": [
+        {
+          "date": "2018-12-25",
+          "available": 23,
+          "picked": 3,
+          "avg5": 7.75,
+          "avg10": 13.237,
+          "avg15": 11.408,
+          "avg20": 11.455,
+          "avg41": 19.871
+        },
+        {
+          "date": "2020-03-13",
+          "available": 293,
+          "picked": 3,
+          "avg5": 19.295,
+          "avg10": 21.477,
+          "avg15": 19.122,
+          "avg20": 27.114,
+          "avg41": 57.988
+        },
+        {
+          "date": "2024-08-05",
+          "available": 5,
+          "picked": 3,
+          "avg5": 11.422,
+          "avg10": 11.894,
+          "avg15": 8.005,
+          "avg20": 4.469,
+          "avg41": 11.174
+        },
+        {
+          "date": "2025-04-07",
+          "available": 102,
+          "picked": 3,
+          "avg5": 7.151,
+          "avg10": -0.705,
+          "avg15": 10.738,
+          "avg20": 17.62,
+          "avg41": 19.47
+        }
+      ],
+      "r5": {
+        "n": 12,
+        "win": 83.33,
+        "avg": 11.404,
+        "med": 10.183,
+        "pf": 6.988
+      },
+      "event_avg5": 11.404,
+      "worst_event5": 7.151,
+      "positive_events5": 4,
+      "r10": {
+        "n": 12,
+        "win": 75.0,
+        "avg": 11.476,
+        "med": 12.073,
+        "pf": 8.867
+      },
+      "event_avg10": 11.476,
+      "worst_event10": -0.705,
+      "positive_events10": 3,
+      "r15": {
+        "n": 12,
+        "win": 91.67,
+        "avg": 12.318,
+        "med": 13.177,
+        "pf": 9.403
+      },
+      "event_avg15": 12.318,
+      "worst_event15": 8.005,
+      "positive_events15": 4,
+      "r20": {
+        "n": 12,
+        "win": 91.67,
+        "avg": 15.165,
+        "med": 15.506,
+        "pf": 8.636
+      },
+      "event_avg20": 15.165,
+      "worst_event20": 4.469,
+      "positive_events20": 4,
+      "r41": {
+        "n": 12,
+        "win": 83.33,
+        "avg": 27.126,
+        "med": 22.895,
+        "pf": 19.66
+      },
+      "event_avg41": 27.126,
+      "worst_event41": 11.174,
+      "positive_events41": 4
+    },
+    {
+      "ranker": "high_volume",
+      "top_k": 3,
+      "events": [
+        {
+          "date": "2018-12-25",
+          "available": 23,
+          "picked": 3,
+          "avg5": 11.574,
+          "avg10": 13.269,
+          "avg15": 12.892,
+          "avg20": 12.826,
+          "avg41": 20.371
+        },
+        {
+          "date": "2020-03-13",
+          "available": 293,
+          "picked": 3,
+          "avg5": 12.095,
+          "avg10": 16.559,
+          "avg15": 9.378,
+          "avg20": 15.941,
+          "avg41": 26.297
+        },
+        {
+          "date": "2024-08-05",
+          "available": 5,
+          "picked": 3,
+          "avg5": 11.422,
+          "avg10": 11.894,
+          "avg15": 8.005,
+          "avg20": 4.469,
+          "avg41": 11.174
+        },
+        {
+          "date": "2025-04-07",
+          "available": 102,
+          "picked": 3,
+          "avg5": 9.478,
+          "avg10": 20.614,
+          "avg15": 25.371,
+          "avg20": 31.91,
+          "avg41": 44.345
+        }
+      ],
+      "r5": {
+        "n": 12,
+        "win": 83.33,
+        "avg": 11.142,
+        "med": 11.746,
+        "pf": 5.987
+      },
+      "event_avg5": 11.142,
+      "worst_event5": 9.478,
+      "positive_events5": 4,
+      "r10": {
+        "n": 12,
+        "win": 83.33,
+        "avg": 15.584,
+        "med": 15.648,
+        "pf": 11.873
+      },
+      "event_avg10": 15.584,
+      "worst_event10": 11.894,
+      "positive_events10": 4,
+      "r15": {
+        "n": 12,
+        "win": 83.33,
+        "avg": 13.911,
+        "med": 15.566,
+        "pf": 8.353
+      },
+      "event_avg15": 13.912,
+      "worst_event15": 8.005,
+      "positive_events15": 4,
+      "r20": {
+        "n": 12,
+        "win": 91.67,
+        "avg": 16.287,
+        "med": 18.621,
+        "pf": 9.2
+      },
+      "event_avg20": 16.287,
+      "worst_event20": 4.469,
+      "positive_events20": 4,
+      "r41": {
+        "n": 12,
+        "win": 83.33,
+        "avg": 25.547,
+        "med": 28.227,
+        "pf": 18.573
+      },
+      "event_avg41": 25.547,
+      "worst_event41": 11.174,
+      "positive_events41": 4
+    },
+    {
+      "ranker": "high_volume",
+      "top_k": 1,
+      "events": [
+        {
+          "date": "2018-12-25",
+          "available": 23,
+          "picked": 1,
+          "avg5": 12.689,
+          "avg10": 12.346,
+          "avg15": 14.952,
+          "avg20": 14.129,
+          "avg41": 27.435
+        },
+        {
+          "date": "2020-03-13",
+          "available": 293,
+          "picked": 1,
+          "avg5": 18.622,
+          "avg10": 23.836,
+          "avg15": 14.991,
+          "avg20": 21.974,
+          "avg41": 30.912
+        },
+        {
+          "date": "2024-08-05",
+          "available": 5,
+          "picked": 1,
+          "avg5": 29.885,
+          "avg10": 26.437,
+          "avg15": 17.241,
+          "avg20": 17.241,
+          "avg41": 0.0
+        },
+        {
+          "date": "2025-04-07",
+          "available": 102,
+          "picked": 1,
+          "avg5": 9.723,
+          "avg10": 4.068,
+          "avg15": 16.762,
+          "avg20": 32.262,
+          "avg41": 40.236
+        }
+      ],
+      "r5": {
+        "n": 4,
+        "win": 100.0,
+        "avg": 17.73,
+        "med": 15.655,
+        "pf": null
+      },
+      "event_avg5": 17.73,
+      "worst_event5": 9.723,
+      "positive_events5": 4,
+      "r10": {
+        "n": 4,
+        "win": 100.0,
+        "avg": 16.672,
+        "med": 18.091,
+        "pf": null
+      },
+      "event_avg10": 16.672,
+      "worst_event10": 4.068,
+      "positive_events10": 4,
+      "r15": {
+        "n": 4,
+        "win": 100.0,
+        "avg": 15.986,
+        "med": 15.876,
+        "pf": null
+      },
+      "event_avg15": 15.986,
+      "worst_event15": 14.952,
+      "positive_events15": 4,
+      "r20": {
+        "n": 4,
+        "win": 100.0,
+        "avg": 21.402,
+        "med": 19.608,
+        "pf": null
+      },
+      "event_avg20": 21.401,
+      "worst_event20": 14.129,
+      "positive_events20": 4,
+      "r41": {
+        "n": 4,
+        "win": 75.0,
+        "avg": 24.646,
+        "med": 29.174,
+        "pf": null
+      },
+      "event_avg41": 24.646,
+      "worst_event41": 0.0,
+      "positive_events41": 3
+    },
+    {
+      "ranker": "composite",
+      "top_k": 3,
+      "events": [
+        {
+          "date": "2018-12-25",
+          "available": 23,
+          "picked": 3,
+          "avg5": 1.586,
+          "avg10": 5.705,
+          "avg15": 4.699,
+          "avg20": 8.736,
+          "avg41": 22.585
+        },
+        {
+          "date": "2020-03-13",
+          "available": 293,
+          "picked": 3,
+          "avg5": 17.474,
+          "avg10": 23.62,
+          "avg15": 15.314,
+          "avg20": 14.794,
+          "avg41": 28.799
+        },
+        {
+          "date": "2024-08-05",
+          "available": 5,
+          "picked": 3,
+          "avg5": 11.422,
+          "avg10": 11.894,
+          "avg15": 8.005,
+          "avg20": 4.469,
+          "avg41": 11.174
+        },
+        {
+          "date": "2025-04-07",
+          "available": 102,
+          "picked": 3,
+          "avg5": 4.27,
+          "avg10": 0.643,
+          "avg15": 10.71,
+          "avg20": 14.867,
+          "avg41": 34.453
+        }
+      ],
+      "r5": {
+        "n": 12,
+        "win": 83.33,
+        "avg": 8.688,
+        "med": 9.897,
+        "pf": 4.496
+      },
+      "event_avg5": 8.688,
+      "worst_event5": 1.586,
+      "positive_events5": 4,
+      "r10": {
+        "n": 12,
+        "win": 75.0,
+        "avg": 10.465,
+        "med": 11.285,
+        "pf": 5.926
+      },
+      "event_avg10": 10.466,
+      "worst_event10": 0.643,
+      "positive_events10": 4,
+      "r15": {
+        "n": 12,
+        "win": 75.0,
+        "avg": 9.682,
+        "med": 10.145,
+        "pf": 5.65
+      },
+      "event_avg15": 9.682,
+      "worst_event15": 4.699,
+      "positive_events15": 4,
+      "r20": {
+        "n": 12,
+        "win": 75.0,
+        "avg": 10.717,
+        "med": 13.544,
+        "pf": 5.143
+      },
+      "event_avg20": 10.716,
+      "worst_event20": 4.469,
+      "positive_events20": 4,
+      "r41": {
+        "n": 12,
+        "win": 83.33,
+        "avg": 24.253,
+        "med": 25.232,
+        "pf": 17.683
+      },
+      "event_avg41": 24.253,
+      "worst_event41": 11.174,
+      "positive_events41": 4
+    },
+    {
+      "ranker": "composite",
+      "top_k": 5,
+      "events": [
+        {
+          "date": "2018-12-25",
+          "available": 23,
+          "picked": 5,
+          "avg5": 9.838,
+          "avg10": 13.3,
+          "avg15": 9.735,
+          "avg20": 15.567,
+          "avg41": 18.396
+        },
+        {
+          "date": "2020-03-13",
+          "available": 293,
+          "picked": 5,
+          "avg5": 11.466,
+          "avg10": 15.184,
+          "avg15": 8.524,
+          "avg20": 10.212,
+          "avg41": 30.073
+        },
+        {
+          "date": "2024-08-05",
+          "available": 5,
+          "picked": 5,
+          "avg5": 7.058,
+          "avg10": 8.596,
+          "avg15": 6.536,
+          "avg20": 4.914,
+          "avg41": 11.873
+        },
+        {
+          "date": "2025-04-07",
+          "available": 102,
+          "picked": 5,
+          "avg5": 9.412,
+          "avg10": 5.19,
+          "avg15": 14.197,
+          "avg20": 18.911,
+          "avg41": 34.828
+        }
+      ],
+      "r5": {
+        "n": 20,
+        "win": 80.0,
+        "avg": 9.443,
+        "med": 9.897,
+        "pf": 5.589
+      },
+      "event_avg5": 9.444,
+      "worst_event5": 7.058,
+      "positive_events5": 4,
+      "r10": {
+        "n": 20,
+        "win": 80.0,
+        "avg": 10.568,
+        "med": 8.991,
+        "pf": 8.786
+      },
+      "event_avg10": 10.567,
+      "worst_event10": 5.19,
+      "positive_events10": 4,
+      "r15": {
+        "n": 20,
+        "win": 75.0,
+        "avg": 9.748,
+        "med": 9.959,
+        "pf": 7.409
+      },
+      "event_avg15": 9.748,
+      "worst_event15": 6.536,
+      "positive_events15": 4,
+      "r20": {
+        "n": 20,
+        "win": 80.0,
+        "avg": 12.401,
+        "med": 11.274,
+        "pf": 7.961
+      },
+      "event_avg20": 12.401,
+      "worst_event20": 4.914,
+      "positive_events20": 4,
+      "r41": {
+        "n": 20,
+        "win": 90.0,
+        "avg": 23.792,
+        "med": 23.114,
+        "pf": 28.277
+      },
+      "event_avg41": 23.793,
+      "worst_event41": 11.873,
+      "positive_events41": 4
+    },
+    {
+      "ranker": "high_volume",
+      "top_k": 5,
+      "events": [
+        {
+          "date": "2018-12-25",
+          "available": 23,
+          "picked": 5,
+          "avg5": 5.764,
+          "avg10": 5.687,
+          "avg15": 6.643,
+          "avg20": 7.813,
+          "avg41": 16.402
+        },
+        {
+          "date": "2020-03-13",
+          "available": 293,
+          "picked": 5,
+          "avg5": 9.355,
+          "avg10": 16.76,
+          "avg15": 12.812,
+          "avg20": 17.654,
+          "avg41": 29.673
+        },
+        {
+          "date": "2024-08-05",
+          "available": 5,
+          "picked": 5,
+          "avg5": 7.058,
+          "avg10": 8.596,
+          "avg15": 6.536,
+          "avg20": 4.914,
+          "avg41": 11.873
+        },
+        {
+          "date": "2025-04-07",
+          "available": 102,
+          "picked": 5,
+          "avg5": 7.269,
+          "avg10": 13.217,
+          "avg15": 19.046,
+          "avg20": 23.23,
+          "avg41": 32.222
+        }
+      ],
+      "r5": {
+        "n": 20,
+        "win": 75.0,
+        "avg": 7.361,
+        "med": 6.457,
+        "pf": 4.358
+      },
+      "event_avg5": 7.361,
+      "worst_event5": 5.764,
+      "positive_events5": 4,
+      "r10": {
+        "n": 20,
+        "win": 80.0,
+        "avg": 11.065,
+        "med": 9.362,
+        "pf": 8.745
+      },
+      "event_avg10": 11.065,
+      "worst_event10": 5.687,
+      "positive_events10": 4,
+      "r15": {
+        "n": 20,
+        "win": 80.0,
+        "avg": 11.26,
+        "med": 11.862,
+        "pf": 8.684
+      },
+      "event_avg15": 11.259,
+      "worst_event15": 6.536,
+      "positive_events15": 4,
+      "r20": {
+        "n": 20,
+        "win": 90.0,
+        "avg": 13.403,
+        "med": 14.055,
+        "pf": 12.147
+      },
+      "event_avg20": 13.403,
+      "worst_event20": 4.914,
+      "positive_events20": 4,
+      "r41": {
+        "n": 20,
+        "win": 90.0,
+        "avg": 22.543,
+        "med": 22.123,
+        "pf": 26.845
+      },
+      "event_avg41": 22.543,
+      "worst_event41": 11.873,
+      "positive_events41": 4
+    },
+    {
+      "ranker": "strong_candle",
+      "top_k": 5,
+      "events": [
+        {
+          "date": "2018-12-25",
+          "available": 23,
+          "picked": 5,
+          "avg5": 5.576,
+          "avg10": 8.65,
+          "avg15": 7.276,
+          "avg20": 15.601,
+          "avg41": 24.861
+        },
+        {
+          "date": "2020-03-13",
+          "available": 293,
+          "picked": 5,
+          "avg5": 9.587,
+          "avg10": 5.853,
+          "avg15": 1.788,
+          "avg20": 8.932,
+          "avg41": 27.567
+        },
+        {
+          "date": "2024-08-05",
+          "available": 5,
+          "picked": 5,
+          "avg5": 7.058,
+          "avg10": 8.596,
+          "avg15": 6.536,
+          "avg20": 4.914,
+          "avg41": 11.873
+        },
+        {
+          "date": "2025-04-07",
+          "available": 102,
+          "picked": 5,
+          "avg5": 4.745,
+          "avg10": 4.09,
+          "avg15": 12.51,
+          "avg20": 14.051,
+          "avg41": 24.598
+        }
+      ],
+      "r5": {
+        "n": 20,
+        "win": 70.0,
+        "avg": 6.741,
+        "med": 4.338,
+        "pf": 4.189
+      },
+      "event_avg5": 6.742,
+      "worst_event5": 4.745,
+      "positive_events5": 4,
+      "r10": {
+        "n": 20,
+        "win": 75.0,
+        "avg": 6.797,
+        "med": 3.614,
+        "pf": 5.557
+      },
+      "event_avg10": 6.797,
+      "worst_event10": 4.09,
+      "positive_events10": 4,
+      "r15": {
+        "n": 20,
+        "win": 70.0,
+        "avg": 7.028,
+        "med": 9.408,
+        "pf": 3.8
+      },
+      "event_avg15": 7.027,
+      "worst_event15": 1.788,
+      "positive_events15": 4,
+      "r20": {
+        "n": 20,
+        "win": 80.0,
+        "avg": 10.875,
+        "med": 11.173,
+        "pf": 7.796
+      },
+      "event_avg20": 10.875,
+      "worst_event20": 4.914,
+      "positive_events20": 4,
+      "r41": {
+        "n": 20,
+        "win": 90.0,
+        "avg": 22.225,
+        "med": 19.454,
+        "pf": 26.48
+      },
+      "event_avg41": 22.225,
+      "worst_event41": 11.873,
+      "positive_events41": 4
+    },
+    {
+      "ranker": "strong_candle",
+      "top_k": 3,
+      "events": [
+        {
+          "date": "2018-12-25",
+          "available": 23,
+          "picked": 3,
+          "avg5": 1.161,
+          "avg10": 1.989,
+          "avg15": 4.197,
+          "avg20": 12.042,
+          "avg41": 25.479
+        },
+        {
+          "date": "2020-03-13",
+          "available": 293,
+          "picked": 3,
+          "avg5": 10.315,
+          "avg10": 9.471,
+          "avg15": 4.468,
+          "avg20": 6.423,
+          "avg41": 21.765
+        },
+        {
+          "date": "2024-08-05",
+          "available": 5,
+          "picked": 3,
+          "avg5": 5.022,
+          "avg10": 7.139,
+          "avg15": 3.054,
+          "avg20": 1.293,
+          "avg41": -0.201
+        },
+        {
+          "date": "2025-04-07",
+          "available": 102,
+          "picked": 3,
+          "avg5": 2.766,
+          "avg10": 1.239,
+          "avg15": 9.063,
+          "avg20": 9.624,
+          "avg41": 20.536
+        }
+      ],
+      "r5": {
+        "n": 12,
+        "win": 66.67,
+        "avg": 4.816,
+        "med": 4.031,
+        "pf": 2.508
+      },
+      "event_avg5": 4.816,
+      "worst_event5": 1.161,
+      "positive_events5": 4,
+      "r10": {
+        "n": 12,
+        "win": 66.67,
+        "avg": 4.959,
+        "med": 2.842,
+        "pf": 3.364
+      },
+      "event_avg10": 4.96,
+      "worst_event10": 1.239,
+      "positive_events10": 4,
+      "r15": {
+        "n": 12,
+        "win": 66.67,
+        "avg": 5.195,
+        "med": 9.175,
+        "pf": 3.073
+      },
+      "event_avg15": 5.196,
+      "worst_event15": 3.054,
+      "positive_events15": 4,
+      "r20": {
+        "n": 12,
+        "win": 75.0,
+        "avg": 7.346,
+        "med": 10.768,
+        "pf": 4.078
+      },
+      "event_avg20": 7.345,
+      "worst_event20": 1.293,
+      "positive_events20": 4,
+      "r41": {
+        "n": 12,
+        "win": 83.33,
+        "avg": 16.895,
+        "med": 18.701,
+        "pf": 12.622
+      },
+      "event_avg41": 16.895,
+      "worst_event41": -0.201,
+      "positive_events41": 3
+    },
+    {
+      "ranker": "composite",
+      "top_k": 1,
+      "events": [
+        {
+          "date": "2018-12-25",
+          "available": 23,
+          "picked": 1,
+          "avg5": -10.906,
+          "avg10": -9.47,
+          "avg15": -5.758,
+          "avg20": -0.214,
+          "avg41": 13.991
+        },
+        {
+          "date": "2020-03-13",
+          "available": 293,
+          "picked": 1,
+          "avg5": 12.615,
+          "avg10": 10.914,
+          "avg15": 13.962,
+          "avg20": 15.804,
+          "avg41": 26.79
+        },
+        {
+          "date": "2024-08-05",
+          "available": 5,
+          "picked": 1,
+          "avg5": 29.885,
+          "avg10": 26.437,
+          "avg15": 17.241,
+          "avg20": 17.241,
+          "avg41": 0.0
+        },
+        {
+          "date": "2025-04-07",
+          "available": 102,
+          "picked": 1,
+          "avg5": 4.575,
+          "avg10": 3.524,
+          "avg15": 9.737,
+          "avg20": 11.283,
+          "avg41": 24.204
+        }
+      ],
+      "r5": {
+        "n": 4,
+        "win": 75.0,
+        "avg": 9.042,
+        "med": 8.595,
+        "pf": 4.317
+      },
+      "event_avg5": 9.042,
+      "worst_event5": -10.906,
+      "positive_events5": 3,
+      "r10": {
+        "n": 4,
+        "win": 75.0,
+        "avg": 7.851,
+        "med": 7.219,
+        "pf": 4.316
+      },
+      "event_avg10": 7.851,
+      "worst_event10": -9.47,
+      "positive_events10": 3,
+      "r15": {
+        "n": 4,
+        "win": 75.0,
+        "avg": 8.795,
+        "med": 11.849,
+        "pf": 7.11
+      },
+      "event_avg15": 8.796,
+      "worst_event15": -5.758,
+      "positive_events15": 3,
+      "r20": {
+        "n": 4,
+        "win": 75.0,
+        "avg": 11.029,
+        "med": 13.544,
+        "pf": 207.3
+      },
+      "event_avg20": 11.029,
+      "worst_event20": -0.214,
+      "positive_events20": 3,
+      "r41": {
+        "n": 4,
+        "win": 75.0,
+        "avg": 16.246,
+        "med": 19.098,
+        "pf": null
+      },
+      "event_avg41": 16.246,
+      "worst_event41": 0.0,
+      "positive_events41": 3
+    },
+    {
+      "ranker": "strong_candle",
+      "top_k": 1,
+      "events": [
+        {
+          "date": "2018-12-25",
+          "available": 23,
+          "picked": 1,
+          "avg5": -10.906,
+          "avg10": -9.47,
+          "avg15": -5.758,
+          "avg20": -0.214,
+          "avg41": 13.991
+        },
+        {
+          "date": "2020-03-13",
+          "available": 293,
+          "picked": 1,
+          "avg5": -8.257,
+          "avg10": -1.651,
+          "avg15": -4.587,
+          "avg20": -4.587,
+          "avg41": 7.89
+        },
+        {
+          "date": "2024-08-05",
+          "available": 5,
+          "picked": 1,
+          "avg5": 29.885,
+          "avg10": 26.437,
+          "avg15": 17.241,
+          "avg20": 17.241,
+          "avg41": 0.0
+        },
+        {
+          "date": "2025-04-07",
+          "available": 102,
+          "picked": 1,
+          "avg5": -0.238,
+          "avg10": -1.967,
+          "avg15": 7.271,
+          "avg20": 6.526,
+          "avg41": 18.057
+        }
+      ],
+      "r5": {
+        "n": 4,
+        "win": 25.0,
+        "avg": 2.621,
+        "med": -4.248,
+        "pf": 1.54
+      },
+      "event_avg5": 2.621,
+      "worst_event5": -10.906,
+      "positive_events5": 1,
+      "r10": {
+        "n": 4,
+        "win": 25.0,
+        "avg": 3.337,
+        "med": -1.809,
+        "pf": 2.02
+      },
+      "event_avg10": 3.337,
+      "worst_event10": -9.47,
+      "positive_events10": 1,
+      "r15": {
+        "n": 4,
+        "win": 50.0,
+        "avg": 3.542,
+        "med": 1.342,
+        "pf": 2.369
+      },
+      "event_avg15": 3.542,
+      "worst_event15": -5.758,
+      "positive_events15": 2,
+      "r20": {
+        "n": 4,
+        "win": 50.0,
+        "avg": 4.742,
+        "med": 3.156,
+        "pf": 4.95
+      },
+      "event_avg20": 4.742,
+      "worst_event20": -4.587,
+      "positive_events20": 2,
+      "r41": {
+        "n": 4,
+        "win": 75.0,
+        "avg": 9.985,
+        "med": 10.941,
+        "pf": null
+      },
+      "event_avg41": 9.985,
+      "worst_event41": 0.0,
+      "positive_events41": 3
+    }
+  ],
+  "all_results": [
+    {
+      "ranker": "deep_dd20",
+      "top_k": 1,
+      "events": [
+        {
+          "date": "2018-12-25",
+          "available": 23,
+          "picked": 1,
+          "avg5": 2.883,
+          "avg10": 11.656,
+          "avg15": 10.552,
+          "avg20": 10.368,
+          "avg41": 29.018
+        },
+        {
+          "date": "2020-03-13",
+          "available": 293,
+          "picked": 1,
+          "avg5": -3.934,
+          "avg10": 3.279,
+          "avg15": 10.164,
+          "avg20": 13.77,
+          "avg41": 50.82
+        },
+        {
+          "date": "2024-08-05",
+          "available": 5,
+          "picked": 1,
+          "avg5": 23.3,
+          "avg10": 21.333,
+          "avg15": 24.367,
+          "avg20": 20.0,
+          "avg41": 50.967
+        },
+        {
+          "date": "2025-04-07",
+          "available": 102,
+          "picked": 1,
+          "avg5": 5.609,
+          "avg10": -3.532,
+          "avg15": 0.994,
+          "avg20": 20.465,
+          "avg41": 44.622
+        }
+      ],
+      "r5": {
+        "n": 4,
+        "win": 75.0,
+        "avg": 6.964,
+        "med": 4.246,
+        "pf": 8.081
+      },
+      "event_avg5": 6.965,
+      "worst_event5": -3.934,
+      "positive_events5": 3,
+      "r10": {
+        "n": 4,
+        "win": 75.0,
+        "avg": 8.184,
+        "med": 7.468,
+        "pf": 10.268
+      },
+      "event_avg10": 8.184,
+      "worst_event10": -3.532,
+      "positive_events10": 3,
+      "r15": {
+        "n": 4,
+        "win": 100.0,
+        "avg": 11.519,
+        "med": 10.358,
+        "pf": null
+      },
+      "event_avg15": 11.519,
+      "worst_event15": 0.994,
+      "positive_events15": 4,
+      "r20": {
+        "n": 4,
+        "win": 100.0,
+        "avg": 16.151,
+        "med": 16.885,
+        "pf": null
+      },
+      "event_avg20": 16.151,
+      "worst_event20": 10.368,
+      "positive_events20": 4,
+      "r41": {
+        "n": 4,
+        "win": 100.0,
+        "avg": 43.857,
+        "med": 47.721,
+        "pf": null
+      },
+      "event_avg41": 43.857,
+      "worst_event41": 29.018,
+      "positive_events41": 4
+    },
+    {
+      "ranker": "deep_dd20",
+      "top_k": 3,
+      "events": [
+        {
+          "date": "2018-12-25",
+          "available": 23,
+          "picked": 3,
+          "avg5": 6.838,
+          "avg10": 9.193,
+          "avg15": 14.781,
+          "avg20": 18.67,
+          "avg41": 33.666
+        },
+        {
+          "date": "2020-03-13",
+          "available": 293,
+          "picked": 3,
+          "avg5": 12.526,
+          "avg10": 11.955,
+          "avg15": 14.252,
+          "avg20": 18.097,
+          "avg41": 48.303
+        },
+        {
+          "date": "2024-08-05",
+          "available": 5,
+          "picked": 3,
+          "avg5": 11.422,
+          "avg10": 11.894,
+          "avg15": 8.005,
+          "avg20": 4.469,
+          "avg41": 11.174
+        },
+        {
+          "date": "2025-04-07",
+          "available": 102,
+          "picked": 3,
+          "avg5": 13.456,
+          "avg10": 5.617,
+          "avg15": 12.137,
+          "avg20": 24.101,
+          "avg41": 38.708
+        }
+      ],
+      "r5": {
+        "n": 12,
+        "win": 83.33,
+        "avg": 11.061,
+        "med": 9.112,
+        "pf": 6.808
+      },
+      "event_avg5": 11.061,
+      "worst_event5": 6.838,
+      "positive_events5": 4,
+      "r10": {
+        "n": 12,
+        "win": 75.0,
+        "avg": 9.665,
+        "med": 11.285,
+        "pf": 7.782
+      },
+      "event_avg10": 9.665,
+      "worst_event10": 5.617,
+      "positive_events10": 4,
+      "r15": {
+        "n": 12,
+        "win": 91.67,
+        "avg": 12.294,
+        "med": 12.257,
+        "pf": 9.386
+      },
+      "event_avg15": 12.294,
+      "worst_event15": 8.005,
+      "positive_events15": 4,
+      "r20": {
+        "n": 12,
+        "win": 91.67,
+        "avg": 16.334,
+        "med": 18.621,
+        "pf": 9.224
+      },
+      "event_avg20": 16.334,
+      "worst_event20": 4.469,
+      "positive_events20": 4,
+      "r41": {
+        "n": 12,
+        "win": 83.33,
+        "avg": 32.963,
+        "med": 35.99,
+        "pf": 23.675
+      },
+      "event_avg41": 32.963,
+      "worst_event41": 11.174,
+      "positive_events41": 4
+    },
+    {
+      "ranker": "deep_dd20",
+      "top_k": 5,
+      "events": [
+        {
+          "date": "2018-12-25",
+          "available": 23,
+          "picked": 5,
+          "avg5": 5.751,
+          "avg10": 6.783,
+          "avg15": 10.351,
+          "avg20": 13.956,
+          "avg41": 23.93
+        },
+        {
+          "date": "2020-03-13",
+          "available": 293,
+          "picked": 5,
+          "avg5": 3.757,
+          "avg10": 5.883,
+          "avg15": 6.398,
+          "avg20": 12.164,
+          "avg41": 41.94
+        },
+        {
+          "date": "2024-08-05",
+          "available": 5,
+          "picked": 5,
+          "avg5": 7.058,
+          "avg10": 8.596,
+          "avg15": 6.536,
+          "avg20": 4.914,
+          "avg41": 11.873
+        },
+        {
+          "date": "2025-04-07",
+          "available": 102,
+          "picked": 5,
+          "avg5": 12.694,
+          "avg10": 4.498,
+          "avg15": 14.667,
+          "avg20": 26.035,
+          "avg41": 36.436
+        }
+      ],
+      "r5": {
+        "n": 20,
+        "win": 75.0,
+        "avg": 7.315,
+        "med": 5.041,
+        "pf": 3.587
+      },
+      "event_avg5": 7.315,
+      "worst_event5": 3.757,
+      "positive_events5": 4,
+      "r10": {
+        "n": 20,
+        "win": 75.0,
+        "avg": 6.44,
+        "med": 5.185,
+        "pf": 4.1
+      },
+      "event_avg10": 6.44,
+      "worst_event10": 4.498,
+      "positive_events10": 4,
+      "r15": {
+        "n": 20,
+        "win": 80.0,
+        "avg": 9.488,
+        "med": 10.358,
+        "pf": 5.322
+      },
+      "event_avg15": 9.488,
+      "worst_event15": 6.398,
+      "positive_events15": 4,
+      "r20": {
+        "n": 20,
+        "win": 85.0,
+        "avg": 14.267,
+        "med": 15.176,
+        "pf": 9.9
+      },
+      "event_avg20": 14.267,
+      "worst_event20": 4.914,
+      "positive_events20": 4,
+      "r41": {
+        "n": 20,
+        "win": 90.0,
+        "avg": 28.545,
+        "med": 27.904,
+        "pf": 33.726
+      },
+      "event_avg41": 28.545,
+      "worst_event41": 11.873,
+      "positive_events41": 4
+    },
+    {
+      "ranker": "deep_ret5",
+      "top_k": 1,
+      "events": [
+        {
+          "date": "2018-12-25",
+          "available": 23,
+          "picked": 1,
+          "avg5": 2.883,
+          "avg10": 11.656,
+          "avg15": 10.552,
+          "avg20": 10.368,
+          "avg41": 29.018
+        },
+        {
+          "date": "2020-03-13",
+          "available": 293,
+          "picked": 1,
+          "avg5": 32.922,
+          "avg10": 39.481,
+          "avg15": 28.571,
+          "avg20": 42.857,
+          "avg41": 55.844
+        },
+        {
+          "date": "2024-08-05",
+          "available": 5,
+          "picked": 1,
+          "avg5": 23.3,
+          "avg10": 21.333,
+          "avg15": 24.367,
+          "avg20": 20.0,
+          "avg41": 50.967
+        },
+        {
+          "date": "2025-04-07",
+          "available": 102,
+          "picked": 1,
+          "avg5": 15.922,
+          "avg10": 3.301,
+          "avg15": 20.0,
+          "avg20": 32.233,
+          "avg41": 12.621
+        }
+      ],
+      "r5": {
+        "n": 4,
+        "win": 100.0,
+        "avg": 18.757,
+        "med": 19.611,
+        "pf": null
+      },
+      "event_avg5": 18.757,
+      "worst_event5": 2.883,
+      "positive_events5": 4,
+      "r10": {
+        "n": 4,
+        "win": 100.0,
+        "avg": 18.943,
+        "med": 16.495,
+        "pf": null
+      },
+      "event_avg10": 18.943,
+      "worst_event10": 3.301,
+      "positive_events10": 4,
+      "r15": {
+        "n": 4,
+        "win": 100.0,
+        "avg": 20.873,
+        "med": 22.183,
+        "pf": null
+      },
+      "event_avg15": 20.873,
+      "worst_event15": 10.552,
+      "positive_events15": 4,
+      "r20": {
+        "n": 4,
+        "win": 100.0,
+        "avg": 26.365,
+        "med": 26.117,
+        "pf": null
+      },
+      "event_avg20": 26.364,
+      "worst_event20": 10.368,
+      "positive_events20": 4,
+      "r41": {
+        "n": 4,
+        "win": 100.0,
+        "avg": 37.113,
+        "med": 39.993,
+        "pf": null
+      },
+      "event_avg41": 37.113,
+      "worst_event41": 12.621,
+      "positive_events41": 4
+    },
+    {
+      "ranker": "deep_ret5",
+      "top_k": 3,
+      "events": [
+        {
+          "date": "2018-12-25",
+          "available": 23,
+          "picked": 3,
+          "avg5": 7.75,
+          "avg10": 13.237,
+          "avg15": 11.408,
+          "avg20": 11.455,
+          "avg41": 19.871
+        },
+        {
+          "date": "2020-03-13",
+          "available": 293,
+          "picked": 3,
+          "avg5": 19.295,
+          "avg10": 21.477,
+          "avg15": 19.122,
+          "avg20": 27.114,
+          "avg41": 57.988
+        },
+        {
+          "date": "2024-08-05",
+          "available": 5,
+          "picked": 3,
+          "avg5": 11.422,
+          "avg10": 11.894,
+          "avg15": 8.005,
+          "avg20": 4.469,
+          "avg41": 11.174
+        },
+        {
+          "date": "2025-04-07",
+          "available": 102,
+          "picked": 3,
+          "avg5": 7.151,
+          "avg10": -0.705,
+          "avg15": 10.738,
+          "avg20": 17.62,
+          "avg41": 19.47
+        }
+      ],
+      "r5": {
+        "n": 12,
+        "win": 83.33,
+        "avg": 11.404,
+        "med": 10.183,
+        "pf": 6.988
+      },
+      "event_avg5": 11.404,
+      "worst_event5": 7.151,
+      "positive_events5": 4,
+      "r10": {
+        "n": 12,
+        "win": 75.0,
+        "avg": 11.476,
+        "med": 12.073,
+        "pf": 8.867
+      },
+      "event_avg10": 11.476,
+      "worst_event10": -0.705,
+      "positive_events10": 3,
+      "r15": {
+        "n": 12,
+        "win": 91.67,
+        "avg": 12.318,
+        "med": 13.177,
+        "pf": 9.403
+      },
+      "event_avg15": 12.318,
+      "worst_event15": 8.005,
+      "positive_events15": 4,
+      "r20": {
+        "n": 12,
+        "win": 91.67,
+        "avg": 15.165,
+        "med": 15.506,
+        "pf": 8.636
+      },
+      "event_avg20": 15.165,
+      "worst_event20": 4.469,
+      "positive_events20": 4,
+      "r41": {
+        "n": 12,
+        "win": 83.33,
+        "avg": 27.126,
+        "med": 22.895,
+        "pf": 19.66
+      },
+      "event_avg41": 27.126,
+      "worst_event41": 11.174,
+      "positive_events41": 4
+    },
+    {
+      "ranker": "deep_ret5",
+      "top_k": 5,
+      "events": [
+        {
+          "date": "2018-12-25",
+          "available": 23,
+          "picked": 5,
+          "avg5": 9.983,
+          "avg10": 12.209,
+          "avg15": 12.729,
+          "avg20": 13.585,
+          "avg41": 22.081
+        },
+        {
+          "date": "2020-03-13",
+          "available": 293,
+          "picked": 5,
+          "avg5": 19.538,
+          "avg10": 24.876,
+          "avg15": 17.87,
+          "avg20": 21.984,
+          "avg41": 46.714
+        },
+        {
+          "date": "2024-08-05",
+          "available": 5,
+          "picked": 5,
+          "avg5": 7.058,
+          "avg10": 8.596,
+          "avg15": 6.536,
+          "avg20": 4.914,
+          "avg41": 11.873
+        },
+        {
+          "date": "2025-04-07",
+          "available": 102,
+          "picked": 5,
+          "avg5": 8.746,
+          "avg10": 2.218,
+          "avg15": 13.459,
+          "avg20": 17.635,
+          "avg41": 33.365
+        }
+      ],
+      "r5": {
+        "n": 20,
+        "win": 85.0,
+        "avg": 11.331,
+        "med": 10.627,
+        "pf": 9.74
+      },
+      "event_avg5": 11.331,
+      "worst_event5": 7.058,
+      "positive_events5": 4,
+      "r10": {
+        "n": 20,
+        "win": 85.0,
+        "avg": 11.975,
+        "med": 11.262,
+        "pf": 14.682
+      },
+      "event_avg10": 11.975,
+      "worst_event10": 2.218,
+      "positive_events10": 4,
+      "r15": {
+        "n": 20,
+        "win": 85.0,
+        "avg": 12.648,
+        "med": 13.177,
+        "pf": 13.601
+      },
+      "event_avg15": 12.648,
+      "worst_event15": 6.536,
+      "positive_events15": 4,
+      "r20": {
+        "n": 20,
+        "win": 90.0,
+        "avg": 14.53,
+        "med": 13.36,
+        "pf": 10.427
+      },
+      "event_avg20": 14.53,
+      "worst_event20": 4.914,
+      "positive_events20": 4,
+      "r41": {
+        "n": 20,
+        "win": 90.0,
+        "avg": 28.508,
+        "med": 23.872,
+        "pf": 33.684
+      },
+      "event_avg41": 28.508,
+      "worst_event41": 11.873,
+      "positive_events41": 4
+    },
+    {
+      "ranker": "high_volume",
+      "top_k": 1,
+      "events": [
+        {
+          "date": "2018-12-25",
+          "available": 23,
+          "picked": 1,
+          "avg5": 12.689,
+          "avg10": 12.346,
+          "avg15": 14.952,
+          "avg20": 14.129,
+          "avg41": 27.435
+        },
+        {
+          "date": "2020-03-13",
+          "available": 293,
+          "picked": 1,
+          "avg5": 18.622,
+          "avg10": 23.836,
+          "avg15": 14.991,
+          "avg20": 21.974,
+          "avg41": 30.912
+        },
+        {
+          "date": "2024-08-05",
+          "available": 5,
+          "picked": 1,
+          "avg5": 29.885,
+          "avg10": 26.437,
+          "avg15": 17.241,
+          "avg20": 17.241,
+          "avg41": 0.0
+        },
+        {
+          "date": "2025-04-07",
+          "available": 102,
+          "picked": 1,
+          "avg5": 9.723,
+          "avg10": 4.068,
+          "avg15": 16.762,
+          "avg20": 32.262,
+          "avg41": 40.236
+        }
+      ],
+      "r5": {
+        "n": 4,
+        "win": 100.0,
+        "avg": 17.73,
+        "med": 15.655,
+        "pf": null
+      },
+      "event_avg5": 17.73,
+      "worst_event5": 9.723,
+      "positive_events5": 4,
+      "r10": {
+        "n": 4,
+        "win": 100.0,
+        "avg": 16.672,
+        "med": 18.091,
+        "pf": null
+      },
+      "event_avg10": 16.672,
+      "worst_event10": 4.068,
+      "positive_events10": 4,
+      "r15": {
+        "n": 4,
+        "win": 100.0,
+        "avg": 15.986,
+        "med": 15.876,
+        "pf": null
+      },
+      "event_avg15": 15.986,
+      "worst_event15": 14.952,
+      "positive_events15": 4,
+      "r20": {
+        "n": 4,
+        "win": 100.0,
+        "avg": 21.402,
+        "med": 19.608,
+        "pf": null
+      },
+      "event_avg20": 21.401,
+      "worst_event20": 14.129,
+      "positive_events20": 4,
+      "r41": {
+        "n": 4,
+        "win": 75.0,
+        "avg": 24.646,
+        "med": 29.174,
+        "pf": null
+      },
+      "event_avg41": 24.646,
+      "worst_event41": 0.0,
+      "positive_events41": 3
+    },
+    {
+      "ranker": "high_volume",
+      "top_k": 3,
+      "events": [
+        {
+          "date": "2018-12-25",
+          "available": 23,
+          "picked": 3,
+          "avg5": 11.574,
+          "avg10": 13.269,
+          "avg15": 12.892,
+          "avg20": 12.826,
+          "avg41": 20.371
+        },
+        {
+          "date": "2020-03-13",
+          "available": 293,
+          "picked": 3,
+          "avg5": 12.095,
+          "avg10": 16.559,
+          "avg15": 9.378,
+          "avg20": 15.941,
+          "avg41": 26.297
+        },
+        {
+          "date": "2024-08-05",
+          "available": 5,
+          "picked": 3,
+          "avg5": 11.422,
+          "avg10": 11.894,
+          "avg15": 8.005,
+          "avg20": 4.469,
+          "avg41": 11.174
+        },
+        {
+          "date": "2025-04-07",
+          "available": 102,
+          "picked": 3,
+          "avg5": 9.478,
+          "avg10": 20.614,
+          "avg15": 25.371,
+          "avg20": 31.91,
+          "avg41": 44.345
+        }
+      ],
+      "r5": {
+        "n": 12,
+        "win": 83.33,
+        "avg": 11.142,
+        "med": 11.746,
+        "pf": 5.987
+      },
+      "event_avg5": 11.142,
+      "worst_event5": 9.478,
+      "positive_events5": 4,
+      "r10": {
+        "n": 12,
+        "win": 83.33,
+        "avg": 15.584,
+        "med": 15.648,
+        "pf": 11.873
+      },
+      "event_avg10": 15.584,
+      "worst_event10": 11.894,
+      "positive_events10": 4,
+      "r15": {
+        "n": 12,
+        "win": 83.33,
+        "avg": 13.911,
+        "med": 15.566,
+        "pf": 8.353
+      },
+      "event_avg15": 13.912,
+      "worst_event15": 8.005,
+      "positive_events15": 4,
+      "r20": {
+        "n": 12,
+        "win": 91.67,
+        "avg": 16.287,
+        "med": 18.621,
+        "pf": 9.2
+      },
+      "event_avg20": 16.287,
+      "worst_event20": 4.469,
+      "positive_events20": 4,
+      "r41": {
+        "n": 12,
+        "win": 83.33,
+        "avg": 25.547,
+        "med": 28.227,
+        "pf": 18.573
+      },
+      "event_avg41": 25.547,
+      "worst_event41": 11.174,
+      "positive_events41": 4
+    },
+    {
+      "ranker": "high_volume",
+      "top_k": 5,
+      "events": [
+        {
+          "date": "2018-12-25",
+          "available": 23,
+          "picked": 5,
+          "avg5": 5.764,
+          "avg10": 5.687,
+          "avg15": 6.643,
+          "avg20": 7.813,
+          "avg41": 16.402
+        },
+        {
+          "date": "2020-03-13",
+          "available": 293,
+          "picked": 5,
+          "avg5": 9.355,
+          "avg10": 16.76,
+          "avg15": 12.812,
+          "avg20": 17.654,
+          "avg41": 29.673
+        },
+        {
+          "date": "2024-08-05",
+          "available": 5,
+          "picked": 5,
+          "avg5": 7.058,
+          "avg10": 8.596,
+          "avg15": 6.536,
+          "avg20": 4.914,
+          "avg41": 11.873
+        },
+        {
+          "date": "2025-04-07",
+          "available": 102,
+          "picked": 5,
+          "avg5": 7.269,
+          "avg10": 13.217,
+          "avg15": 19.046,
+          "avg20": 23.23,
+          "avg41": 32.222
+        }
+      ],
+      "r5": {
+        "n": 20,
+        "win": 75.0,
+        "avg": 7.361,
+        "med": 6.457,
+        "pf": 4.358
+      },
+      "event_avg5": 7.361,
+      "worst_event5": 5.764,
+      "positive_events5": 4,
+      "r10": {
+        "n": 20,
+        "win": 80.0,
+        "avg": 11.065,
+        "med": 9.362,
+        "pf": 8.745
+      },
+      "event_avg10": 11.065,
+      "worst_event10": 5.687,
+      "positive_events10": 4,
+      "r15": {
+        "n": 20,
+        "win": 80.0,
+        "avg": 11.26,
+        "med": 11.862,
+        "pf": 8.684
+      },
+      "event_avg15": 11.259,
+      "worst_event15": 6.536,
+      "positive_events15": 4,
+      "r20": {
+        "n": 20,
+        "win": 90.0,
+        "avg": 13.403,
+        "med": 14.055,
+        "pf": 12.147
+      },
+      "event_avg20": 13.403,
+      "worst_event20": 4.914,
+      "positive_events20": 4,
+      "r41": {
+        "n": 20,
+        "win": 90.0,
+        "avg": 22.543,
+        "med": 22.123,
+        "pf": 26.845
+      },
+      "event_avg41": 22.543,
+      "worst_event41": 11.873,
+      "positive_events41": 4
+    },
+    {
+      "ranker": "strong_candle",
+      "top_k": 1,
+      "events": [
+        {
+          "date": "2018-12-25",
+          "available": 23,
+          "picked": 1,
+          "avg5": -10.906,
+          "avg10": -9.47,
+          "avg15": -5.758,
+          "avg20": -0.214,
+          "avg41": 13.991
+        },
+        {
+          "date": "2020-03-13",
+          "available": 293,
+          "picked": 1,
+          "avg5": -8.257,
+          "avg10": -1.651,
+          "avg15": -4.587,
+          "avg20": -4.587,
+          "avg41": 7.89
+        },
+        {
+          "date": "2024-08-05",
+          "available": 5,
+          "picked": 1,
+          "avg5": 29.885,
+          "avg10": 26.437,
+          "avg15": 17.241,
+          "avg20": 17.241,
+          "avg41": 0.0
+        },
+        {
+          "date": "2025-04-07",
+          "available": 102,
+          "picked": 1,
+          "avg5": -0.238,
+          "avg10": -1.967,
+          "avg15": 7.271,
+          "avg20": 6.526,
+          "avg41": 18.057
+        }
+      ],
+      "r5": {
+        "n": 4,
+        "win": 25.0,
+        "avg": 2.621,
+        "med": -4.248,
+        "pf": 1.54
+      },
+      "event_avg5": 2.621,
+      "worst_event5": -10.906,
+      "positive_events5": 1,
+      "r10": {
+        "n": 4,
+        "win": 25.0,
+        "avg": 3.337,
+        "med": -1.809,
+        "pf": 2.02
+      },
+      "event_avg10": 3.337,
+      "worst_event10": -9.47,
+      "positive_events10": 1,
+      "r15": {
+        "n": 4,
+        "win": 50.0,
+        "avg": 3.542,
+        "med": 1.342,
+        "pf": 2.369
+      },
+      "event_avg15": 3.542,
+      "worst_event15": -5.758,
+      "positive_events15": 2,
+      "r20": {
+        "n": 4,
+        "win": 50.0,
+        "avg": 4.742,
+        "med": 3.156,
+        "pf": 4.95
+      },
+      "event_avg20": 4.742,
+      "worst_event20": -4.587,
+      "positive_events20": 2,
+      "r41": {
+        "n": 4,
+        "win": 75.0,
+        "avg": 9.985,
+        "med": 10.941,
+        "pf": null
+      },
+      "event_avg41": 9.985,
+      "worst_event41": 0.0,
+      "positive_events41": 3
+    },
+    {
+      "ranker": "strong_candle",
+      "top_k": 3,
+      "events": [
+        {
+          "date": "2018-12-25",
+          "available": 23,
+          "picked": 3,
+          "avg5": 1.161,
+          "avg10": 1.989,
+          "avg15": 4.197,
+          "avg20": 12.042,
+          "avg41": 25.479
+        },
+        {
+          "date": "2020-03-13",
+          "available": 293,
+          "picked": 3,
+          "avg5": 10.315,
+          "avg10": 9.471,
+          "avg15": 4.468,
+          "avg20": 6.423,
+          "avg41": 21.765
+        },
+        {
+          "date": "2024-08-05",
+          "available": 5,
+          "picked": 3,
+          "avg5": 5.022,
+          "avg10": 7.139,
+          "avg15": 3.054,
+          "avg20": 1.293,
+          "avg41": -0.201
+        },
+        {
+          "date": "2025-04-07",
+          "available": 102,
+          "picked": 3,
+          "avg5": 2.766,
+          "avg10": 1.239,
+          "avg15": 9.063,
+          "avg20": 9.624,
+          "avg41": 20.536
+        }
+      ],
+      "r5": {
+        "n": 12,
+        "win": 66.67,
+        "avg": 4.816,
+        "med": 4.031,
+        "pf": 2.508
+      },
+      "event_avg5": 4.816,
+      "worst_event5": 1.161,
+      "positive_events5": 4,
+      "r10": {
+        "n": 12,
+        "win": 66.67,
+        "avg": 4.959,
+        "med": 2.842,
+        "pf": 3.364
+      },
+      "event_avg10": 4.96,
+      "worst_event10": 1.239,
+      "positive_events10": 4,
+      "r15": {
+        "n": 12,
+        "win": 66.67,
+        "avg": 5.195,
+        "med": 9.175,
+        "pf": 3.073
+      },
+      "event_avg15": 5.196,
+      "worst_event15": 3.054,
+      "positive_events15": 4,
+      "r20": {
+        "n": 12,
+        "win": 75.0,
+        "avg": 7.346,
+        "med": 10.768,
+        "pf": 4.078
+      },
+      "event_avg20": 7.345,
+      "worst_event20": 1.293,
+      "positive_events20": 4,
+      "r41": {
+        "n": 12,
+        "win": 83.33,
+        "avg": 16.895,
+        "med": 18.701,
+        "pf": 12.622
+      },
+      "event_avg41": 16.895,
+      "worst_event41": -0.201,
+      "positive_events41": 3
+    },
+    {
+      "ranker": "strong_candle",
+      "top_k": 5,
+      "events": [
+        {
+          "date": "2018-12-25",
+          "available": 23,
+          "picked": 5,
+          "avg5": 5.576,
+          "avg10": 8.65,
+          "avg15": 7.276,
+          "avg20": 15.601,
+          "avg41": 24.861
+        },
+        {
+          "date": "2020-03-13",
+          "available": 293,
+          "picked": 5,
+          "avg5": 9.587,
+          "avg10": 5.853,
+          "avg15": 1.788,
+          "avg20": 8.932,
+          "avg41": 27.567
+        },
+        {
+          "date": "2024-08-05",
+          "available": 5,
+          "picked": 5,
+          "avg5": 7.058,
+          "avg10": 8.596,
+          "avg15": 6.536,
+          "avg20": 4.914,
+          "avg41": 11.873
+        },
+        {
+          "date": "2025-04-07",
+          "available": 102,
+          "picked": 5,
+          "avg5": 4.745,
+          "avg10": 4.09,
+          "avg15": 12.51,
+          "avg20": 14.051,
+          "avg41": 24.598
+        }
+      ],
+      "r5": {
+        "n": 20,
+        "win": 70.0,
+        "avg": 6.741,
+        "med": 4.338,
+        "pf": 4.189
+      },
+      "event_avg5": 6.742,
+      "worst_event5": 4.745,
+      "positive_events5": 4,
+      "r10": {
+        "n": 20,
+        "win": 75.0,
+        "avg": 6.797,
+        "med": 3.614,
+        "pf": 5.557
+      },
+      "event_avg10": 6.797,
+      "worst_event10": 4.09,
+      "positive_events10": 4,
+      "r15": {
+        "n": 20,
+        "win": 70.0,
+        "avg": 7.028,
+        "med": 9.408,
+        "pf": 3.8
+      },
+      "event_avg15": 7.027,
+      "worst_event15": 1.788,
+      "positive_events15": 4,
+      "r20": {
+        "n": 20,
+        "win": 80.0,
+        "avg": 10.875,
+        "med": 11.173,
+        "pf": 7.796
+      },
+      "event_avg20": 10.875,
+      "worst_event20": 4.914,
+      "positive_events20": 4,
+      "r41": {
+        "n": 20,
+        "win": 90.0,
+        "avg": 22.225,
+        "med": 19.454,
+        "pf": 26.48
+      },
+      "event_avg41": 22.225,
+      "worst_event41": 11.873,
+      "positive_events41": 4
+    },
+    {
+      "ranker": "composite",
+      "top_k": 1,
+      "events": [
+        {
+          "date": "2018-12-25",
+          "available": 23,
+          "picked": 1,
+          "avg5": -10.906,
+          "avg10": -9.47,
+          "avg15": -5.758,
+          "avg20": -0.214,
+          "avg41": 13.991
+        },
+        {
+          "date": "2020-03-13",
+          "available": 293,
+          "picked": 1,
+          "avg5": 12.615,
+          "avg10": 10.914,
+          "avg15": 13.962,
+          "avg20": 15.804,
+          "avg41": 26.79
+        },
+        {
+          "date": "2024-08-05",
+          "available": 5,
+          "picked": 1,
+          "avg5": 29.885,
+          "avg10": 26.437,
+          "avg15": 17.241,
+          "avg20": 17.241,
+          "avg41": 0.0
+        },
+        {
+          "date": "2025-04-07",
+          "available": 102,
+          "picked": 1,
+          "avg5": 4.575,
+          "avg10": 3.524,
+          "avg15": 9.737,
+          "avg20": 11.283,
+          "avg41": 24.204
+        }
+      ],
+      "r5": {
+        "n": 4,
+        "win": 75.0,
+        "avg": 9.042,
+        "med": 8.595,
+        "pf": 4.317
+      },
+      "event_avg5": 9.042,
+      "worst_event5": -10.906,
+      "positive_events5": 3,
+      "r10": {
+        "n": 4,
+        "win": 75.0,
+        "avg": 7.851,
+        "med": 7.219,
+        "pf": 4.316
+      },
+      "event_avg10": 7.851,
+      "worst_event10": -9.47,
+      "positive_events10": 3,
+      "r15": {
+        "n": 4,
+        "win": 75.0,
+        "avg": 8.795,
+        "med": 11.849,
+        "pf": 7.11
+      },
+      "event_avg15": 8.796,
+      "worst_event15": -5.758,
+      "positive_events15": 3,
+      "r20": {
+        "n": 4,
+        "win": 75.0,
+        "avg": 11.029,
+        "med": 13.544,
+        "pf": 207.3
+      },
+      "event_avg20": 11.029,
+      "worst_event20": -0.214,
+      "positive_events20": 3,
+      "r41": {
+        "n": 4,
+        "win": 75.0,
+        "avg": 16.246,
+        "med": 19.098,
+        "pf": null
+      },
+      "event_avg41": 16.246,
+      "worst_event41": 0.0,
+      "positive_events41": 3
+    },
+    {
+      "ranker": "composite",
+      "top_k": 3,
+      "events": [
+        {
+          "date": "2018-12-25",
+          "available": 23,
+          "picked": 3,
+          "avg5": 1.586,
+          "avg10": 5.705,
+          "avg15": 4.699,
+          "avg20": 8.736,
+          "avg41": 22.585
+        },
+        {
+          "date": "2020-03-13",
+          "available": 293,
+          "picked": 3,
+          "avg5": 17.474,
+          "avg10": 23.62,
+          "avg15": 15.314,
+          "avg20": 14.794,
+          "avg41": 28.799
+        },
+        {
+          "date": "2024-08-05",
+          "available": 5,
+          "picked": 3,
+          "avg5": 11.422,
+          "avg10": 11.894,
+          "avg15": 8.005,
+          "avg20": 4.469,
+          "avg41": 11.174
+        },
+        {
+          "date": "2025-04-07",
+          "available": 102,
+          "picked": 3,
+          "avg5": 4.27,
+          "avg10": 0.643,
+          "avg15": 10.71,
+          "avg20": 14.867,
+          "avg41": 34.453
+        }
+      ],
+      "r5": {
+        "n": 12,
+        "win": 83.33,
+        "avg": 8.688,
+        "med": 9.897,
+        "pf": 4.496
+      },
+      "event_avg5": 8.688,
+      "worst_event5": 1.586,
+      "positive_events5": 4,
+      "r10": {
+        "n": 12,
+        "win": 75.0,
+        "avg": 10.465,
+        "med": 11.285,
+        "pf": 5.926
+      },
+      "event_avg10": 10.466,
+      "worst_event10": 0.643,
+      "positive_events10": 4,
+      "r15": {
+        "n": 12,
+        "win": 75.0,
+        "avg": 9.682,
+        "med": 10.145,
+        "pf": 5.65
+      },
+      "event_avg15": 9.682,
+      "worst_event15": 4.699,
+      "positive_events15": 4,
+      "r20": {
+        "n": 12,
+        "win": 75.0,
+        "avg": 10.717,
+        "med": 13.544,
+        "pf": 5.143
+      },
+      "event_avg20": 10.716,
+      "worst_event20": 4.469,
+      "positive_events20": 4,
+      "r41": {
+        "n": 12,
+        "win": 83.33,
+        "avg": 24.253,
+        "med": 25.232,
+        "pf": 17.683
+      },
+      "event_avg41": 24.253,
+      "worst_event41": 11.174,
+      "positive_events41": 4
+    },
+    {
+      "ranker": "composite",
+      "top_k": 5,
+      "events": [
+        {
+          "date": "2018-12-25",
+          "available": 23,
+          "picked": 5,
+          "avg5": 9.838,
+          "avg10": 13.3,
+          "avg15": 9.735,
+          "avg20": 15.567,
+          "avg41": 18.396
+        },
+        {
+          "date": "2020-03-13",
+          "available": 293,
+          "picked": 5,
+          "avg5": 11.466,
+          "avg10": 15.184,
+          "avg15": 8.524,
+          "avg20": 10.212,
+          "avg41": 30.073
+        },
+        {
+          "date": "2024-08-05",
+          "available": 5,
+          "picked": 5,
+          "avg5": 7.058,
+          "avg10": 8.596,
+          "avg15": 6.536,
+          "avg20": 4.914,
+          "avg41": 11.873
+        },
+        {
+          "date": "2025-04-07",
+          "available": 102,
+          "picked": 5,
+          "avg5": 9.412,
+          "avg10": 5.19,
+          "avg15": 14.197,
+          "avg20": 18.911,
+          "avg41": 34.828
+        }
+      ],
+      "r5": {
+        "n": 20,
+        "win": 80.0,
+        "avg": 9.443,
+        "med": 9.897,
+        "pf": 5.589
+      },
+      "event_avg5": 9.444,
+      "worst_event5": 7.058,
+      "positive_events5": 4,
+      "r10": {
+        "n": 20,
+        "win": 80.0,
+        "avg": 10.568,
+        "med": 8.991,
+        "pf": 8.786
+      },
+      "event_avg10": 10.567,
+      "worst_event10": 5.19,
+      "positive_events10": 4,
+      "r15": {
+        "n": 20,
+        "win": 75.0,
+        "avg": 9.748,
+        "med": 9.959,
+        "pf": 7.409
+      },
+      "event_avg15": 9.748,
+      "worst_event15": 6.536,
+      "positive_events15": 4,
+      "r20": {
+        "n": 20,
+        "win": 80.0,
+        "avg": 12.401,
+        "med": 11.274,
+        "pf": 7.961
+      },
+      "event_avg20": 12.401,
+      "worst_event20": 4.914,
+      "positive_events20": 4,
+      "r41": {
+        "n": 20,
+        "win": 90.0,
+        "avg": 23.792,
+        "med": 23.114,
+        "pf": 28.277
+      },
+      "event_avg41": 23.793,
+      "worst_event41": 11.873,
+      "positive_events41": 4
+    }
+  ],
+  "caveat": "Only four independent selling-climax events. No fees/slippage; current-Prime survivor-biased archive."
+}
