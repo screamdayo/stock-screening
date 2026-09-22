@@ -1,0 +1,450 @@
+{
+  "study": "Pinch sensor DD20 ranking capital efficiency",
+  "assumption": "Same total capital per event, split equally among selected names. Fees/slippage/lot-size constraints excluded.",
+  "topk_curve": [
+    {
+      "top_k": 1,
+      "selected_trade_stats": {
+        "r5": {
+          "n": 5,
+          "win": 100.0,
+          "avg": 13.351,
+          "med": 7.804,
+          "pf": null
+        },
+        "r10": {
+          "n": 5,
+          "win": 100.0,
+          "avg": 21.097,
+          "med": 22.222,
+          "pf": null
+        },
+        "r15": {
+          "n": 5,
+          "win": 100.0,
+          "avg": 19.811,
+          "med": 19.159,
+          "pf": null
+        }
+      },
+      "equal_total_capital_event_portfolios": [
+        {
+          "date": "2018-12-27",
+          "available": 2,
+          "picked": 1,
+          "portfolio_5d_pct": 3.276,
+          "portfolio_10d_pct": 5.01,
+          "portfolio_15d_pct": 10.019
+        },
+        {
+          "date": "2020-04-06",
+          "available": 11,
+          "picked": 1,
+          "portfolio_5d_pct": 6.033,
+          "portfolio_10d_pct": 36.225,
+          "portfolio_15d_pct": 21.907
+        },
+        {
+          "date": "2022-03-10",
+          "available": 3,
+          "picked": 1,
+          "portfolio_5d_pct": 7.804,
+          "portfolio_10d_pct": 14.626,
+          "portfolio_15d_pct": 19.159
+        },
+        {
+          "date": "2024-08-06",
+          "available": 91,
+          "picked": 1,
+          "portfolio_5d_pct": 16.522,
+          "portfolio_10d_pct": 22.222,
+          "portfolio_15d_pct": 18.796
+        },
+        {
+          "date": "2025-04-08",
+          "available": 27,
+          "picked": 1,
+          "portfolio_5d_pct": 33.122,
+          "portfolio_10d_pct": 27.405,
+          "portfolio_15d_pct": 29.174
+        }
+      ],
+      "portfolio15": {
+        "events": 5,
+        "avg": 19.811,
+        "median": 19.159,
+        "worst": 10.019,
+        "best": 29.174,
+        "stdev": 6.155
+      }
+    },
+    {
+      "top_k": 2,
+      "selected_trade_stats": {
+        "r5": {
+          "n": 10,
+          "win": 90.0,
+          "avg": 10.893,
+          "med": 9.43,
+          "pf": 32.59
+        },
+        "r10": {
+          "n": 10,
+          "win": 90.0,
+          "avg": 18.875,
+          "med": 18.424,
+          "pf": 38.216
+        },
+        "r15": {
+          "n": 10,
+          "win": 100.0,
+          "avg": 19.684,
+          "med": 20.267,
+          "pf": null
+        }
+      },
+      "equal_total_capital_event_portfolios": [
+        {
+          "date": "2018-12-27",
+          "available": 2,
+          "picked": 2,
+          "portfolio_5d_pct": -0.086,
+          "portfolio_10d_pct": -0.031,
+          "portfolio_15d_pct": 7.38
+        },
+        {
+          "date": "2020-04-06",
+          "available": 11,
+          "picked": 2,
+          "portfolio_5d_pct": 8.545,
+          "portfolio_10d_pct": 39.707,
+          "portfolio_15d_pct": 31.166
+        },
+        {
+          "date": "2022-03-10",
+          "available": 3,
+          "picked": 2,
+          "portfolio_5d_pct": 7.076,
+          "portfolio_10d_pct": 12.987,
+          "portfolio_15d_pct": 14.11
+        },
+        {
+          "date": "2024-08-06",
+          "available": 91,
+          "picked": 2,
+          "portfolio_5d_pct": 15.853,
+          "portfolio_10d_pct": 22.291,
+          "portfolio_15d_pct": 20.489
+        },
+        {
+          "date": "2025-04-08",
+          "available": 27,
+          "picked": 2,
+          "portfolio_5d_pct": 23.077,
+          "portfolio_10d_pct": 19.423,
+          "portfolio_15d_pct": 25.275
+        }
+      ],
+      "portfolio15": {
+        "events": 5,
+        "avg": 19.684,
+        "median": 20.489,
+        "worst": 7.38,
+        "best": 31.166,
+        "stdev": 8.321
+      }
+    },
+    {
+      "top_k": 3,
+      "selected_trade_stats": {
+        "r5": {
+          "n": 14,
+          "win": 92.86,
+          "avg": 13.137,
+          "med": 10.883,
+          "pf": 54.335
+        },
+        "r10": {
+          "n": 14,
+          "win": 92.86,
+          "avg": 20.84,
+          "med": 15.533,
+          "pf": 58.526
+        },
+        "r15": {
+          "n": 14,
+          "win": 100.0,
+          "avg": 21.288,
+          "med": 19.534,
+          "pf": null
+        }
+      },
+      "equal_total_capital_event_portfolios": [
+        {
+          "date": "2018-12-27",
+          "available": 2,
+          "picked": 2,
+          "portfolio_5d_pct": -0.086,
+          "portfolio_10d_pct": -0.031,
+          "portfolio_15d_pct": 7.38
+        },
+        {
+          "date": "2020-04-06",
+          "available": 11,
+          "picked": 3,
+          "portfolio_5d_pct": 10.213,
+          "portfolio_10d_pct": 29.397,
+          "portfolio_15d_pct": 24.785
+        },
+        {
+          "date": "2022-03-10",
+          "available": 3,
+          "picked": 3,
+          "portfolio_5d_pct": 5.126,
+          "portfolio_10d_pct": 10.012,
+          "portfolio_15d_pct": 9.75
+        },
+        {
+          "date": "2024-08-06",
+          "available": 91,
+          "picked": 3,
+          "portfolio_5d_pct": 27.069,
+          "portfolio_10d_pct": 39.437,
+          "portfolio_15d_pct": 36.404
+        },
+        {
+          "date": "2025-04-08",
+          "available": 27,
+          "picked": 3,
+          "portfolio_5d_pct": 18.955,
+          "portfolio_10d_pct": 18.429,
+          "portfolio_15d_pct": 23.486
+        }
+      ],
+      "portfolio15": {
+        "events": 5,
+        "avg": 20.361,
+        "median": 23.486,
+        "worst": 7.38,
+        "best": 36.404,
+        "stdev": 10.657
+      }
+    },
+    {
+      "top_k": 4,
+      "selected_trade_stats": {
+        "r5": {
+          "n": 17,
+          "win": 94.12,
+          "avg": 12.773,
+          "med": 10.709,
+          "pf": 63.972
+        },
+        "r10": {
+          "n": 17,
+          "win": 94.12,
+          "avg": 19.508,
+          "med": 14.626,
+          "pf": 66.388
+        },
+        "r15": {
+          "n": 17,
+          "win": 100.0,
+          "avg": 20.321,
+          "med": 19.159,
+          "pf": null
+        }
+      },
+      "equal_total_capital_event_portfolios": [
+        {
+          "date": "2018-12-27",
+          "available": 2,
+          "picked": 2,
+          "portfolio_5d_pct": -0.086,
+          "portfolio_10d_pct": -0.031,
+          "portfolio_15d_pct": 7.38
+        },
+        {
+          "date": "2020-04-06",
+          "available": 11,
+          "picked": 4,
+          "portfolio_5d_pct": 8.145,
+          "portfolio_10d_pct": 23.882,
+          "portfolio_15d_pct": 20.954
+        },
+        {
+          "date": "2022-03-10",
+          "available": 3,
+          "picked": 3,
+          "portfolio_5d_pct": 5.126,
+          "portfolio_10d_pct": 10.012,
+          "portfolio_15d_pct": 9.75
+        },
+        {
+          "date": "2024-08-06",
+          "available": 91,
+          "picked": 4,
+          "portfolio_5d_pct": 26.552,
+          "portfolio_10d_pct": 35.984,
+          "portfolio_15d_pct": 33.772
+        },
+        {
+          "date": "2025-04-08",
+          "available": 27,
+          "picked": 4,
+          "portfolio_5d_pct": 15.789,
+          "portfolio_10d_pct": 15.549,
+          "portfolio_15d_pct": 20.636
+        }
+      ],
+      "portfolio15": {
+        "events": 5,
+        "avg": 18.498,
+        "median": 20.636,
+        "worst": 7.38,
+        "best": 33.772,
+        "stdev": 9.424
+      }
+    },
+    {
+      "top_k": 5,
+      "selected_trade_stats": {
+        "r5": {
+          "n": 20,
+          "win": 90.0,
+          "avg": 11.384,
+          "med": 8.281,
+          "pf": 32.09
+        },
+        "r10": {
+          "n": 20,
+          "win": 90.0,
+          "avg": 16.993,
+          "med": 11.394,
+          "pf": 29.494
+        },
+        "r15": {
+          "n": 20,
+          "win": 95.0,
+          "avg": 17.977,
+          "med": 15.441,
+          "pf": 59.133
+        }
+      },
+      "equal_total_capital_event_portfolios": [
+        {
+          "date": "2018-12-27",
+          "available": 2,
+          "picked": 2,
+          "portfolio_5d_pct": -0.086,
+          "portfolio_10d_pct": -0.031,
+          "portfolio_15d_pct": 7.38
+        },
+        {
+          "date": "2020-04-06",
+          "available": 11,
+          "picked": 5,
+          "portfolio_5d_pct": 5.741,
+          "portfolio_10d_pct": 17.735,
+          "portfolio_15d_pct": 15.526
+        },
+        {
+          "date": "2022-03-10",
+          "available": 3,
+          "picked": 3,
+          "portfolio_5d_pct": 5.126,
+          "portfolio_10d_pct": 10.012,
+          "portfolio_15d_pct": 9.75
+        },
+        {
+          "date": "2024-08-06",
+          "available": 91,
+          "picked": 5,
+          "portfolio_5d_pct": 22.993,
+          "portfolio_10d_pct": 30.636,
+          "portfolio_15d_pct": 29.013
+        },
+        {
+          "date": "2025-04-08",
+          "available": 27,
+          "picked": 5,
+          "portfolio_5d_pct": 13.76,
+          "portfolio_10d_pct": 13.605,
+          "portfolio_15d_pct": 18.567
+        }
+      ],
+      "portfolio15": {
+        "events": 5,
+        "avg": 16.047,
+        "median": 15.526,
+        "worst": 7.38,
+        "best": 29.013,
+        "stdev": 7.609
+      }
+    }
+  ],
+  "top3_vs_top5": [
+    {
+      "date": "2018-12-27",
+      "top3_portfolio15": 7.38,
+      "top5_portfolio15": 7.38,
+      "top3_minus_top5_pp": 0.0,
+      "available": 2
+    },
+    {
+      "date": "2020-04-06",
+      "top3_portfolio15": 24.785,
+      "top5_portfolio15": 15.526,
+      "top3_minus_top5_pp": 9.259,
+      "available": 11
+    },
+    {
+      "date": "2022-03-10",
+      "top3_portfolio15": 9.75,
+      "top5_portfolio15": 9.75,
+      "top3_minus_top5_pp": 0.0,
+      "available": 3
+    },
+    {
+      "date": "2024-08-06",
+      "top3_portfolio15": 36.404,
+      "top5_portfolio15": 29.013,
+      "top3_minus_top5_pp": 7.392,
+      "available": 91
+    },
+    {
+      "date": "2025-04-08",
+      "top3_portfolio15": 23.486,
+      "top5_portfolio15": 18.567,
+      "top3_minus_top5_pp": 4.919,
+      "available": 27
+    }
+  ],
+  "marginal_rank4_5": [
+    {
+      "date": "2020-04-06",
+      "n": 2,
+      "avg5": -0.967,
+      "avg10": 0.241,
+      "avg15": 1.638,
+      "win15": 50.0
+    },
+    {
+      "date": "2024-08-06",
+      "n": 2,
+      "avg5": 16.88,
+      "avg10": 17.435,
+      "avg15": 17.925,
+      "win15": 100.0
+    },
+    {
+      "date": "2025-04-08",
+      "n": 2,
+      "avg5": 5.969,
+      "avg10": 6.37,
+      "avg15": 11.188,
+      "win15": 100.0
+    }
+  ],
+  "note": "Use event-level portfolio returns for capital efficiency; selected-trade win rates are secondary because names within an event are correlated."
+}
