@@ -42,3 +42,5 @@ def main():
  OUT.write_text(json.dumps({"note":"Cross-sectional coarse-reversal features known by signal close; rolling obs are prior reversal-signal dates, not every market day.","dates":out},ensure_ascii=False,indent=2),encoding="utf-8")
  print(json.dumps(out,ensure_ascii=False,indent=2))
 if __name__=="__main__": main()
+
+# trigger workflow
