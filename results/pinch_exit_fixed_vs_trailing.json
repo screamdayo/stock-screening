@@ -1,0 +1,6071 @@
+{
+  "study": "Pinch TOP3 exit: fixed 35-45d vs close-based profit-protection trailing",
+  "entry": "Next business day open, no gap cap, no fixed stop, DD20 top3",
+  "trailing_rule": "Activate after highest close reaches +15/+20/+25% from entry. Thereafter, if a daily close falls 8/10/12% from the highest close, exit at next business day open. Otherwise force exit at day 60 open.",
+  "fixed_days": [
+    35,
+    36,
+    37,
+    38,
+    39,
+    40,
+    41,
+    42,
+    43,
+    44,
+    45
+  ],
+  "trailing_activation_pct": [
+    15.0,
+    20.0,
+    25.0
+  ],
+  "trailing_drawdown_pct": [
+    8.0,
+    10.0,
+    12.0
+  ],
+  "best_by_event_average": [
+    {
+      "name": "fixed_41d",
+      "kind": "fixed",
+      "hold_days": 41,
+      "event_avg_return_pct": 43.838,
+      "event_median_return_pct": 43.154,
+      "worst_event_return_pct": 11.521,
+      "best_event_return_pct": 86.67,
+      "event_stdev_pct": 27.171,
+      "positive_events": 5,
+      "trade_win_pct": 92.86,
+      "trade_avg_return_pct": 46.969,
+      "trade_median_return_pct": 42.366,
+      "avg_exit_day": 41.0,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 19.383,
+          "trades": [
+            {
+              "code": "3649",
+              "rank": 1,
+              "return_pct": 50.289,
+              "exit_day": 41,
+              "exit_reason": "fixed_41d"
+            },
+            {
+              "code": "9960",
+              "rank": 2,
+              "return_pct": 7.859,
+              "exit_day": 41,
+              "exit_reason": "fixed_41d"
+            }
+          ]
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 86.67,
+          "trades": [
+            {
+              "code": "7172",
+              "rank": 1,
+              "return_pct": 120.712,
+              "exit_day": 41,
+              "exit_reason": "fixed_41d"
+            },
+            {
+              "code": "4337",
+              "rank": 2,
+              "return_pct": 91.017,
+              "exit_day": 41,
+              "exit_reason": "fixed_41d"
+            },
+            {
+              "code": "3561",
+              "rank": 3,
+              "return_pct": 48.282,
+              "exit_day": 41,
+              "exit_reason": "fixed_41d"
+            }
+          ]
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 11.521,
+          "trades": [
+            {
+              "code": "8011",
+              "rank": 1,
+              "return_pct": 36.449,
+              "exit_day": 41,
+              "exit_reason": "fixed_41d"
+            },
+            {
+              "code": "7269",
+              "rank": 2,
+              "return_pct": 2.499,
+              "exit_day": 41,
+              "exit_reason": "fixed_41d"
+            },
+            {
+              "code": "7723",
+              "rank": 3,
+              "return_pct": -4.384,
+              "exit_day": 41,
+              "exit_reason": "fixed_41d"
+            }
+          ]
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 58.462,
+          "trades": [
+            {
+              "code": "9984",
+              "rank": 1,
+              "return_pct": 24.902,
+              "exit_day": 41,
+              "exit_reason": "fixed_41d"
+            },
+            {
+              "code": "6298",
+              "rank": 2,
+              "return_pct": 34.104,
+              "exit_day": 41,
+              "exit_reason": "fixed_41d"
+            },
+            {
+              "code": "5803",
+              "rank": 3,
+              "return_pct": 116.381,
+              "exit_day": 41,
+              "exit_reason": "fixed_41d"
+            }
+          ]
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 43.154,
+          "trades": [
+            {
+              "code": "6323",
+              "rank": 1,
+              "return_pct": 55.172,
+              "exit_day": 41,
+              "exit_reason": "fixed_41d"
+            },
+            {
+              "code": "5802",
+              "rank": 2,
+              "return_pct": 60.263,
+              "exit_day": 41,
+              "exit_reason": "fixed_41d"
+            },
+            {
+              "code": "6298",
+              "rank": 3,
+              "return_pct": 14.027,
+              "exit_day": 41,
+              "exit_reason": "fixed_41d"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "fixed_42d",
+      "kind": "fixed",
+      "hold_days": 42,
+      "event_avg_return_pct": 43.448,
+      "event_median_return_pct": 45.154,
+      "worst_event_return_pct": 9.325,
+      "best_event_return_pct": 80.507,
+      "event_stdev_pct": 26.074,
+      "positive_events": 5,
+      "trade_win_pct": 85.71,
+      "trade_avg_return_pct": 46.552,
+      "trade_median_return_pct": 38.171,
+      "avg_exit_day": 42.0,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 20.538,
+          "trades": [
+            {
+              "code": "3649",
+              "rank": 1,
+              "return_pct": 53.179,
+              "exit_day": 42,
+              "exit_reason": "fixed_42d"
+            },
+            {
+              "code": "9960",
+              "rank": 2,
+              "return_pct": 8.434,
+              "exit_day": 42,
+              "exit_reason": "fixed_42d"
+            }
+          ]
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 80.507,
+          "trades": [
+            {
+              "code": "7172",
+              "rank": 1,
+              "return_pct": 109.675,
+              "exit_day": 42,
+              "exit_reason": "fixed_42d"
+            },
+            {
+              "code": "4337",
+              "rank": 2,
+              "return_pct": 89.289,
+              "exit_day": 42,
+              "exit_reason": "fixed_42d"
+            },
+            {
+              "code": "3561",
+              "rank": 3,
+              "return_pct": 42.557,
+              "exit_day": 42,
+              "exit_reason": "fixed_42d"
+            }
+          ]
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 9.325,
+          "trades": [
+            {
+              "code": "8011",
+              "rank": 1,
+              "return_pct": 33.785,
+              "exit_day": 42,
+              "exit_reason": "fixed_42d"
+            },
+            {
+              "code": "7269",
+              "rank": 2,
+              "return_pct": -1.489,
+              "exit_day": 42,
+              "exit_reason": "fixed_42d"
+            },
+            {
+              "code": "7723",
+              "rank": 3,
+              "return_pct": -4.32,
+              "exit_day": 42,
+              "exit_reason": "fixed_42d"
+            }
+          ]
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 61.717,
+          "trades": [
+            {
+              "code": "9984",
+              "rank": 1,
+              "return_pct": 25.828,
+              "exit_day": 42,
+              "exit_reason": "fixed_42d"
+            },
+            {
+              "code": "6298",
+              "rank": 2,
+              "return_pct": 33.155,
+              "exit_day": 42,
+              "exit_reason": "fixed_42d"
+            },
+            {
+              "code": "5803",
+              "rank": 3,
+              "return_pct": 126.169,
+              "exit_day": 42,
+              "exit_reason": "fixed_42d"
+            }
+          ]
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 45.154,
+          "trades": [
+            {
+              "code": "6323",
+              "rank": 1,
+              "return_pct": 62.16,
+              "exit_day": 42,
+              "exit_reason": "fixed_42d"
+            },
+            {
+              "code": "5802",
+              "rank": 2,
+              "return_pct": 58.671,
+              "exit_day": 42,
+              "exit_reason": "fixed_42d"
+            },
+            {
+              "code": "6298",
+              "rank": 3,
+              "return_pct": 14.63,
+              "exit_day": 42,
+              "exit_reason": "fixed_42d"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "fixed_43d",
+      "kind": "fixed",
+      "hold_days": 43,
+      "event_avg_return_pct": 43.409,
+      "event_median_return_pct": 47.943,
+      "worst_event_return_pct": 9.408,
+      "best_event_return_pct": 78.897,
+      "event_stdev_pct": 25.946,
+      "positive_events": 5,
+      "trade_win_pct": 85.71,
+      "trade_avg_return_pct": 46.51,
+      "trade_median_return_pct": 39.146,
+      "avg_exit_day": 43.0,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 19.047,
+          "trades": [
+            {
+              "code": "3649",
+              "rank": 1,
+              "return_pct": 50.289,
+              "exit_day": 43,
+              "exit_reason": "fixed_43d"
+            },
+            {
+              "code": "9960",
+              "rank": 2,
+              "return_pct": 6.853,
+              "exit_day": 43,
+              "exit_reason": "fixed_43d"
+            }
+          ]
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 78.897,
+          "trades": [
+            {
+              "code": "7172",
+              "rank": 1,
+              "return_pct": 106.728,
+              "exit_day": 43,
+              "exit_reason": "fixed_43d"
+            },
+            {
+              "code": "4337",
+              "rank": 2,
+              "return_pct": 84.353,
+              "exit_day": 43,
+              "exit_reason": "fixed_43d"
+            },
+            {
+              "code": "3561",
+              "rank": 3,
+              "return_pct": 45.611,
+              "exit_day": 43,
+              "exit_reason": "fixed_43d"
+            }
+          ]
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 9.408,
+          "trades": [
+            {
+              "code": "8011",
+              "rank": 1,
+              "return_pct": 32.243,
+              "exit_day": 43,
+              "exit_reason": "fixed_43d"
+            },
+            {
+              "code": "7269",
+              "rank": 2,
+              "return_pct": -0.989,
+              "exit_day": 43,
+              "exit_reason": "fixed_43d"
+            },
+            {
+              "code": "7723",
+              "rank": 3,
+              "return_pct": -3.03,
+              "exit_day": 43,
+              "exit_reason": "fixed_43d"
+            }
+          ]
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 61.752,
+          "trades": [
+            {
+              "code": "9984",
+              "rank": 1,
+              "return_pct": 27.633,
+              "exit_day": 43,
+              "exit_reason": "fixed_43d"
+            },
+            {
+              "code": "6298",
+              "rank": 2,
+              "return_pct": 32.681,
+              "exit_day": 43,
+              "exit_reason": "fixed_43d"
+            },
+            {
+              "code": "5803",
+              "rank": 3,
+              "return_pct": 124.942,
+              "exit_day": 43,
+              "exit_reason": "fixed_43d"
+            }
+          ]
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 47.943,
+          "trades": [
+            {
+              "code": "6323",
+              "rank": 1,
+              "return_pct": 68.149,
+              "exit_day": 43,
+              "exit_reason": "fixed_43d"
+            },
+            {
+              "code": "5802",
+              "rank": 2,
+              "return_pct": 55.169,
+              "exit_day": 43,
+              "exit_reason": "fixed_43d"
+            },
+            {
+              "code": "6298",
+              "rank": 3,
+              "return_pct": 20.513,
+              "exit_day": 43,
+              "exit_reason": "fixed_43d"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "fixed_40d",
+      "kind": "fixed",
+      "hold_days": 40,
+      "event_avg_return_pct": 42.754,
+      "event_median_return_pct": 42.155,
+      "worst_event_return_pct": 5.3,
+      "best_event_return_pct": 86.981,
+      "event_stdev_pct": 28.493,
+      "positive_events": 5,
+      "trade_win_pct": 85.71,
+      "trade_avg_return_pct": 45.807,
+      "trade_median_return_pct": 42.373,
+      "avg_exit_day": 40.0,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 21.212,
+          "trades": [
+            {
+              "code": "3649",
+              "rank": 1,
+              "return_pct": 55.877,
+              "exit_day": 40,
+              "exit_reason": "fixed_40d"
+            },
+            {
+              "code": "9960",
+              "rank": 2,
+              "return_pct": 7.759,
+              "exit_day": 40,
+              "exit_reason": "fixed_40d"
+            }
+          ]
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 86.981,
+          "trades": [
+            {
+              "code": "7172",
+              "rank": 1,
+              "return_pct": 118.627,
+              "exit_day": 40,
+              "exit_reason": "fixed_40d"
+            },
+            {
+              "code": "4337",
+              "rank": 2,
+              "return_pct": 94.225,
+              "exit_day": 40,
+              "exit_reason": "fixed_40d"
+            },
+            {
+              "code": "3561",
+              "rank": 3,
+              "return_pct": 48.092,
+              "exit_day": 40,
+              "exit_reason": "fixed_40d"
+            }
+          ]
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 5.3,
+          "trades": [
+            {
+              "code": "8011",
+              "rank": 1,
+              "return_pct": 25.374,
+              "exit_day": 40,
+              "exit_reason": "fixed_40d"
+            },
+            {
+              "code": "7269",
+              "rank": 2,
+              "return_pct": -2.446,
+              "exit_day": 40,
+              "exit_reason": "fixed_40d"
+            },
+            {
+              "code": "7723",
+              "rank": 3,
+              "return_pct": -7.028,
+              "exit_day": 40,
+              "exit_reason": "fixed_40d"
+            }
+          ]
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 58.121,
+          "trades": [
+            {
+              "code": "9984",
+              "rank": 1,
+              "return_pct": 28.2,
+              "exit_day": 40,
+              "exit_reason": "fixed_40d"
+            },
+            {
+              "code": "6298",
+              "rank": 2,
+              "return_pct": 36.655,
+              "exit_day": 40,
+              "exit_reason": "fixed_40d"
+            },
+            {
+              "code": "5803",
+              "rank": 3,
+              "return_pct": 109.507,
+              "exit_day": 40,
+              "exit_reason": "fixed_40d"
+            }
+          ]
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 42.155,
+          "trades": [
+            {
+              "code": "6323",
+              "rank": 1,
+              "return_pct": 53.358,
+              "exit_day": 40,
+              "exit_reason": "fixed_40d"
+            },
+            {
+              "code": "5802",
+              "rank": 2,
+              "return_pct": 58.777,
+              "exit_day": 40,
+              "exit_reason": "fixed_40d"
+            },
+            {
+              "code": "6298",
+              "rank": 3,
+              "return_pct": 14.329,
+              "exit_day": 40,
+              "exit_reason": "fixed_40d"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "fixed_37d",
+      "kind": "fixed",
+      "hold_days": 37,
+      "event_avg_return_pct": 42.084,
+      "event_median_return_pct": 40.663,
+      "worst_event_return_pct": 8.349,
+      "best_event_return_pct": 87.245,
+      "event_stdev_pct": 27.639,
+      "positive_events": 5,
+      "trade_win_pct": 92.86,
+      "trade_avg_return_pct": 45.09,
+      "trade_median_return_pct": 40.163,
+      "avg_exit_day": 37.0,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 19.909,
+          "trades": [
+            {
+              "code": "3649",
+              "rank": 1,
+              "return_pct": 51.638,
+              "exit_day": 37,
+              "exit_reason": "fixed_37d"
+            },
+            {
+              "code": "9960",
+              "rank": 2,
+              "return_pct": 8.089,
+              "exit_day": 37,
+              "exit_reason": "fixed_37d"
+            }
+          ]
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 87.245,
+          "trades": [
+            {
+              "code": "7172",
+              "rank": 1,
+              "return_pct": 115.874,
+              "exit_day": 37,
+              "exit_reason": "fixed_37d"
+            },
+            {
+              "code": "4337",
+              "rank": 2,
+              "return_pct": 84.6,
+              "exit_day": 37,
+              "exit_reason": "fixed_37d"
+            },
+            {
+              "code": "3561",
+              "rank": 3,
+              "return_pct": 61.26,
+              "exit_day": 37,
+              "exit_reason": "fixed_37d"
+            }
+          ]
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 8.349,
+          "trades": [
+            {
+              "code": "8011",
+              "rank": 1,
+              "return_pct": 25.701,
+              "exit_day": 37,
+              "exit_reason": "fixed_37d"
+            },
+            {
+              "code": "7269",
+              "rank": 2,
+              "return_pct": 4.116,
+              "exit_day": 37,
+              "exit_reason": "fixed_37d"
+            },
+            {
+              "code": "7723",
+              "rank": 3,
+              "return_pct": -4.771,
+              "exit_day": 37,
+              "exit_reason": "fixed_37d"
+            }
+          ]
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 54.256,
+          "trades": [
+            {
+              "code": "9984",
+              "rank": 1,
+              "return_pct": 22.76,
+              "exit_day": 37,
+              "exit_reason": "fixed_37d"
+            },
+            {
+              "code": "6298",
+              "rank": 2,
+              "return_pct": 30.961,
+              "exit_day": 37,
+              "exit_reason": "fixed_37d"
+            },
+            {
+              "code": "5803",
+              "rank": 3,
+              "return_pct": 109.047,
+              "exit_day": 37,
+              "exit_reason": "fixed_37d"
+            }
+          ]
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 40.663,
+          "trades": [
+            {
+              "code": "6323",
+              "rank": 1,
+              "return_pct": 49.365,
+              "exit_day": 37,
+              "exit_reason": "fixed_37d"
+            },
+            {
+              "code": "5802",
+              "rank": 2,
+              "return_pct": 59.202,
+              "exit_day": 37,
+              "exit_reason": "fixed_37d"
+            },
+            {
+              "code": "6298",
+              "rank": 3,
+              "return_pct": 13.424,
+              "exit_day": 37,
+              "exit_reason": "fixed_37d"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "fixed_35d",
+      "kind": "fixed",
+      "hold_days": 35,
+      "event_avg_return_pct": 41.623,
+      "event_median_return_pct": 39.791,
+      "worst_event_return_pct": 10.147,
+      "best_event_return_pct": 83.552,
+      "event_stdev_pct": 25.848,
+      "positive_events": 5,
+      "trade_win_pct": 92.86,
+      "trade_avg_return_pct": 44.596,
+      "trade_median_return_pct": 38.838,
+      "avg_exit_day": 35.0,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 20.708,
+          "trades": [
+            {
+              "code": "3649",
+              "rank": 1,
+              "return_pct": 52.023,
+              "exit_day": 35,
+              "exit_reason": "fixed_35d"
+            },
+            {
+              "code": "9960",
+              "rank": 2,
+              "return_pct": 10.101,
+              "exit_day": 35,
+              "exit_reason": "fixed_35d"
+            }
+          ]
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 83.552,
+          "trades": [
+            {
+              "code": "7172",
+              "rank": 1,
+              "return_pct": 118.793,
+              "exit_day": 35,
+              "exit_reason": "fixed_35d"
+            },
+            {
+              "code": "4337",
+              "rank": 2,
+              "return_pct": 82.626,
+              "exit_day": 35,
+              "exit_reason": "fixed_35d"
+            },
+            {
+              "code": "3561",
+              "rank": 3,
+              "return_pct": 49.237,
+              "exit_day": 35,
+              "exit_reason": "fixed_35d"
+            }
+          ]
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 10.147,
+          "trades": [
+            {
+              "code": "8011",
+              "rank": 1,
+              "return_pct": 29.766,
+              "exit_day": 35,
+              "exit_reason": "fixed_35d"
+            },
+            {
+              "code": "7269",
+              "rank": 2,
+              "return_pct": 4.222,
+              "exit_day": 35,
+              "exit_reason": "fixed_35d"
+            },
+            {
+              "code": "7723",
+              "rank": 3,
+              "return_pct": -3.546,
+              "exit_day": 35,
+              "exit_reason": "fixed_35d"
+            }
+          ]
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 53.916,
+          "trades": [
+            {
+              "code": "9984",
+              "rank": 1,
+              "return_pct": 24.873,
+              "exit_day": 35,
+              "exit_reason": "fixed_35d"
+            },
+            {
+              "code": "6298",
+              "rank": 2,
+              "return_pct": 30.308,
+              "exit_day": 35,
+              "exit_reason": "fixed_35d"
+            },
+            {
+              "code": "5803",
+              "rank": 3,
+              "return_pct": 106.568,
+              "exit_day": 35,
+              "exit_reason": "fixed_35d"
+            }
+          ]
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 39.791,
+          "trades": [
+            {
+              "code": "6323",
+              "rank": 1,
+              "return_pct": 47.368,
+              "exit_day": 35,
+              "exit_reason": "fixed_35d"
+            },
+            {
+              "code": "5802",
+              "rank": 2,
+              "return_pct": 58.883,
+              "exit_day": 35,
+              "exit_reason": "fixed_35d"
+            },
+            {
+              "code": "6298",
+              "rank": 3,
+              "return_pct": 13.122,
+              "exit_day": 35,
+              "exit_reason": "fixed_35d"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "fixed_38d",
+      "kind": "fixed",
+      "hold_days": 38,
+      "event_avg_return_pct": 41.592,
+      "event_median_return_pct": 40.264,
+      "worst_event_return_pct": 8.271,
+      "best_event_return_pct": 79.975,
+      "event_stdev_pct": 25.567,
+      "positive_events": 5,
+      "trade_win_pct": 92.86,
+      "trade_avg_return_pct": 44.563,
+      "trade_median_return_pct": 41.16,
+      "avg_exit_day": 38.0,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 21.341,
+          "trades": [
+            {
+              "code": "3649",
+              "rank": 1,
+              "return_pct": 55.877,
+              "exit_day": 38,
+              "exit_reason": "fixed_38d"
+            },
+            {
+              "code": "9960",
+              "rank": 2,
+              "return_pct": 8.147,
+              "exit_day": 38,
+              "exit_reason": "fixed_38d"
+            }
+          ]
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 79.975,
+          "trades": [
+            {
+              "code": "7172",
+              "rank": 1,
+              "return_pct": 106.895,
+              "exit_day": 38,
+              "exit_reason": "fixed_38d"
+            },
+            {
+              "code": "4337",
+              "rank": 2,
+              "return_pct": 81.885,
+              "exit_day": 38,
+              "exit_reason": "fixed_38d"
+            },
+            {
+              "code": "3561",
+              "rank": 3,
+              "return_pct": 51.145,
+              "exit_day": 38,
+              "exit_reason": "fixed_38d"
+            }
+          ]
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 8.271,
+          "trades": [
+            {
+              "code": "8011",
+              "rank": 1,
+              "return_pct": 28.972,
+              "exit_day": 38,
+              "exit_reason": "fixed_38d"
+            },
+            {
+              "code": "7269",
+              "rank": 2,
+              "return_pct": 3.19,
+              "exit_day": 38,
+              "exit_reason": "fixed_38d"
+            },
+            {
+              "code": "7723",
+              "rank": 3,
+              "return_pct": -7.35,
+              "exit_day": 38,
+              "exit_reason": "fixed_38d"
+            }
+          ]
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 58.11,
+          "trades": [
+            {
+              "code": "9984",
+              "rank": 1,
+              "return_pct": 26.562,
+              "exit_day": 38,
+              "exit_reason": "fixed_38d"
+            },
+            {
+              "code": "6298",
+              "rank": 2,
+              "return_pct": 34.045,
+              "exit_day": 38,
+              "exit_reason": "fixed_38d"
+            },
+            {
+              "code": "5803",
+              "rank": 3,
+              "return_pct": 113.723,
+              "exit_day": 38,
+              "exit_reason": "fixed_38d"
+            }
+          ]
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 40.264,
+          "trades": [
+            {
+              "code": "6323",
+              "rank": 1,
+              "return_pct": 48.276,
+              "exit_day": 38,
+              "exit_reason": "fixed_38d"
+            },
+            {
+              "code": "5802",
+              "rank": 2,
+              "return_pct": 57.886,
+              "exit_day": 38,
+              "exit_reason": "fixed_38d"
+            },
+            {
+              "code": "6298",
+              "rank": 3,
+              "return_pct": 14.63,
+              "exit_day": 38,
+              "exit_reason": "fixed_38d"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "fixed_36d",
+      "kind": "fixed",
+      "hold_days": 36,
+      "event_avg_return_pct": 41.347,
+      "event_median_return_pct": 38.478,
+      "worst_event_return_pct": 11.065,
+      "best_event_return_pct": 81.917,
+      "event_stdev_pct": 25.303,
+      "positive_events": 5,
+      "trade_win_pct": 92.86,
+      "trade_avg_return_pct": 44.3,
+      "trade_median_return_pct": 38.643,
+      "avg_exit_day": 36.0,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 20.279,
+          "trades": [
+            {
+              "code": "3649",
+              "rank": 1,
+              "return_pct": 51.252,
+              "exit_day": 36,
+              "exit_reason": "fixed_36d"
+            },
+            {
+              "code": "9960",
+              "rank": 2,
+              "return_pct": 9.583,
+              "exit_day": 36,
+              "exit_reason": "fixed_36d"
+            }
+          ]
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 81.917,
+          "trades": [
+            {
+              "code": "7172",
+              "rank": 1,
+              "return_pct": 110.342,
+              "exit_day": 36,
+              "exit_reason": "fixed_36d"
+            },
+            {
+              "code": "4337",
+              "rank": 2,
+              "return_pct": 83.119,
+              "exit_day": 36,
+              "exit_reason": "fixed_36d"
+            },
+            {
+              "code": "3561",
+              "rank": 3,
+              "return_pct": 52.29,
+              "exit_day": 36,
+              "exit_reason": "fixed_36d"
+            }
+          ]
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 11.065,
+          "trades": [
+            {
+              "code": "8011",
+              "rank": 1,
+              "return_pct": 30.047,
+              "exit_day": 36,
+              "exit_reason": "fixed_36d"
+            },
+            {
+              "code": "7269",
+              "rank": 2,
+              "return_pct": 6.243,
+              "exit_day": 36,
+              "exit_reason": "fixed_36d"
+            },
+            {
+              "code": "7723",
+              "rank": 3,
+              "return_pct": -3.095,
+              "exit_day": 36,
+              "exit_reason": "fixed_36d"
+            }
+          ]
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 54.996,
+          "trades": [
+            {
+              "code": "9984",
+              "rank": 1,
+              "return_pct": 24.132,
+              "exit_day": 36,
+              "exit_reason": "fixed_36d"
+            },
+            {
+              "code": "6298",
+              "rank": 2,
+              "return_pct": 31.732,
+              "exit_day": 36,
+              "exit_reason": "fixed_36d"
+            },
+            {
+              "code": "5803",
+              "rank": 3,
+              "return_pct": 109.123,
+              "exit_day": 36,
+              "exit_reason": "fixed_36d"
+            }
+          ]
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 38.478,
+          "trades": [
+            {
+              "code": "6323",
+              "rank": 1,
+              "return_pct": 45.554,
+              "exit_day": 36,
+              "exit_reason": "fixed_36d"
+            },
+            {
+              "code": "5802",
+              "rank": 2,
+              "return_pct": 58.268,
+              "exit_day": 36,
+              "exit_reason": "fixed_36d"
+            },
+            {
+              "code": "6298",
+              "rank": 3,
+              "return_pct": 11.614,
+              "exit_day": 36,
+              "exit_reason": "fixed_36d"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "fixed_39d",
+      "kind": "fixed",
+      "hold_days": 39,
+      "event_avg_return_pct": 39.917,
+      "event_median_return_pct": 41.796,
+      "worst_event_return_pct": 7.152,
+      "best_event_return_pct": 75.678,
+      "event_stdev_pct": 24.644,
+      "positive_events": 5,
+      "trade_win_pct": 85.71,
+      "trade_avg_return_pct": 42.768,
+      "trade_median_return_pct": 41.231,
+      "avg_exit_day": 39.0,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 19.193,
+          "trades": [
+            {
+              "code": "3649",
+              "rank": 1,
+              "return_pct": 51.83,
+              "exit_day": 39,
+              "exit_reason": "fixed_39d"
+            },
+            {
+              "code": "9960",
+              "rank": 2,
+              "return_pct": 5.747,
+              "exit_day": 39,
+              "exit_reason": "fixed_39d"
+            }
+          ]
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 75.678,
+          "trades": [
+            {
+              "code": "7172",
+              "rank": 1,
+              "return_pct": 100.862,
+              "exit_day": 39,
+              "exit_reason": "fixed_39d"
+            },
+            {
+              "code": "4337",
+              "rank": 2,
+              "return_pct": 79.418,
+              "exit_day": 39,
+              "exit_reason": "fixed_39d"
+            },
+            {
+              "code": "3561",
+              "rank": 3,
+              "return_pct": 46.756,
+              "exit_day": 39,
+              "exit_reason": "fixed_39d"
+            }
+          ]
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 7.152,
+          "trades": [
+            {
+              "code": "8011",
+              "rank": 1,
+              "return_pct": 26.308,
+              "exit_day": 39,
+              "exit_reason": "fixed_39d"
+            },
+            {
+              "code": "7269",
+              "rank": 2,
+              "return_pct": -0.404,
+              "exit_day": 39,
+              "exit_reason": "fixed_39d"
+            },
+            {
+              "code": "7723",
+              "rank": 3,
+              "return_pct": -4.449,
+              "exit_day": 39,
+              "exit_reason": "fixed_39d"
+            }
+          ]
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 55.765,
+          "trades": [
+            {
+              "code": "9984",
+              "rank": 1,
+              "return_pct": 26.505,
+              "exit_day": 39,
+              "exit_reason": "fixed_39d"
+            },
+            {
+              "code": "6298",
+              "rank": 2,
+              "return_pct": 35.706,
+              "exit_day": 39,
+              "exit_reason": "fixed_39d"
+            },
+            {
+              "code": "5803",
+              "rank": 3,
+              "return_pct": 105.086,
+              "exit_day": 39,
+              "exit_reason": "fixed_39d"
+            }
+          ]
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 41.796,
+          "trades": [
+            {
+              "code": "6323",
+              "rank": 1,
+              "return_pct": 51.724,
+              "exit_day": 39,
+              "exit_reason": "fixed_39d"
+            },
+            {
+              "code": "5802",
+              "rank": 2,
+              "return_pct": 57.525,
+              "exit_day": 39,
+              "exit_reason": "fixed_39d"
+            },
+            {
+              "code": "6298",
+              "rank": 3,
+              "return_pct": 16.139,
+              "exit_day": 39,
+              "exit_reason": "fixed_39d"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "fixed_45d",
+      "kind": "fixed",
+      "hold_days": 45,
+      "event_avg_return_pct": 39.655,
+      "event_median_return_pct": 43.016,
+      "worst_event_return_pct": 7.792,
+      "best_event_return_pct": 67.243,
+      "event_stdev_pct": 25.187,
+      "positive_events": 5,
+      "trade_win_pct": 85.71,
+      "trade_avg_return_pct": 42.488,
+      "trade_median_return_pct": 33.735,
+      "avg_exit_day": 45.0,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 13.808,
+          "trades": [
+            {
+              "code": "3649",
+              "rank": 1,
+              "return_pct": 40.462,
+              "exit_day": 45,
+              "exit_reason": "fixed_45d"
+            },
+            {
+              "code": "9960",
+              "rank": 2,
+              "return_pct": 0.963,
+              "exit_day": 45,
+              "exit_reason": "fixed_45d"
+            }
+          ]
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 66.417,
+          "trades": [
+            {
+              "code": "7172",
+              "rank": 1,
+              "return_pct": 86.739,
+              "exit_day": 45,
+              "exit_reason": "fixed_45d"
+            },
+            {
+              "code": "4337",
+              "rank": 2,
+              "return_pct": 78.924,
+              "exit_day": 45,
+              "exit_reason": "fixed_45d"
+            },
+            {
+              "code": "3561",
+              "rank": 3,
+              "return_pct": 33.588,
+              "exit_day": 45,
+              "exit_reason": "fixed_45d"
+            }
+          ]
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 7.792,
+          "trades": [
+            {
+              "code": "8011",
+              "rank": 1,
+              "return_pct": 31.776,
+              "exit_day": 45,
+              "exit_reason": "fixed_45d"
+            },
+            {
+              "code": "7269",
+              "rank": 2,
+              "return_pct": -2.34,
+              "exit_day": 45,
+              "exit_reason": "fixed_45d"
+            },
+            {
+              "code": "7723",
+              "rank": 3,
+              "return_pct": -6.061,
+              "exit_day": 45,
+              "exit_reason": "fixed_45d"
+            }
+          ]
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 67.243,
+          "trades": [
+            {
+              "code": "9984",
+              "rank": 1,
+              "return_pct": 33.883,
+              "exit_day": 45,
+              "exit_reason": "fixed_45d"
+            },
+            {
+              "code": "6298",
+              "rank": 2,
+              "return_pct": 32.681,
+              "exit_day": 45,
+              "exit_reason": "fixed_45d"
+            },
+            {
+              "code": "5803",
+              "rank": 3,
+              "return_pct": 135.165,
+              "exit_day": 45,
+              "exit_reason": "fixed_45d"
+            }
+          ]
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 43.016,
+          "trades": [
+            {
+              "code": "6323",
+              "rank": 1,
+              "return_pct": 60.436,
+              "exit_day": 45,
+              "exit_reason": "fixed_45d"
+            },
+            {
+              "code": "5802",
+              "rank": 2,
+              "return_pct": 49.607,
+              "exit_day": 45,
+              "exit_reason": "fixed_45d"
+            },
+            {
+              "code": "6298",
+              "rank": 3,
+              "return_pct": 19.005,
+              "exit_day": 45,
+              "exit_reason": "fixed_45d"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "best_by_worst_event": [
+    {
+      "name": "trail_a15_t12",
+      "kind": "trailing",
+      "activate_profit_pct": 15.0,
+      "trail_drawdown_pct": 12.0,
+      "max_hold_days": 60,
+      "event_avg_return_pct": 28.968,
+      "event_median_return_pct": 22.057,
+      "worst_event_return_pct": 15.279,
+      "best_event_return_pct": 51.099,
+      "event_stdev_pct": 13.253,
+      "positive_events": 5,
+      "trade_win_pct": 92.86,
+      "trade_avg_return_pct": 31.037,
+      "trade_median_return_pct": 27.723,
+      "avg_exit_day": 46.43,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 22.057,
+          "trades": [
+            {
+              "code": "3649",
+              "rank": 1,
+              "return_pct": 56.069,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            },
+            {
+              "code": "9960",
+              "rank": 2,
+              "return_pct": 10.101,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            }
+          ]
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 19.481,
+          "trades": [
+            {
+              "code": "7172",
+              "rank": 1,
+              "return_pct": 15.708,
+              "exit_day": 11,
+              "exit_reason": "trail_a15_t12"
+            },
+            {
+              "code": "4337",
+              "rank": 2,
+              "return_pct": 11.056,
+              "exit_day": 5,
+              "exit_reason": "trail_a15_t12"
+            },
+            {
+              "code": "3561",
+              "rank": 3,
+              "return_pct": 31.679,
+              "exit_day": 44,
+              "exit_reason": "trail_a15_t12"
+            }
+          ]
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 15.279,
+          "trades": [
+            {
+              "code": "8011",
+              "rank": 1,
+              "return_pct": 41.589,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            },
+            {
+              "code": "7269",
+              "rank": 2,
+              "return_pct": 8.827,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            },
+            {
+              "code": "7723",
+              "rank": 3,
+              "return_pct": -4.578,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            }
+          ]
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 36.925,
+          "trades": [
+            {
+              "code": "9984",
+              "rank": 1,
+              "return_pct": 30.179,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            },
+            {
+              "code": "6298",
+              "rank": 2,
+              "return_pct": 25.267,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            },
+            {
+              "code": "5803",
+              "rank": 3,
+              "return_pct": 55.328,
+              "exit_day": 22,
+              "exit_reason": "trail_a15_t12"
+            }
+          ]
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 51.099,
+          "trades": [
+            {
+              "code": "6323",
+              "rank": 1,
+              "return_pct": 78.494,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            },
+            {
+              "code": "5802",
+              "rank": 2,
+              "return_pct": 63.341,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            },
+            {
+              "code": "6298",
+              "rank": 3,
+              "return_pct": 11.463,
+              "exit_day": 28,
+              "exit_reason": "trail_a15_t12"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "trail_a20_t12",
+      "kind": "trailing",
+      "activate_profit_pct": 20.0,
+      "trail_drawdown_pct": 12.0,
+      "max_hold_days": 60,
+      "event_avg_return_pct": 28.968,
+      "event_median_return_pct": 22.057,
+      "worst_event_return_pct": 15.279,
+      "best_event_return_pct": 51.099,
+      "event_stdev_pct": 13.253,
+      "positive_events": 5,
+      "trade_win_pct": 92.86,
+      "trade_avg_return_pct": 31.037,
+      "trade_median_return_pct": 27.723,
+      "avg_exit_day": 46.43,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 22.057,
+          "trades": [
+            {
+              "code": "3649",
+              "rank": 1,
+              "return_pct": 56.069,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            },
+            {
+              "code": "9960",
+              "rank": 2,
+              "return_pct": 10.101,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            }
+          ]
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 19.481,
+          "trades": [
+            {
+              "code": "7172",
+              "rank": 1,
+              "return_pct": 15.708,
+              "exit_day": 11,
+              "exit_reason": "trail_a20_t12"
+            },
+            {
+              "code": "4337",
+              "rank": 2,
+              "return_pct": 11.056,
+              "exit_day": 5,
+              "exit_reason": "trail_a20_t12"
+            },
+            {
+              "code": "3561",
+              "rank": 3,
+              "return_pct": 31.679,
+              "exit_day": 44,
+              "exit_reason": "trail_a20_t12"
+            }
+          ]
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 15.279,
+          "trades": [
+            {
+              "code": "8011",
+              "rank": 1,
+              "return_pct": 41.589,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            },
+            {
+              "code": "7269",
+              "rank": 2,
+              "return_pct": 8.827,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            },
+            {
+              "code": "7723",
+              "rank": 3,
+              "return_pct": -4.578,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            }
+          ]
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 36.925,
+          "trades": [
+            {
+              "code": "9984",
+              "rank": 1,
+              "return_pct": 30.179,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            },
+            {
+              "code": "6298",
+              "rank": 2,
+              "return_pct": 25.267,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            },
+            {
+              "code": "5803",
+              "rank": 3,
+              "return_pct": 55.328,
+              "exit_day": 22,
+              "exit_reason": "trail_a20_t12"
+            }
+          ]
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 51.099,
+          "trades": [
+            {
+              "code": "6323",
+              "rank": 1,
+              "return_pct": 78.494,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            },
+            {
+              "code": "5802",
+              "rank": 2,
+              "return_pct": 63.341,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            },
+            {
+              "code": "6298",
+              "rank": 3,
+              "return_pct": 11.463,
+              "exit_day": 28,
+              "exit_reason": "trail_a20_t12"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "trail_a25_t12",
+      "kind": "trailing",
+      "activate_profit_pct": 25.0,
+      "trail_drawdown_pct": 12.0,
+      "max_hold_days": 60,
+      "event_avg_return_pct": 28.968,
+      "event_median_return_pct": 22.057,
+      "worst_event_return_pct": 15.279,
+      "best_event_return_pct": 51.099,
+      "event_stdev_pct": 13.253,
+      "positive_events": 5,
+      "trade_win_pct": 92.86,
+      "trade_avg_return_pct": 31.037,
+      "trade_median_return_pct": 27.723,
+      "avg_exit_day": 46.43,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 22.057,
+          "trades": [
+            {
+              "code": "3649",
+              "rank": 1,
+              "return_pct": 56.069,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            },
+            {
+              "code": "9960",
+              "rank": 2,
+              "return_pct": 10.101,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            }
+          ]
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 19.481,
+          "trades": [
+            {
+              "code": "7172",
+              "rank": 1,
+              "return_pct": 15.708,
+              "exit_day": 11,
+              "exit_reason": "trail_a25_t12"
+            },
+            {
+              "code": "4337",
+              "rank": 2,
+              "return_pct": 11.056,
+              "exit_day": 5,
+              "exit_reason": "trail_a25_t12"
+            },
+            {
+              "code": "3561",
+              "rank": 3,
+              "return_pct": 31.679,
+              "exit_day": 44,
+              "exit_reason": "trail_a25_t12"
+            }
+          ]
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 15.279,
+          "trades": [
+            {
+              "code": "8011",
+              "rank": 1,
+              "return_pct": 41.589,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            },
+            {
+              "code": "7269",
+              "rank": 2,
+              "return_pct": 8.827,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            },
+            {
+              "code": "7723",
+              "rank": 3,
+              "return_pct": -4.578,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            }
+          ]
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 36.925,
+          "trades": [
+            {
+              "code": "9984",
+              "rank": 1,
+              "return_pct": 30.179,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            },
+            {
+              "code": "6298",
+              "rank": 2,
+              "return_pct": 25.267,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            },
+            {
+              "code": "5803",
+              "rank": 3,
+              "return_pct": 55.328,
+              "exit_day": 22,
+              "exit_reason": "trail_a25_t12"
+            }
+          ]
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 51.099,
+          "trades": [
+            {
+              "code": "6323",
+              "rank": 1,
+              "return_pct": 78.494,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            },
+            {
+              "code": "5802",
+              "rank": 2,
+              "return_pct": 63.341,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            },
+            {
+              "code": "6298",
+              "rank": 3,
+              "return_pct": 11.463,
+              "exit_day": 28,
+              "exit_reason": "trail_a25_t12"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "trail_a25_t8",
+      "kind": "trailing",
+      "activate_profit_pct": 25.0,
+      "trail_drawdown_pct": 8.0,
+      "max_hold_days": 60,
+      "event_avg_return_pct": 25.461,
+      "event_median_return_pct": 22.482,
+      "worst_event_return_pct": 15.279,
+      "best_event_return_pct": 37.86,
+      "event_stdev_pct": 9.254,
+      "positive_events": 5,
+      "trade_win_pct": 92.86,
+      "trade_avg_return_pct": 27.28,
+      "trade_median_return_pct": 22.456,
+      "avg_exit_day": 38.43,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 16.854,
+          "trades": [
+            {
+              "code": "3649",
+              "rank": 1,
+              "return_pct": 40.462,
+              "exit_day": 45,
+              "exit_reason": "trail_a25_t8"
+            },
+            {
+              "code": "9960",
+              "rank": 2,
+              "return_pct": 10.101,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            }
+          ]
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 22.482,
+          "trades": [
+            {
+              "code": "7172",
+              "rank": 1,
+              "return_pct": 15.708,
+              "exit_day": 11,
+              "exit_reason": "trail_a25_t8"
+            },
+            {
+              "code": "4337",
+              "rank": 2,
+              "return_pct": 9.181,
+              "exit_day": 4,
+              "exit_reason": "trail_a25_t8"
+            },
+            {
+              "code": "3561",
+              "rank": 3,
+              "return_pct": 42.557,
+              "exit_day": 42,
+              "exit_reason": "trail_a25_t8"
+            }
+          ]
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 15.279,
+          "trades": [
+            {
+              "code": "8011",
+              "rank": 1,
+              "return_pct": 41.589,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            },
+            {
+              "code": "7269",
+              "rank": 2,
+              "return_pct": 8.827,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            },
+            {
+              "code": "7723",
+              "rank": 3,
+              "return_pct": -4.578,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            }
+          ]
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 37.86,
+          "trades": [
+            {
+              "code": "9984",
+              "rank": 1,
+              "return_pct": 30.179,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            },
+            {
+              "code": "6298",
+              "rank": 2,
+              "return_pct": 20.047,
+              "exit_day": 23,
+              "exit_reason": "trail_a25_t8"
+            },
+            {
+              "code": "5803",
+              "rank": 3,
+              "return_pct": 63.353,
+              "exit_day": 20,
+              "exit_reason": "trail_a25_t8"
+            }
+          ]
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 34.832,
+          "trades": [
+            {
+              "code": "6323",
+              "rank": 1,
+              "return_pct": 24.864,
+              "exit_day": 6,
+              "exit_reason": "trail_a25_t8"
+            },
+            {
+              "code": "5802",
+              "rank": 2,
+              "return_pct": 63.341,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            },
+            {
+              "code": "6298",
+              "rank": 3,
+              "return_pct": 16.29,
+              "exit_day": 27,
+              "exit_reason": "trail_a25_t8"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "trail_a15_t10",
+      "kind": "trailing",
+      "activate_profit_pct": 15.0,
+      "trail_drawdown_pct": 10.0,
+      "max_hold_days": 60,
+      "event_avg_return_pct": 24.524,
+      "event_median_return_pct": 19.481,
+      "worst_event_return_pct": 15.279,
+      "best_event_return_pct": 37.385,
+      "event_stdev_pct": 9.31,
+      "positive_events": 5,
+      "trade_win_pct": 92.86,
+      "trade_avg_return_pct": 26.276,
+      "trade_median_return_pct": 23.014,
+      "avg_exit_day": 39.64,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 16.405,
+          "trades": [
+            {
+              "code": "3649",
+              "rank": 1,
+              "return_pct": 39.114,
+              "exit_day": 52,
+              "exit_reason": "trail_a15_t10"
+            },
+            {
+              "code": "9960",
+              "rank": 2,
+              "return_pct": 10.101,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            }
+          ]
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 19.481,
+          "trades": [
+            {
+              "code": "7172",
+              "rank": 1,
+              "return_pct": 15.708,
+              "exit_day": 11,
+              "exit_reason": "trail_a15_t10"
+            },
+            {
+              "code": "4337",
+              "rank": 2,
+              "return_pct": 11.056,
+              "exit_day": 5,
+              "exit_reason": "trail_a15_t10"
+            },
+            {
+              "code": "3561",
+              "rank": 3,
+              "return_pct": 31.679,
+              "exit_day": 44,
+              "exit_reason": "trail_a15_t10"
+            }
+          ]
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 15.279,
+          "trades": [
+            {
+              "code": "8011",
+              "rank": 1,
+              "return_pct": 41.589,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            },
+            {
+              "code": "7269",
+              "rank": 2,
+              "return_pct": 8.827,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            },
+            {
+              "code": "7723",
+              "rank": 3,
+              "return_pct": -4.578,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            }
+          ]
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 37.385,
+          "trades": [
+            {
+              "code": "9984",
+              "rank": 1,
+              "return_pct": 30.179,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            },
+            {
+              "code": "6298",
+              "rank": 2,
+              "return_pct": 18.624,
+              "exit_day": 25,
+              "exit_reason": "trail_a15_t10"
+            },
+            {
+              "code": "5803",
+              "rank": 3,
+              "return_pct": 63.353,
+              "exit_day": 20,
+              "exit_reason": "trail_a15_t10"
+            }
+          ]
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 34.07,
+          "trades": [
+            {
+              "code": "6323",
+              "rank": 1,
+              "return_pct": 27.405,
+              "exit_day": 10,
+              "exit_reason": "trail_a15_t10"
+            },
+            {
+              "code": "5802",
+              "rank": 2,
+              "return_pct": 63.341,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            },
+            {
+              "code": "6298",
+              "rank": 3,
+              "return_pct": 11.463,
+              "exit_day": 28,
+              "exit_reason": "trail_a15_t10"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "trail_a20_t10",
+      "kind": "trailing",
+      "activate_profit_pct": 20.0,
+      "trail_drawdown_pct": 10.0,
+      "max_hold_days": 60,
+      "event_avg_return_pct": 24.524,
+      "event_median_return_pct": 19.481,
+      "worst_event_return_pct": 15.279,
+      "best_event_return_pct": 37.385,
+      "event_stdev_pct": 9.31,
+      "positive_events": 5,
+      "trade_win_pct": 92.86,
+      "trade_avg_return_pct": 26.276,
+      "trade_median_return_pct": 23.014,
+      "avg_exit_day": 39.64,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 16.405,
+          "trades": [
+            {
+              "code": "3649",
+              "rank": 1,
+              "return_pct": 39.114,
+              "exit_day": 52,
+              "exit_reason": "trail_a20_t10"
+            },
+            {
+              "code": "9960",
+              "rank": 2,
+              "return_pct": 10.101,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            }
+          ]
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 19.481,
+          "trades": [
+            {
+              "code": "7172",
+              "rank": 1,
+              "return_pct": 15.708,
+              "exit_day": 11,
+              "exit_reason": "trail_a20_t10"
+            },
+            {
+              "code": "4337",
+              "rank": 2,
+              "return_pct": 11.056,
+              "exit_day": 5,
+              "exit_reason": "trail_a20_t10"
+            },
+            {
+              "code": "3561",
+              "rank": 3,
+              "return_pct": 31.679,
+              "exit_day": 44,
+              "exit_reason": "trail_a20_t10"
+            }
+          ]
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 15.279,
+          "trades": [
+            {
+              "code": "8011",
+              "rank": 1,
+              "return_pct": 41.589,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            },
+            {
+              "code": "7269",
+              "rank": 2,
+              "return_pct": 8.827,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            },
+            {
+              "code": "7723",
+              "rank": 3,
+              "return_pct": -4.578,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            }
+          ]
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 37.385,
+          "trades": [
+            {
+              "code": "9984",
+              "rank": 1,
+              "return_pct": 30.179,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            },
+            {
+              "code": "6298",
+              "rank": 2,
+              "return_pct": 18.624,
+              "exit_day": 25,
+              "exit_reason": "trail_a20_t10"
+            },
+            {
+              "code": "5803",
+              "rank": 3,
+              "return_pct": 63.353,
+              "exit_day": 20,
+              "exit_reason": "trail_a20_t10"
+            }
+          ]
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 34.07,
+          "trades": [
+            {
+              "code": "6323",
+              "rank": 1,
+              "return_pct": 27.405,
+              "exit_day": 10,
+              "exit_reason": "trail_a20_t10"
+            },
+            {
+              "code": "5802",
+              "rank": 2,
+              "return_pct": 63.341,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            },
+            {
+              "code": "6298",
+              "rank": 3,
+              "return_pct": 11.463,
+              "exit_day": 28,
+              "exit_reason": "trail_a20_t10"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "trail_a25_t10",
+      "kind": "trailing",
+      "activate_profit_pct": 25.0,
+      "trail_drawdown_pct": 10.0,
+      "max_hold_days": 60,
+      "event_avg_return_pct": 24.524,
+      "event_median_return_pct": 19.481,
+      "worst_event_return_pct": 15.279,
+      "best_event_return_pct": 37.385,
+      "event_stdev_pct": 9.31,
+      "positive_events": 5,
+      "trade_win_pct": 92.86,
+      "trade_avg_return_pct": 26.276,
+      "trade_median_return_pct": 23.014,
+      "avg_exit_day": 39.64,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 16.405,
+          "trades": [
+            {
+              "code": "3649",
+              "rank": 1,
+              "return_pct": 39.114,
+              "exit_day": 52,
+              "exit_reason": "trail_a25_t10"
+            },
+            {
+              "code": "9960",
+              "rank": 2,
+              "return_pct": 10.101,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            }
+          ]
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 19.481,
+          "trades": [
+            {
+              "code": "7172",
+              "rank": 1,
+              "return_pct": 15.708,
+              "exit_day": 11,
+              "exit_reason": "trail_a25_t10"
+            },
+            {
+              "code": "4337",
+              "rank": 2,
+              "return_pct": 11.056,
+              "exit_day": 5,
+              "exit_reason": "trail_a25_t10"
+            },
+            {
+              "code": "3561",
+              "rank": 3,
+              "return_pct": 31.679,
+              "exit_day": 44,
+              "exit_reason": "trail_a25_t10"
+            }
+          ]
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 15.279,
+          "trades": [
+            {
+              "code": "8011",
+              "rank": 1,
+              "return_pct": 41.589,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            },
+            {
+              "code": "7269",
+              "rank": 2,
+              "return_pct": 8.827,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            },
+            {
+              "code": "7723",
+              "rank": 3,
+              "return_pct": -4.578,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            }
+          ]
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 37.385,
+          "trades": [
+            {
+              "code": "9984",
+              "rank": 1,
+              "return_pct": 30.179,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            },
+            {
+              "code": "6298",
+              "rank": 2,
+              "return_pct": 18.624,
+              "exit_day": 25,
+              "exit_reason": "trail_a25_t10"
+            },
+            {
+              "code": "5803",
+              "rank": 3,
+              "return_pct": 63.353,
+              "exit_day": 20,
+              "exit_reason": "trail_a25_t10"
+            }
+          ]
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 34.07,
+          "trades": [
+            {
+              "code": "6323",
+              "rank": 1,
+              "return_pct": 27.405,
+              "exit_day": 10,
+              "exit_reason": "trail_a25_t10"
+            },
+            {
+              "code": "5802",
+              "rank": 2,
+              "return_pct": 63.341,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            },
+            {
+              "code": "6298",
+              "rank": 3,
+              "return_pct": 11.463,
+              "exit_day": 28,
+              "exit_reason": "trail_a25_t10"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "trail_a20_t8",
+      "kind": "trailing",
+      "activate_profit_pct": 20.0,
+      "trail_drawdown_pct": 8.0,
+      "max_hold_days": 60,
+      "event_avg_return_pct": 24.226,
+      "event_median_return_pct": 22.482,
+      "worst_event_return_pct": 15.279,
+      "best_event_return_pct": 34.832,
+      "event_stdev_pct": 7.817,
+      "positive_events": 5,
+      "trade_win_pct": 92.86,
+      "trade_avg_return_pct": 25.956,
+      "trade_median_return_pct": 18.169,
+      "avg_exit_day": 35.57,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 16.854,
+          "trades": [
+            {
+              "code": "3649",
+              "rank": 1,
+              "return_pct": 40.462,
+              "exit_day": 45,
+              "exit_reason": "trail_a20_t8"
+            },
+            {
+              "code": "9960",
+              "rank": 2,
+              "return_pct": 10.101,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            }
+          ]
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 22.482,
+          "trades": [
+            {
+              "code": "7172",
+              "rank": 1,
+              "return_pct": 15.708,
+              "exit_day": 11,
+              "exit_reason": "trail_a20_t8"
+            },
+            {
+              "code": "4337",
+              "rank": 2,
+              "return_pct": 9.181,
+              "exit_day": 4,
+              "exit_reason": "trail_a20_t8"
+            },
+            {
+              "code": "3561",
+              "rank": 3,
+              "return_pct": 42.557,
+              "exit_day": 42,
+              "exit_reason": "trail_a20_t8"
+            }
+          ]
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 15.279,
+          "trades": [
+            {
+              "code": "8011",
+              "rank": 1,
+              "return_pct": 41.589,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            },
+            {
+              "code": "7269",
+              "rank": 2,
+              "return_pct": 8.827,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            },
+            {
+              "code": "7723",
+              "rank": 3,
+              "return_pct": -4.578,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            }
+          ]
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 31.683,
+          "trades": [
+            {
+              "code": "9984",
+              "rank": 1,
+              "return_pct": 11.649,
+              "exit_day": 20,
+              "exit_reason": "trail_a20_t8"
+            },
+            {
+              "code": "6298",
+              "rank": 2,
+              "return_pct": 20.047,
+              "exit_day": 23,
+              "exit_reason": "trail_a20_t8"
+            },
+            {
+              "code": "5803",
+              "rank": 3,
+              "return_pct": 63.353,
+              "exit_day": 20,
+              "exit_reason": "trail_a20_t8"
+            }
+          ]
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 34.832,
+          "trades": [
+            {
+              "code": "6323",
+              "rank": 1,
+              "return_pct": 24.864,
+              "exit_day": 6,
+              "exit_reason": "trail_a20_t8"
+            },
+            {
+              "code": "5802",
+              "rank": 2,
+              "return_pct": 63.341,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            },
+            {
+              "code": "6298",
+              "rank": 3,
+              "return_pct": 16.29,
+              "exit_day": 27,
+              "exit_reason": "trail_a20_t8"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "trail_a15_t8",
+      "kind": "trailing",
+      "activate_profit_pct": 15.0,
+      "trail_drawdown_pct": 8.0,
+      "max_hold_days": 60,
+      "event_avg_return_pct": 23.581,
+      "event_median_return_pct": 19.257,
+      "worst_event_return_pct": 15.279,
+      "best_event_return_pct": 34.832,
+      "event_stdev_pct": 8.063,
+      "positive_events": 5,
+      "trade_win_pct": 92.86,
+      "trade_avg_return_pct": 25.265,
+      "trade_median_return_pct": 18.169,
+      "avg_exit_day": 35.14,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 16.854,
+          "trades": [
+            {
+              "code": "3649",
+              "rank": 1,
+              "return_pct": 40.462,
+              "exit_day": 45,
+              "exit_reason": "trail_a15_t8"
+            },
+            {
+              "code": "9960",
+              "rank": 2,
+              "return_pct": 10.101,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            }
+          ]
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 19.257,
+          "trades": [
+            {
+              "code": "7172",
+              "rank": 1,
+              "return_pct": 6.033,
+              "exit_day": 5,
+              "exit_reason": "trail_a15_t8"
+            },
+            {
+              "code": "4337",
+              "rank": 2,
+              "return_pct": 9.181,
+              "exit_day": 4,
+              "exit_reason": "trail_a15_t8"
+            },
+            {
+              "code": "3561",
+              "rank": 3,
+              "return_pct": 42.557,
+              "exit_day": 42,
+              "exit_reason": "trail_a15_t8"
+            }
+          ]
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 15.279,
+          "trades": [
+            {
+              "code": "8011",
+              "rank": 1,
+              "return_pct": 41.589,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            },
+            {
+              "code": "7269",
+              "rank": 2,
+              "return_pct": 8.827,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            },
+            {
+              "code": "7723",
+              "rank": 3,
+              "return_pct": -4.578,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            }
+          ]
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 31.683,
+          "trades": [
+            {
+              "code": "9984",
+              "rank": 1,
+              "return_pct": 11.649,
+              "exit_day": 20,
+              "exit_reason": "trail_a15_t8"
+            },
+            {
+              "code": "6298",
+              "rank": 2,
+              "return_pct": 20.047,
+              "exit_day": 23,
+              "exit_reason": "trail_a15_t8"
+            },
+            {
+              "code": "5803",
+              "rank": 3,
+              "return_pct": 63.353,
+              "exit_day": 20,
+              "exit_reason": "trail_a15_t8"
+            }
+          ]
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 34.832,
+          "trades": [
+            {
+              "code": "6323",
+              "rank": 1,
+              "return_pct": 24.864,
+              "exit_day": 6,
+              "exit_reason": "trail_a15_t8"
+            },
+            {
+              "code": "5802",
+              "rank": 2,
+              "return_pct": 63.341,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            },
+            {
+              "code": "6298",
+              "rank": 3,
+              "return_pct": 16.29,
+              "exit_day": 27,
+              "exit_reason": "trail_a15_t8"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "fixed_41d",
+      "kind": "fixed",
+      "hold_days": 41,
+      "event_avg_return_pct": 43.838,
+      "event_median_return_pct": 43.154,
+      "worst_event_return_pct": 11.521,
+      "best_event_return_pct": 86.67,
+      "event_stdev_pct": 27.171,
+      "positive_events": 5,
+      "trade_win_pct": 92.86,
+      "trade_avg_return_pct": 46.969,
+      "trade_median_return_pct": 42.366,
+      "avg_exit_day": 41.0,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 19.383,
+          "trades": [
+            {
+              "code": "3649",
+              "rank": 1,
+              "return_pct": 50.289,
+              "exit_day": 41,
+              "exit_reason": "fixed_41d"
+            },
+            {
+              "code": "9960",
+              "rank": 2,
+              "return_pct": 7.859,
+              "exit_day": 41,
+              "exit_reason": "fixed_41d"
+            }
+          ]
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 86.67,
+          "trades": [
+            {
+              "code": "7172",
+              "rank": 1,
+              "return_pct": 120.712,
+              "exit_day": 41,
+              "exit_reason": "fixed_41d"
+            },
+            {
+              "code": "4337",
+              "rank": 2,
+              "return_pct": 91.017,
+              "exit_day": 41,
+              "exit_reason": "fixed_41d"
+            },
+            {
+              "code": "3561",
+              "rank": 3,
+              "return_pct": 48.282,
+              "exit_day": 41,
+              "exit_reason": "fixed_41d"
+            }
+          ]
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 11.521,
+          "trades": [
+            {
+              "code": "8011",
+              "rank": 1,
+              "return_pct": 36.449,
+              "exit_day": 41,
+              "exit_reason": "fixed_41d"
+            },
+            {
+              "code": "7269",
+              "rank": 2,
+              "return_pct": 2.499,
+              "exit_day": 41,
+              "exit_reason": "fixed_41d"
+            },
+            {
+              "code": "7723",
+              "rank": 3,
+              "return_pct": -4.384,
+              "exit_day": 41,
+              "exit_reason": "fixed_41d"
+            }
+          ]
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 58.462,
+          "trades": [
+            {
+              "code": "9984",
+              "rank": 1,
+              "return_pct": 24.902,
+              "exit_day": 41,
+              "exit_reason": "fixed_41d"
+            },
+            {
+              "code": "6298",
+              "rank": 2,
+              "return_pct": 34.104,
+              "exit_day": 41,
+              "exit_reason": "fixed_41d"
+            },
+            {
+              "code": "5803",
+              "rank": 3,
+              "return_pct": 116.381,
+              "exit_day": 41,
+              "exit_reason": "fixed_41d"
+            }
+          ]
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 43.154,
+          "trades": [
+            {
+              "code": "6323",
+              "rank": 1,
+              "return_pct": 55.172,
+              "exit_day": 41,
+              "exit_reason": "fixed_41d"
+            },
+            {
+              "code": "5802",
+              "rank": 2,
+              "return_pct": 60.263,
+              "exit_day": 41,
+              "exit_reason": "fixed_41d"
+            },
+            {
+              "code": "6298",
+              "rank": 3,
+              "return_pct": 14.027,
+              "exit_day": 41,
+              "exit_reason": "fixed_41d"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "all_results": [
+    {
+      "name": "fixed_35d",
+      "kind": "fixed",
+      "hold_days": 35,
+      "event_avg_return_pct": 41.623,
+      "event_median_return_pct": 39.791,
+      "worst_event_return_pct": 10.147,
+      "best_event_return_pct": 83.552,
+      "event_stdev_pct": 25.848,
+      "positive_events": 5,
+      "trade_win_pct": 92.86,
+      "trade_avg_return_pct": 44.596,
+      "trade_median_return_pct": 38.838,
+      "avg_exit_day": 35.0,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 20.708,
+          "trades": [
+            {
+              "code": "3649",
+              "rank": 1,
+              "return_pct": 52.023,
+              "exit_day": 35,
+              "exit_reason": "fixed_35d"
+            },
+            {
+              "code": "9960",
+              "rank": 2,
+              "return_pct": 10.101,
+              "exit_day": 35,
+              "exit_reason": "fixed_35d"
+            }
+          ]
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 83.552,
+          "trades": [
+            {
+              "code": "7172",
+              "rank": 1,
+              "return_pct": 118.793,
+              "exit_day": 35,
+              "exit_reason": "fixed_35d"
+            },
+            {
+              "code": "4337",
+              "rank": 2,
+              "return_pct": 82.626,
+              "exit_day": 35,
+              "exit_reason": "fixed_35d"
+            },
+            {
+              "code": "3561",
+              "rank": 3,
+              "return_pct": 49.237,
+              "exit_day": 35,
+              "exit_reason": "fixed_35d"
+            }
+          ]
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 10.147,
+          "trades": [
+            {
+              "code": "8011",
+              "rank": 1,
+              "return_pct": 29.766,
+              "exit_day": 35,
+              "exit_reason": "fixed_35d"
+            },
+            {
+              "code": "7269",
+              "rank": 2,
+              "return_pct": 4.222,
+              "exit_day": 35,
+              "exit_reason": "fixed_35d"
+            },
+            {
+              "code": "7723",
+              "rank": 3,
+              "return_pct": -3.546,
+              "exit_day": 35,
+              "exit_reason": "fixed_35d"
+            }
+          ]
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 53.916,
+          "trades": [
+            {
+              "code": "9984",
+              "rank": 1,
+              "return_pct": 24.873,
+              "exit_day": 35,
+              "exit_reason": "fixed_35d"
+            },
+            {
+              "code": "6298",
+              "rank": 2,
+              "return_pct": 30.308,
+              "exit_day": 35,
+              "exit_reason": "fixed_35d"
+            },
+            {
+              "code": "5803",
+              "rank": 3,
+              "return_pct": 106.568,
+              "exit_day": 35,
+              "exit_reason": "fixed_35d"
+            }
+          ]
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 39.791,
+          "trades": [
+            {
+              "code": "6323",
+              "rank": 1,
+              "return_pct": 47.368,
+              "exit_day": 35,
+              "exit_reason": "fixed_35d"
+            },
+            {
+              "code": "5802",
+              "rank": 2,
+              "return_pct": 58.883,
+              "exit_day": 35,
+              "exit_reason": "fixed_35d"
+            },
+            {
+              "code": "6298",
+              "rank": 3,
+              "return_pct": 13.122,
+              "exit_day": 35,
+              "exit_reason": "fixed_35d"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "fixed_36d",
+      "kind": "fixed",
+      "hold_days": 36,
+      "event_avg_return_pct": 41.347,
+      "event_median_return_pct": 38.478,
+      "worst_event_return_pct": 11.065,
+      "best_event_return_pct": 81.917,
+      "event_stdev_pct": 25.303,
+      "positive_events": 5,
+      "trade_win_pct": 92.86,
+      "trade_avg_return_pct": 44.3,
+      "trade_median_return_pct": 38.643,
+      "avg_exit_day": 36.0,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 20.279,
+          "trades": [
+            {
+              "code": "3649",
+              "rank": 1,
+              "return_pct": 51.252,
+              "exit_day": 36,
+              "exit_reason": "fixed_36d"
+            },
+            {
+              "code": "9960",
+              "rank": 2,
+              "return_pct": 9.583,
+              "exit_day": 36,
+              "exit_reason": "fixed_36d"
+            }
+          ]
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 81.917,
+          "trades": [
+            {
+              "code": "7172",
+              "rank": 1,
+              "return_pct": 110.342,
+              "exit_day": 36,
+              "exit_reason": "fixed_36d"
+            },
+            {
+              "code": "4337",
+              "rank": 2,
+              "return_pct": 83.119,
+              "exit_day": 36,
+              "exit_reason": "fixed_36d"
+            },
+            {
+              "code": "3561",
+              "rank": 3,
+              "return_pct": 52.29,
+              "exit_day": 36,
+              "exit_reason": "fixed_36d"
+            }
+          ]
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 11.065,
+          "trades": [
+            {
+              "code": "8011",
+              "rank": 1,
+              "return_pct": 30.047,
+              "exit_day": 36,
+              "exit_reason": "fixed_36d"
+            },
+            {
+              "code": "7269",
+              "rank": 2,
+              "return_pct": 6.243,
+              "exit_day": 36,
+              "exit_reason": "fixed_36d"
+            },
+            {
+              "code": "7723",
+              "rank": 3,
+              "return_pct": -3.095,
+              "exit_day": 36,
+              "exit_reason": "fixed_36d"
+            }
+          ]
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 54.996,
+          "trades": [
+            {
+              "code": "9984",
+              "rank": 1,
+              "return_pct": 24.132,
+              "exit_day": 36,
+              "exit_reason": "fixed_36d"
+            },
+            {
+              "code": "6298",
+              "rank": 2,
+              "return_pct": 31.732,
+              "exit_day": 36,
+              "exit_reason": "fixed_36d"
+            },
+            {
+              "code": "5803",
+              "rank": 3,
+              "return_pct": 109.123,
+              "exit_day": 36,
+              "exit_reason": "fixed_36d"
+            }
+          ]
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 38.478,
+          "trades": [
+            {
+              "code": "6323",
+              "rank": 1,
+              "return_pct": 45.554,
+              "exit_day": 36,
+              "exit_reason": "fixed_36d"
+            },
+            {
+              "code": "5802",
+              "rank": 2,
+              "return_pct": 58.268,
+              "exit_day": 36,
+              "exit_reason": "fixed_36d"
+            },
+            {
+              "code": "6298",
+              "rank": 3,
+              "return_pct": 11.614,
+              "exit_day": 36,
+              "exit_reason": "fixed_36d"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "fixed_37d",
+      "kind": "fixed",
+      "hold_days": 37,
+      "event_avg_return_pct": 42.084,
+      "event_median_return_pct": 40.663,
+      "worst_event_return_pct": 8.349,
+      "best_event_return_pct": 87.245,
+      "event_stdev_pct": 27.639,
+      "positive_events": 5,
+      "trade_win_pct": 92.86,
+      "trade_avg_return_pct": 45.09,
+      "trade_median_return_pct": 40.163,
+      "avg_exit_day": 37.0,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 19.909,
+          "trades": [
+            {
+              "code": "3649",
+              "rank": 1,
+              "return_pct": 51.638,
+              "exit_day": 37,
+              "exit_reason": "fixed_37d"
+            },
+            {
+              "code": "9960",
+              "rank": 2,
+              "return_pct": 8.089,
+              "exit_day": 37,
+              "exit_reason": "fixed_37d"
+            }
+          ]
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 87.245,
+          "trades": [
+            {
+              "code": "7172",
+              "rank": 1,
+              "return_pct": 115.874,
+              "exit_day": 37,
+              "exit_reason": "fixed_37d"
+            },
+            {
+              "code": "4337",
+              "rank": 2,
+              "return_pct": 84.6,
+              "exit_day": 37,
+              "exit_reason": "fixed_37d"
+            },
+            {
+              "code": "3561",
+              "rank": 3,
+              "return_pct": 61.26,
+              "exit_day": 37,
+              "exit_reason": "fixed_37d"
+            }
+          ]
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 8.349,
+          "trades": [
+            {
+              "code": "8011",
+              "rank": 1,
+              "return_pct": 25.701,
+              "exit_day": 37,
+              "exit_reason": "fixed_37d"
+            },
+            {
+              "code": "7269",
+              "rank": 2,
+              "return_pct": 4.116,
+              "exit_day": 37,
+              "exit_reason": "fixed_37d"
+            },
+            {
+              "code": "7723",
+              "rank": 3,
+              "return_pct": -4.771,
+              "exit_day": 37,
+              "exit_reason": "fixed_37d"
+            }
+          ]
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 54.256,
+          "trades": [
+            {
+              "code": "9984",
+              "rank": 1,
+              "return_pct": 22.76,
+              "exit_day": 37,
+              "exit_reason": "fixed_37d"
+            },
+            {
+              "code": "6298",
+              "rank": 2,
+              "return_pct": 30.961,
+              "exit_day": 37,
+              "exit_reason": "fixed_37d"
+            },
+            {
+              "code": "5803",
+              "rank": 3,
+              "return_pct": 109.047,
+              "exit_day": 37,
+              "exit_reason": "fixed_37d"
+            }
+          ]
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 40.663,
+          "trades": [
+            {
+              "code": "6323",
+              "rank": 1,
+              "return_pct": 49.365,
+              "exit_day": 37,
+              "exit_reason": "fixed_37d"
+            },
+            {
+              "code": "5802",
+              "rank": 2,
+              "return_pct": 59.202,
+              "exit_day": 37,
+              "exit_reason": "fixed_37d"
+            },
+            {
+              "code": "6298",
+              "rank": 3,
+              "return_pct": 13.424,
+              "exit_day": 37,
+              "exit_reason": "fixed_37d"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "fixed_38d",
+      "kind": "fixed",
+      "hold_days": 38,
+      "event_avg_return_pct": 41.592,
+      "event_median_return_pct": 40.264,
+      "worst_event_return_pct": 8.271,
+      "best_event_return_pct": 79.975,
+      "event_stdev_pct": 25.567,
+      "positive_events": 5,
+      "trade_win_pct": 92.86,
+      "trade_avg_return_pct": 44.563,
+      "trade_median_return_pct": 41.16,
+      "avg_exit_day": 38.0,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 21.341,
+          "trades": [
+            {
+              "code": "3649",
+              "rank": 1,
+              "return_pct": 55.877,
+              "exit_day": 38,
+              "exit_reason": "fixed_38d"
+            },
+            {
+              "code": "9960",
+              "rank": 2,
+              "return_pct": 8.147,
+              "exit_day": 38,
+              "exit_reason": "fixed_38d"
+            }
+          ]
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 79.975,
+          "trades": [
+            {
+              "code": "7172",
+              "rank": 1,
+              "return_pct": 106.895,
+              "exit_day": 38,
+              "exit_reason": "fixed_38d"
+            },
+            {
+              "code": "4337",
+              "rank": 2,
+              "return_pct": 81.885,
+              "exit_day": 38,
+              "exit_reason": "fixed_38d"
+            },
+            {
+              "code": "3561",
+              "rank": 3,
+              "return_pct": 51.145,
+              "exit_day": 38,
+              "exit_reason": "fixed_38d"
+            }
+          ]
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 8.271,
+          "trades": [
+            {
+              "code": "8011",
+              "rank": 1,
+              "return_pct": 28.972,
+              "exit_day": 38,
+              "exit_reason": "fixed_38d"
+            },
+            {
+              "code": "7269",
+              "rank": 2,
+              "return_pct": 3.19,
+              "exit_day": 38,
+              "exit_reason": "fixed_38d"
+            },
+            {
+              "code": "7723",
+              "rank": 3,
+              "return_pct": -7.35,
+              "exit_day": 38,
+              "exit_reason": "fixed_38d"
+            }
+          ]
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 58.11,
+          "trades": [
+            {
+              "code": "9984",
+              "rank": 1,
+              "return_pct": 26.562,
+              "exit_day": 38,
+              "exit_reason": "fixed_38d"
+            },
+            {
+              "code": "6298",
+              "rank": 2,
+              "return_pct": 34.045,
+              "exit_day": 38,
+              "exit_reason": "fixed_38d"
+            },
+            {
+              "code": "5803",
+              "rank": 3,
+              "return_pct": 113.723,
+              "exit_day": 38,
+              "exit_reason": "fixed_38d"
+            }
+          ]
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 40.264,
+          "trades": [
+            {
+              "code": "6323",
+              "rank": 1,
+              "return_pct": 48.276,
+              "exit_day": 38,
+              "exit_reason": "fixed_38d"
+            },
+            {
+              "code": "5802",
+              "rank": 2,
+              "return_pct": 57.886,
+              "exit_day": 38,
+              "exit_reason": "fixed_38d"
+            },
+            {
+              "code": "6298",
+              "rank": 3,
+              "return_pct": 14.63,
+              "exit_day": 38,
+              "exit_reason": "fixed_38d"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "fixed_39d",
+      "kind": "fixed",
+      "hold_days": 39,
+      "event_avg_return_pct": 39.917,
+      "event_median_return_pct": 41.796,
+      "worst_event_return_pct": 7.152,
+      "best_event_return_pct": 75.678,
+      "event_stdev_pct": 24.644,
+      "positive_events": 5,
+      "trade_win_pct": 85.71,
+      "trade_avg_return_pct": 42.768,
+      "trade_median_return_pct": 41.231,
+      "avg_exit_day": 39.0,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 19.193,
+          "trades": [
+            {
+              "code": "3649",
+              "rank": 1,
+              "return_pct": 51.83,
+              "exit_day": 39,
+              "exit_reason": "fixed_39d"
+            },
+            {
+              "code": "9960",
+              "rank": 2,
+              "return_pct": 5.747,
+              "exit_day": 39,
+              "exit_reason": "fixed_39d"
+            }
+          ]
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 75.678,
+          "trades": [
+            {
+              "code": "7172",
+              "rank": 1,
+              "return_pct": 100.862,
+              "exit_day": 39,
+              "exit_reason": "fixed_39d"
+            },
+            {
+              "code": "4337",
+              "rank": 2,
+              "return_pct": 79.418,
+              "exit_day": 39,
+              "exit_reason": "fixed_39d"
+            },
+            {
+              "code": "3561",
+              "rank": 3,
+              "return_pct": 46.756,
+              "exit_day": 39,
+              "exit_reason": "fixed_39d"
+            }
+          ]
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 7.152,
+          "trades": [
+            {
+              "code": "8011",
+              "rank": 1,
+              "return_pct": 26.308,
+              "exit_day": 39,
+              "exit_reason": "fixed_39d"
+            },
+            {
+              "code": "7269",
+              "rank": 2,
+              "return_pct": -0.404,
+              "exit_day": 39,
+              "exit_reason": "fixed_39d"
+            },
+            {
+              "code": "7723",
+              "rank": 3,
+              "return_pct": -4.449,
+              "exit_day": 39,
+              "exit_reason": "fixed_39d"
+            }
+          ]
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 55.765,
+          "trades": [
+            {
+              "code": "9984",
+              "rank": 1,
+              "return_pct": 26.505,
+              "exit_day": 39,
+              "exit_reason": "fixed_39d"
+            },
+            {
+              "code": "6298",
+              "rank": 2,
+              "return_pct": 35.706,
+              "exit_day": 39,
+              "exit_reason": "fixed_39d"
+            },
+            {
+              "code": "5803",
+              "rank": 3,
+              "return_pct": 105.086,
+              "exit_day": 39,
+              "exit_reason": "fixed_39d"
+            }
+          ]
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 41.796,
+          "trades": [
+            {
+              "code": "6323",
+              "rank": 1,
+              "return_pct": 51.724,
+              "exit_day": 39,
+              "exit_reason": "fixed_39d"
+            },
+            {
+              "code": "5802",
+              "rank": 2,
+              "return_pct": 57.525,
+              "exit_day": 39,
+              "exit_reason": "fixed_39d"
+            },
+            {
+              "code": "6298",
+              "rank": 3,
+              "return_pct": 16.139,
+              "exit_day": 39,
+              "exit_reason": "fixed_39d"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "fixed_40d",
+      "kind": "fixed",
+      "hold_days": 40,
+      "event_avg_return_pct": 42.754,
+      "event_median_return_pct": 42.155,
+      "worst_event_return_pct": 5.3,
+      "best_event_return_pct": 86.981,
+      "event_stdev_pct": 28.493,
+      "positive_events": 5,
+      "trade_win_pct": 85.71,
+      "trade_avg_return_pct": 45.807,
+      "trade_median_return_pct": 42.373,
+      "avg_exit_day": 40.0,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 21.212,
+          "trades": [
+            {
+              "code": "3649",
+              "rank": 1,
+              "return_pct": 55.877,
+              "exit_day": 40,
+              "exit_reason": "fixed_40d"
+            },
+            {
+              "code": "9960",
+              "rank": 2,
+              "return_pct": 7.759,
+              "exit_day": 40,
+              "exit_reason": "fixed_40d"
+            }
+          ]
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 86.981,
+          "trades": [
+            {
+              "code": "7172",
+              "rank": 1,
+              "return_pct": 118.627,
+              "exit_day": 40,
+              "exit_reason": "fixed_40d"
+            },
+            {
+              "code": "4337",
+              "rank": 2,
+              "return_pct": 94.225,
+              "exit_day": 40,
+              "exit_reason": "fixed_40d"
+            },
+            {
+              "code": "3561",
+              "rank": 3,
+              "return_pct": 48.092,
+              "exit_day": 40,
+              "exit_reason": "fixed_40d"
+            }
+          ]
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 5.3,
+          "trades": [
+            {
+              "code": "8011",
+              "rank": 1,
+              "return_pct": 25.374,
+              "exit_day": 40,
+              "exit_reason": "fixed_40d"
+            },
+            {
+              "code": "7269",
+              "rank": 2,
+              "return_pct": -2.446,
+              "exit_day": 40,
+              "exit_reason": "fixed_40d"
+            },
+            {
+              "code": "7723",
+              "rank": 3,
+              "return_pct": -7.028,
+              "exit_day": 40,
+              "exit_reason": "fixed_40d"
+            }
+          ]
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 58.121,
+          "trades": [
+            {
+              "code": "9984",
+              "rank": 1,
+              "return_pct": 28.2,
+              "exit_day": 40,
+              "exit_reason": "fixed_40d"
+            },
+            {
+              "code": "6298",
+              "rank": 2,
+              "return_pct": 36.655,
+              "exit_day": 40,
+              "exit_reason": "fixed_40d"
+            },
+            {
+              "code": "5803",
+              "rank": 3,
+              "return_pct": 109.507,
+              "exit_day": 40,
+              "exit_reason": "fixed_40d"
+            }
+          ]
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 42.155,
+          "trades": [
+            {
+              "code": "6323",
+              "rank": 1,
+              "return_pct": 53.358,
+              "exit_day": 40,
+              "exit_reason": "fixed_40d"
+            },
+            {
+              "code": "5802",
+              "rank": 2,
+              "return_pct": 58.777,
+              "exit_day": 40,
+              "exit_reason": "fixed_40d"
+            },
+            {
+              "code": "6298",
+              "rank": 3,
+              "return_pct": 14.329,
+              "exit_day": 40,
+              "exit_reason": "fixed_40d"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "fixed_41d",
+      "kind": "fixed",
+      "hold_days": 41,
+      "event_avg_return_pct": 43.838,
+      "event_median_return_pct": 43.154,
+      "worst_event_return_pct": 11.521,
+      "best_event_return_pct": 86.67,
+      "event_stdev_pct": 27.171,
+      "positive_events": 5,
+      "trade_win_pct": 92.86,
+      "trade_avg_return_pct": 46.969,
+      "trade_median_return_pct": 42.366,
+      "avg_exit_day": 41.0,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 19.383,
+          "trades": [
+            {
+              "code": "3649",
+              "rank": 1,
+              "return_pct": 50.289,
+              "exit_day": 41,
+              "exit_reason": "fixed_41d"
+            },
+            {
+              "code": "9960",
+              "rank": 2,
+              "return_pct": 7.859,
+              "exit_day": 41,
+              "exit_reason": "fixed_41d"
+            }
+          ]
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 86.67,
+          "trades": [
+            {
+              "code": "7172",
+              "rank": 1,
+              "return_pct": 120.712,
+              "exit_day": 41,
+              "exit_reason": "fixed_41d"
+            },
+            {
+              "code": "4337",
+              "rank": 2,
+              "return_pct": 91.017,
+              "exit_day": 41,
+              "exit_reason": "fixed_41d"
+            },
+            {
+              "code": "3561",
+              "rank": 3,
+              "return_pct": 48.282,
+              "exit_day": 41,
+              "exit_reason": "fixed_41d"
+            }
+          ]
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 11.521,
+          "trades": [
+            {
+              "code": "8011",
+              "rank": 1,
+              "return_pct": 36.449,
+              "exit_day": 41,
+              "exit_reason": "fixed_41d"
+            },
+            {
+              "code": "7269",
+              "rank": 2,
+              "return_pct": 2.499,
+              "exit_day": 41,
+              "exit_reason": "fixed_41d"
+            },
+            {
+              "code": "7723",
+              "rank": 3,
+              "return_pct": -4.384,
+              "exit_day": 41,
+              "exit_reason": "fixed_41d"
+            }
+          ]
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 58.462,
+          "trades": [
+            {
+              "code": "9984",
+              "rank": 1,
+              "return_pct": 24.902,
+              "exit_day": 41,
+              "exit_reason": "fixed_41d"
+            },
+            {
+              "code": "6298",
+              "rank": 2,
+              "return_pct": 34.104,
+              "exit_day": 41,
+              "exit_reason": "fixed_41d"
+            },
+            {
+              "code": "5803",
+              "rank": 3,
+              "return_pct": 116.381,
+              "exit_day": 41,
+              "exit_reason": "fixed_41d"
+            }
+          ]
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 43.154,
+          "trades": [
+            {
+              "code": "6323",
+              "rank": 1,
+              "return_pct": 55.172,
+              "exit_day": 41,
+              "exit_reason": "fixed_41d"
+            },
+            {
+              "code": "5802",
+              "rank": 2,
+              "return_pct": 60.263,
+              "exit_day": 41,
+              "exit_reason": "fixed_41d"
+            },
+            {
+              "code": "6298",
+              "rank": 3,
+              "return_pct": 14.027,
+              "exit_day": 41,
+              "exit_reason": "fixed_41d"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "fixed_42d",
+      "kind": "fixed",
+      "hold_days": 42,
+      "event_avg_return_pct": 43.448,
+      "event_median_return_pct": 45.154,
+      "worst_event_return_pct": 9.325,
+      "best_event_return_pct": 80.507,
+      "event_stdev_pct": 26.074,
+      "positive_events": 5,
+      "trade_win_pct": 85.71,
+      "trade_avg_return_pct": 46.552,
+      "trade_median_return_pct": 38.171,
+      "avg_exit_day": 42.0,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 20.538,
+          "trades": [
+            {
+              "code": "3649",
+              "rank": 1,
+              "return_pct": 53.179,
+              "exit_day": 42,
+              "exit_reason": "fixed_42d"
+            },
+            {
+              "code": "9960",
+              "rank": 2,
+              "return_pct": 8.434,
+              "exit_day": 42,
+              "exit_reason": "fixed_42d"
+            }
+          ]
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 80.507,
+          "trades": [
+            {
+              "code": "7172",
+              "rank": 1,
+              "return_pct": 109.675,
+              "exit_day": 42,
+              "exit_reason": "fixed_42d"
+            },
+            {
+              "code": "4337",
+              "rank": 2,
+              "return_pct": 89.289,
+              "exit_day": 42,
+              "exit_reason": "fixed_42d"
+            },
+            {
+              "code": "3561",
+              "rank": 3,
+              "return_pct": 42.557,
+              "exit_day": 42,
+              "exit_reason": "fixed_42d"
+            }
+          ]
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 9.325,
+          "trades": [
+            {
+              "code": "8011",
+              "rank": 1,
+              "return_pct": 33.785,
+              "exit_day": 42,
+              "exit_reason": "fixed_42d"
+            },
+            {
+              "code": "7269",
+              "rank": 2,
+              "return_pct": -1.489,
+              "exit_day": 42,
+              "exit_reason": "fixed_42d"
+            },
+            {
+              "code": "7723",
+              "rank": 3,
+              "return_pct": -4.32,
+              "exit_day": 42,
+              "exit_reason": "fixed_42d"
+            }
+          ]
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 61.717,
+          "trades": [
+            {
+              "code": "9984",
+              "rank": 1,
+              "return_pct": 25.828,
+              "exit_day": 42,
+              "exit_reason": "fixed_42d"
+            },
+            {
+              "code": "6298",
+              "rank": 2,
+              "return_pct": 33.155,
+              "exit_day": 42,
+              "exit_reason": "fixed_42d"
+            },
+            {
+              "code": "5803",
+              "rank": 3,
+              "return_pct": 126.169,
+              "exit_day": 42,
+              "exit_reason": "fixed_42d"
+            }
+          ]
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 45.154,
+          "trades": [
+            {
+              "code": "6323",
+              "rank": 1,
+              "return_pct": 62.16,
+              "exit_day": 42,
+              "exit_reason": "fixed_42d"
+            },
+            {
+              "code": "5802",
+              "rank": 2,
+              "return_pct": 58.671,
+              "exit_day": 42,
+              "exit_reason": "fixed_42d"
+            },
+            {
+              "code": "6298",
+              "rank": 3,
+              "return_pct": 14.63,
+              "exit_day": 42,
+              "exit_reason": "fixed_42d"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "fixed_43d",
+      "kind": "fixed",
+      "hold_days": 43,
+      "event_avg_return_pct": 43.409,
+      "event_median_return_pct": 47.943,
+      "worst_event_return_pct": 9.408,
+      "best_event_return_pct": 78.897,
+      "event_stdev_pct": 25.946,
+      "positive_events": 5,
+      "trade_win_pct": 85.71,
+      "trade_avg_return_pct": 46.51,
+      "trade_median_return_pct": 39.146,
+      "avg_exit_day": 43.0,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 19.047,
+          "trades": [
+            {
+              "code": "3649",
+              "rank": 1,
+              "return_pct": 50.289,
+              "exit_day": 43,
+              "exit_reason": "fixed_43d"
+            },
+            {
+              "code": "9960",
+              "rank": 2,
+              "return_pct": 6.853,
+              "exit_day": 43,
+              "exit_reason": "fixed_43d"
+            }
+          ]
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 78.897,
+          "trades": [
+            {
+              "code": "7172",
+              "rank": 1,
+              "return_pct": 106.728,
+              "exit_day": 43,
+              "exit_reason": "fixed_43d"
+            },
+            {
+              "code": "4337",
+              "rank": 2,
+              "return_pct": 84.353,
+              "exit_day": 43,
+              "exit_reason": "fixed_43d"
+            },
+            {
+              "code": "3561",
+              "rank": 3,
+              "return_pct": 45.611,
+              "exit_day": 43,
+              "exit_reason": "fixed_43d"
+            }
+          ]
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 9.408,
+          "trades": [
+            {
+              "code": "8011",
+              "rank": 1,
+              "return_pct": 32.243,
+              "exit_day": 43,
+              "exit_reason": "fixed_43d"
+            },
+            {
+              "code": "7269",
+              "rank": 2,
+              "return_pct": -0.989,
+              "exit_day": 43,
+              "exit_reason": "fixed_43d"
+            },
+            {
+              "code": "7723",
+              "rank": 3,
+              "return_pct": -3.03,
+              "exit_day": 43,
+              "exit_reason": "fixed_43d"
+            }
+          ]
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 61.752,
+          "trades": [
+            {
+              "code": "9984",
+              "rank": 1,
+              "return_pct": 27.633,
+              "exit_day": 43,
+              "exit_reason": "fixed_43d"
+            },
+            {
+              "code": "6298",
+              "rank": 2,
+              "return_pct": 32.681,
+              "exit_day": 43,
+              "exit_reason": "fixed_43d"
+            },
+            {
+              "code": "5803",
+              "rank": 3,
+              "return_pct": 124.942,
+              "exit_day": 43,
+              "exit_reason": "fixed_43d"
+            }
+          ]
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 47.943,
+          "trades": [
+            {
+              "code": "6323",
+              "rank": 1,
+              "return_pct": 68.149,
+              "exit_day": 43,
+              "exit_reason": "fixed_43d"
+            },
+            {
+              "code": "5802",
+              "rank": 2,
+              "return_pct": 55.169,
+              "exit_day": 43,
+              "exit_reason": "fixed_43d"
+            },
+            {
+              "code": "6298",
+              "rank": 3,
+              "return_pct": 20.513,
+              "exit_day": 43,
+              "exit_reason": "fixed_43d"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "fixed_44d",
+      "kind": "fixed",
+      "hold_days": 44,
+      "event_avg_return_pct": 37.781,
+      "event_median_return_pct": 45.922,
+      "worst_event_return_pct": 6.612,
+      "best_event_return_pct": 61.898,
+      "event_stdev_pct": 22.495,
+      "positive_events": 5,
+      "trade_win_pct": 85.71,
+      "trade_avg_return_pct": 40.479,
+      "trade_median_return_pct": 32.029,
+      "avg_exit_day": 44.0,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 15.903,
+          "trades": [
+            {
+              "code": "3649",
+              "rank": 1,
+              "return_pct": 43.931,
+              "exit_day": 44,
+              "exit_reason": "fixed_44d"
+            },
+            {
+              "code": "9960",
+              "rank": 2,
+              "return_pct": 3.779,
+              "exit_day": 44,
+              "exit_reason": "fixed_44d"
+            }
+          ]
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 58.568,
+          "trades": [
+            {
+              "code": "7172",
+              "rank": 1,
+              "return_pct": 74.479,
+              "exit_day": 44,
+              "exit_reason": "fixed_44d"
+            },
+            {
+              "code": "4337",
+              "rank": 2,
+              "return_pct": 69.546,
+              "exit_day": 44,
+              "exit_reason": "fixed_44d"
+            },
+            {
+              "code": "3561",
+              "rank": 3,
+              "return_pct": 31.679,
+              "exit_day": 44,
+              "exit_reason": "fixed_44d"
+            }
+          ]
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 6.612,
+          "trades": [
+            {
+              "code": "8011",
+              "rank": 1,
+              "return_pct": 29.112,
+              "exit_day": 44,
+              "exit_reason": "fixed_44d"
+            },
+            {
+              "code": "7269",
+              "rank": 2,
+              "return_pct": -3.86,
+              "exit_day": 44,
+              "exit_reason": "fixed_44d"
+            },
+            {
+              "code": "7723",
+              "rank": 3,
+              "return_pct": -5.416,
+              "exit_day": 44,
+              "exit_reason": "fixed_44d"
+            }
+          ]
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 61.898,
+          "trades": [
+            {
+              "code": "9984",
+              "rank": 1,
+              "return_pct": 32.378,
+              "exit_day": 44,
+              "exit_reason": "fixed_44d"
+            },
+            {
+              "code": "6298",
+              "rank": 2,
+              "return_pct": 30.546,
+              "exit_day": 44,
+              "exit_reason": "fixed_44d"
+            },
+            {
+              "code": "5803",
+              "rank": 3,
+              "return_pct": 122.77,
+              "exit_day": 44,
+              "exit_reason": "fixed_44d"
+            }
+          ]
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 45.922,
+          "trades": [
+            {
+              "code": "6323",
+              "rank": 1,
+              "return_pct": 64.701,
+              "exit_day": 44,
+              "exit_reason": "fixed_44d"
+            },
+            {
+              "code": "5802",
+              "rank": 2,
+              "return_pct": 49.989,
+              "exit_day": 44,
+              "exit_reason": "fixed_44d"
+            },
+            {
+              "code": "6298",
+              "rank": 3,
+              "return_pct": 23.077,
+              "exit_day": 44,
+              "exit_reason": "fixed_44d"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "fixed_45d",
+      "kind": "fixed",
+      "hold_days": 45,
+      "event_avg_return_pct": 39.655,
+      "event_median_return_pct": 43.016,
+      "worst_event_return_pct": 7.792,
+      "best_event_return_pct": 67.243,
+      "event_stdev_pct": 25.187,
+      "positive_events": 5,
+      "trade_win_pct": 85.71,
+      "trade_avg_return_pct": 42.488,
+      "trade_median_return_pct": 33.735,
+      "avg_exit_day": 45.0,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 13.808,
+          "trades": [
+            {
+              "code": "3649",
+              "rank": 1,
+              "return_pct": 40.462,
+              "exit_day": 45,
+              "exit_reason": "fixed_45d"
+            },
+            {
+              "code": "9960",
+              "rank": 2,
+              "return_pct": 0.963,
+              "exit_day": 45,
+              "exit_reason": "fixed_45d"
+            }
+          ]
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 66.417,
+          "trades": [
+            {
+              "code": "7172",
+              "rank": 1,
+              "return_pct": 86.739,
+              "exit_day": 45,
+              "exit_reason": "fixed_45d"
+            },
+            {
+              "code": "4337",
+              "rank": 2,
+              "return_pct": 78.924,
+              "exit_day": 45,
+              "exit_reason": "fixed_45d"
+            },
+            {
+              "code": "3561",
+              "rank": 3,
+              "return_pct": 33.588,
+              "exit_day": 45,
+              "exit_reason": "fixed_45d"
+            }
+          ]
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 7.792,
+          "trades": [
+            {
+              "code": "8011",
+              "rank": 1,
+              "return_pct": 31.776,
+              "exit_day": 45,
+              "exit_reason": "fixed_45d"
+            },
+            {
+              "code": "7269",
+              "rank": 2,
+              "return_pct": -2.34,
+              "exit_day": 45,
+              "exit_reason": "fixed_45d"
+            },
+            {
+              "code": "7723",
+              "rank": 3,
+              "return_pct": -6.061,
+              "exit_day": 45,
+              "exit_reason": "fixed_45d"
+            }
+          ]
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 67.243,
+          "trades": [
+            {
+              "code": "9984",
+              "rank": 1,
+              "return_pct": 33.883,
+              "exit_day": 45,
+              "exit_reason": "fixed_45d"
+            },
+            {
+              "code": "6298",
+              "rank": 2,
+              "return_pct": 32.681,
+              "exit_day": 45,
+              "exit_reason": "fixed_45d"
+            },
+            {
+              "code": "5803",
+              "rank": 3,
+              "return_pct": 135.165,
+              "exit_day": 45,
+              "exit_reason": "fixed_45d"
+            }
+          ]
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 43.016,
+          "trades": [
+            {
+              "code": "6323",
+              "rank": 1,
+              "return_pct": 60.436,
+              "exit_day": 45,
+              "exit_reason": "fixed_45d"
+            },
+            {
+              "code": "5802",
+              "rank": 2,
+              "return_pct": 49.607,
+              "exit_day": 45,
+              "exit_reason": "fixed_45d"
+            },
+            {
+              "code": "6298",
+              "rank": 3,
+              "return_pct": 19.005,
+              "exit_day": 45,
+              "exit_reason": "fixed_45d"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "trail_a15_t8",
+      "kind": "trailing",
+      "activate_profit_pct": 15.0,
+      "trail_drawdown_pct": 8.0,
+      "max_hold_days": 60,
+      "event_avg_return_pct": 23.581,
+      "event_median_return_pct": 19.257,
+      "worst_event_return_pct": 15.279,
+      "best_event_return_pct": 34.832,
+      "event_stdev_pct": 8.063,
+      "positive_events": 5,
+      "trade_win_pct": 92.86,
+      "trade_avg_return_pct": 25.265,
+      "trade_median_return_pct": 18.169,
+      "avg_exit_day": 35.14,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 16.854,
+          "trades": [
+            {
+              "code": "3649",
+              "rank": 1,
+              "return_pct": 40.462,
+              "exit_day": 45,
+              "exit_reason": "trail_a15_t8"
+            },
+            {
+              "code": "9960",
+              "rank": 2,
+              "return_pct": 10.101,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            }
+          ]
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 19.257,
+          "trades": [
+            {
+              "code": "7172",
+              "rank": 1,
+              "return_pct": 6.033,
+              "exit_day": 5,
+              "exit_reason": "trail_a15_t8"
+            },
+            {
+              "code": "4337",
+              "rank": 2,
+              "return_pct": 9.181,
+              "exit_day": 4,
+              "exit_reason": "trail_a15_t8"
+            },
+            {
+              "code": "3561",
+              "rank": 3,
+              "return_pct": 42.557,
+              "exit_day": 42,
+              "exit_reason": "trail_a15_t8"
+            }
+          ]
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 15.279,
+          "trades": [
+            {
+              "code": "8011",
+              "rank": 1,
+              "return_pct": 41.589,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            },
+            {
+              "code": "7269",
+              "rank": 2,
+              "return_pct": 8.827,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            },
+            {
+              "code": "7723",
+              "rank": 3,
+              "return_pct": -4.578,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            }
+          ]
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 31.683,
+          "trades": [
+            {
+              "code": "9984",
+              "rank": 1,
+              "return_pct": 11.649,
+              "exit_day": 20,
+              "exit_reason": "trail_a15_t8"
+            },
+            {
+              "code": "6298",
+              "rank": 2,
+              "return_pct": 20.047,
+              "exit_day": 23,
+              "exit_reason": "trail_a15_t8"
+            },
+            {
+              "code": "5803",
+              "rank": 3,
+              "return_pct": 63.353,
+              "exit_day": 20,
+              "exit_reason": "trail_a15_t8"
+            }
+          ]
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 34.832,
+          "trades": [
+            {
+              "code": "6323",
+              "rank": 1,
+              "return_pct": 24.864,
+              "exit_day": 6,
+              "exit_reason": "trail_a15_t8"
+            },
+            {
+              "code": "5802",
+              "rank": 2,
+              "return_pct": 63.341,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            },
+            {
+              "code": "6298",
+              "rank": 3,
+              "return_pct": 16.29,
+              "exit_day": 27,
+              "exit_reason": "trail_a15_t8"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "trail_a15_t10",
+      "kind": "trailing",
+      "activate_profit_pct": 15.0,
+      "trail_drawdown_pct": 10.0,
+      "max_hold_days": 60,
+      "event_avg_return_pct": 24.524,
+      "event_median_return_pct": 19.481,
+      "worst_event_return_pct": 15.279,
+      "best_event_return_pct": 37.385,
+      "event_stdev_pct": 9.31,
+      "positive_events": 5,
+      "trade_win_pct": 92.86,
+      "trade_avg_return_pct": 26.276,
+      "trade_median_return_pct": 23.014,
+      "avg_exit_day": 39.64,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 16.405,
+          "trades": [
+            {
+              "code": "3649",
+              "rank": 1,
+              "return_pct": 39.114,
+              "exit_day": 52,
+              "exit_reason": "trail_a15_t10"
+            },
+            {
+              "code": "9960",
+              "rank": 2,
+              "return_pct": 10.101,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            }
+          ]
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 19.481,
+          "trades": [
+            {
+              "code": "7172",
+              "rank": 1,
+              "return_pct": 15.708,
+              "exit_day": 11,
+              "exit_reason": "trail_a15_t10"
+            },
+            {
+              "code": "4337",
+              "rank": 2,
+              "return_pct": 11.056,
+              "exit_day": 5,
+              "exit_reason": "trail_a15_t10"
+            },
+            {
+              "code": "3561",
+              "rank": 3,
+              "return_pct": 31.679,
+              "exit_day": 44,
+              "exit_reason": "trail_a15_t10"
+            }
+          ]
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 15.279,
+          "trades": [
+            {
+              "code": "8011",
+              "rank": 1,
+              "return_pct": 41.589,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            },
+            {
+              "code": "7269",
+              "rank": 2,
+              "return_pct": 8.827,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            },
+            {
+              "code": "7723",
+              "rank": 3,
+              "return_pct": -4.578,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            }
+          ]
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 37.385,
+          "trades": [
+            {
+              "code": "9984",
+              "rank": 1,
+              "return_pct": 30.179,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            },
+            {
+              "code": "6298",
+              "rank": 2,
+              "return_pct": 18.624,
+              "exit_day": 25,
+              "exit_reason": "trail_a15_t10"
+            },
+            {
+              "code": "5803",
+              "rank": 3,
+              "return_pct": 63.353,
+              "exit_day": 20,
+              "exit_reason": "trail_a15_t10"
+            }
+          ]
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 34.07,
+          "trades": [
+            {
+              "code": "6323",
+              "rank": 1,
+              "return_pct": 27.405,
+              "exit_day": 10,
+              "exit_reason": "trail_a15_t10"
+            },
+            {
+              "code": "5802",
+              "rank": 2,
+              "return_pct": 63.341,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            },
+            {
+              "code": "6298",
+              "rank": 3,
+              "return_pct": 11.463,
+              "exit_day": 28,
+              "exit_reason": "trail_a15_t10"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "trail_a15_t12",
+      "kind": "trailing",
+      "activate_profit_pct": 15.0,
+      "trail_drawdown_pct": 12.0,
+      "max_hold_days": 60,
+      "event_avg_return_pct": 28.968,
+      "event_median_return_pct": 22.057,
+      "worst_event_return_pct": 15.279,
+      "best_event_return_pct": 51.099,
+      "event_stdev_pct": 13.253,
+      "positive_events": 5,
+      "trade_win_pct": 92.86,
+      "trade_avg_return_pct": 31.037,
+      "trade_median_return_pct": 27.723,
+      "avg_exit_day": 46.43,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 22.057,
+          "trades": [
+            {
+              "code": "3649",
+              "rank": 1,
+              "return_pct": 56.069,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            },
+            {
+              "code": "9960",
+              "rank": 2,
+              "return_pct": 10.101,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            }
+          ]
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 19.481,
+          "trades": [
+            {
+              "code": "7172",
+              "rank": 1,
+              "return_pct": 15.708,
+              "exit_day": 11,
+              "exit_reason": "trail_a15_t12"
+            },
+            {
+              "code": "4337",
+              "rank": 2,
+              "return_pct": 11.056,
+              "exit_day": 5,
+              "exit_reason": "trail_a15_t12"
+            },
+            {
+              "code": "3561",
+              "rank": 3,
+              "return_pct": 31.679,
+              "exit_day": 44,
+              "exit_reason": "trail_a15_t12"
+            }
+          ]
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 15.279,
+          "trades": [
+            {
+              "code": "8011",
+              "rank": 1,
+              "return_pct": 41.589,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            },
+            {
+              "code": "7269",
+              "rank": 2,
+              "return_pct": 8.827,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            },
+            {
+              "code": "7723",
+              "rank": 3,
+              "return_pct": -4.578,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            }
+          ]
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 36.925,
+          "trades": [
+            {
+              "code": "9984",
+              "rank": 1,
+              "return_pct": 30.179,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            },
+            {
+              "code": "6298",
+              "rank": 2,
+              "return_pct": 25.267,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            },
+            {
+              "code": "5803",
+              "rank": 3,
+              "return_pct": 55.328,
+              "exit_day": 22,
+              "exit_reason": "trail_a15_t12"
+            }
+          ]
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 51.099,
+          "trades": [
+            {
+              "code": "6323",
+              "rank": 1,
+              "return_pct": 78.494,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            },
+            {
+              "code": "5802",
+              "rank": 2,
+              "return_pct": 63.341,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            },
+            {
+              "code": "6298",
+              "rank": 3,
+              "return_pct": 11.463,
+              "exit_day": 28,
+              "exit_reason": "trail_a15_t12"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "trail_a20_t8",
+      "kind": "trailing",
+      "activate_profit_pct": 20.0,
+      "trail_drawdown_pct": 8.0,
+      "max_hold_days": 60,
+      "event_avg_return_pct": 24.226,
+      "event_median_return_pct": 22.482,
+      "worst_event_return_pct": 15.279,
+      "best_event_return_pct": 34.832,
+      "event_stdev_pct": 7.817,
+      "positive_events": 5,
+      "trade_win_pct": 92.86,
+      "trade_avg_return_pct": 25.956,
+      "trade_median_return_pct": 18.169,
+      "avg_exit_day": 35.57,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 16.854,
+          "trades": [
+            {
+              "code": "3649",
+              "rank": 1,
+              "return_pct": 40.462,
+              "exit_day": 45,
+              "exit_reason": "trail_a20_t8"
+            },
+            {
+              "code": "9960",
+              "rank": 2,
+              "return_pct": 10.101,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            }
+          ]
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 22.482,
+          "trades": [
+            {
+              "code": "7172",
+              "rank": 1,
+              "return_pct": 15.708,
+              "exit_day": 11,
+              "exit_reason": "trail_a20_t8"
+            },
+            {
+              "code": "4337",
+              "rank": 2,
+              "return_pct": 9.181,
+              "exit_day": 4,
+              "exit_reason": "trail_a20_t8"
+            },
+            {
+              "code": "3561",
+              "rank": 3,
+              "return_pct": 42.557,
+              "exit_day": 42,
+              "exit_reason": "trail_a20_t8"
+            }
+          ]
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 15.279,
+          "trades": [
+            {
+              "code": "8011",
+              "rank": 1,
+              "return_pct": 41.589,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            },
+            {
+              "code": "7269",
+              "rank": 2,
+              "return_pct": 8.827,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            },
+            {
+              "code": "7723",
+              "rank": 3,
+              "return_pct": -4.578,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            }
+          ]
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 31.683,
+          "trades": [
+            {
+              "code": "9984",
+              "rank": 1,
+              "return_pct": 11.649,
+              "exit_day": 20,
+              "exit_reason": "trail_a20_t8"
+            },
+            {
+              "code": "6298",
+              "rank": 2,
+              "return_pct": 20.047,
+              "exit_day": 23,
+              "exit_reason": "trail_a20_t8"
+            },
+            {
+              "code": "5803",
+              "rank": 3,
+              "return_pct": 63.353,
+              "exit_day": 20,
+              "exit_reason": "trail_a20_t8"
+            }
+          ]
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 34.832,
+          "trades": [
+            {
+              "code": "6323",
+              "rank": 1,
+              "return_pct": 24.864,
+              "exit_day": 6,
+              "exit_reason": "trail_a20_t8"
+            },
+            {
+              "code": "5802",
+              "rank": 2,
+              "return_pct": 63.341,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            },
+            {
+              "code": "6298",
+              "rank": 3,
+              "return_pct": 16.29,
+              "exit_day": 27,
+              "exit_reason": "trail_a20_t8"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "trail_a20_t10",
+      "kind": "trailing",
+      "activate_profit_pct": 20.0,
+      "trail_drawdown_pct": 10.0,
+      "max_hold_days": 60,
+      "event_avg_return_pct": 24.524,
+      "event_median_return_pct": 19.481,
+      "worst_event_return_pct": 15.279,
+      "best_event_return_pct": 37.385,
+      "event_stdev_pct": 9.31,
+      "positive_events": 5,
+      "trade_win_pct": 92.86,
+      "trade_avg_return_pct": 26.276,
+      "trade_median_return_pct": 23.014,
+      "avg_exit_day": 39.64,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 16.405,
+          "trades": [
+            {
+              "code": "3649",
+              "rank": 1,
+              "return_pct": 39.114,
+              "exit_day": 52,
+              "exit_reason": "trail_a20_t10"
+            },
+            {
+              "code": "9960",
+              "rank": 2,
+              "return_pct": 10.101,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            }
+          ]
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 19.481,
+          "trades": [
+            {
+              "code": "7172",
+              "rank": 1,
+              "return_pct": 15.708,
+              "exit_day": 11,
+              "exit_reason": "trail_a20_t10"
+            },
+            {
+              "code": "4337",
+              "rank": 2,
+              "return_pct": 11.056,
+              "exit_day": 5,
+              "exit_reason": "trail_a20_t10"
+            },
+            {
+              "code": "3561",
+              "rank": 3,
+              "return_pct": 31.679,
+              "exit_day": 44,
+              "exit_reason": "trail_a20_t10"
+            }
+          ]
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 15.279,
+          "trades": [
+            {
+              "code": "8011",
+              "rank": 1,
+              "return_pct": 41.589,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            },
+            {
+              "code": "7269",
+              "rank": 2,
+              "return_pct": 8.827,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            },
+            {
+              "code": "7723",
+              "rank": 3,
+              "return_pct": -4.578,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            }
+          ]
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 37.385,
+          "trades": [
+            {
+              "code": "9984",
+              "rank": 1,
+              "return_pct": 30.179,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            },
+            {
+              "code": "6298",
+              "rank": 2,
+              "return_pct": 18.624,
+              "exit_day": 25,
+              "exit_reason": "trail_a20_t10"
+            },
+            {
+              "code": "5803",
+              "rank": 3,
+              "return_pct": 63.353,
+              "exit_day": 20,
+              "exit_reason": "trail_a20_t10"
+            }
+          ]
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 34.07,
+          "trades": [
+            {
+              "code": "6323",
+              "rank": 1,
+              "return_pct": 27.405,
+              "exit_day": 10,
+              "exit_reason": "trail_a20_t10"
+            },
+            {
+              "code": "5802",
+              "rank": 2,
+              "return_pct": 63.341,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            },
+            {
+              "code": "6298",
+              "rank": 3,
+              "return_pct": 11.463,
+              "exit_day": 28,
+              "exit_reason": "trail_a20_t10"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "trail_a20_t12",
+      "kind": "trailing",
+      "activate_profit_pct": 20.0,
+      "trail_drawdown_pct": 12.0,
+      "max_hold_days": 60,
+      "event_avg_return_pct": 28.968,
+      "event_median_return_pct": 22.057,
+      "worst_event_return_pct": 15.279,
+      "best_event_return_pct": 51.099,
+      "event_stdev_pct": 13.253,
+      "positive_events": 5,
+      "trade_win_pct": 92.86,
+      "trade_avg_return_pct": 31.037,
+      "trade_median_return_pct": 27.723,
+      "avg_exit_day": 46.43,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 22.057,
+          "trades": [
+            {
+              "code": "3649",
+              "rank": 1,
+              "return_pct": 56.069,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            },
+            {
+              "code": "9960",
+              "rank": 2,
+              "return_pct": 10.101,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            }
+          ]
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 19.481,
+          "trades": [
+            {
+              "code": "7172",
+              "rank": 1,
+              "return_pct": 15.708,
+              "exit_day": 11,
+              "exit_reason": "trail_a20_t12"
+            },
+            {
+              "code": "4337",
+              "rank": 2,
+              "return_pct": 11.056,
+              "exit_day": 5,
+              "exit_reason": "trail_a20_t12"
+            },
+            {
+              "code": "3561",
+              "rank": 3,
+              "return_pct": 31.679,
+              "exit_day": 44,
+              "exit_reason": "trail_a20_t12"
+            }
+          ]
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 15.279,
+          "trades": [
+            {
+              "code": "8011",
+              "rank": 1,
+              "return_pct": 41.589,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            },
+            {
+              "code": "7269",
+              "rank": 2,
+              "return_pct": 8.827,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            },
+            {
+              "code": "7723",
+              "rank": 3,
+              "return_pct": -4.578,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            }
+          ]
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 36.925,
+          "trades": [
+            {
+              "code": "9984",
+              "rank": 1,
+              "return_pct": 30.179,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            },
+            {
+              "code": "6298",
+              "rank": 2,
+              "return_pct": 25.267,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            },
+            {
+              "code": "5803",
+              "rank": 3,
+              "return_pct": 55.328,
+              "exit_day": 22,
+              "exit_reason": "trail_a20_t12"
+            }
+          ]
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 51.099,
+          "trades": [
+            {
+              "code": "6323",
+              "rank": 1,
+              "return_pct": 78.494,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            },
+            {
+              "code": "5802",
+              "rank": 2,
+              "return_pct": 63.341,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            },
+            {
+              "code": "6298",
+              "rank": 3,
+              "return_pct": 11.463,
+              "exit_day": 28,
+              "exit_reason": "trail_a20_t12"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "trail_a25_t8",
+      "kind": "trailing",
+      "activate_profit_pct": 25.0,
+      "trail_drawdown_pct": 8.0,
+      "max_hold_days": 60,
+      "event_avg_return_pct": 25.461,
+      "event_median_return_pct": 22.482,
+      "worst_event_return_pct": 15.279,
+      "best_event_return_pct": 37.86,
+      "event_stdev_pct": 9.254,
+      "positive_events": 5,
+      "trade_win_pct": 92.86,
+      "trade_avg_return_pct": 27.28,
+      "trade_median_return_pct": 22.456,
+      "avg_exit_day": 38.43,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 16.854,
+          "trades": [
+            {
+              "code": "3649",
+              "rank": 1,
+              "return_pct": 40.462,
+              "exit_day": 45,
+              "exit_reason": "trail_a25_t8"
+            },
+            {
+              "code": "9960",
+              "rank": 2,
+              "return_pct": 10.101,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            }
+          ]
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 22.482,
+          "trades": [
+            {
+              "code": "7172",
+              "rank": 1,
+              "return_pct": 15.708,
+              "exit_day": 11,
+              "exit_reason": "trail_a25_t8"
+            },
+            {
+              "code": "4337",
+              "rank": 2,
+              "return_pct": 9.181,
+              "exit_day": 4,
+              "exit_reason": "trail_a25_t8"
+            },
+            {
+              "code": "3561",
+              "rank": 3,
+              "return_pct": 42.557,
+              "exit_day": 42,
+              "exit_reason": "trail_a25_t8"
+            }
+          ]
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 15.279,
+          "trades": [
+            {
+              "code": "8011",
+              "rank": 1,
+              "return_pct": 41.589,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            },
+            {
+              "code": "7269",
+              "rank": 2,
+              "return_pct": 8.827,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            },
+            {
+              "code": "7723",
+              "rank": 3,
+              "return_pct": -4.578,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            }
+          ]
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 37.86,
+          "trades": [
+            {
+              "code": "9984",
+              "rank": 1,
+              "return_pct": 30.179,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            },
+            {
+              "code": "6298",
+              "rank": 2,
+              "return_pct": 20.047,
+              "exit_day": 23,
+              "exit_reason": "trail_a25_t8"
+            },
+            {
+              "code": "5803",
+              "rank": 3,
+              "return_pct": 63.353,
+              "exit_day": 20,
+              "exit_reason": "trail_a25_t8"
+            }
+          ]
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 34.832,
+          "trades": [
+            {
+              "code": "6323",
+              "rank": 1,
+              "return_pct": 24.864,
+              "exit_day": 6,
+              "exit_reason": "trail_a25_t8"
+            },
+            {
+              "code": "5802",
+              "rank": 2,
+              "return_pct": 63.341,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            },
+            {
+              "code": "6298",
+              "rank": 3,
+              "return_pct": 16.29,
+              "exit_day": 27,
+              "exit_reason": "trail_a25_t8"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "trail_a25_t10",
+      "kind": "trailing",
+      "activate_profit_pct": 25.0,
+      "trail_drawdown_pct": 10.0,
+      "max_hold_days": 60,
+      "event_avg_return_pct": 24.524,
+      "event_median_return_pct": 19.481,
+      "worst_event_return_pct": 15.279,
+      "best_event_return_pct": 37.385,
+      "event_stdev_pct": 9.31,
+      "positive_events": 5,
+      "trade_win_pct": 92.86,
+      "trade_avg_return_pct": 26.276,
+      "trade_median_return_pct": 23.014,
+      "avg_exit_day": 39.64,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 16.405,
+          "trades": [
+            {
+              "code": "3649",
+              "rank": 1,
+              "return_pct": 39.114,
+              "exit_day": 52,
+              "exit_reason": "trail_a25_t10"
+            },
+            {
+              "code": "9960",
+              "rank": 2,
+              "return_pct": 10.101,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            }
+          ]
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 19.481,
+          "trades": [
+            {
+              "code": "7172",
+              "rank": 1,
+              "return_pct": 15.708,
+              "exit_day": 11,
+              "exit_reason": "trail_a25_t10"
+            },
+            {
+              "code": "4337",
+              "rank": 2,
+              "return_pct": 11.056,
+              "exit_day": 5,
+              "exit_reason": "trail_a25_t10"
+            },
+            {
+              "code": "3561",
+              "rank": 3,
+              "return_pct": 31.679,
+              "exit_day": 44,
+              "exit_reason": "trail_a25_t10"
+            }
+          ]
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 15.279,
+          "trades": [
+            {
+              "code": "8011",
+              "rank": 1,
+              "return_pct": 41.589,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            },
+            {
+              "code": "7269",
+              "rank": 2,
+              "return_pct": 8.827,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            },
+            {
+              "code": "7723",
+              "rank": 3,
+              "return_pct": -4.578,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            }
+          ]
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 37.385,
+          "trades": [
+            {
+              "code": "9984",
+              "rank": 1,
+              "return_pct": 30.179,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            },
+            {
+              "code": "6298",
+              "rank": 2,
+              "return_pct": 18.624,
+              "exit_day": 25,
+              "exit_reason": "trail_a25_t10"
+            },
+            {
+              "code": "5803",
+              "rank": 3,
+              "return_pct": 63.353,
+              "exit_day": 20,
+              "exit_reason": "trail_a25_t10"
+            }
+          ]
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 34.07,
+          "trades": [
+            {
+              "code": "6323",
+              "rank": 1,
+              "return_pct": 27.405,
+              "exit_day": 10,
+              "exit_reason": "trail_a25_t10"
+            },
+            {
+              "code": "5802",
+              "rank": 2,
+              "return_pct": 63.341,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            },
+            {
+              "code": "6298",
+              "rank": 3,
+              "return_pct": 11.463,
+              "exit_day": 28,
+              "exit_reason": "trail_a25_t10"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "trail_a25_t12",
+      "kind": "trailing",
+      "activate_profit_pct": 25.0,
+      "trail_drawdown_pct": 12.0,
+      "max_hold_days": 60,
+      "event_avg_return_pct": 28.968,
+      "event_median_return_pct": 22.057,
+      "worst_event_return_pct": 15.279,
+      "best_event_return_pct": 51.099,
+      "event_stdev_pct": 13.253,
+      "positive_events": 5,
+      "trade_win_pct": 92.86,
+      "trade_avg_return_pct": 31.037,
+      "trade_median_return_pct": 27.723,
+      "avg_exit_day": 46.43,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 22.057,
+          "trades": [
+            {
+              "code": "3649",
+              "rank": 1,
+              "return_pct": 56.069,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            },
+            {
+              "code": "9960",
+              "rank": 2,
+              "return_pct": 10.101,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            }
+          ]
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 19.481,
+          "trades": [
+            {
+              "code": "7172",
+              "rank": 1,
+              "return_pct": 15.708,
+              "exit_day": 11,
+              "exit_reason": "trail_a25_t12"
+            },
+            {
+              "code": "4337",
+              "rank": 2,
+              "return_pct": 11.056,
+              "exit_day": 5,
+              "exit_reason": "trail_a25_t12"
+            },
+            {
+              "code": "3561",
+              "rank": 3,
+              "return_pct": 31.679,
+              "exit_day": 44,
+              "exit_reason": "trail_a25_t12"
+            }
+          ]
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 15.279,
+          "trades": [
+            {
+              "code": "8011",
+              "rank": 1,
+              "return_pct": 41.589,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            },
+            {
+              "code": "7269",
+              "rank": 2,
+              "return_pct": 8.827,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            },
+            {
+              "code": "7723",
+              "rank": 3,
+              "return_pct": -4.578,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            }
+          ]
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 36.925,
+          "trades": [
+            {
+              "code": "9984",
+              "rank": 1,
+              "return_pct": 30.179,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            },
+            {
+              "code": "6298",
+              "rank": 2,
+              "return_pct": 25.267,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            },
+            {
+              "code": "5803",
+              "rank": 3,
+              "return_pct": 55.328,
+              "exit_day": 22,
+              "exit_reason": "trail_a25_t12"
+            }
+          ]
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 51.099,
+          "trades": [
+            {
+              "code": "6323",
+              "rank": 1,
+              "return_pct": 78.494,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            },
+            {
+              "code": "5802",
+              "rank": 2,
+              "return_pct": 63.341,
+              "exit_day": 60,
+              "exit_reason": "max_60d"
+            },
+            {
+              "code": "6298",
+              "rank": 3,
+              "return_pct": 11.463,
+              "exit_day": 28,
+              "exit_reason": "trail_a25_t12"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "caveat": "Only five independent crash events. Close-based trailing avoids intraday sequencing assumptions; no fees/slippage."
+}
