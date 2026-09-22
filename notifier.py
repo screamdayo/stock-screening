@@ -258,12 +258,11 @@ def notify_pinch_to_chance(sensor):
     else:
         day = str(signal_date or datetime.now().strftime("%Y/%m/%d"))[:10].replace("-", "/")
 
-    lines = []
-    for r in sensor.get("candidates", []):
+    def _candidate_line(r, icon):
         label = _stock_label(r)
         detail = [
-            f"5日 {r.get('ret5_pct', 0):+.2f}%",
             f"DD20 {r.get('dd20_pct', 0):+.2f}%",
+            f"5日 {r.get('ret5_pct', 0):+.2f}%",
             f"当日 {r.get('bull_candle_pct', 0):+.2f}%",
             f"出来高20日比 {r.get('volume_ratio20', 0):.2f}倍",
         ]
@@ -273,9 +272,25 @@ def notify_pinch_to_chance(sensor):
             bd = r.get("earnings_business_days")
             when = f"（{bd}営業日後 / {ed}）" if bd is not None else f"（{ed}）"
             earnings_note = f"\n   ⚠️ **10営業日以内に決算あり** {when}"
-        lines.append(f"🔥 **{label}** — " + " / ".join(detail) + earnings_note)
+        return f"{icon} **#{r.get('dd20_rank', '?')} {label}** — " + " / ".join(detail) + earnings_note
 
-    candidates_text = "\n\n".join(lines) if lines else "個別候補なし"
+    main = sensor.get("main_candidates", [])
+    refs = sensor.get("reference_candidates", [])
+    sections = []
+    if main:
+        sections.append(
+            "🏆 **本命：DD20深い順 TOP3**\n"
+            + "\n\n".join(_candidate_line(r, "🔥") for r in main)
+        )
+    if refs:
+        sections.append(
+            "👀 **参考：4〜5位**\n"
+            + "\n\n".join(_candidate_line(r, "▫️") for r in refs)
+        )
+    remaining = max(0, int(sensor.get("candidate_count", 0)) - len(main) - len(refs))
+    if remaining:
+        sections.append(f"ほか候補 **{remaining}件**（専用ページで確認）")
+    candidates_text = "\n\n".join(sections) if sections else "個別候補なし"
     msg = (
         f"🚨 **ピンチをチャンスにセンサー発動 {day}**\n"
         f"市場反転率 **{sensor.get('reversal_rate_pct', 0):.3f}%** "
@@ -283,6 +298,7 @@ def notify_pinch_to_chance(sensor):
         f"TOPIX **{sensor.get('topix_return_pct', 0):+.3f}%** / "
         f"安値切り上げ **YES**\n"
         f"✅ 固定条件：反転率1%以上 + TOPIX+3%以上 + 安値切り上げ\n"
+        f"🏆 本番選別：**DD20が深い順 TOP3**（4〜5位は参考）\n"
         f"⏱️ 検証上の出口目安：**{sensor.get('exit_guide_business_days', 15)}営業日**\n\n"
         f"{candidates_text}\n\n"
         f"📈 **専用ページ**\n{PINCH_SENSOR_VIEW_URL}"
