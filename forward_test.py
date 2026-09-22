@@ -1,8 +1,9 @@
-"""Forward-test journal for the production Kuitto strategy.
+"""Unified forward-test journal for production signals.
 
-Only signals on/after FORWARD_TEST_START are recorded. Existing rows are never
-re-selected with hindsight; later daily runs only fill in information that became
-available after the signal (next-open gap, returns, MFE/MAE, exit result, etc.).
+Kuitto, GC strong breakout, and Pinch-to-Chance signals are stored in one log.
+Existing rows are never re-selected with hindsight; later daily runs only fill in
+facts that became available after the signal (next-open entry, future returns,
+MFE/MAE, and each strategy's frozen exit result).
 """
 
 import json
@@ -27,6 +28,27 @@ MAX_ENTRY_GAP_PCT = 0.5
 MAX_DAILY_BUYS = 5
 STOP_LOSS_PCT = 5.0
 MAX_HOLD_DAYS = 15
+
+GC_RULE_VERSION = "gc_strong_breakout_v1_2026-09-22"
+GC_HOLD_DAYS = 10
+PINCH_RULE_VERSION = "pinch_to_chance_v1_2026-09-22_top3_41d"
+PINCH_HOLD_DAYS = 41
+
+GC_RULE_SNAPSHOT = {
+    "version": GC_RULE_VERSION,
+    "effective_from": "2026-09-22",
+    "strategy": "gc_strong_breakout",
+    "entry": {"signal": "production gc_strong_breakout", "entry": "next trading-day open", "gap_cap": None},
+    "exit": {"fixed_hold_days": GC_HOLD_DAYS, "exit": "open after 10 trading days from entry", "stop_loss": None},
+}
+
+PINCH_RULE_SNAPSHOT = {
+    "version": PINCH_RULE_VERSION,
+    "effective_from": "2026-09-22",
+    "strategy": "pinch_to_chance",
+    "entry": {"signal": "market sensor active + individual anchor", "ranking": "DD20 deepest first", "selected": "top 3", "entry": "next trading-day open", "gap_cap": None},
+    "exit": {"fixed_hold_days": PINCH_HOLD_DAYS, "exit": "open after 41 trading days from entry", "stop_loss": None},
+}
 
 RULE_SNAPSHOT = {
     "version": RULE_VERSION,
@@ -217,6 +239,119 @@ def _update_future(row, g, signal_idx):
         })
 
 
+
+def _update_fixed_exit_future(row, g, signal_idx, hold_days, exit_reason):
+    """Fill common OOS fields for fixed-time GC / Pinch rules."""
+    ent = signal_idx + 1
+    if ent >= len(g):
+        return
+
+    entry = float(g.O.iloc[ent])
+    signal_close = float(g.C.iloc[signal_idx])
+    if not entry > 0 or not signal_close > 0:
+        return
+
+    row["entry_date"] = g.Date.iloc[ent].strftime("%Y-%m-%d")
+    row["entry_open"] = round(entry, 3)
+    row["next_open_gap_pct"] = round((entry / signal_close - 1) * 100, 3)
+    row["gap_pass"] = True
+
+    available_end = len(g) - 1
+    for days in (5, 10, 15, 20, 41):
+        idx = ent + days
+        if idx <= available_end:
+            row[f"return_{days}d_pct"] = _pct(g.O.iloc[idx], entry)
+
+    observed_end = min(ent + hold_days, available_end)
+    observed = g.iloc[ent:observed_end + 1]
+    if not observed.empty:
+        row["mfe_pct"] = round((float(observed.H.max()) / entry - 1) * 100, 3)
+        row["mae_pct"] = round((float(observed.L.min()) / entry - 1) * 100, 3)
+
+    exit_idx = ent + hold_days
+    if row.get("exit_date") or exit_idx > available_end:
+        return
+
+    px = float(g.O.iloc[exit_idx])
+    row.update({
+        "exit_date": g.Date.iloc[exit_idx].strftime("%Y-%m-%d"),
+        "exit_price": round(px, 3),
+        "exit_reason": exit_reason,
+        "exit_pnl_pct": _pct(px, entry),
+        "hold_days": hold_days,
+    })
+
+
+def _append_gc_rows(rows, keyed, gc_results, signal_date, code_to_name):
+    for r in gc_results or []:
+        code = str(r.get("code"))
+        day = pd.Timestamp(signal_date).strftime("%Y-%m-%d")
+        key = (code, day, GC_RULE_VERSION)
+        if key in keyed:
+            continue
+        rows.append({
+            "strategy": "gc_strong_breakout",
+            "rule_version": GC_RULE_VERSION,
+            "code": code,
+            "name": r.get("name") or code_to_name.get(code, ""),
+            "signal_date": day,
+            "signal_close": r.get("close"),
+            "gc_sequence": r.get("gc_sequence"),
+            "dd60_pct": r.get("dd60_pct"),
+            "ma25_slope5_pct": r.get("ma25_slope5_pct"),
+            "gc_gap_pct": r.get("gc_gap_pct"),
+            "volume_ratio20": r.get("volume_ratio20"),
+            "bull_candle_pct": r.get("bull_candle_pct"),
+            "rule_selected": True,
+            "actual_bought": None,
+            "entry_date": None, "entry_open": None, "next_open_gap_pct": None, "gap_pass": True,
+            "return_5d_pct": None, "return_10d_pct": None, "return_15d_pct": None,
+            "return_20d_pct": None, "return_41d_pct": None,
+            "mfe_pct": None, "mae_pct": None,
+            "exit_date": None, "exit_price": None, "exit_reason": None,
+            "exit_pnl_pct": None, "hold_days": None,
+        })
+        keyed.add(key)
+
+
+def _append_pinch_rows(rows, keyed, pinch_sensor, code_to_name):
+    if not pinch_sensor or not pinch_sensor.get("active"):
+        return
+    day = pd.Timestamp(pinch_sensor.get("signal_date")).strftime("%Y-%m-%d")
+    for r in pinch_sensor.get("main_candidates", []) or []:
+        code = str(r.get("code"))
+        key = (code, day, PINCH_RULE_VERSION)
+        if key in keyed:
+            continue
+        rows.append({
+            "strategy": "pinch_to_chance",
+            "rule_version": PINCH_RULE_VERSION,
+            "code": code,
+            "name": r.get("name") or code_to_name.get(code, ""),
+            "signal_date": day,
+            "signal_close": r.get("close"),
+            "dd20_rank": r.get("dd20_rank"),
+            "ret5_pct": r.get("ret5_pct"),
+            "dd20_pct": r.get("dd20_pct"),
+            "bull_candle_pct": r.get("bull_candle_pct"),
+            "volume_ratio20": r.get("volume_ratio20"),
+            "market_reversal_rate_pct": pinch_sensor.get("reversal_rate_pct"),
+            "topix_return_pct": pinch_sensor.get("topix_return_pct"),
+            "topix_low_up": pinch_sensor.get("topix_low_up"),
+            "planned_entry_date": pinch_sensor.get("planned_entry_date"),
+            "planned_exit_date": pinch_sensor.get("planned_exit_date"),
+            "rule_selected": True,
+            "actual_bought": None,
+            "entry_date": None, "entry_open": None, "next_open_gap_pct": None, "gap_pass": True,
+            "return_5d_pct": None, "return_10d_pct": None, "return_15d_pct": None,
+            "return_20d_pct": None, "return_41d_pct": None,
+            "mfe_pct": None, "mae_pct": None,
+            "exit_date": None, "exit_price": None, "exit_reason": None,
+            "exit_pnl_pct": None, "hold_days": None,
+        })
+        keyed.add(key)
+
+
 def _row_passes_entry_filters(row):
     if not row.get("volume_pass") or not row.get("gap_pass"):
         return False
@@ -228,6 +363,8 @@ def _row_passes_entry_filters(row):
 def _mark_rule_selection(rows):
     by_date = {}
     for row in rows:
+        if row.get("strategy") not in (None, "", "kuitto_pullback_auto"):
+            continue
         if _row_passes_entry_filters(row):
             by_date.setdefault(row["signal_date"], []).append(row)
 
@@ -254,11 +391,20 @@ def _mark_actual_buys(rows):
             row["actual_bought"] = True
 
 
-def update_forward_test(price_df, code_to_name=None):
+def update_forward_test(price_df, code_to_name=None, gc_results=None, pinch_sensor=None):
     code_to_name = code_to_name or {}
     rules = _load_json(RULES_PATH, {"versions": []})
+    changed_rules = False
     if not any(v.get("version") == RULE_VERSION for v in rules.get("versions", [])):
         rules.setdefault("versions", []).append(RULE_SNAPSHOT)
+        changed_rules = True
+    if not any(v.get("version") == GC_RULE_VERSION for v in rules.get("versions", [])):
+        rules.setdefault("versions", []).append(GC_RULE_SNAPSHOT)
+        changed_rules = True
+    if not any(v.get("version") == PINCH_RULE_VERSION for v in rules.get("versions", [])):
+        rules.setdefault("versions", []).append(PINCH_RULE_SNAPSHOT)
+        changed_rules = True
+    if changed_rules:
         _save_json(RULES_PATH, rules)
 
     payload = _load_json(LOG_PATH, {"started_at": "2026-09-09", "items": []})
@@ -284,6 +430,7 @@ def update_forward_test(price_df, code_to_name=None):
             volume_pass = f["volume_ratio"] is not None and f["volume_ratio"] >= VOLUME_RATIO_MIN
             liquidity_pass = f["avg_turnover_20"] is not None and f["avg_turnover_20"] >= AVG_TURNOVER_20_MIN
             rows.append({
+                "strategy": "kuitto_pullback_auto",
                 "rule_version": RULE_VERSION,
                 "code": code,
                 "name": code_to_name.get(code, ""),
@@ -320,7 +467,13 @@ def update_forward_test(price_df, code_to_name=None):
         matches = g.index[g.Date.dt.strftime("%Y-%m-%d") == row.get("signal_date")].tolist()
         if not matches:
             continue
-        _update_future(row, g, matches[0])
+        strategy = row.get("strategy") or "kuitto_pullback_auto"
+        if strategy == "gc_strong_breakout":
+            _update_fixed_exit_future(row, g, matches[0], GC_HOLD_DAYS, "fixed10_next_open")
+        elif strategy == "pinch_to_chance":
+            _update_fixed_exit_future(row, g, matches[0], PINCH_HOLD_DAYS, "fixed41_next_open")
+        else:
+            _update_future(row, g, matches[0])
 
     _mark_rule_selection(rows)
     _mark_actual_buys(rows)
