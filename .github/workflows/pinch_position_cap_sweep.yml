@@ -1,0 +1,35 @@
+name: Pinch Position Cap Sweep
+on:
+  workflow_dispatch:
+  push:
+    paths: ['scripts/analyze_pinch_position_cap_sweep.py']
+permissions: {contents: write}
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: screamdayo/stock-screening-data
+          token: ${{ secrets.STOCK_SCREENING_DATA_TOKEN }}
+          path: .private-data
+          sparse-checkout: |
+            data/batches
+          sparse-checkout-cone-mode: false
+      - run: |
+          mkdir -p data
+          ln -sfn "$GITHUB_WORKSPACE/.private-data/data/batches" data/batches
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.11"}
+      - run: pip install pandas pyarrow numpy
+      - run: python scripts/analyze_pinch_position_cap_sweep.py
+      - run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add results/pinch_position_cap_sweep.json
+          git diff --cached --quiet && exit 0
+          git commit -m "Run pinch position cap sweep"
+          git pull --rebase origin main
+          git push
