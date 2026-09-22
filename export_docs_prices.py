@@ -34,7 +34,7 @@ def _json_safe(value):
     return value
 
 
-def export_docs(price_df, target_codes, code_to_name, screening_results, gc_results=None, pinch_sensor=None):
+def export_docs(price_df, target_codes, code_to_name, screening_results, gc_results=None, pinch_sensor=None, selling_sensor=None):
     start = time.time()
 
     df = price_df[price_df["Code"].isin(target_codes)]
@@ -117,6 +117,12 @@ def export_docs(price_df, target_codes, code_to_name, screening_results, gc_resu
     with open(pinch_path, "w", encoding="utf-8") as f:
         json.dump(pinch_payload, f, ensure_ascii=False, indent=2)
 
+    selling_path = os.path.join("docs", "selling_climax_sensor.json")
+    selling_payload = _json_safe(selling_sensor or {"active": False, "reason": "未判定", "candidates": []})
+    selling_payload["generated_at"] = datetime.now().isoformat(timespec="seconds")
+    with open(selling_path, "w", encoding="utf-8") as f:
+        json.dump(selling_payload, f, ensure_ascii=False, indent=2)
+
     # Pages上で銘柄コードを入力した瞬間に会社名を補完するための軽量マスター。
     names_path = os.path.join("docs", "stock_names.json")
     names = {
@@ -133,7 +139,8 @@ def export_docs(price_df, target_codes, code_to_name, screening_results, gc_resu
     logger.info(
         f"docs/エクスポート完了: 株価{exported}銘柄 / "
         f"スクリーニング{len(screening_items)}件 / GC強ブレイク{len(gc_items)}件 / "
-        f"ピンチセンサー{'発動' if (pinch_sensor or {}).get('active') else '待機'} / 銘柄名{len(names)}件 "
+        f"ピンチセンサー{'発動' if (pinch_sensor or {}).get('active') else '待機'} / "
+        f"売り尽くしセンサー{'発動' if (selling_sensor or {}).get('active') else '待機'} / 銘柄名{len(names)}件 "
         f"（{time.time() - start:.1f}秒）"
     )
 
@@ -163,11 +170,15 @@ def run():
 
     # 単独エクスポート時もセンサー状態を生成する。
     import pinch_to_chance
+    import selling_climax
     pinch_sensor = pinch_to_chance.evaluate(price_df, target_codes)
+    selling_sensor = selling_climax.evaluate(price_df, target_codes)
     for r in pinch_sensor.get("candidates", []):
         r["name"] = code_to_name.get(r["code"], "")
+    for r in selling_sensor.get("candidates", []):
+        r["name"] = code_to_name.get(r["code"], "")
 
-    export_docs(price_df, target_codes, code_to_name, results, gc_results, pinch_sensor)
+    export_docs(price_df, target_codes, code_to_name, results, gc_results, pinch_sensor, selling_sensor)
 
 
 if __name__ == "__main__":
