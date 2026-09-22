@@ -16,6 +16,7 @@ logger = get_logger(__name__)
 SCREENING_VIEW_URL = "https://screamdayo.github.io/stock-screening/screening.html"
 GC_SCREENING_VIEW_URL = "https://screamdayo.github.io/stock-screening/gc.html"
 PINCH_SENSOR_VIEW_URL = "https://screamdayo.github.io/stock-screening/pinch.html"
+SELLING_CLIMAX_VIEW_URL = "https://screamdayo.github.io/stock-screening/selling_climax.html"
 NEXT_OPEN_GAP_MAX_PCT = 0.5
 STOP_LOSS_PCT = 5.0
 
@@ -236,6 +237,70 @@ def notify_gc_strong_breakout(results):
         f"⏱️ **出口検証の山：9〜10営業日**（固定10日が平均利益最大、9日はPF高め）\n\n"
         + "\n\n".join(lines)
         + f"\n\n📈 **GC専用ページ**\n{GC_SCREENING_VIEW_URL}"
+    )
+    _post_long(msg)
+
+
+def notify_selling_climax(sensor):
+    """暴落当日の売り尽くし先行センサー。未発動時は通知しない。"""
+    if not sensor or not sensor.get("active"):
+        if sensor:
+            logger.info(
+                "売り尽くし通知なし（待機中: TOPIX%s%% / DD20%s%% / 強反転比率%s%%）",
+                sensor.get("topix_return_pct"),
+                sensor.get("topix_dd20_pct"),
+                sensor.get("anchor_share_pct"),
+            )
+        return
+
+    signal_date = sensor.get("signal_date")
+    if hasattr(signal_date, "strftime"):
+        day = signal_date.strftime("%Y/%m/%d")
+    else:
+        day = str(signal_date or datetime.now().strftime("%Y/%m/%d"))[:10].replace("-", "/")
+
+    def _line(r, icon):
+        label = _stock_label(r)
+        detail = [
+            f"DD20 {r.get('dd20_pct', 0):+.2f}%",
+            f"5日 {r.get('ret5_pct', 0):+.2f}%",
+            f"当日 {r.get('bull_candle_pct', 0):+.2f}%",
+            f"出来高20日比 {r.get('volume_ratio20', 0):.2f}倍",
+        ]
+        earnings_note = ""
+        if r.get("earnings_within_10bd"):
+            ed = r.get("earnings_date") or "日付不明"
+            bd = r.get("earnings_business_days")
+            when = f"（{bd}営業日後 / {ed}）" if bd is not None else f"（{ed}）"
+            earnings_note = f"\n   ⚠️ **10営業日以内に決算あり** {when}"
+        return f"{icon} **#{r.get('dd20_rank', '?')} {label}** — " + " / ".join(detail) + earnings_note
+
+    main = sensor.get("main_candidates", [])
+    refs = sensor.get("reference_candidates", [])
+    sections = []
+    if main:
+        sections.append("🏆 **本命：DD20深い順 TOP3**\n" + "\n\n".join(_line(r, "🔥") for r in main))
+    if refs:
+        sections.append("👀 **参考：4〜5位**\n" + "\n\n".join(_line(r, "▫️") for r in refs))
+    candidates_text = "\n\n".join(sections) if sections else "個別候補なし"
+
+    msg = (
+        f"🔥 **売り尽くしセンサー発動 {day}**\n"
+        f"TOPIX **{sensor.get('topix_return_pct', 0):+.3f}%** / "
+        f"DD20 **{sensor.get('topix_dd20_pct', 0):+.3f}%**\n"
+        f"強反転比率 **{sensor.get('anchor_share_pct', 0):.3f}%** "
+        f"（{sensor.get('anchor_count', 0)}/{sensor.get('coarse_reversal_count', 0)}）\n"
+        f"✅ 固定条件：TOPIX -2%以下 + DD20 -15%以下 + 強反転比率10%以上\n"
+        f"🏆 本番選別：**DD20が深い順 TOP3**（4〜5位は参考）\n"
+        f"💰 資金配分：**1銘柄最大{sensor.get('single_stock_cap_pct', 80)}%** / "
+        f"**100株単位**で #1 → #2 → #3 の順に配分 / 余りは現金\n"
+        f"🟢 入口：**{sensor.get('entry_rule', '翌営業日寄り')}**"
+        + (f"（{sensor.get('planned_entry_date')}）\n" if sensor.get("planned_entry_date") else "\n")
+        + f"🔴 出口：**{sensor.get('exit_rule', '41営業日目の寄り')}**"
+        + (f"（{sensor.get('planned_exit_date')}）\n\n" if sensor.get("planned_exit_date") else "\n\n")
+        + "⏳ **先行シグナルです。次はピンチをチャンスにセンサーの底打ち確認待ち。**\n\n"
+        + candidates_text
+        + f"\n\n📈 **専用ページ**\n{SELLING_CLIMAX_VIEW_URL}"
     )
     _post_long(msg)
 
