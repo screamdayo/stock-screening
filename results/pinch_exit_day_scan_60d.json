@@ -1,0 +1,3655 @@
+{
+  "study": "Pinch TOP3 fixed exit day scan",
+  "entry": "Next business day open, no gap limit, no fixed stop",
+  "exit": "Open on Nth business day after entry",
+  "scan_days": [
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31,
+    32,
+    33,
+    34,
+    35,
+    36,
+    37,
+    38,
+    39,
+    40,
+    41,
+    42,
+    43,
+    44,
+    45,
+    46,
+    47,
+    48,
+    49,
+    50,
+    51,
+    52,
+    53,
+    54,
+    55,
+    56,
+    57,
+    58,
+    59,
+    60
+  ],
+  "best_by_event_average": [
+    {
+      "hold_days": 33,
+      "event_avg_return_pct": 44.01,
+      "event_median_return_pct": 42.136,
+      "worst_event_return_pct": 7.718,
+      "best_event_return_pct": 93.035,
+      "event_stdev_pct": 29.509,
+      "positive_events": 5,
+      "trade_win_pct": 85.71,
+      "trade_avg_return_pct": 47.154,
+      "trade_median_return_pct": 41.254,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 21.688
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 93.035
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 7.718
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 55.475
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 42.136
+        }
+      ]
+    },
+    {
+      "hold_days": 41,
+      "event_avg_return_pct": 43.838,
+      "event_median_return_pct": 43.154,
+      "worst_event_return_pct": 11.521,
+      "best_event_return_pct": 86.67,
+      "event_stdev_pct": 27.171,
+      "positive_events": 5,
+      "trade_win_pct": 92.86,
+      "trade_avg_return_pct": 46.969,
+      "trade_median_return_pct": 42.366,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 19.383
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 86.67
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 11.521
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 58.462
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 43.154
+        }
+      ]
+    },
+    {
+      "hold_days": 34,
+      "event_avg_return_pct": 43.757,
+      "event_median_return_pct": 41.611,
+      "worst_event_return_pct": 11.3,
+      "best_event_return_pct": 85.958,
+      "event_stdev_pct": 26.811,
+      "positive_events": 5,
+      "trade_win_pct": 92.86,
+      "trade_avg_return_pct": 46.882,
+      "trade_median_return_pct": 40.977,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 20.902
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 85.958
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 11.3
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 59.012
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 41.611
+        }
+      ]
+    },
+    {
+      "hold_days": 42,
+      "event_avg_return_pct": 43.448,
+      "event_median_return_pct": 45.154,
+      "worst_event_return_pct": 9.325,
+      "best_event_return_pct": 80.507,
+      "event_stdev_pct": 26.074,
+      "positive_events": 5,
+      "trade_win_pct": 85.71,
+      "trade_avg_return_pct": 46.552,
+      "trade_median_return_pct": 38.171,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 20.538
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 80.507
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 9.325
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 61.717
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 45.154
+        }
+      ]
+    },
+    {
+      "hold_days": 43,
+      "event_avg_return_pct": 43.409,
+      "event_median_return_pct": 47.943,
+      "worst_event_return_pct": 9.408,
+      "best_event_return_pct": 78.897,
+      "event_stdev_pct": 25.946,
+      "positive_events": 5,
+      "trade_win_pct": 85.71,
+      "trade_avg_return_pct": 46.51,
+      "trade_median_return_pct": 39.146,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 19.047
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 78.897
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 9.408
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 61.752
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 47.943
+        }
+      ]
+    },
+    {
+      "hold_days": 32,
+      "event_avg_return_pct": 42.98,
+      "event_median_return_pct": 40.542,
+      "worst_event_return_pct": 10.454,
+      "best_event_return_pct": 89.74,
+      "event_stdev_pct": 27.874,
+      "positive_events": 5,
+      "trade_win_pct": 92.86,
+      "trade_avg_return_pct": 46.049,
+      "trade_median_return_pct": 40.784,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 20.275
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 89.74
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 10.454
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 53.887
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 40.542
+        }
+      ]
+    },
+    {
+      "hold_days": 57,
+      "event_avg_return_pct": 42.839,
+      "event_median_return_pct": 50.536,
+      "worst_event_return_pct": 16.231,
+      "best_event_return_pct": 68.914,
+      "event_stdev_pct": 21.432,
+      "positive_events": 5,
+      "trade_win_pct": 92.86,
+      "trade_avg_return_pct": 45.898,
+      "trade_median_return_pct": 42.232,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 18.959
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 59.553
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 16.231
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 68.914
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 50.536
+        }
+      ]
+    },
+    {
+      "hold_days": 56,
+      "event_avg_return_pct": 42.827,
+      "event_median_return_pct": 55.796,
+      "worst_event_return_pct": 16.65,
+      "best_event_return_pct": 65.202,
+      "event_stdev_pct": 20.923,
+      "positive_events": 5,
+      "trade_win_pct": 92.86,
+      "trade_avg_return_pct": 45.886,
+      "trade_median_return_pct": 41.457,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 18.333
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 58.154
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 16.65
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 65.202
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 55.796
+        }
+      ]
+    },
+    {
+      "hold_days": 40,
+      "event_avg_return_pct": 42.754,
+      "event_median_return_pct": 42.155,
+      "worst_event_return_pct": 5.3,
+      "best_event_return_pct": 86.981,
+      "event_stdev_pct": 28.493,
+      "positive_events": 5,
+      "trade_win_pct": 85.71,
+      "trade_avg_return_pct": 45.807,
+      "trade_median_return_pct": 42.373,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 21.212
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 86.981
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 5.3
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 58.121
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 42.155
+        }
+      ]
+    },
+    {
+      "hold_days": 55,
+      "event_avg_return_pct": 42.158,
+      "event_median_return_pct": 57.571,
+      "worst_event_return_pct": 16.88,
+      "best_event_return_pct": 59.982,
+      "event_stdev_pct": 20.305,
+      "positive_events": 5,
+      "trade_win_pct": 100.0,
+      "trade_avg_return_pct": 45.169,
+      "trade_median_return_pct": 37.897,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 17.739
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 57.571
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 16.88
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 58.617
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 59.982
+        }
+      ]
+    }
+  ],
+  "robust_plateau_within_90pct_of_best": [
+    {
+      "hold_days": 31,
+      "event_avg_return_pct": 40.933,
+      "event_median_return_pct": 37.772,
+      "worst_event_return_pct": 10.901,
+      "best_event_return_pct": 84.303,
+      "event_stdev_pct": 26.237,
+      "positive_events": 5,
+      "trade_win_pct": 92.86,
+      "trade_avg_return_pct": 43.857,
+      "trade_median_return_pct": 37.85,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 18.564
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 84.303
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 10.901
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 53.124
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 37.772
+        }
+      ]
+    },
+    {
+      "hold_days": 32,
+      "event_avg_return_pct": 42.98,
+      "event_median_return_pct": 40.542,
+      "worst_event_return_pct": 10.454,
+      "best_event_return_pct": 89.74,
+      "event_stdev_pct": 27.874,
+      "positive_events": 5,
+      "trade_win_pct": 92.86,
+      "trade_avg_return_pct": 46.049,
+      "trade_median_return_pct": 40.784,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 20.275
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 89.74
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 10.454
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 53.887
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 40.542
+        }
+      ]
+    },
+    {
+      "hold_days": 33,
+      "event_avg_return_pct": 44.01,
+      "event_median_return_pct": 42.136,
+      "worst_event_return_pct": 7.718,
+      "best_event_return_pct": 93.035,
+      "event_stdev_pct": 29.509,
+      "positive_events": 5,
+      "trade_win_pct": 85.71,
+      "trade_avg_return_pct": 47.154,
+      "trade_median_return_pct": 41.254,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 21.688
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 93.035
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 7.718
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 55.475
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 42.136
+        }
+      ]
+    },
+    {
+      "hold_days": 34,
+      "event_avg_return_pct": 43.757,
+      "event_median_return_pct": 41.611,
+      "worst_event_return_pct": 11.3,
+      "best_event_return_pct": 85.958,
+      "event_stdev_pct": 26.811,
+      "positive_events": 5,
+      "trade_win_pct": 92.86,
+      "trade_avg_return_pct": 46.882,
+      "trade_median_return_pct": 40.977,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 20.902
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 85.958
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 11.3
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 59.012
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 41.611
+        }
+      ]
+    },
+    {
+      "hold_days": 35,
+      "event_avg_return_pct": 41.623,
+      "event_median_return_pct": 39.791,
+      "worst_event_return_pct": 10.147,
+      "best_event_return_pct": 83.552,
+      "event_stdev_pct": 25.848,
+      "positive_events": 5,
+      "trade_win_pct": 92.86,
+      "trade_avg_return_pct": 44.596,
+      "trade_median_return_pct": 38.838,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 20.708
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 83.552
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 10.147
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 53.916
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 39.791
+        }
+      ]
+    },
+    {
+      "hold_days": 36,
+      "event_avg_return_pct": 41.347,
+      "event_median_return_pct": 38.478,
+      "worst_event_return_pct": 11.065,
+      "best_event_return_pct": 81.917,
+      "event_stdev_pct": 25.303,
+      "positive_events": 5,
+      "trade_win_pct": 92.86,
+      "trade_avg_return_pct": 44.3,
+      "trade_median_return_pct": 38.643,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 20.279
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 81.917
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 11.065
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 54.996
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 38.478
+        }
+      ]
+    },
+    {
+      "hold_days": 37,
+      "event_avg_return_pct": 42.084,
+      "event_median_return_pct": 40.663,
+      "worst_event_return_pct": 8.349,
+      "best_event_return_pct": 87.245,
+      "event_stdev_pct": 27.639,
+      "positive_events": 5,
+      "trade_win_pct": 92.86,
+      "trade_avg_return_pct": 45.09,
+      "trade_median_return_pct": 40.163,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 19.909
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 87.245
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 8.349
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 54.256
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 40.663
+        }
+      ]
+    },
+    {
+      "hold_days": 38,
+      "event_avg_return_pct": 41.592,
+      "event_median_return_pct": 40.264,
+      "worst_event_return_pct": 8.271,
+      "best_event_return_pct": 79.975,
+      "event_stdev_pct": 25.567,
+      "positive_events": 5,
+      "trade_win_pct": 92.86,
+      "trade_avg_return_pct": 44.563,
+      "trade_median_return_pct": 41.16,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 21.341
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 79.975
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 8.271
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 58.11
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 40.264
+        }
+      ]
+    },
+    {
+      "hold_days": 39,
+      "event_avg_return_pct": 39.917,
+      "event_median_return_pct": 41.796,
+      "worst_event_return_pct": 7.152,
+      "best_event_return_pct": 75.678,
+      "event_stdev_pct": 24.644,
+      "positive_events": 5,
+      "trade_win_pct": 85.71,
+      "trade_avg_return_pct": 42.768,
+      "trade_median_return_pct": 41.231,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 19.193
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 75.678
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 7.152
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 55.765
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 41.796
+        }
+      ]
+    },
+    {
+      "hold_days": 40,
+      "event_avg_return_pct": 42.754,
+      "event_median_return_pct": 42.155,
+      "worst_event_return_pct": 5.3,
+      "best_event_return_pct": 86.981,
+      "event_stdev_pct": 28.493,
+      "positive_events": 5,
+      "trade_win_pct": 85.71,
+      "trade_avg_return_pct": 45.807,
+      "trade_median_return_pct": 42.373,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 21.212
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 86.981
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 5.3
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 58.121
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 42.155
+        }
+      ]
+    },
+    {
+      "hold_days": 41,
+      "event_avg_return_pct": 43.838,
+      "event_median_return_pct": 43.154,
+      "worst_event_return_pct": 11.521,
+      "best_event_return_pct": 86.67,
+      "event_stdev_pct": 27.171,
+      "positive_events": 5,
+      "trade_win_pct": 92.86,
+      "trade_avg_return_pct": 46.969,
+      "trade_median_return_pct": 42.366,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 19.383
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 86.67
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 11.521
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 58.462
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 43.154
+        }
+      ]
+    },
+    {
+      "hold_days": 42,
+      "event_avg_return_pct": 43.448,
+      "event_median_return_pct": 45.154,
+      "worst_event_return_pct": 9.325,
+      "best_event_return_pct": 80.507,
+      "event_stdev_pct": 26.074,
+      "positive_events": 5,
+      "trade_win_pct": 85.71,
+      "trade_avg_return_pct": 46.552,
+      "trade_median_return_pct": 38.171,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 20.538
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 80.507
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 9.325
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 61.717
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 45.154
+        }
+      ]
+    },
+    {
+      "hold_days": 43,
+      "event_avg_return_pct": 43.409,
+      "event_median_return_pct": 47.943,
+      "worst_event_return_pct": 9.408,
+      "best_event_return_pct": 78.897,
+      "event_stdev_pct": 25.946,
+      "positive_events": 5,
+      "trade_win_pct": 85.71,
+      "trade_avg_return_pct": 46.51,
+      "trade_median_return_pct": 39.146,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 19.047
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 78.897
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 9.408
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 61.752
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 47.943
+        }
+      ]
+    },
+    {
+      "hold_days": 45,
+      "event_avg_return_pct": 39.655,
+      "event_median_return_pct": 43.016,
+      "worst_event_return_pct": 7.792,
+      "best_event_return_pct": 67.243,
+      "event_stdev_pct": 25.187,
+      "positive_events": 5,
+      "trade_win_pct": 85.71,
+      "trade_avg_return_pct": 42.488,
+      "trade_median_return_pct": 33.735,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 13.808
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 66.417
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 7.792
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 67.243
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 43.016
+        }
+      ]
+    },
+    {
+      "hold_days": 46,
+      "event_avg_return_pct": 39.857,
+      "event_median_return_pct": 47.737,
+      "worst_event_return_pct": 10.423,
+      "best_event_return_pct": 63.202,
+      "event_stdev_pct": 22.366,
+      "positive_events": 5,
+      "trade_win_pct": 92.86,
+      "trade_avg_return_pct": 42.703,
+      "trade_median_return_pct": 32.622,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 16.309
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 63.202
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 10.423
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 61.612
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 47.737
+        }
+      ]
+    },
+    {
+      "hold_days": 47,
+      "event_avg_return_pct": 41.578,
+      "event_median_return_pct": 48.281,
+      "worst_event_return_pct": 11.747,
+      "best_event_return_pct": 67.045,
+      "event_stdev_pct": 23.189,
+      "positive_events": 5,
+      "trade_win_pct": 92.86,
+      "trade_avg_return_pct": 44.547,
+      "trade_median_return_pct": 36.226,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 16.929
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 67.045
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 11.747
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 63.886
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 48.281
+        }
+      ]
+    },
+    {
+      "hold_days": 48,
+      "event_avg_return_pct": 40.503,
+      "event_median_return_pct": 48.022,
+      "worst_event_return_pct": 11.49,
+      "best_event_return_pct": 64.24,
+      "event_stdev_pct": 22.406,
+      "positive_events": 5,
+      "trade_win_pct": 85.71,
+      "trade_avg_return_pct": 43.396,
+      "trade_median_return_pct": 36.646,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 16.512
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 64.24
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 11.49
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 62.25
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 48.022
+        }
+      ]
+    },
+    {
+      "hold_days": 49,
+      "event_avg_return_pct": 40.463,
+      "event_median_return_pct": 45.568,
+      "worst_event_return_pct": 11.552,
+      "best_event_return_pct": 64.926,
+      "event_stdev_pct": 22.581,
+      "positive_events": 5,
+      "trade_win_pct": 85.71,
+      "trade_avg_return_pct": 43.353,
+      "trade_median_return_pct": 38.002,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 16.8
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 63.469
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 11.552
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 64.926
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 45.568
+        }
+      ]
+    },
+    {
+      "hold_days": 50,
+      "event_avg_return_pct": 40.429,
+      "event_median_return_pct": 44.348,
+      "worst_event_return_pct": 13.64,
+      "best_event_return_pct": 64.696,
+      "event_stdev_pct": 21.855,
+      "positive_events": 5,
+      "trade_win_pct": 85.71,
+      "trade_avg_return_pct": 43.317,
+      "trade_median_return_pct": 39.662,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 16.651
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 64.696
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 13.64
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 62.809
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 44.348
+        }
+      ]
+    },
+    {
+      "hold_days": 51,
+      "event_avg_return_pct": 41.244,
+      "event_median_return_pct": 46.606,
+      "worst_event_return_pct": 16.325,
+      "best_event_return_pct": 67.799,
+      "event_stdev_pct": 21.198,
+      "positive_events": 5,
+      "trade_win_pct": 100.0,
+      "trade_avg_return_pct": 44.19,
+      "trade_median_return_pct": 40.368,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 16.92
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 67.799
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 16.325
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 58.572
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 46.606
+        }
+      ]
+    },
+    {
+      "hold_days": 52,
+      "event_avg_return_pct": 40.438,
+      "event_median_return_pct": 49.643,
+      "worst_event_return_pct": 13.872,
+      "best_event_return_pct": 68.239,
+      "event_stdev_pct": 21.673,
+      "positive_events": 5,
+      "trade_win_pct": 92.86,
+      "trade_avg_return_pct": 43.326,
+      "trade_median_return_pct": 39.595,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 16.103
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 68.239
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 13.872
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 54.332
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 49.643
+        }
+      ]
+    },
+    {
+      "hold_days": 53,
+      "event_avg_return_pct": 40.492,
+      "event_median_return_pct": 51.119,
+      "worst_event_return_pct": 14.561,
+      "best_event_return_pct": 63.703,
+      "event_stdev_pct": 20.727,
+      "positive_events": 5,
+      "trade_win_pct": 100.0,
+      "trade_avg_return_pct": 43.385,
+      "trade_median_return_pct": 37.115,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 16.63
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 63.703
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 14.561
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 56.448
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 51.119
+        }
+      ]
+    },
+    {
+      "hold_days": 54,
+      "event_avg_return_pct": 41.822,
+      "event_median_return_pct": 55.501,
+      "worst_event_return_pct": 16.332,
+      "best_event_return_pct": 63.504,
+      "event_stdev_pct": 20.75,
+      "positive_events": 5,
+      "trade_win_pct": 100.0,
+      "trade_avg_return_pct": 44.809,
+      "trade_median_return_pct": 38.613,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 16.921
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 63.504
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 16.332
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 56.851
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 55.501
+        }
+      ]
+    },
+    {
+      "hold_days": 55,
+      "event_avg_return_pct": 42.158,
+      "event_median_return_pct": 57.571,
+      "worst_event_return_pct": 16.88,
+      "best_event_return_pct": 59.982,
+      "event_stdev_pct": 20.305,
+      "positive_events": 5,
+      "trade_win_pct": 100.0,
+      "trade_avg_return_pct": 45.169,
+      "trade_median_return_pct": 37.897,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 17.739
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 57.571
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 16.88
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 58.617
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 59.982
+        }
+      ]
+    },
+    {
+      "hold_days": 56,
+      "event_avg_return_pct": 42.827,
+      "event_median_return_pct": 55.796,
+      "worst_event_return_pct": 16.65,
+      "best_event_return_pct": 65.202,
+      "event_stdev_pct": 20.923,
+      "positive_events": 5,
+      "trade_win_pct": 92.86,
+      "trade_avg_return_pct": 45.886,
+      "trade_median_return_pct": 41.457,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 18.333
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 58.154
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 16.65
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 65.202
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 55.796
+        }
+      ]
+    },
+    {
+      "hold_days": 57,
+      "event_avg_return_pct": 42.839,
+      "event_median_return_pct": 50.536,
+      "worst_event_return_pct": 16.231,
+      "best_event_return_pct": 68.914,
+      "event_stdev_pct": 21.432,
+      "positive_events": 5,
+      "trade_win_pct": 92.86,
+      "trade_avg_return_pct": 45.898,
+      "trade_median_return_pct": 42.232,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 18.959
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 59.553
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 16.231
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 68.914
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 50.536
+        }
+      ]
+    },
+    {
+      "hold_days": 58,
+      "event_avg_return_pct": 40.885,
+      "event_median_return_pct": 51.608,
+      "worst_event_return_pct": 15.921,
+      "best_event_return_pct": 65.03,
+      "event_stdev_pct": 19.57,
+      "positive_events": 5,
+      "trade_win_pct": 92.86,
+      "trade_avg_return_pct": 43.806,
+      "trade_median_return_pct": 39.842,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 19.43
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 52.438
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 15.921
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 65.03
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 51.608
+        }
+      ]
+    },
+    {
+      "hold_days": 59,
+      "event_avg_return_pct": 40.883,
+      "event_median_return_pct": 47.563,
+      "worst_event_return_pct": 16.399,
+      "best_event_return_pct": 62.948,
+      "event_stdev_pct": 18.707,
+      "positive_events": 5,
+      "trade_win_pct": 92.86,
+      "trade_avg_return_pct": 43.803,
+      "trade_median_return_pct": 37.514,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 21.29
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 47.563
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 16.399
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 62.948
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 56.213
+        }
+      ]
+    },
+    {
+      "hold_days": 60,
+      "event_avg_return_pct": 39.701,
+      "event_median_return_pct": 44.869,
+      "worst_event_return_pct": 15.279,
+      "best_event_return_pct": 63.392,
+      "event_stdev_pct": 18.277,
+      "positive_events": 5,
+      "trade_win_pct": 92.86,
+      "trade_avg_return_pct": 42.537,
+      "trade_median_return_pct": 35.884,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 22.057
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 44.869
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 15.279
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 63.392
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 52.909
+        }
+      ]
+    }
+  ],
+  "all_results": [
+    {
+      "hold_days": 8,
+      "event_avg_return_pct": 15.527,
+      "event_median_return_pct": 15.531,
+      "worst_event_return_pct": -0.581,
+      "best_event_return_pct": 37.805,
+      "event_stdev_pct": 12.625,
+      "positive_events": 4,
+      "trade_win_pct": 92.86,
+      "trade_avg_return_pct": 16.636,
+      "trade_median_return_pct": 11.92,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": -0.581
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 15.764
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 9.117
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 37.805
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 15.531
+        }
+      ]
+    },
+    {
+      "hold_days": 9,
+      "event_avg_return_pct": 17.001,
+      "event_median_return_pct": 13.843,
+      "worst_event_return_pct": -0.97,
+      "best_event_return_pct": 38.639,
+      "event_stdev_pct": 13.158,
+      "positive_events": 4,
+      "trade_win_pct": 92.86,
+      "trade_avg_return_pct": 18.215,
+      "trade_median_return_pct": 13.283,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": -0.97
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 22.424
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 11.069
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 38.639
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 13.843
+        }
+      ]
+    },
+    {
+      "hold_days": 10,
+      "event_avg_return_pct": 19.451,
+      "event_median_return_pct": 18.429,
+      "worst_event_return_pct": -0.021,
+      "best_event_return_pct": 39.437,
+      "event_stdev_pct": 13.912,
+      "positive_events": 4,
+      "trade_win_pct": 92.86,
+      "trade_avg_return_pct": 20.84,
+      "trade_median_return_pct": 15.533,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": -0.021
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 29.397
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 10.012
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 39.437
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 18.429
+        }
+      ]
+    },
+    {
+      "hold_days": 11,
+      "event_avg_return_pct": 17.588,
+      "event_median_return_pct": 16.101,
+      "worst_event_return_pct": 0.106,
+      "best_event_return_pct": 38.628,
+      "event_stdev_pct": 12.643,
+      "positive_events": 5,
+      "trade_win_pct": 92.86,
+      "trade_avg_return_pct": 18.845,
+      "trade_median_return_pct": 16.3,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 0.106
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 16.101
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 11.729
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 38.628
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 21.378
+        }
+      ]
+    },
+    {
+      "hold_days": 12,
+      "event_avg_return_pct": 19.402,
+      "event_median_return_pct": 16.975,
+      "worst_event_return_pct": 5.033,
+      "best_event_return_pct": 38.59,
+      "event_stdev_pct": 11.412,
+      "positive_events": 5,
+      "trade_win_pct": 100.0,
+      "trade_avg_return_pct": 20.788,
+      "trade_median_return_pct": 17.527,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 5.033
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 16.975
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 12.387
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 38.59
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 24.026
+        }
+      ]
+    },
+    {
+      "hold_days": 13,
+      "event_avg_return_pct": 19.507,
+      "event_median_return_pct": 19.304,
+      "worst_event_return_pct": 3.995,
+      "best_event_return_pct": 36.159,
+      "event_stdev_pct": 11.222,
+      "positive_events": 5,
+      "trade_win_pct": 100.0,
+      "trade_avg_return_pct": 20.9,
+      "trade_median_return_pct": 20.09,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 3.995
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 19.304
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 11.578
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 36.159
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 26.497
+        }
+      ]
+    },
+    {
+      "hold_days": 14,
+      "event_avg_return_pct": 19.345,
+      "event_median_return_pct": 20.347,
+      "worst_event_return_pct": 5.255,
+      "best_event_return_pct": 37.588,
+      "event_stdev_pct": 11.388,
+      "positive_events": 5,
+      "trade_win_pct": 92.86,
+      "trade_avg_return_pct": 20.727,
+      "trade_median_return_pct": 19.766,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 5.255
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 20.347
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 9.599
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 37.588
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 23.938
+        }
+      ]
+    },
+    {
+      "hold_days": 15,
+      "event_avg_return_pct": 19.869,
+      "event_median_return_pct": 23.486,
+      "worst_event_return_pct": 4.92,
+      "best_event_return_pct": 36.404,
+      "event_stdev_pct": 11.283,
+      "positive_events": 5,
+      "trade_win_pct": 100.0,
+      "trade_avg_return_pct": 21.288,
+      "trade_median_return_pct": 19.534,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 4.92
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 24.785
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 9.75
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 36.404
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 23.486
+        }
+      ]
+    },
+    {
+      "hold_days": 16,
+      "event_avg_return_pct": 23.409,
+      "event_median_return_pct": 26.595,
+      "worst_event_return_pct": 4.151,
+      "best_event_return_pct": 41.445,
+      "event_stdev_pct": 14.099,
+      "positive_events": 5,
+      "trade_win_pct": 100.0,
+      "trade_avg_return_pct": 25.08,
+      "trade_median_return_pct": 21.15,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 4.151
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 34.378
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 10.474
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 41.445
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 26.595
+        }
+      ]
+    },
+    {
+      "hold_days": 17,
+      "event_avg_return_pct": 24.159,
+      "event_median_return_pct": 26.752,
+      "worst_event_return_pct": 5.37,
+      "best_event_return_pct": 46.473,
+      "event_stdev_pct": 14.828,
+      "positive_events": 5,
+      "trade_win_pct": 100.0,
+      "trade_avg_return_pct": 25.885,
+      "trade_median_return_pct": 21.958,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 5.37
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 31.661
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 10.541
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 46.473
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 26.752
+        }
+      ]
+    },
+    {
+      "hold_days": 18,
+      "event_avg_return_pct": 25.878,
+      "event_median_return_pct": 27.804,
+      "worst_event_return_pct": 7.356,
+      "best_event_return_pct": 47.762,
+      "event_stdev_pct": 16.24,
+      "positive_events": 5,
+      "trade_win_pct": 92.86,
+      "trade_avg_return_pct": 27.727,
+      "trade_median_return_pct": 22.08,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 7.759
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 38.711
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 7.356
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 47.762
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 27.804
+        }
+      ]
+    },
+    {
+      "hold_days": 19,
+      "event_avg_return_pct": 24.112,
+      "event_median_return_pct": 31.098,
+      "worst_event_return_pct": 6.759,
+      "best_event_return_pct": 38.881,
+      "event_stdev_pct": 14.236,
+      "positive_events": 5,
+      "trade_win_pct": 92.86,
+      "trade_avg_return_pct": 25.834,
+      "trade_median_return_pct": 21.045,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 7.152
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 38.881
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 6.759
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 36.669
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 31.098
+        }
+      ]
+    },
+    {
+      "hold_days": 20,
+      "event_avg_return_pct": 24.655,
+      "event_median_return_pct": 32.217,
+      "worst_event_return_pct": 5.564,
+      "best_event_return_pct": 46.117,
+      "event_stdev_pct": 15.949,
+      "positive_events": 5,
+      "trade_win_pct": 92.86,
+      "trade_avg_return_pct": 26.416,
+      "trade_median_return_pct": 24.265,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 6.647
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 46.117
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 5.564
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 32.731
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 32.217
+        }
+      ]
+    },
+    {
+      "hold_days": 21,
+      "event_avg_return_pct": 30.405,
+      "event_median_return_pct": 34.924,
+      "worst_event_return_pct": 5.005,
+      "best_event_return_pct": 64.995,
+      "event_stdev_pct": 21.979,
+      "positive_events": 5,
+      "trade_win_pct": 92.86,
+      "trade_avg_return_pct": 32.577,
+      "trade_median_return_pct": 27.799,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 8.396
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 64.995
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 5.005
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 34.924
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 38.706
+        }
+      ]
+    },
+    {
+      "hold_days": 22,
+      "event_avg_return_pct": 29.086,
+      "event_median_return_pct": 26.024,
+      "worst_event_return_pct": 4.425,
+      "best_event_return_pct": 62.971,
+      "event_stdev_pct": 21.241,
+      "positive_events": 5,
+      "trade_win_pct": 92.86,
+      "trade_avg_return_pct": 31.164,
+      "trade_median_return_pct": 23.841,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 10.657
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 62.971
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 4.425
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 26.024
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 41.355
+        }
+      ]
+    },
+    {
+      "hold_days": 23,
+      "event_avg_return_pct": 33.636,
+      "event_median_return_pct": 32.64,
+      "worst_event_return_pct": 7.24,
+      "best_event_return_pct": 76.952,
+      "event_stdev_pct": 24.763,
+      "positive_events": 5,
+      "trade_win_pct": 92.86,
+      "trade_avg_return_pct": 36.039,
+      "trade_median_return_pct": 24.733,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 12.163
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 76.952
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 7.24
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 32.64
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 39.186
+        }
+      ]
+    },
+    {
+      "hold_days": 24,
+      "event_avg_return_pct": 32.963,
+      "event_median_return_pct": 32.132,
+      "worst_event_return_pct": 11.509,
+      "best_event_return_pct": 70.48,
+      "event_stdev_pct": 21.753,
+      "positive_events": 5,
+      "trade_win_pct": 92.86,
+      "trade_avg_return_pct": 35.317,
+      "trade_median_return_pct": 29.937,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 11.538
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 70.48
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 11.509
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 32.132
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 39.156
+        }
+      ]
+    },
+    {
+      "hold_days": 25,
+      "event_avg_return_pct": 30.843,
+      "event_median_return_pct": 35.175,
+      "worst_event_return_pct": 9.848,
+      "best_event_return_pct": 60.171,
+      "event_stdev_pct": 18.519,
+      "positive_events": 5,
+      "trade_win_pct": 92.86,
+      "trade_avg_return_pct": 33.046,
+      "trade_median_return_pct": 29.182,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 11.963
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 60.171
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 9.848
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 37.059
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 35.175
+        }
+      ]
+    },
+    {
+      "hold_days": 26,
+      "event_avg_return_pct": 32.468,
+      "event_median_return_pct": 35.914,
+      "worst_event_return_pct": 9.959,
+      "best_event_return_pct": 65.791,
+      "event_stdev_pct": 20.478,
+      "positive_events": 5,
+      "trade_win_pct": 92.86,
+      "trade_avg_return_pct": 34.788,
+      "trade_median_return_pct": 28.205,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 9.959
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 65.791
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 11.809
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 38.869
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 35.914
+        }
+      ]
+    },
+    {
+      "hold_days": 27,
+      "event_avg_return_pct": 33.813,
+      "event_median_return_pct": 32.956,
+      "worst_event_return_pct": 11.805,
+      "best_event_return_pct": 71.041,
+      "event_stdev_pct": 21.557,
+      "positive_events": 5,
+      "trade_win_pct": 92.86,
+      "trade_avg_return_pct": 36.229,
+      "trade_median_return_pct": 31.136,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 11.805
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 71.041
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 13.414
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 39.85
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 32.956
+        }
+      ]
+    },
+    {
+      "hold_days": 28,
+      "event_avg_return_pct": 34.516,
+      "event_median_return_pct": 29.274,
+      "worst_event_return_pct": 12.673,
+      "best_event_return_pct": 77.661,
+      "event_stdev_pct": 23.779,
+      "positive_events": 5,
+      "trade_win_pct": 92.86,
+      "trade_avg_return_pct": 36.981,
+      "trade_median_return_pct": 33.034,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 12.673
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 77.661
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 13.6
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 39.372
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 29.274
+        }
+      ]
+    },
+    {
+      "hold_days": 29,
+      "event_avg_return_pct": 34.374,
+      "event_median_return_pct": 34.746,
+      "worst_event_return_pct": 11.836,
+      "best_event_return_pct": 70.47,
+      "event_stdev_pct": 21.454,
+      "positive_events": 5,
+      "trade_win_pct": 92.86,
+      "trade_avg_return_pct": 36.829,
+      "trade_median_return_pct": 30.929,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 11.836
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 70.47
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 13.385
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 41.432
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 34.746
+        }
+      ]
+    },
+    {
+      "hold_days": 30,
+      "event_avg_return_pct": 36.613,
+      "event_median_return_pct": 34.407,
+      "worst_event_return_pct": 10.354,
+      "best_event_return_pct": 76.105,
+      "event_stdev_pct": 23.913,
+      "positive_events": 5,
+      "trade_win_pct": 92.86,
+      "trade_avg_return_pct": 39.229,
+      "trade_median_return_pct": 31.955,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 14.603
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 76.105
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 10.354
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 47.598
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 34.407
+        }
+      ]
+    },
+    {
+      "hold_days": 31,
+      "event_avg_return_pct": 40.933,
+      "event_median_return_pct": 37.772,
+      "worst_event_return_pct": 10.901,
+      "best_event_return_pct": 84.303,
+      "event_stdev_pct": 26.237,
+      "positive_events": 5,
+      "trade_win_pct": 92.86,
+      "trade_avg_return_pct": 43.857,
+      "trade_median_return_pct": 37.85,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 18.564
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 84.303
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 10.901
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 53.124
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 37.772
+        }
+      ]
+    },
+    {
+      "hold_days": 32,
+      "event_avg_return_pct": 42.98,
+      "event_median_return_pct": 40.542,
+      "worst_event_return_pct": 10.454,
+      "best_event_return_pct": 89.74,
+      "event_stdev_pct": 27.874,
+      "positive_events": 5,
+      "trade_win_pct": 92.86,
+      "trade_avg_return_pct": 46.049,
+      "trade_median_return_pct": 40.784,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 20.275
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 89.74
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 10.454
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 53.887
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 40.542
+        }
+      ]
+    },
+    {
+      "hold_days": 33,
+      "event_avg_return_pct": 44.01,
+      "event_median_return_pct": 42.136,
+      "worst_event_return_pct": 7.718,
+      "best_event_return_pct": 93.035,
+      "event_stdev_pct": 29.509,
+      "positive_events": 5,
+      "trade_win_pct": 85.71,
+      "trade_avg_return_pct": 47.154,
+      "trade_median_return_pct": 41.254,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 21.688
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 93.035
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 7.718
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 55.475
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 42.136
+        }
+      ]
+    },
+    {
+      "hold_days": 34,
+      "event_avg_return_pct": 43.757,
+      "event_median_return_pct": 41.611,
+      "worst_event_return_pct": 11.3,
+      "best_event_return_pct": 85.958,
+      "event_stdev_pct": 26.811,
+      "positive_events": 5,
+      "trade_win_pct": 92.86,
+      "trade_avg_return_pct": 46.882,
+      "trade_median_return_pct": 40.977,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 20.902
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 85.958
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 11.3
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 59.012
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 41.611
+        }
+      ]
+    },
+    {
+      "hold_days": 35,
+      "event_avg_return_pct": 41.623,
+      "event_median_return_pct": 39.791,
+      "worst_event_return_pct": 10.147,
+      "best_event_return_pct": 83.552,
+      "event_stdev_pct": 25.848,
+      "positive_events": 5,
+      "trade_win_pct": 92.86,
+      "trade_avg_return_pct": 44.596,
+      "trade_median_return_pct": 38.838,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 20.708
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 83.552
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 10.147
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 53.916
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 39.791
+        }
+      ]
+    },
+    {
+      "hold_days": 36,
+      "event_avg_return_pct": 41.347,
+      "event_median_return_pct": 38.478,
+      "worst_event_return_pct": 11.065,
+      "best_event_return_pct": 81.917,
+      "event_stdev_pct": 25.303,
+      "positive_events": 5,
+      "trade_win_pct": 92.86,
+      "trade_avg_return_pct": 44.3,
+      "trade_median_return_pct": 38.643,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 20.279
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 81.917
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 11.065
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 54.996
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 38.478
+        }
+      ]
+    },
+    {
+      "hold_days": 37,
+      "event_avg_return_pct": 42.084,
+      "event_median_return_pct": 40.663,
+      "worst_event_return_pct": 8.349,
+      "best_event_return_pct": 87.245,
+      "event_stdev_pct": 27.639,
+      "positive_events": 5,
+      "trade_win_pct": 92.86,
+      "trade_avg_return_pct": 45.09,
+      "trade_median_return_pct": 40.163,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 19.909
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 87.245
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 8.349
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 54.256
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 40.663
+        }
+      ]
+    },
+    {
+      "hold_days": 38,
+      "event_avg_return_pct": 41.592,
+      "event_median_return_pct": 40.264,
+      "worst_event_return_pct": 8.271,
+      "best_event_return_pct": 79.975,
+      "event_stdev_pct": 25.567,
+      "positive_events": 5,
+      "trade_win_pct": 92.86,
+      "trade_avg_return_pct": 44.563,
+      "trade_median_return_pct": 41.16,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 21.341
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 79.975
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 8.271
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 58.11
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 40.264
+        }
+      ]
+    },
+    {
+      "hold_days": 39,
+      "event_avg_return_pct": 39.917,
+      "event_median_return_pct": 41.796,
+      "worst_event_return_pct": 7.152,
+      "best_event_return_pct": 75.678,
+      "event_stdev_pct": 24.644,
+      "positive_events": 5,
+      "trade_win_pct": 85.71,
+      "trade_avg_return_pct": 42.768,
+      "trade_median_return_pct": 41.231,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 19.193
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 75.678
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 7.152
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 55.765
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 41.796
+        }
+      ]
+    },
+    {
+      "hold_days": 40,
+      "event_avg_return_pct": 42.754,
+      "event_median_return_pct": 42.155,
+      "worst_event_return_pct": 5.3,
+      "best_event_return_pct": 86.981,
+      "event_stdev_pct": 28.493,
+      "positive_events": 5,
+      "trade_win_pct": 85.71,
+      "trade_avg_return_pct": 45.807,
+      "trade_median_return_pct": 42.373,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 21.212
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 86.981
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 5.3
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 58.121
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 42.155
+        }
+      ]
+    },
+    {
+      "hold_days": 41,
+      "event_avg_return_pct": 43.838,
+      "event_median_return_pct": 43.154,
+      "worst_event_return_pct": 11.521,
+      "best_event_return_pct": 86.67,
+      "event_stdev_pct": 27.171,
+      "positive_events": 5,
+      "trade_win_pct": 92.86,
+      "trade_avg_return_pct": 46.969,
+      "trade_median_return_pct": 42.366,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 19.383
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 86.67
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 11.521
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 58.462
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 43.154
+        }
+      ]
+    },
+    {
+      "hold_days": 42,
+      "event_avg_return_pct": 43.448,
+      "event_median_return_pct": 45.154,
+      "worst_event_return_pct": 9.325,
+      "best_event_return_pct": 80.507,
+      "event_stdev_pct": 26.074,
+      "positive_events": 5,
+      "trade_win_pct": 85.71,
+      "trade_avg_return_pct": 46.552,
+      "trade_median_return_pct": 38.171,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 20.538
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 80.507
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 9.325
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 61.717
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 45.154
+        }
+      ]
+    },
+    {
+      "hold_days": 43,
+      "event_avg_return_pct": 43.409,
+      "event_median_return_pct": 47.943,
+      "worst_event_return_pct": 9.408,
+      "best_event_return_pct": 78.897,
+      "event_stdev_pct": 25.946,
+      "positive_events": 5,
+      "trade_win_pct": 85.71,
+      "trade_avg_return_pct": 46.51,
+      "trade_median_return_pct": 39.146,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 19.047
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 78.897
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 9.408
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 61.752
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 47.943
+        }
+      ]
+    },
+    {
+      "hold_days": 44,
+      "event_avg_return_pct": 37.781,
+      "event_median_return_pct": 45.922,
+      "worst_event_return_pct": 6.612,
+      "best_event_return_pct": 61.898,
+      "event_stdev_pct": 22.495,
+      "positive_events": 5,
+      "trade_win_pct": 85.71,
+      "trade_avg_return_pct": 40.479,
+      "trade_median_return_pct": 32.029,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 15.903
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 58.568
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 6.612
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 61.898
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 45.922
+        }
+      ]
+    },
+    {
+      "hold_days": 45,
+      "event_avg_return_pct": 39.655,
+      "event_median_return_pct": 43.016,
+      "worst_event_return_pct": 7.792,
+      "best_event_return_pct": 67.243,
+      "event_stdev_pct": 25.187,
+      "positive_events": 5,
+      "trade_win_pct": 85.71,
+      "trade_avg_return_pct": 42.488,
+      "trade_median_return_pct": 33.735,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 13.808
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 66.417
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 7.792
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 67.243
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 43.016
+        }
+      ]
+    },
+    {
+      "hold_days": 46,
+      "event_avg_return_pct": 39.857,
+      "event_median_return_pct": 47.737,
+      "worst_event_return_pct": 10.423,
+      "best_event_return_pct": 63.202,
+      "event_stdev_pct": 22.366,
+      "positive_events": 5,
+      "trade_win_pct": 92.86,
+      "trade_avg_return_pct": 42.703,
+      "trade_median_return_pct": 32.622,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 16.309
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 63.202
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 10.423
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 61.612
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 47.737
+        }
+      ]
+    },
+    {
+      "hold_days": 47,
+      "event_avg_return_pct": 41.578,
+      "event_median_return_pct": 48.281,
+      "worst_event_return_pct": 11.747,
+      "best_event_return_pct": 67.045,
+      "event_stdev_pct": 23.189,
+      "positive_events": 5,
+      "trade_win_pct": 92.86,
+      "trade_avg_return_pct": 44.547,
+      "trade_median_return_pct": 36.226,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 16.929
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 67.045
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 11.747
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 63.886
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 48.281
+        }
+      ]
+    },
+    {
+      "hold_days": 48,
+      "event_avg_return_pct": 40.503,
+      "event_median_return_pct": 48.022,
+      "worst_event_return_pct": 11.49,
+      "best_event_return_pct": 64.24,
+      "event_stdev_pct": 22.406,
+      "positive_events": 5,
+      "trade_win_pct": 85.71,
+      "trade_avg_return_pct": 43.396,
+      "trade_median_return_pct": 36.646,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 16.512
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 64.24
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 11.49
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 62.25
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 48.022
+        }
+      ]
+    },
+    {
+      "hold_days": 49,
+      "event_avg_return_pct": 40.463,
+      "event_median_return_pct": 45.568,
+      "worst_event_return_pct": 11.552,
+      "best_event_return_pct": 64.926,
+      "event_stdev_pct": 22.581,
+      "positive_events": 5,
+      "trade_win_pct": 85.71,
+      "trade_avg_return_pct": 43.353,
+      "trade_median_return_pct": 38.002,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 16.8
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 63.469
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 11.552
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 64.926
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 45.568
+        }
+      ]
+    },
+    {
+      "hold_days": 50,
+      "event_avg_return_pct": 40.429,
+      "event_median_return_pct": 44.348,
+      "worst_event_return_pct": 13.64,
+      "best_event_return_pct": 64.696,
+      "event_stdev_pct": 21.855,
+      "positive_events": 5,
+      "trade_win_pct": 85.71,
+      "trade_avg_return_pct": 43.317,
+      "trade_median_return_pct": 39.662,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 16.651
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 64.696
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 13.64
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 62.809
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 44.348
+        }
+      ]
+    },
+    {
+      "hold_days": 51,
+      "event_avg_return_pct": 41.244,
+      "event_median_return_pct": 46.606,
+      "worst_event_return_pct": 16.325,
+      "best_event_return_pct": 67.799,
+      "event_stdev_pct": 21.198,
+      "positive_events": 5,
+      "trade_win_pct": 100.0,
+      "trade_avg_return_pct": 44.19,
+      "trade_median_return_pct": 40.368,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 16.92
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 67.799
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 16.325
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 58.572
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 46.606
+        }
+      ]
+    },
+    {
+      "hold_days": 52,
+      "event_avg_return_pct": 40.438,
+      "event_median_return_pct": 49.643,
+      "worst_event_return_pct": 13.872,
+      "best_event_return_pct": 68.239,
+      "event_stdev_pct": 21.673,
+      "positive_events": 5,
+      "trade_win_pct": 92.86,
+      "trade_avg_return_pct": 43.326,
+      "trade_median_return_pct": 39.595,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 16.103
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 68.239
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 13.872
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 54.332
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 49.643
+        }
+      ]
+    },
+    {
+      "hold_days": 53,
+      "event_avg_return_pct": 40.492,
+      "event_median_return_pct": 51.119,
+      "worst_event_return_pct": 14.561,
+      "best_event_return_pct": 63.703,
+      "event_stdev_pct": 20.727,
+      "positive_events": 5,
+      "trade_win_pct": 100.0,
+      "trade_avg_return_pct": 43.385,
+      "trade_median_return_pct": 37.115,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 16.63
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 63.703
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 14.561
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 56.448
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 51.119
+        }
+      ]
+    },
+    {
+      "hold_days": 54,
+      "event_avg_return_pct": 41.822,
+      "event_median_return_pct": 55.501,
+      "worst_event_return_pct": 16.332,
+      "best_event_return_pct": 63.504,
+      "event_stdev_pct": 20.75,
+      "positive_events": 5,
+      "trade_win_pct": 100.0,
+      "trade_avg_return_pct": 44.809,
+      "trade_median_return_pct": 38.613,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 16.921
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 63.504
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 16.332
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 56.851
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 55.501
+        }
+      ]
+    },
+    {
+      "hold_days": 55,
+      "event_avg_return_pct": 42.158,
+      "event_median_return_pct": 57.571,
+      "worst_event_return_pct": 16.88,
+      "best_event_return_pct": 59.982,
+      "event_stdev_pct": 20.305,
+      "positive_events": 5,
+      "trade_win_pct": 100.0,
+      "trade_avg_return_pct": 45.169,
+      "trade_median_return_pct": 37.897,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 17.739
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 57.571
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 16.88
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 58.617
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 59.982
+        }
+      ]
+    },
+    {
+      "hold_days": 56,
+      "event_avg_return_pct": 42.827,
+      "event_median_return_pct": 55.796,
+      "worst_event_return_pct": 16.65,
+      "best_event_return_pct": 65.202,
+      "event_stdev_pct": 20.923,
+      "positive_events": 5,
+      "trade_win_pct": 92.86,
+      "trade_avg_return_pct": 45.886,
+      "trade_median_return_pct": 41.457,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 18.333
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 58.154
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 16.65
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 65.202
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 55.796
+        }
+      ]
+    },
+    {
+      "hold_days": 57,
+      "event_avg_return_pct": 42.839,
+      "event_median_return_pct": 50.536,
+      "worst_event_return_pct": 16.231,
+      "best_event_return_pct": 68.914,
+      "event_stdev_pct": 21.432,
+      "positive_events": 5,
+      "trade_win_pct": 92.86,
+      "trade_avg_return_pct": 45.898,
+      "trade_median_return_pct": 42.232,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 18.959
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 59.553
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 16.231
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 68.914
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 50.536
+        }
+      ]
+    },
+    {
+      "hold_days": 58,
+      "event_avg_return_pct": 40.885,
+      "event_median_return_pct": 51.608,
+      "worst_event_return_pct": 15.921,
+      "best_event_return_pct": 65.03,
+      "event_stdev_pct": 19.57,
+      "positive_events": 5,
+      "trade_win_pct": 92.86,
+      "trade_avg_return_pct": 43.806,
+      "trade_median_return_pct": 39.842,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 19.43
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 52.438
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 15.921
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 65.03
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 51.608
+        }
+      ]
+    },
+    {
+      "hold_days": 59,
+      "event_avg_return_pct": 40.883,
+      "event_median_return_pct": 47.563,
+      "worst_event_return_pct": 16.399,
+      "best_event_return_pct": 62.948,
+      "event_stdev_pct": 18.707,
+      "positive_events": 5,
+      "trade_win_pct": 92.86,
+      "trade_avg_return_pct": 43.803,
+      "trade_median_return_pct": 37.514,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 21.29
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 47.563
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 16.399
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 62.948
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 56.213
+        }
+      ]
+    },
+    {
+      "hold_days": 60,
+      "event_avg_return_pct": 39.701,
+      "event_median_return_pct": 44.869,
+      "worst_event_return_pct": 15.279,
+      "best_event_return_pct": 63.392,
+      "event_stdev_pct": 18.277,
+      "positive_events": 5,
+      "trade_win_pct": 92.86,
+      "trade_avg_return_pct": 42.537,
+      "trade_median_return_pct": 35.884,
+      "events": [
+        {
+          "date": "2018-12-27",
+          "executed": 2,
+          "portfolio_return_pct": 22.057
+        },
+        {
+          "date": "2020-04-06",
+          "executed": 3,
+          "portfolio_return_pct": 44.869
+        },
+        {
+          "date": "2022-03-10",
+          "executed": 3,
+          "portfolio_return_pct": 15.279
+        },
+        {
+          "date": "2024-08-06",
+          "executed": 3,
+          "portfolio_return_pct": 63.392
+        },
+        {
+          "date": "2025-04-08",
+          "executed": 3,
+          "portfolio_return_pct": 52.909
+        }
+      ]
+    }
+  ],
+  "caveat": "Only five independent crash events; choose a broad plateau rather than overfitting a single exact day."
+}
