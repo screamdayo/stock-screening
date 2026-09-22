@@ -86,3 +86,5 @@ def main():
     Path("results/reversal_signal_baseline_trades.csv").write_text(t.drop(columns=["signal_date_dt"]).to_csv(index=False),encoding="utf-8")
     print(json.dumps(out,ensure_ascii=False,indent=2))
 if __name__=="__main__":main()
+
+# trigger 2026-09-22
