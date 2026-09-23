@@ -292,7 +292,7 @@ def main():
         "feature_compare": y2019_compare,
     }
 
-    summary = {
+    # DD20 depth x close-vs-MA5 rebound-strength grid on refined Kuitto subset.\n    dd_bands = [\n        ("-5.5_to_-7", -7.0, -5.5),\n        ("-7_to_-9", -9.0, -7.0),\n        ("<=-9", None, -9.0),\n    ]\n    close_ma5_mins = [1.0, 1.5, 2.0, 2.5]\n    dd_rebound_grid = []\n    for band_name, low, high in dd_bands:\n        if low is None:\n            band = refined[refined["dd20_pct"] <= high].copy()\n        else:\n            band = refined[(refined["dd20_pct"] > low) & (refined["dd20_pct"] <= high)].copy()\n        for cm5_min in close_ma5_mins:\n            p = band[band["close_vs_ma5_pct"] >= cm5_min].copy()\n            yearly = {str(int(y)): metrics(g) for y, g in p.groupby("year")}\n            dd_rebound_grid.append({\n                "dd_band": band_name,\n                "close_vs_ma5_min": cm5_min,\n                "overall": metrics(p),\n                "yearly": yearly,\n                "n_2018": int((p["year"] == 2018).sum()),\n                "n_2019": int((p["year"] == 2019).sum()),\n                "n_2025": int((p["year"] == 2025).sum()),\n            })\n\n    summary = {
         "strategy": "kuitto_pullback_auto frozen signal, 10-day next-open return",
         "goal": "Find signal-day features associated with large winners without using post-entry information.",
         "labels": {
@@ -302,7 +302,7 @@ def main():
         "overall_10y": analyze_block(t),
         "older_5y": analyze_block(t[t["signal_date_dt"] < split]),
         "recent_5y": analyze_block(t[t["signal_date_dt"] >= split]),
-        "refined_rule_diagnostics": {"rule":"ATR14>=3.4 and DD20<=-5.5","year_compare":feature_compare,"bad_2018_2025_vs_good":bad_vs_good,"trend_filter_grid":trend_grid,"chosen_balanced_filter":chosen_summary,"diagnostic_2019_kept_vs_rejected":y2019_diag},
+        "refined_rule_diagnostics": {"rule":"ATR14>=3.4 and DD20<=-5.5","year_compare":feature_compare,"bad_2018_2025_vs_good":bad_vs_good,"trend_filter_grid":trend_grid,"chosen_balanced_filter":chosen_summary,"diagnostic_2019_kept_vs_rejected":y2019_diag,"dd20_rebound_grid":dd_rebound_grid},
         "note": "Exploratory diagnostics only; any promising filter should be frozen and re-tested out of sample before production use."
     }
 
