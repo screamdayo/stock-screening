@@ -32,6 +32,7 @@ import earnings_warning
 import pinch_to_chance
 import selling_climax
 import crash_cycle
+import kuitto_variants_forward
 from strategies import registry
 from logger import get_logger
 
@@ -40,6 +41,8 @@ logger = get_logger(__name__)
 # 目視撤廃後の本番日次戦略。
 DAILY_STRATEGY = "kuitto_pullback_auto"
 GC_DAILY_STRATEGY = "gc_strong_breakout"
+KUITTO_204_STRATEGY = "kuitto_refined_204"
+KUITTO_59_STRATEGY = "kuitto_elite_59"
 
 
 def run():
@@ -48,6 +51,8 @@ def run():
 
     screener_fn = registry.get_latest_screener(DAILY_STRATEGY)
     gc_screener_fn = registry.get_latest_screener(GC_DAILY_STRATEGY)
+    kuitto_204_fn = registry.get_latest_screener(KUITTO_204_STRATEGY)
+    kuitto_59_fn = registry.get_latest_screener(KUITTO_59_STRATEGY)
 
     logger.info("対象銘柄リスト取得中...")
     target_codes, code_to_name = download.get_target_codes_and_names()
@@ -75,9 +80,17 @@ def run():
     logger.info("GC強ブレイクを別枠スクリーニング中...")
     gc_results = gc_screener_fn(price_df, target_codes)
 
+    logger.info("くいっと204 / くいっと59 を影スクリーニング中（記録のみ）...")
+    kuitto_204_results = kuitto_204_fn(price_df, target_codes)
+    kuitto_59_results = kuitto_59_fn(price_df, target_codes)
+
     for r in results:
         r["name"] = code_to_name.get(r["code"], "")
     for r in gc_results:
+        r["name"] = code_to_name.get(r["code"], "")
+    for r in kuitto_204_results:
+        r["name"] = code_to_name.get(r["code"], "")
+    for r in kuitto_59_results:
         r["name"] = code_to_name.get(r["code"], "")
 
     latest_signal_date = price_df["Date"].max()
@@ -87,6 +100,8 @@ def run():
 
     logger.info(f"自動通過候補: {len(results)}件")
     logger.info(f"GC強ブレイク候補: {len(gc_results)}件")
+    logger.info(f"くいっと204（記録のみ）: {len(kuitto_204_results)}件")
+    logger.info(f"くいっと59（記録のみ）: {len(kuitto_59_results)}件")
 
     logger.info("市場地合いログ更新中...")
     market_breadth.update_market_breadth(price_df)
@@ -113,6 +128,14 @@ def run():
     cycle_state = crash_cycle.update_state(price_df, selling_sensor, pinch_sensor)
     selling_sensor["cycle_state"] = cycle_state
     pinch_sensor["cycle_state"] = cycle_state
+
+    logger.info("くいっと204 / 59 専用フォワード記録更新中...")
+    kuitto_variants_forward.update(
+        price_df,
+        code_to_name,
+        kuitto_204_results,
+        kuitto_59_results,
+    )
 
     logger.info("統合フォワード検証ログ更新中（くいっと / GC / ピンチ / セリクラ）...")
     forward_test.update_forward_test(
