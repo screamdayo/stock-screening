@@ -97,6 +97,8 @@ def run():
     logger.info("決算予定チェック中...")
     earnings_warning.add_earnings_warnings(results, latest_signal_date)
     earnings_warning.add_earnings_warnings(gc_results, latest_signal_date)
+    earnings_warning.add_earnings_warnings(kuitto_204_results, latest_signal_date)
+    earnings_warning.add_earnings_warnings(kuitto_59_results, latest_signal_date)
 
     logger.info(f"自動通過候補: {len(results)}件")
     logger.info(f"GC強ブレイク候補: {len(gc_results)}件")
@@ -149,6 +151,7 @@ def run():
     logger.info("Discord通知中...")
     notifier.notify(results)
     notifier.notify_gc_strong_breakout(gc_results)
+    notifier.notify_kuitto_variants(kuitto_204_results, kuitto_59_results)
     notifier.notify_selling_climax(selling_sensor)
     notifier.notify_pinch_to_chance(pinch_sensor)
 
