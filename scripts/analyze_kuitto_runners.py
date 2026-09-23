@@ -292,7 +292,33 @@ def main():
         "feature_compare": y2019_compare,
     }
 
-    # DD20 depth x close-vs-MA5 rebound-strength grid on refined Kuitto subset.\n    dd_bands = [\n        ("-5.5_to_-7", -7.0, -5.5),\n        ("-7_to_-9", -9.0, -7.0),\n        ("<=-9", None, -9.0),\n    ]\n    close_ma5_mins = [1.0, 1.5, 2.0, 2.5]\n    dd_rebound_grid = []\n    for band_name, low, high in dd_bands:\n        if low is None:\n            band = refined[refined["dd20_pct"] <= high].copy()\n        else:\n            band = refined[(refined["dd20_pct"] > low) & (refined["dd20_pct"] <= high)].copy()\n        for cm5_min in close_ma5_mins:\n            p = band[band["close_vs_ma5_pct"] >= cm5_min].copy()\n            yearly = {str(int(y)): metrics(g) for y, g in p.groupby("year")}\n            dd_rebound_grid.append({\n                "dd_band": band_name,\n                "close_vs_ma5_min": cm5_min,\n                "overall": metrics(p),\n                "yearly": yearly,\n                "n_2018": int((p["year"] == 2018).sum()),\n                "n_2019": int((p["year"] == 2019).sum()),\n                "n_2025": int((p["year"] == 2025).sum()),\n            })\n\n    summary = {
+    # DD20 depth x close-vs-MA5 rebound-strength grid on refined Kuitto subset.
+    dd_bands = [
+        ("-5.5_to_-7", -7.0, -5.5),
+        ("-7_to_-9", -9.0, -7.0),
+        ("<=-9", None, -9.0),
+    ]
+    close_ma5_mins = [1.0, 1.5, 2.0, 2.5]
+    dd_rebound_grid = []
+    for band_name, low, high in dd_bands:
+        if low is None:
+            band = refined[refined["dd20_pct"] <= high].copy()
+        else:
+            band = refined[(refined["dd20_pct"] > low) & (refined["dd20_pct"] <= high)].copy()
+        for cm5_min in close_ma5_mins:
+            p = band[band["close_vs_ma5_pct"] >= cm5_min].copy()
+            yearly = {str(int(y)): metrics(g) for y, g in p.groupby("year")}
+            dd_rebound_grid.append({
+                "dd_band": band_name,
+                "close_vs_ma5_min": cm5_min,
+                "overall": metrics(p),
+                "yearly": yearly,
+                "n_2018": int((p["year"] == 2018).sum()),
+                "n_2019": int((p["year"] == 2019).sum()),
+                "n_2025": int((p["year"] == 2025).sum()),
+            })
+
+    summary = {
         "strategy": "kuitto_pullback_auto frozen signal, 10-day next-open return",
         "goal": "Find signal-day features associated with large winners without using post-entry information.",
         "labels": {
