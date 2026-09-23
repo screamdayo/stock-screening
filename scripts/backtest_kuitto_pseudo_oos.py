@@ -199,7 +199,37 @@ def main():
             "test_recent5": metrics(te),
         }
 
-    # Descriptive crowding buckets, shown separately for train/test.\n    bucket_defs = {\n        "1": lambda x: x["same_day_count"] == 1,\n        "2-3": lambda x: x["same_day_count"].between(2, 3),\n        "4-5": lambda x: x["same_day_count"].between(4, 5),\n        "6-10": lambda x: x["same_day_count"].between(6, 10),\n        "11+": lambda x: x["same_day_count"] >= 11,\n    }\n    for bname, brule in bucket_defs.items():\n        out["same_day_count_buckets"][bname] = {\n            "train_older5": metrics(train[brule(train)]),\n            "test_recent5": metrics(test[brule(test)]),\n        }\n\n    # Fine ATR x DD20 grid. Thresholds are fixed absolute values and evaluated on both halves.\n    atr_thresholds = [2.4, 2.6, 2.8, 3.0, 3.2, 3.4, 3.6]\n    dd20_thresholds = [-4.0, -4.5, -5.0, -5.5, -6.0, -6.5, -7.0, -8.0]\n    grid = []\n    for atr_thr in atr_thresholds:\n        for dd_thr in dd20_thresholds:\n            tr = train[(train["atr14_pct"] >= atr_thr) & (train["dd20_pct"] <= dd_thr)]\n            te = test[(test["atr14_pct"] >= atr_thr) & (test["dd20_pct"] <= dd_thr)]\n            grid.append({\n                "atr_min": atr_thr,\n                "dd20_max": dd_thr,\n                "train_older5": metrics(tr),\n                "test_recent5": metrics(te),\n            })\n    out["atr_dd20_grid"] = grid\n\n    RESULT_DIR.mkdir(parents=True, exist_ok=True)
+    # Descriptive crowding buckets, shown separately for train/test.
+    bucket_defs = {
+        "1": lambda x: x["same_day_count"] == 1,
+        "2-3": lambda x: x["same_day_count"].between(2, 3),
+        "4-5": lambda x: x["same_day_count"].between(4, 5),
+        "6-10": lambda x: x["same_day_count"].between(6, 10),
+        "11+": lambda x: x["same_day_count"] >= 11,
+    }
+    for bname, brule in bucket_defs.items():
+        out["same_day_count_buckets"][bname] = {
+            "train_older5": metrics(train[brule(train)]),
+            "test_recent5": metrics(test[brule(test)]),
+        }
+
+    # Fine ATR x DD20 grid. Thresholds are fixed absolute values and evaluated on both halves.
+    atr_thresholds = [2.4, 2.6, 2.8, 3.0, 3.2, 3.4, 3.6]
+    dd20_thresholds = [-4.0, -4.5, -5.0, -5.5, -6.0, -6.5, -7.0, -8.0]
+    grid = []
+    for atr_thr in atr_thresholds:
+        for dd_thr in dd20_thresholds:
+            tr = train[(train["atr14_pct"] >= atr_thr) & (train["dd20_pct"] <= dd_thr)]
+            te = test[(test["atr14_pct"] >= atr_thr) & (test["dd20_pct"] <= dd_thr)]
+            grid.append({
+                "atr_min": atr_thr,
+                "dd20_max": dd_thr,
+                "train_older5": metrics(tr),
+                "test_recent5": metrics(te),
+            })
+    out["atr_dd20_grid"] = grid
+
+    RESULT_DIR.mkdir(parents=True, exist_ok=True)
     (RESULT_DIR / "kuitto_pseudo_oos_summary.json").write_text(
         json.dumps(out, ensure_ascii=False, indent=2), encoding="utf-8"
     )
