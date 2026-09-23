@@ -315,6 +315,65 @@ def main():
             "other_wins": fs(other[other["ret16"] >= 0]),
         }
 
+    entry_strength_grid = []
+    feature_path = RESULT_DIR / "kuitto_runner_features_trades.csv"
+    if feature_path.exists():
+        feat = pd.read_csv(feature_path)
+        feat["code"] = feat["code"].astype(str)
+        feat["signal_date"] = feat["signal_date"].astype(str)
+
+        ret16_rows = []
+        for g in groups:
+            sim = simulate(g, stop_pct=None, max_hold=16, use_gakutto=False)
+            if not sim:
+                continue
+            first = g.iloc[0]
+            ret16_rows.append({
+                "code": str(first["code"]),
+                "signal_date": str(first["signal_date"]),
+                "entry_date": str(first["entry_date"]),
+                "return_pct": float(sim["return_pct"]),
+            })
+
+        ret16 = pd.DataFrame(ret16_rows)
+        merged16 = ret16.merge(feat, on=["code","signal_date"], how="left")
+        merged16["year"] = pd.to_datetime(merged16["entry_date"]).dt.year
+
+        for decline_max in [-3.0, -3.5, -4.0, -4.5]:
+            for close_min in [1.5, 2.0, 2.5]:
+                p = merged16[
+                    (merged16["ma5_decline5_pct"] <= decline_max)
+                    & (merged16["close_vs_ma5_pct"] >= close_min)
+                ].copy()
+
+                weak = p[p["year"].isin([2018, 2022, 2023])].sort_values("entry_date")
+                if not weak.empty:
+                    eq = (1 + weak["return_pct"] / 100.0).cumprod()
+                    peak = eq.cummax()
+                    dd = eq / peak - 1
+                    max_dd_weak = round(float(dd.min() * 100), 2)
+                    streak = 0
+                    cur = 0
+                    for r in weak["return_pct"]:
+                        if r < 0:
+                            cur += 1
+                            streak = max(streak, cur)
+                        else:
+                            cur = 0
+                else:
+                    max_dd_weak = None
+                    streak = 0
+
+                entry_strength_grid.append({
+                    "ma5_decline5_max": decline_max,
+                    "close_vs_ma5_min": close_min,
+                    "overall": metrics(p[["return_pct"]].assign(hold_sessions_to_exit=16)) if not p.empty else {"n":0},
+                    "weak_years": metrics(weak[["return_pct"]].assign(hold_sessions_to_exit=16)) if not weak.empty else {"n":0},
+                    "weak_years_max_drawdown_pct": max_dd_weak,
+                    "weak_years_max_losing_streak": int(streak),
+                    "yearly_counts": {str(int(y)): int(len(gp)) for y, gp in p.groupby("year")},
+                })
+
     out = {
         "source_cache": str(CACHE),
         "signal_count": len(groups),
@@ -324,6 +383,7 @@ def main():
         "emergency_stop_grid": emergency_stop_grid,
         "yearly_compare_stop18": yearly_compare_stop18,
         "exact16_feature_diag": exact16_feature_diag,
+        "entry_strength_grid": entry_strength_grid,
     }
     out_path = RESULT_DIR / "kuitto_exit_cache_summary.json"
     out_path.write_text(json.dumps(out, ensure_ascii=False, indent=2), encoding="utf-8")
