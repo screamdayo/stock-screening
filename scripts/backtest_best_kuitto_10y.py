@@ -337,7 +337,7 @@ def main():
         for i in range(MA_LONG, len(g) - 1):
             if is_entry_signal(g, i) and passes_composite_refined_rule(g, i):
                 signal_keys_fixed.append((g, i))
-    for hold in [10, 12, 15, 20]:
+    for hold in [10, 12, 14, 16, 18, 20, 25, 30]:
         vals = []
         for g, i in signal_keys_fixed:
             entry_i = i + 1
