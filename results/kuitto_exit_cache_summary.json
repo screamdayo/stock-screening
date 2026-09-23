@@ -680,5 +680,79 @@
         "worst_trade_pct": -11.616
       }
     }
-  }
+  },
+  "emergency_stop_grid": [
+    {
+      "stop_pct": -10.0,
+      "metrics": {
+        "n": 204,
+        "win_rate_pct": 56.86,
+        "avg_return_pct": 3.812,
+        "median_return_pct": 1.853,
+        "profit_factor": 2.248
+      },
+      "max_drawdown_pct": -65.48,
+      "max_losing_streak": 9,
+      "worst_trade_pct": -12.5,
+      "exit_reasons": {
+        "fixed_16": 157,
+        "stop_-10.0": 40,
+        "stop_gap": 7
+      }
+    },
+    {
+      "stop_pct": -12.0,
+      "metrics": {
+        "n": 204,
+        "win_rate_pct": 59.31,
+        "avg_return_pct": 4.237,
+        "median_return_pct": 2.52,
+        "profit_factor": 2.497
+      },
+      "max_drawdown_pct": -54.1,
+      "max_losing_streak": 9,
+      "worst_trade_pct": -14.193,
+      "exit_reasons": {
+        "fixed_16": 176,
+        "stop_-12.0": 24,
+        "stop_gap": 4
+      }
+    },
+    {
+      "stop_pct": -15.0,
+      "metrics": {
+        "n": 204,
+        "win_rate_pct": 61.27,
+        "avg_return_pct": 4.652,
+        "median_return_pct": 2.869,
+        "profit_factor": 2.804
+      },
+      "max_drawdown_pct": -48.29,
+      "max_losing_streak": 9,
+      "worst_trade_pct": -16.51,
+      "exit_reasons": {
+        "fixed_16": 193,
+        "stop_-15.0": 9,
+        "stop_gap": 2
+      }
+    },
+    {
+      "stop_pct": -18.0,
+      "metrics": {
+        "n": 204,
+        "win_rate_pct": 61.76,
+        "avg_return_pct": 4.756,
+        "median_return_pct": 2.869,
+        "profit_factor": 2.913
+      },
+      "max_drawdown_pct": -46.04,
+      "max_losing_streak": 9,
+      "worst_trade_pct": -18.931,
+      "exit_reasons": {
+        "fixed_16": 199,
+        "stop_-18.0": 4,
+        "stop_gap": 1
+      }
+    }
+  ]
 }
