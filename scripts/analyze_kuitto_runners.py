@@ -345,7 +345,7 @@ def main():
     # Composite three-tier Kuitto rule.
     shallow = refined[(refined["dd20_pct"] > -7.0) & (refined["dd20_pct"] <= -5.5)].copy()
     mid = refined[(refined["dd20_pct"] > -9.0) & (refined["dd20_pct"] <= -7.0) & (refined["ma25_slope5_pct"] >= -1.5)].copy()
-    composite = pd.concat([shallow, mid], ignore_index=True).drop_duplicates(subset=["signal_date","Code"], keep="first")
+    composite = pd.concat([shallow, mid], ignore_index=True).drop_duplicates(subset=["signal_date","code"], keep="first")
     composite["year"] = pd.to_datetime(composite["signal_date"]).dt.year
     composite_yearly = {str(int(y)): metrics(g) for y, g in composite.groupby("year")}
     composite_summary = {
