@@ -342,7 +342,20 @@ def main():
             "n_2025": int((p["year"] == 2025).sum()),
         })
 
-    # Composite three-tier Kuitto rule.\n    shallow = refined[(refined["dd20_pct"] > -7.0) & (refined["dd20_pct"] <= -5.5)].copy()\n    mid = refined[(refined["dd20_pct"] > -9.0) & (refined["dd20_pct"] <= -7.0) & (refined["ma25_slope5_pct"] >= -1.5)].copy()\n    composite = pd.concat([shallow, mid], ignore_index=True).drop_duplicates(subset=["signal_date","Code"], keep="first")\n    composite["year"] = pd.to_datetime(composite["signal_date"]).dt.year\n    composite_yearly = {str(int(y)): metrics(g) for y, g in composite.groupby("year")}\n    composite_summary = {\n        "rule": "ATR14>=3.4; -7<DD20<=-5.5 OR (-9<DD20<=-7 AND MA25_SLOPE5>=-1.5); DD20<=-9 excluded",\n        "overall": metrics(composite),\n        "yearly": composite_yearly,\n        "component_counts": {"shallow": int(len(shallow)), "mid": int(len(mid))},\n    }\n\n    summary = {
+    # Composite three-tier Kuitto rule.
+    shallow = refined[(refined["dd20_pct"] > -7.0) & (refined["dd20_pct"] <= -5.5)].copy()
+    mid = refined[(refined["dd20_pct"] > -9.0) & (refined["dd20_pct"] <= -7.0) & (refined["ma25_slope5_pct"] >= -1.5)].copy()
+    composite = pd.concat([shallow, mid], ignore_index=True).drop_duplicates(subset=["signal_date","Code"], keep="first")
+    composite["year"] = pd.to_datetime(composite["signal_date"]).dt.year
+    composite_yearly = {str(int(y)): metrics(g) for y, g in composite.groupby("year")}
+    composite_summary = {
+        "rule": "ATR14>=3.4; -7<DD20<=-5.5 OR (-9<DD20<=-7 AND MA25_SLOPE5>=-1.5); DD20<=-9 excluded",
+        "overall": metrics(composite),
+        "yearly": composite_yearly,
+        "component_counts": {"shallow": int(len(shallow)), "mid": int(len(mid))},
+    }
+
+    summary = {
         "strategy": "kuitto_pullback_auto frozen signal, 10-day next-open return",
         "goal": "Find signal-day features associated with large winners without using post-entry information.",
         "labels": {
