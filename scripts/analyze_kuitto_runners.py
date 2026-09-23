@@ -355,6 +355,49 @@ def main():
         "component_counts": {"shallow": int(len(shallow)), "mid": int(len(mid))},
     }
 
+    # Diagnose losing signals in weak years 2018/2022/2023 versus other signals.
+    weak_years = [2018, 2022, 2023]
+    diag_cols = [
+        "bull_pct","ma5_decline5_pct","ma5_vs_ma25_pct","close_vs_ma5_pct",
+        "volume_ratio","ma25_slope5_pct","dd20_pct","dd60_pct","ret5_pct",
+        "ret20_pct","atr14_pct","avg_turnover20"
+    ]
+    comp_mask = (
+        (t["atr14_pct"] >= 3.4)
+        & (
+            ((t["dd20_pct"] > -7.0) & (t["dd20_pct"] <= -5.5))
+            | ((t["dd20_pct"] > -9.0) & (t["dd20_pct"] <= -7.0) & (t["ma25_slope5_pct"] >= -1.5))
+        )
+    )
+    comp_t = t[comp_mask].copy()
+    comp_t["year"] = pd.to_datetime(comp_t["signal_date"]).dt.year
+    comp_t["is_loss16_proxy"] = comp_t["ret10"] < 0
+    weak_losses = comp_t[comp_t["year"].isin(weak_years) & comp_t["is_loss16_proxy"]]
+    weak_wins = comp_t[comp_t["year"].isin(weak_years) & ~comp_t["is_loss16_proxy"]]
+    other_losses = comp_t[~comp_t["year"].isin(weak_years) & comp_t["is_loss16_proxy"]]
+    other_wins = comp_t[~comp_t["year"].isin(weak_years) & ~comp_t["is_loss16_proxy"]]
+
+    def feature_summary(part):
+        out = {"n": int(len(part))}
+        for c in diag_cols:
+            x = part[c].dropna()
+            if len(x):
+                out[c] = {
+                    "mean": round(float(x.mean()), 4),
+                    "median": round(float(x.median()), 4),
+                    "q25": round(float(x.quantile(0.25)), 4),
+                    "q75": round(float(x.quantile(0.75)), 4),
+                }
+        return out
+
+    weak_year_loss_diag = {
+        "weak_years": weak_years,
+        "weak_losses": feature_summary(weak_losses),
+        "weak_wins": feature_summary(weak_wins),
+        "other_losses": feature_summary(other_losses),
+        "other_wins": feature_summary(other_wins),
+    }
+
     summary = {
         "strategy": "kuitto_pullback_auto frozen signal, 10-day next-open return",
         "goal": "Find signal-day features associated with large winners without using post-entry information.",
@@ -365,7 +408,7 @@ def main():
         "overall_10y": analyze_block(t),
         "older_5y": analyze_block(t[t["signal_date_dt"] < split]),
         "recent_5y": analyze_block(t[t["signal_date_dt"] >= split]),
-        "refined_rule_diagnostics": {"rule":"ATR14>=3.4 and DD20<=-5.5","year_compare":feature_compare,"bad_2018_2025_vs_good":bad_vs_good,"trend_filter_grid":trend_grid,"chosen_balanced_filter":chosen_summary,"diagnostic_2019_kept_vs_rejected":y2019_diag,"dd20_rebound_grid":dd_rebound_grid,"normal_kuitto_excluding_dd20_le_-9":normal_kuitto_summary,"mid_dd20_ma25_slope_grid":slope_grid_mid,"composite_three_tier_rule":composite_summary},
+        "refined_rule_diagnostics": {"rule":"ATR14>=3.4 and DD20<=-5.5","year_compare":feature_compare,"bad_2018_2025_vs_good":bad_vs_good,"trend_filter_grid":trend_grid,"chosen_balanced_filter":chosen_summary,"diagnostic_2019_kept_vs_rejected":y2019_diag,"dd20_rebound_grid":dd_rebound_grid,"normal_kuitto_excluding_dd20_le_-9":normal_kuitto_summary,"mid_dd20_ma25_slope_grid":slope_grid_mid,"composite_three_tier_rule":composite_summary,"weak_year_loss_diagnostics":weak_year_loss_diag},
         "note": "Exploratory diagnostics only; any promising filter should be frozen and re-tested out of sample before production use."
     }
 
