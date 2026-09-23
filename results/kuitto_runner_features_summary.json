@@ -6355,7 +6355,120 @@
           }
         }
       }
-    ]
+    ],
+    "chosen_balanced_filter": {
+      "rule": "ATR14>=3.4, DD20<=-5.5, MA25_SLOPE5>=-1.5, RET20<=-1.0",
+      "overall": {
+        "n": 128,
+        "win_rate_pct": 62.5,
+        "avg_ret10_pct": 3.824,
+        "median_ret10_pct": 3.103,
+        "p10_plus_pct": 18.75,
+        "p5_plus_pct": 37.5,
+        "profit_factor": 3.093
+      },
+      "yearly": {
+        "2016": {
+          "n": 2,
+          "win_rate_pct": 100.0,
+          "avg_ret10_pct": 17.14,
+          "median_ret10_pct": 17.14,
+          "p10_plus_pct": 50.0,
+          "p5_plus_pct": 50.0,
+          "profit_factor": null
+        },
+        "2017": {
+          "n": 8,
+          "win_rate_pct": 62.5,
+          "avg_ret10_pct": 4.069,
+          "median_ret10_pct": 6.57,
+          "p10_plus_pct": 25.0,
+          "p5_plus_pct": 50.0,
+          "profit_factor": 2.22
+        },
+        "2018": {
+          "n": 14,
+          "win_rate_pct": 42.86,
+          "avg_ret10_pct": 1.274,
+          "median_ret10_pct": -0.126,
+          "p10_plus_pct": 7.14,
+          "p5_plus_pct": 7.14,
+          "profit_factor": 2.006
+        },
+        "2019": {
+          "n": 13,
+          "win_rate_pct": 46.15,
+          "avg_ret10_pct": -0.261,
+          "median_ret10_pct": -2.872,
+          "p10_plus_pct": 23.08,
+          "p5_plus_pct": 38.46,
+          "profit_factor": 0.938
+        },
+        "2020": {
+          "n": 34,
+          "win_rate_pct": 67.65,
+          "avg_ret10_pct": 4.637,
+          "median_ret10_pct": 3.313,
+          "p10_plus_pct": 17.65,
+          "p5_plus_pct": 35.29,
+          "profit_factor": 5.315
+        },
+        "2021": {
+          "n": 13,
+          "win_rate_pct": 61.54,
+          "avg_ret10_pct": 6.296,
+          "median_ret10_pct": 4.598,
+          "p10_plus_pct": 15.38,
+          "p5_plus_pct": 46.15,
+          "profit_factor": 4.115
+        },
+        "2022": {
+          "n": 11,
+          "win_rate_pct": 54.55,
+          "avg_ret10_pct": 2.947,
+          "median_ret10_pct": 5.0,
+          "p10_plus_pct": 18.18,
+          "p5_plus_pct": 54.55,
+          "profit_factor": 3.286
+        },
+        "2023": {
+          "n": 7,
+          "win_rate_pct": 71.43,
+          "avg_ret10_pct": 3.736,
+          "median_ret10_pct": 6.395,
+          "p10_plus_pct": 42.86,
+          "p5_plus_pct": 57.14,
+          "profit_factor": 2.131
+        },
+        "2024": {
+          "n": 10,
+          "win_rate_pct": 80.0,
+          "avg_ret10_pct": 4.138,
+          "median_ret10_pct": 4.351,
+          "p10_plus_pct": 20.0,
+          "p5_plus_pct": 30.0,
+          "profit_factor": 3.628
+        },
+        "2025": {
+          "n": 7,
+          "win_rate_pct": 57.14,
+          "avg_ret10_pct": 0.955,
+          "median_ret10_pct": 2.683,
+          "p10_plus_pct": 0.0,
+          "p5_plus_pct": 14.29,
+          "profit_factor": 1.739
+        },
+        "2026": {
+          "n": 9,
+          "win_rate_pct": 77.78,
+          "avg_ret10_pct": 6.895,
+          "median_ret10_pct": 7.491,
+          "p10_plus_pct": 22.22,
+          "p5_plus_pct": 55.56,
+          "profit_factor": 7.318
+        }
+      }
+    }
   },
   "note": "Exploratory diagnostics only; any promising filter should be frozen and re-tested out of sample before production use."
 }
