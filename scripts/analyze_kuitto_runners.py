@@ -318,7 +318,7 @@ def main():
                 "n_2025": int((p["year"] == 2025).sum()),
             })
 
-    summary = {
+    # Reaggregate refined Kuitto after separating extreme DD20 <= -9%.\n    normal_kuitto = refined[(refined["dd20_pct"] > -9.0) & (refined["dd20_pct"] <= -5.5)].copy()\n    normal_kuitto_yearly = {str(int(y)): metrics(g) for y, g in normal_kuitto.groupby("year")}\n    normal_kuitto_summary = {\n        "rule": "ATR14>=3.4 and -9.0<DD20<=-5.5",\n        "overall": metrics(normal_kuitto),\n        "yearly": normal_kuitto_yearly,\n    }\n\n    summary = {
         "strategy": "kuitto_pullback_auto frozen signal, 10-day next-open return",
         "goal": "Find signal-day features associated with large winners without using post-entry information.",
         "labels": {
@@ -328,7 +328,7 @@ def main():
         "overall_10y": analyze_block(t),
         "older_5y": analyze_block(t[t["signal_date_dt"] < split]),
         "recent_5y": analyze_block(t[t["signal_date_dt"] >= split]),
-        "refined_rule_diagnostics": {"rule":"ATR14>=3.4 and DD20<=-5.5","year_compare":feature_compare,"bad_2018_2025_vs_good":bad_vs_good,"trend_filter_grid":trend_grid,"chosen_balanced_filter":chosen_summary,"diagnostic_2019_kept_vs_rejected":y2019_diag,"dd20_rebound_grid":dd_rebound_grid},
+        "refined_rule_diagnostics": {"rule":"ATR14>=3.4 and DD20<=-5.5","year_compare":feature_compare,"bad_2018_2025_vs_good":bad_vs_good,"trend_filter_grid":trend_grid,"chosen_balanced_filter":chosen_summary,"diagnostic_2019_kept_vs_rejected":y2019_diag,"dd20_rebound_grid":dd_rebound_grid,"normal_kuitto_excluding_dd20_le_-9":normal_kuitto_summary},
         "note": "Exploratory diagnostics only; any promising filter should be frozen and re-tested out of sample before production use."
     }
 
