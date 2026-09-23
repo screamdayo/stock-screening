@@ -10,6 +10,8 @@ from strategies import kuitto
 from strategies import ma5_breakout
 from strategies import kuitto_pullback_auto
 from strategies import gc_strong_breakout
+from strategies import kuitto_refined_204
+from strategies import kuitto_elite_59
 
 # 戦略名 -> シグナル検出関数（バックテスト用: find_signals）
 STRATEGIES = {
@@ -17,6 +19,8 @@ STRATEGIES = {
     "ma5_breakout": ma5_breakout.find_signals,
     "kuitto_pullback_auto": kuitto_pullback_auto.find_signals,
     "gc_strong_breakout": gc_strong_breakout.find_signals,
+    "kuitto_refined_204": kuitto_refined_204.find_signals,
+    "kuitto_elite_59": kuitto_elite_59.find_signals,
 }
 
 # 戦略名 -> 日次スクリーニング用関数（最新日だけ判定するもの）
@@ -25,6 +29,8 @@ LATEST_SCREENERS = {
     "ma5_breakout": ma5_breakout.find_latest_signals,
     "kuitto_pullback_auto": kuitto_pullback_auto.find_latest_signals,
     "gc_strong_breakout": gc_strong_breakout.find_latest_signals,
+    "kuitto_refined_204": kuitto_refined_204.find_latest_signals,
+    "kuitto_elite_59": kuitto_elite_59.find_latest_signals,
 }
 
 
