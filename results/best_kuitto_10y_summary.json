@@ -612,5 +612,59 @@
       }
     }
   ],
+  "fixed_hold_grid": [
+    {
+      "hold_sessions": 10,
+      "metrics": {
+        "n": 204,
+        "win_rate_pct": 61.76,
+        "avg_return_pct": 3.421,
+        "median_return_pct": 2.239,
+        "profit_factor": 2.83,
+        "avg_hold_sessions_to_exit": 10.0,
+        "gross_profit_pct_points": 1079.46,
+        "gross_loss_pct_points": 381.48
+      }
+    },
+    {
+      "hold_sessions": 12,
+      "metrics": {
+        "n": 204,
+        "win_rate_pct": 62.25,
+        "avg_return_pct": 3.698,
+        "median_return_pct": 2.023,
+        "profit_factor": 2.829,
+        "avg_hold_sessions_to_exit": 12.0,
+        "gross_profit_pct_points": 1167.07,
+        "gross_loss_pct_points": 412.58
+      }
+    },
+    {
+      "hold_sessions": 15,
+      "metrics": {
+        "n": 204,
+        "win_rate_pct": 59.31,
+        "avg_return_pct": 4.058,
+        "median_return_pct": 2.296,
+        "profit_factor": 2.7,
+        "avg_hold_sessions_to_exit": 15.0,
+        "gross_profit_pct_points": 1314.6,
+        "gross_loss_pct_points": 486.87
+      }
+    },
+    {
+      "hold_sessions": 20,
+      "metrics": {
+        "n": 204,
+        "win_rate_pct": 59.31,
+        "avg_return_pct": 4.837,
+        "median_return_pct": 2.877,
+        "profit_factor": 2.58,
+        "avg_hold_sessions_to_exit": 20.0,
+        "gross_profit_pct_points": 1611.34,
+        "gross_loss_pct_points": 624.62
+      }
+    }
+  ],
   "note": "Exploratory rule was selected on recent data. Older half is the key robustness check; current-listing universe implies survivorship bias."
 }
