@@ -205,7 +205,7 @@ def main():
             out["features"][c] = bins
         return out
 
-    summary = {
+    # Focused diagnostics for the refined Kuitto subset.\n    refined = t[(t["atr14_pct"] >= 3.4) & (t["dd20_pct"] <= -5.5)].copy()\n    refined["year"] = refined["signal_date_dt"].dt.year\n    compare_years = [2018, 2019, 2020, 2023, 2024, 2025, 2026]\n    feature_compare = {}\n    for y in compare_years:\n        p = refined[refined["year"] == y]\n        if p.empty:\n            continue\n        fd = {}\n        for c in feature_cols:\n            x = p[c].dropna()\n            if len(x):\n                fd[c] = {\n                    "n": int(len(x)),\n                    "mean": round(float(x.mean()), 4),\n                    "median": round(float(x.median()), 4),\n                    "q25": round(float(x.quantile(0.25)), 4),\n                    "q75": round(float(x.quantile(0.75)), 4),\n                }\n        feature_compare[str(y)] = {\n            "performance": metrics(p),\n            "features": fd,\n        }\n\n    bad = refined[refined["year"].isin([2018, 2025])].copy()\n    good = refined[refined["year"].isin([2019, 2020, 2023, 2024, 2026])].copy()\n    bad_vs_good = {}\n    for c in feature_cols:\n        xb = bad[c].dropna(); xg = good[c].dropna()\n        if len(xb) and len(xg):\n            bad_vs_good[c] = {\n                "bad_median": round(float(xb.median()), 4),\n                "good_median": round(float(xg.median()), 4),\n                "bad_mean": round(float(xb.mean()), 4),\n                "good_mean": round(float(xg.mean()), 4),\n            }\n\n    summary = {
         "strategy": "kuitto_pullback_auto frozen signal, 10-day next-open return",
         "goal": "Find signal-day features associated with large winners without using post-entry information.",
         "labels": {
@@ -215,8 +215,7 @@ def main():
         "overall_10y": analyze_block(t),
         "older_5y": analyze_block(t[t["signal_date_dt"] < split]),
         "recent_5y": analyze_block(t[t["signal_date_dt"] >= split]),
-        "note": "Exploratory diagnostics only; any promising filter should be frozen and re-tested out of sample before production use."
-    }
+        "refined_rule_diagnostics": {"rule":"ATR14>=3.4 and DD20<=-5.5","year_compare":feature_compare,"bad_2018_2025_vs_good":bad_vs_good},\n        "note": "Exploratory diagnostics only; any promising filter should be frozen and re-tested out of sample before production use."\n    }
 
     RESULT_DIR.mkdir(parents=True, exist_ok=True)
     t.drop(columns=["signal_date_dt"]).to_csv(RESULT_DIR/"kuitto_runner_features_trades.csv", index=False)
