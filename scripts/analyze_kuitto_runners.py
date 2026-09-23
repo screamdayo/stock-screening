@@ -243,7 +243,7 @@ def main():
                 "good_mean": round(float(xg.mean()), 4),
             }
 
-    summary = {
+    # Grid search on refined Kuitto subset: MA25 5d slope floor x RET20 ceiling.\n    slope_floors = [-1.5, -1.0, -0.75, -0.5, -0.25, 0.0]\n    ret20_ceilings = [0.0, -1.0, -2.0, -3.0, -4.0]\n    trend_grid = []\n    for slope_floor in slope_floors:\n        for ret20_ceiling in ret20_ceilings:\n            p = refined[(refined["ma25_slope5_pct"] >= slope_floor) & (refined["ret20_pct"] <= ret20_ceiling)].copy()\n            yearly = {str(int(y)): metrics(g) for y, g in p.groupby("year")}\n            bad_part = p[p["year"].isin([2018, 2025])]\n            good_part = p[p["year"].isin([2019, 2020, 2023, 2024, 2026])]\n            trend_grid.append({\n                "ma25_slope5_min": slope_floor,\n                "ret20_max": ret20_ceiling,\n                "overall": metrics(p),\n                "bad_2018_2025": metrics(bad_part),\n                "good_years": metrics(good_part),\n                "yearly": yearly,\n            })\n\n    summary = {
         "strategy": "kuitto_pullback_auto frozen signal, 10-day next-open return",
         "goal": "Find signal-day features associated with large winners without using post-entry information.",
         "labels": {
@@ -253,7 +253,7 @@ def main():
         "overall_10y": analyze_block(t),
         "older_5y": analyze_block(t[t["signal_date_dt"] < split]),
         "recent_5y": analyze_block(t[t["signal_date_dt"] >= split]),
-        "refined_rule_diagnostics": {"rule":"ATR14>=3.4 and DD20<=-5.5","year_compare":feature_compare,"bad_2018_2025_vs_good":bad_vs_good},
+        "refined_rule_diagnostics": {"rule":"ATR14>=3.4 and DD20<=-5.5","year_compare":feature_compare,"bad_2018_2025_vs_good":bad_vs_good,"trend_filter_grid":trend_grid},
         "note": "Exploratory diagnostics only; any promising filter should be frozen and re-tested out of sample before production use."
     }
 
