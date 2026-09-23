@@ -262,7 +262,16 @@ def main():
                 "yearly": yearly,
             })
 
-    # Yearly stats for chosen balanced refined filter.\n    chosen = refined[(refined["ma25_slope5_pct"] >= -1.5) & (refined["ret20_pct"] <= -1.0)].copy()\n    chosen_yearly = {str(int(y)): metrics(g) for y, g in chosen.groupby("year")}\n    chosen_summary = {\n        "rule": "ATR14>=3.4, DD20<=-5.5, MA25_SLOPE5>=-1.5, RET20<=-1.0",\n        "overall": metrics(chosen),\n        "yearly": chosen_yearly,\n    }\n\n    summary = {
+    # Yearly stats for chosen balanced refined filter.
+    chosen = refined[(refined["ma25_slope5_pct"] >= -1.5) & (refined["ret20_pct"] <= -1.0)].copy()
+    chosen_yearly = {str(int(y)): metrics(g) for y, g in chosen.groupby("year")}
+    chosen_summary = {
+        "rule": "ATR14>=3.4, DD20<=-5.5, MA25_SLOPE5>=-1.5, RET20<=-1.0",
+        "overall": metrics(chosen),
+        "yearly": chosen_yearly,
+    }
+
+    summary = {
         "strategy": "kuitto_pullback_auto frozen signal, 10-day next-open return",
         "goal": "Find signal-day features associated with large winners without using post-entry information.",
         "labels": {
