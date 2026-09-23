@@ -346,7 +346,7 @@ def main():
                     & (merged16["close_vs_ma5_pct"] >= close_min)
                 ].copy()
 
-                weak = p[p["year"].isin([2018, 2022, 2023])].sort_values("entry_date")
+                weak = p[p["year"].isin([2018, 2022, 2023])].sort_values("signal_date")
                 if not weak.empty:
                     eq = (1 + weak["return_pct"] / 100.0).cumprod()
                     peak = eq.cummax()
