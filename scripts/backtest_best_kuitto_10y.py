@@ -304,6 +304,32 @@ def main():
                         t["fixed10_return_pct"] = np.nan
                     trades.append(t)
 
+    # Exit grid on the same composite entry signals.
+    signal_keys = []
+    for code, group in df.groupby("Code", sort=True):
+        g = prepare(group)
+        for i in range(MA_LONG, len(g) - 1):
+            if is_entry_signal(g, i) and passes_composite_refined_rule(g, i):
+                signal_keys.append((g, i))
+
+    exit_grid = []
+    for stop_pct in [-3.0, -4.0, -5.0, -6.0, -7.0]:
+        for max_hold in [10, 15]:
+            for use_gakutto in [True, False]:
+                rows = []
+                for g, i in signal_keys:
+                    tr = simulate_trade_variant(g, i, stop_pct, max_hold, use_gakutto)
+                    if tr:
+                        rows.append(tr)
+                part = pd.DataFrame(rows)
+                exit_grid.append({
+                    "stop_pct": stop_pct,
+                    "max_hold_sessions": max_hold,
+                    "use_gakutto": use_gakutto,
+                    "metrics": metrics(part) if not part.empty else {"n": 0},
+                    "exit_reasons": {str(k): int(v) for k, v in part["exit_reason"].value_counts().to_dict().items()} if not part.empty else {},
+                })
+
     tdf = pd.DataFrame(trades)
     if tdf.empty:
         raise RuntimeError("No trades found.")
@@ -355,6 +381,7 @@ def main():
         "recent_5y_fixed10": fixed10_metrics(recent),
         "yearly": yearly,
         "exit_reasons": exit_reasons,
+        "exit_grid": exit_grid,
         "note": "Exploratory rule was selected on recent data. Older half is the key robustness check; current-listing universe implies survivorship bias.",
     }
 
