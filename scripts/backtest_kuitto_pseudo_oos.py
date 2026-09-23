@@ -229,7 +229,7 @@ def main():
             })
     out["atr_dd20_grid"] = grid
 
-    RESULT_DIR.mkdir(parents=True, exist_ok=True)
+    # Year-by-year performance for the selected robust production candidate.\n    selected = t[(t["atr14_pct"] >= 3.4) & (t["dd20_pct"] <= -5.5)].copy()\n    selected["year"] = selected["signal_date_dt"].dt.year\n    out["selected_rule"] = {\n        "rule": "ATR14_PCT >= 3.4 and DD20_PCT <= -5.5",\n        "overall": metrics(selected),\n        "yearly": {str(int(y)): metrics(p) for y, p in selected.groupby("year")}\n    }\n\n    RESULT_DIR.mkdir(parents=True, exist_ok=True)
     (RESULT_DIR / "kuitto_pseudo_oos_summary.json").write_text(
         json.dumps(out, ensure_ascii=False, indent=2), encoding="utf-8"
     )
