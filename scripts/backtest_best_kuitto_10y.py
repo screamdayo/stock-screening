@@ -357,6 +357,32 @@ def main():
             "metrics": metrics(part) if not part.empty else {"n":0},
         })
 
+    fixed_hold_yearly_compare = {}
+    for hold in [14, 16]:
+        rows = []
+        for g, i in signal_keys_fixed:
+            entry_i = i + 1
+            exit_i = entry_i + hold
+            if exit_i >= len(g):
+                continue
+            entry = float(g["O"].iloc[entry_i])
+            exitp = float(g["O"].iloc[exit_i])
+            if np.isfinite(entry) and np.isfinite(exitp) and entry > 0:
+                rows.append({
+                    "entry_date": str(pd.Timestamp(g["Date"].iloc[entry_i]).date()),
+                    "return_pct": (exitp / entry - 1) * 100,
+                    "hold_sessions_to_exit": hold,
+                })
+        part = pd.DataFrame(rows)
+        if not part.empty:
+            part["entry_date_dt"] = pd.to_datetime(part["entry_date"])
+            fixed_hold_yearly_compare[str(hold)] = {
+                str(int(y)): metrics(gp)
+                for y, gp in part.groupby(part["entry_date_dt"].dt.year)
+            }
+        else:
+            fixed_hold_yearly_compare[str(hold)] = {}
+
     tdf = pd.DataFrame(trades)
     if tdf.empty:
         raise RuntimeError("No trades found.")
@@ -410,6 +436,7 @@ def main():
         "exit_reasons": exit_reasons,
         "exit_grid": exit_grid,
         "fixed_hold_grid": fixed_hold_grid,
+        "fixed_hold_yearly_compare": fixed_hold_yearly_compare,
         "note": "Exploratory rule was selected on recent data. Older half is the key robustness check; current-listing universe implies survivorship bias.",
     }
 
