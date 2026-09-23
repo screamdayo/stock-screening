@@ -219,6 +219,47 @@ def main():
             "exit_reasons": part["exit_reason"].value_counts().to_dict() if not part.empty else {},
         })
 
+    yearly_compare_stop18 = {}
+    for stop_label, stop_value in [("none", None), ("-18", -18.0)]:
+        dated = []
+        for g in groups:
+            sim = simulate(g, stop_pct=stop_value, max_hold=16, use_gakutto=False)
+            if not sim:
+                continue
+            entry_row = g[g["offset"] == 0]
+            if entry_row.empty:
+                continue
+            dated.append({
+                "entry_date": str(entry_row.iloc[0]["entry_date"]),
+                "return_pct": float(sim["return_pct"]),
+            })
+        ddf = pd.DataFrame(dated)
+        ddf["entry_date_dt"] = pd.to_datetime(ddf["entry_date"])
+        per_year = {}
+        for year, part in ddf.groupby(ddf["entry_date_dt"].dt.year):
+            part = part.sort_values("entry_date_dt").reset_index(drop=True)
+            eq = (1 + part["return_pct"] / 100.0).cumprod()
+            peak = eq.cummax()
+            dd = eq / peak - 1
+            max_streak = 0
+            cur = 0
+            for r in part["return_pct"]:
+                if r < 0:
+                    cur += 1
+                    max_streak = max(max_streak, cur)
+                else:
+                    cur = 0
+            per_year[str(int(year))] = {
+                "n": int(len(part)),
+                "avg_return_pct": round(float(part["return_pct"].mean()), 3),
+                "median_return_pct": round(float(part["return_pct"].median()), 3),
+                "max_drawdown_pct": round(float(dd.min() * 100), 2),
+                "max_losing_streak": int(max_streak),
+                "worst_trade_pct": round(float(part["return_pct"].min()), 3),
+                "compounded_return_pct": round(float((eq.iloc[-1] - 1) * 100), 2),
+            }
+        yearly_compare_stop18[stop_label] = per_year
+
     out = {
         "source_cache": str(CACHE),
         "signal_count": len(groups),
@@ -226,6 +267,7 @@ def main():
         "exit_grid": exit_grid,
         "risk_16d": {"overall": overall_risk_16, "yearly": yearly_risk},
         "emergency_stop_grid": emergency_stop_grid,
+        "yearly_compare_stop18": yearly_compare_stop18,
     }
     out_path = RESULT_DIR / "kuitto_exit_cache_summary.json"
     out_path.write_text(json.dumps(out, ensure_ascii=False, indent=2), encoding="utf-8")
