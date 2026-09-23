@@ -4,7 +4,8 @@
   "learned_from_older5_only": {
     "atr14_pct_q75": 2.917505,
     "dd20_pct_q25": -5.855856,
-    "avg_turnover20_q75_yen": 828434090.0
+    "avg_turnover20_q75_yen": 828434090.0,
+    "same_day_count_q75": 13.0
   },
   "variants": {
     "baseline": {
@@ -86,7 +87,68 @@
         "p10_plus_pct": 12.98,
         "profit_factor": 1.919
       }
+    },
+    "crowd_only": {
+      "train_older5": {
+        "n": 773,
+        "win_rate_pct": 50.71,
+        "avg_ret10_pct": 0.402,
+        "median_ret10_pct": 0.16,
+        "p5_plus_pct": 19.92,
+        "p10_plus_pct": 6.6,
+        "profit_factor": 1.18
+      },
+      "test_recent5": {
+        "n": 866,
+        "win_rate_pct": 43.88,
+        "avg_ret10_pct": -0.302,
+        "median_ret10_pct": -0.661,
+        "p5_plus_pct": 15.47,
+        "p10_plus_pct": 3.81,
+        "profit_factor": 0.873
+      }
+    },
+    "atr_plus_crowd": {
+      "train_older5": {
+        "n": 152,
+        "win_rate_pct": 50.66,
+        "avg_ret10_pct": 0.837,
+        "median_ret10_pct": 0.147,
+        "p5_plus_pct": 25.0,
+        "p10_plus_pct": 12.5,
+        "profit_factor": 1.356
+      },
+      "test_recent5": {
+        "n": 96,
+        "win_rate_pct": 44.79,
+        "avg_ret10_pct": 0.757,
+        "median_ret10_pct": -0.365,
+        "p5_plus_pct": 19.79,
+        "p10_plus_pct": 10.42,
+        "profit_factor": 1.312
+      }
+    },
+    "atr_dd20_crowd": {
+      "train_older5": {
+        "n": 64,
+        "win_rate_pct": 50.0,
+        "avg_ret10_pct": 0.964,
+        "median_ret10_pct": -0.02,
+        "p5_plus_pct": 26.56,
+        "p10_plus_pct": 10.94,
+        "profit_factor": 1.415
+      },
+      "test_recent5": {
+        "n": 34,
+        "win_rate_pct": 47.06,
+        "avg_ret10_pct": 0.87,
+        "median_ret10_pct": -0.319,
+        "p5_plus_pct": 23.53,
+        "p10_plus_pct": 11.76,
+        "profit_factor": 1.343
+      }
     }
   },
+  "same_day_count_buckets": {},
   "caveat": "Historical universe is current-Prime survivors, so survivorship bias remains. This is pseudo-OOS, not a fully clean historical-universe OOS test."
 }
