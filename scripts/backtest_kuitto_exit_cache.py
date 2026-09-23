@@ -171,12 +171,61 @@ def main():
         "worst_trade_pct": round(float(all_part["return_pct"].min()), 3) if len(all_part) else None,
     }
 
+    emergency_stop_grid = []
+    for stop in [-10.0, -12.0, -15.0, -18.0]:
+        rows = []
+        dated = []
+        for g in groups:
+            sim = simulate(g, stop_pct=stop, max_hold=16, use_gakutto=False)
+            if not sim:
+                continue
+            entry_row = g[g["offset"] == 0]
+            if entry_row.empty:
+                continue
+            rows.append(sim)
+            dated.append({
+                "entry_date": str(entry_row.iloc[0]["entry_date"]),
+                "return_pct": float(sim["return_pct"]),
+            })
+        part = pd.DataFrame(rows)
+        ddf = pd.DataFrame(dated)
+        if not ddf.empty:
+            ddf["entry_date_dt"] = pd.to_datetime(ddf["entry_date"])
+            ddf = ddf.sort_values("entry_date_dt").reset_index(drop=True)
+            eq = (1 + ddf["return_pct"] / 100.0).cumprod()
+            peak = eq.cummax()
+            dd = eq / peak - 1
+            max_streak = 0
+            cur = 0
+            for r in ddf["return_pct"]:
+                if r < 0:
+                    cur += 1
+                    max_streak = max(max_streak, cur)
+                else:
+                    cur = 0
+            max_dd = round(float(dd.min() * 100), 2)
+            worst = round(float(ddf["return_pct"].min()), 3)
+        else:
+            max_dd = None
+            max_streak = 0
+            worst = None
+
+        emergency_stop_grid.append({
+            "stop_pct": stop,
+            "metrics": metrics(part) if not part.empty else {"n":0},
+            "max_drawdown_pct": max_dd,
+            "max_losing_streak": int(max_streak),
+            "worst_trade_pct": worst,
+            "exit_reasons": part["exit_reason"].value_counts().to_dict() if not part.empty else {},
+        })
+
     out = {
         "source_cache": str(CACHE),
         "signal_count": len(groups),
         "fixed_hold_grid": fixed_holds,
         "exit_grid": exit_grid,
         "risk_16d": {"overall": overall_risk_16, "yearly": yearly_risk},
+        "emergency_stop_grid": emergency_stop_grid,
     }
     out_path = RESULT_DIR / "kuitto_exit_cache_summary.json"
     out_path.write_text(json.dumps(out, ensure_ascii=False, indent=2), encoding="utf-8")
