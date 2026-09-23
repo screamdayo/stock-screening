@@ -214,8 +214,8 @@ def main():
         }
 
     # Fine ATR x DD20 grid. Thresholds are fixed absolute values and evaluated on both halves.
-    atr_thresholds = [2.4, 2.6, 2.8, 3.0, 3.2, 3.4, 3.6]
-    dd20_thresholds = [-4.0, -4.5, -5.0, -5.5, -6.0, -6.5, -7.0, -8.0]
+    atr_thresholds = [3.0, 3.1, 3.2, 3.3, 3.4, 3.5]
+    dd20_thresholds = [-5.0, -5.25, -5.5, -5.75, -6.0, -6.25]
     grid = []
     for atr_thr in atr_thresholds:
         for dd_thr in dd20_thresholds:
