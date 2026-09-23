@@ -271,7 +271,7 @@ def main():
         "yearly": chosen_yearly,
     }
 
-    summary = {
+    # 2019 diagnostic: compare kept vs rejected by the balanced trend filter.\n    y2019 = refined[refined["year"] == 2019].copy()\n    y2019["balanced_keep"] = (y2019["ma25_slope5_pct"] >= -1.5) & (y2019["ret20_pct"] <= -1.0)\n    y2019_kept = y2019[y2019["balanced_keep"]].copy()\n    y2019_rejected = y2019[~y2019["balanced_keep"]].copy()\n    y2019_compare = {}\n    for c in feature_cols:\n        a = y2019_kept[c].dropna(); b = y2019_rejected[c].dropna()\n        if len(a) and len(b):\n            y2019_compare[c] = {\n                "kept_mean": round(float(a.mean()), 4),\n                "kept_median": round(float(a.median()), 4),\n                "rejected_mean": round(float(b.mean()), 4),\n                "rejected_median": round(float(b.median()), 4),\n            }\n    y2019_diag = {\n        "kept": metrics(y2019_kept),\n        "rejected": metrics(y2019_rejected),\n        "feature_compare": y2019_compare,\n    }\n\n    summary = {
         "strategy": "kuitto_pullback_auto frozen signal, 10-day next-open return",
         "goal": "Find signal-day features associated with large winners without using post-entry information.",
         "labels": {
@@ -281,7 +281,7 @@ def main():
         "overall_10y": analyze_block(t),
         "older_5y": analyze_block(t[t["signal_date_dt"] < split]),
         "recent_5y": analyze_block(t[t["signal_date_dt"] >= split]),
-        "refined_rule_diagnostics": {"rule":"ATR14>=3.4 and DD20<=-5.5","year_compare":feature_compare,"bad_2018_2025_vs_good":bad_vs_good,"trend_filter_grid":trend_grid,"chosen_balanced_filter":chosen_summary},
+        "refined_rule_diagnostics": {"rule":"ATR14>=3.4 and DD20<=-5.5","year_compare":feature_compare,"bad_2018_2025_vs_good":bad_vs_good,"trend_filter_grid":trend_grid,"chosen_balanced_filter":chosen_summary,"diagnostic_2019_kept_vs_rejected":y2019_diag},
         "note": "Exploratory diagnostics only; any promising filter should be frozen and re-tested out of sample before production use."
     }
 
