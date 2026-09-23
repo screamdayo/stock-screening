@@ -202,6 +202,66 @@ def notify(results, rescue_results=None, primary_results=None):
 
 
 
+
+def notify_kuitto_variants(refined_results, elite_results):
+    """Kuitto 204 / 59 are separate shadow strategies; notify only when either fires."""
+    refined_results = refined_results or []
+    elite_results = elite_results or []
+    if not refined_results and not elite_results:
+        logger.info("くいっと204 / 59 通知なし（本日の該当なし）")
+        return
+
+    today = datetime.now().strftime("%Y/%m/%d")
+
+    def _line(r):
+        label = _stock_label(r)
+        parts = []
+        decline = r.get("ma5_prior5d_decline_pct")
+        close_gap = r.get("close_vs_ma5_pct")
+        atr = r.get("atr14_pct")
+        dd20 = r.get("dd20_pct")
+        slope = r.get("ma25_slope5_pct")
+        if decline is not None:
+            parts.append(f"MA5直前5日 {decline:+.2f}%")
+        if close_gap is not None:
+            parts.append(f"終値/MA5 {close_gap:+.2f}%")
+        if atr is not None:
+            parts.append(f"ATR {atr:.2f}%")
+        if dd20 is not None:
+            parts.append(f"DD20 {dd20:+.2f}%")
+        if slope is not None:
+            parts.append(f"MA25傾き {slope:+.2f}%")
+        earnings_note = ""
+        if r.get("earnings_within_10bd"):
+            ed = r.get("earnings_date") or "日付不明"
+            bd = r.get("earnings_business_days")
+            when = f"（{bd}営業日後 / {ed}）" if bd is not None else f"（{ed}）"
+            earnings_note = f"\n   ⚠️ **10営業日以内に決算あり** {when}"
+        detail = " / ".join(parts)
+        return f"• **{label}**" + (f" — {detail}" if detail else "") + earnings_note
+
+    sections = []
+    if refined_results:
+        sections.append(
+            f"🔵 **くいっと204：{len(refined_results)}件**\n"
+            f"3段階ルール / フォワード出口16営業日固定\n"
+            + "\n".join(_line(r) for r in refined_results)
+        )
+    if elite_results:
+        sections.append(
+            f"🟣 **くいっと59：{len(elite_results)}件**\n"
+            f"204条件 + MA5直前5日≤-4% + 終値/MA5≥+2% / 出口16営業日固定\n"
+            + "\n".join(_line(r) for r in elite_results)
+        )
+
+    msg = (
+        f"🧪 **別戦略シグナル {today}**\n"
+        f"⚠️ 現行くいっとの本番候補とは別枠。フォワード比較用。\n\n"
+        + "\n\n".join(sections)
+    )
+    _post_long(msg)
+
+
 def notify_gc_strong_breakout(results):
     """GC強ブレイクは希少シグナルなので、該当時だけ別メッセージで通知する。"""
     if not results:
