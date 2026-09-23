@@ -67,6 +67,14 @@ def prepare(g):
     g = g.dropna(subset=["O","H","L","C"]).sort_values("Date").reset_index(drop=True).copy()
     g["MA5"] = g["C"].rolling(MA_SHORT).mean()
     g["MA25"] = g["C"].rolling(MA_LONG).mean()
+    g["MA25_SLOPE5_PCT"] = (g["MA25"] / g["MA25"].shift(5) - 1) * 100
+    g["HIGH20"] = g["C"].rolling(20).max()
+    g["DD20_PCT"] = (g["C"] / g["HIGH20"] - 1) * 100
+    tr1 = g["H"] - g["L"]
+    tr2 = (g["H"] - g["C"].shift(1)).abs()
+    tr3 = (g["L"] - g["C"].shift(1)).abs()
+    g["TR"] = pd.concat([tr1, tr2, tr3], axis=1).max(axis=1)
+    g["ATR14_PCT"] = g["TR"].rolling(14).mean() / g["C"] * 100
     return g
 
 
@@ -114,6 +122,23 @@ def is_entry_signal(g, i):
         return False
 
     return True
+
+
+
+def passes_composite_refined_rule(g, i):
+    r = g.iloc[i]
+    atr = r["ATR14_PCT"]
+    dd20 = r["DD20_PCT"]
+    slope = r["MA25_SLOPE5_PCT"]
+    if pd.isna(atr) or pd.isna(dd20) or pd.isna(slope):
+        return False
+    if atr < 3.4:
+        return False
+    if -7.0 < dd20 <= -5.5:
+        return True
+    if -9.0 < dd20 <= -7.0 and slope >= -1.5:
+        return True
+    return False
 
 
 def is_strict_gakutto(g, i):
@@ -187,6 +212,24 @@ def make_trade(g, signal_i, entry_i, exit_i, exit_price, reason, entry_price):
     }
 
 
+def fixed10_metrics(df):
+    r = df["fixed10_return_pct"].dropna()
+    if r.empty:
+        return {"n": 0}
+    wins = r[r > 0]
+    losses = r[r < 0]
+    gross_profit = wins.sum()
+    gross_loss = -losses.sum()
+    pf = gross_profit / gross_loss if gross_loss > 0 else None
+    return {
+        "n": int(len(r)),
+        "win_rate_pct": round(float((r > 0).mean() * 100), 2),
+        "avg_return_pct": round(float(r.mean()), 3),
+        "median_return_pct": round(float(r.median()), 3),
+        "profit_factor": round(float(pf), 3) if pf is not None else None,
+    }
+
+
 def metrics(df):
     if df.empty:
         return {"n": 0}
@@ -220,9 +263,19 @@ def main():
             continue
 
         for i in range(MA_LONG, len(g) - 1):
-            if is_entry_signal(g, i):
+            if is_entry_signal(g, i) and passes_composite_refined_rule(g, i):
                 t = simulate_trade(g, i)
                 if t:
+                    entry_i = i + 1
+                    fixed_exit_i = entry_i + 10
+                    if fixed_exit_i < len(g):
+                        fixed_exit = float(g["O"].iloc[fixed_exit_i])
+                        if np.isfinite(fixed_exit) and fixed_exit > 0:
+                            t["fixed10_return_pct"] = (fixed_exit / t["entry_price"] - 1) * 100
+                        else:
+                            t["fixed10_return_pct"] = np.nan
+                    else:
+                        t["fixed10_return_pct"] = np.nan
                     trades.append(t)
 
     tdf = pd.DataFrame(trades)
@@ -245,12 +298,13 @@ def main():
     }
 
     summary = {
-        "strategy": "best_kuitto_2026-09-09_frozen",
+        "strategy": "refined_kuitto_composite_three_tier",
         "universe": "current Prime listings in saved archive",
         "archive_start": str(pd.Timestamp(df["Date"].min()).date()),
         "archive_end": str(pd.Timestamp(df["Date"].max()).date()),
         "split_date": str(split.date()),
         "entry": {
+            "refined_filter": "ATR14>=3.4; -7<DD20<=-5.5 OR (-9<DD20<=-7 AND MA25_SLOPE5>=-1.5); DD20<=-9 excluded",
             "next_open": True,
             "ma5_prior5d_decline_pct": [-5.5, -2.0],
             "ma5_vs_ma25_pct": [-5.0, 0.0],
@@ -267,9 +321,12 @@ def main():
             "max_hold": "15 full trading sessions; exit following open",
             "take_profit": None,
         },
-        "overall_10y": metrics(tdf),
-        "older_5y": metrics(older),
-        "recent_5y": metrics(recent),
+        "overall_10y_dynamic_exit": metrics(tdf),
+        "overall_10y_fixed10": fixed10_metrics(tdf),
+        "older_5y_dynamic_exit": metrics(older),
+        "recent_5y_dynamic_exit": metrics(recent),
+        "older_5y_fixed10": fixed10_metrics(older),
+        "recent_5y_fixed10": fixed10_metrics(recent),
         "yearly": yearly,
         "exit_reasons": exit_reasons,
         "note": "Exploratory rule was selected on recent data. Older half is the key robustness check; current-listing universe implies survivorship bias.",
