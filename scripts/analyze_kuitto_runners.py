@@ -327,7 +327,7 @@ def main():
         "yearly": normal_kuitto_yearly,
     }
 
-    summary = {
+    # Fine MA25-slope grid only for the -7% to -9% DD20 band.\n    mid_band = refined[(refined["dd20_pct"] > -9.0) & (refined["dd20_pct"] <= -7.0)].copy()\n    slope_grid_mid = []\n    for slope_floor in [-1.5, -1.25, -1.0, -0.75, -0.5, -0.25, 0.0, 0.25]:\n        p = mid_band[mid_band["ma25_slope5_pct"] >= slope_floor].copy()\n        yearly = {str(int(y)): metrics(g) for y, g in p.groupby("year")}\n        slope_grid_mid.append({\n            "ma25_slope5_min": slope_floor,\n            "overall": metrics(p),\n            "yearly": yearly,\n            "n_2018": int((p["year"] == 2018).sum()),\n            "n_2019": int((p["year"] == 2019).sum()),\n            "n_2025": int((p["year"] == 2025).sum()),\n        })\n\n    summary = {
         "strategy": "kuitto_pullback_auto frozen signal, 10-day next-open return",
         "goal": "Find signal-day features associated with large winners without using post-entry information.",
         "labels": {
@@ -337,7 +337,7 @@ def main():
         "overall_10y": analyze_block(t),
         "older_5y": analyze_block(t[t["signal_date_dt"] < split]),
         "recent_5y": analyze_block(t[t["signal_date_dt"] >= split]),
-        "refined_rule_diagnostics": {"rule":"ATR14>=3.4 and DD20<=-5.5","year_compare":feature_compare,"bad_2018_2025_vs_good":bad_vs_good,"trend_filter_grid":trend_grid,"chosen_balanced_filter":chosen_summary,"diagnostic_2019_kept_vs_rejected":y2019_diag,"dd20_rebound_grid":dd_rebound_grid,"normal_kuitto_excluding_dd20_le_-9":normal_kuitto_summary},
+        "refined_rule_diagnostics": {"rule":"ATR14>=3.4 and DD20<=-5.5","year_compare":feature_compare,"bad_2018_2025_vs_good":bad_vs_good,"trend_filter_grid":trend_grid,"chosen_balanced_filter":chosen_summary,"diagnostic_2019_kept_vs_rejected":y2019_diag,"dd20_rebound_grid":dd_rebound_grid,"normal_kuitto_excluding_dd20_le_-9":normal_kuitto_summary,"mid_dd20_ma25_slope_grid":slope_grid_mid},
         "note": "Exploratory diagnostics only; any promising filter should be frozen and re-tested out of sample before production use."
     }
 
