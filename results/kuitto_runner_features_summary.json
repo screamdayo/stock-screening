@@ -6468,6 +6468,100 @@
           "profit_factor": 7.318
         }
       }
+    },
+    "diagnostic_2019_kept_vs_rejected": {
+      "kept": {
+        "n": 13,
+        "win_rate_pct": 46.15,
+        "avg_ret10_pct": -0.261,
+        "median_ret10_pct": -2.872,
+        "p10_plus_pct": 23.08,
+        "p5_plus_pct": 38.46,
+        "profit_factor": 0.938
+      },
+      "rejected": {
+        "n": 24,
+        "win_rate_pct": 66.67,
+        "avg_ret10_pct": 4.068,
+        "median_ret10_pct": 2.53,
+        "p10_plus_pct": 12.5,
+        "p5_plus_pct": 33.33,
+        "profit_factor": 4.215
+      },
+      "feature_compare": {
+        "bull_pct": {
+          "kept_mean": 2.3985,
+          "kept_median": 2.2932,
+          "rejected_mean": 2.4815,
+          "rejected_median": 2.4218
+        },
+        "ma5_decline5_pct": {
+          "kept_mean": -3.6447,
+          "kept_median": -3.7292,
+          "rejected_mean": -3.5453,
+          "rejected_median": -3.4699
+        },
+        "ma5_vs_ma25_pct": {
+          "kept_mean": -3.0587,
+          "kept_median": -3.9164,
+          "rejected_mean": -2.532,
+          "rejected_median": -2.4605
+        },
+        "close_vs_ma5_pct": {
+          "kept_mean": 1.3262,
+          "kept_median": 1.3908,
+          "rejected_mean": 2.5315,
+          "rejected_median": 2.3928
+        },
+        "volume_ratio": {
+          "kept_mean": 1.8426,
+          "kept_median": 1.8333,
+          "rejected_mean": 2.0047,
+          "rejected_median": 1.5927
+        },
+        "ma25_slope5_pct": {
+          "kept_mean": -0.342,
+          "kept_median": -0.4456,
+          "rejected_mean": -0.5788,
+          "rejected_median": -0.5459
+        },
+        "dd20_pct": {
+          "kept_mean": -9.5305,
+          "kept_median": -9.281,
+          "rejected_mean": -7.5375,
+          "rejected_median": -7.0836
+        },
+        "dd60_pct": {
+          "kept_mean": -12.4813,
+          "kept_median": -12.0915,
+          "rejected_mean": -13.8814,
+          "rejected_median": -14.3131
+        },
+        "ret5_pct": {
+          "kept_mean": 1.9871,
+          "kept_median": 1.1839,
+          "rejected_mean": 2.9951,
+          "rejected_median": 2.7047
+        },
+        "ret20_pct": {
+          "kept_mean": -5.6409,
+          "kept_median": -4.5802,
+          "rejected_mean": 0.9139,
+          "rejected_median": 0.7406
+        },
+        "atr14_pct": {
+          "kept_mean": 4.21,
+          "kept_median": 3.9919,
+          "rejected_mean": 4.0273,
+          "rejected_median": 3.868
+        },
+        "avg_turnover20": {
+          "kept_mean": 802410281.6154,
+          "kept_median": 500210490.0,
+          "rejected_mean": 710649363.4083,
+          "rejected_median": 161848571.0
+        }
+      }
     }
   },
   "note": "Exploratory diagnostics only; any promising filter should be frozen and re-tested out of sample before production use."
