@@ -253,7 +253,33 @@ def metrics(df):
     }
 
 
-def simulate_trade_variant(g, signal_i, stop_pct, max_hold_sessions, use_gakutto):\n    entry_i = signal_i + 1\n    if entry_i >= len(g):\n        return None\n    entry = float(g["O"].iloc[entry_i])\n    if not np.isfinite(entry) or entry <= 0:\n        return None\n    stop_price = entry * (1 + stop_pct / 100.0)\n    last_hold_i = min(entry_i + max_hold_sessions - 1, len(g) - 1)\n    for i in range(entry_i, last_hold_i + 1):\n        o = float(g["O"].iloc[i]); l = float(g["L"].iloc[i])\n        if o <= stop_price:\n            return make_trade(g, signal_i, entry_i, i, o, "stop_gap", entry)\n        if l <= stop_price:\n            return make_trade(g, signal_i, entry_i, i, stop_price, f"stop_{stop_pct}%", entry)\n        if use_gakutto and is_strict_gakutto(g, i):\n            exit_i = i + 1\n            if exit_i < len(g):\n                return make_trade(g, signal_i, entry_i, exit_i, float(g["O"].iloc[exit_i]), "strict_gakutto_next_open", entry)\n            return None\n    exit_i = last_hold_i + 1\n    if exit_i < len(g):\n        return make_trade(g, signal_i, entry_i, exit_i, float(g["O"].iloc[exit_i]), f"max{max_hold_sessions}_next_open", entry)\n    return None\n\n\ndef main():
+def simulate_trade_variant(g, signal_i, stop_pct, max_hold_sessions, use_gakutto):
+    entry_i = signal_i + 1
+    if entry_i >= len(g):
+        return None
+    entry = float(g["O"].iloc[entry_i])
+    if not np.isfinite(entry) or entry <= 0:
+        return None
+    stop_price = entry * (1 + stop_pct / 100.0)
+    last_hold_i = min(entry_i + max_hold_sessions - 1, len(g) - 1)
+    for i in range(entry_i, last_hold_i + 1):
+        o = float(g["O"].iloc[i]); l = float(g["L"].iloc[i])
+        if o <= stop_price:
+            return make_trade(g, signal_i, entry_i, i, o, "stop_gap", entry)
+        if l <= stop_price:
+            return make_trade(g, signal_i, entry_i, i, stop_price, f"stop_{stop_pct}%", entry)
+        if use_gakutto and is_strict_gakutto(g, i):
+            exit_i = i + 1
+            if exit_i < len(g):
+                return make_trade(g, signal_i, entry_i, exit_i, float(g["O"].iloc[exit_i]), "strict_gakutto_next_open", entry)
+            return None
+    exit_i = last_hold_i + 1
+    if exit_i < len(g):
+        return make_trade(g, signal_i, entry_i, exit_i, float(g["O"].iloc[exit_i]), f"max{max_hold_sessions}_next_open", entry)
+    return None
+
+
+def main():
     df = load_archive()
     trades = []
 
