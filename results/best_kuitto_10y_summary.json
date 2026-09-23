@@ -640,16 +640,42 @@
       }
     },
     {
-      "hold_sessions": 15,
+      "hold_sessions": 14,
       "metrics": {
         "n": 204,
-        "win_rate_pct": 59.31,
-        "avg_return_pct": 4.058,
-        "median_return_pct": 2.296,
-        "profit_factor": 2.7,
-        "avg_hold_sessions_to_exit": 15.0,
-        "gross_profit_pct_points": 1314.6,
-        "gross_loss_pct_points": 486.87
+        "win_rate_pct": 63.24,
+        "avg_return_pct": 4.209,
+        "median_return_pct": 2.05,
+        "profit_factor": 2.966,
+        "avg_hold_sessions_to_exit": 14.0,
+        "gross_profit_pct_points": 1295.18,
+        "gross_loss_pct_points": 436.63
+      }
+    },
+    {
+      "hold_sessions": 16,
+      "metrics": {
+        "n": 204,
+        "win_rate_pct": 61.76,
+        "avg_return_pct": 4.74,
+        "median_return_pct": 2.869,
+        "profit_factor": 2.895,
+        "avg_hold_sessions_to_exit": 16.0,
+        "gross_profit_pct_points": 1477.15,
+        "gross_loss_pct_points": 510.21
+      }
+    },
+    {
+      "hold_sessions": 18,
+      "metrics": {
+        "n": 204,
+        "win_rate_pct": 60.78,
+        "avg_return_pct": 4.556,
+        "median_return_pct": 3.056,
+        "profit_factor": 2.611,
+        "avg_hold_sessions_to_exit": 18.0,
+        "gross_profit_pct_points": 1506.26,
+        "gross_loss_pct_points": 576.78
       }
     },
     {
@@ -663,6 +689,32 @@
         "avg_hold_sessions_to_exit": 20.0,
         "gross_profit_pct_points": 1611.34,
         "gross_loss_pct_points": 624.62
+      }
+    },
+    {
+      "hold_sessions": 25,
+      "metrics": {
+        "n": 204,
+        "win_rate_pct": 56.37,
+        "avg_return_pct": 4.424,
+        "median_return_pct": 2.49,
+        "profit_factor": 2.223,
+        "avg_hold_sessions_to_exit": 25.0,
+        "gross_profit_pct_points": 1640.58,
+        "gross_loss_pct_points": 738.0
+      }
+    },
+    {
+      "hold_sessions": 30,
+      "metrics": {
+        "n": 203,
+        "win_rate_pct": 57.14,
+        "avg_return_pct": 5.555,
+        "median_return_pct": 2.079,
+        "profit_factor": 2.493,
+        "avg_hold_sessions_to_exit": 30.0,
+        "gross_profit_pct_points": 1883.36,
+        "gross_loss_pct_points": 755.61
       }
     }
   ],
