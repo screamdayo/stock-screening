@@ -337,7 +337,7 @@ def main():
 
         ret16 = pd.DataFrame(ret16_rows)
         merged16 = ret16.merge(feat, on=["code","signal_date"], how="left")
-        merged16["year"] = pd.to_datetime(merged16["entry_date"]).dt.year
+        merged16["year"] = pd.to_datetime(merged16["signal_date"]).dt.year
 
         for decline_max in [-3.0, -3.5, -4.0, -4.5]:
             for close_min in [1.5, 2.0, 2.5]:
