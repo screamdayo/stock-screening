@@ -318,7 +318,16 @@ def main():
                 "n_2025": int((p["year"] == 2025).sum()),
             })
 
-    # Reaggregate refined Kuitto after separating extreme DD20 <= -9%.\n    normal_kuitto = refined[(refined["dd20_pct"] > -9.0) & (refined["dd20_pct"] <= -5.5)].copy()\n    normal_kuitto_yearly = {str(int(y)): metrics(g) for y, g in normal_kuitto.groupby("year")}\n    normal_kuitto_summary = {\n        "rule": "ATR14>=3.4 and -9.0<DD20<=-5.5",\n        "overall": metrics(normal_kuitto),\n        "yearly": normal_kuitto_yearly,\n    }\n\n    summary = {
+    # Reaggregate refined Kuitto after separating extreme DD20 <= -9%.
+    normal_kuitto = refined[(refined["dd20_pct"] > -9.0) & (refined["dd20_pct"] <= -5.5)].copy()
+    normal_kuitto_yearly = {str(int(y)): metrics(g) for y, g in normal_kuitto.groupby("year")}
+    normal_kuitto_summary = {
+        "rule": "ATR14>=3.4 and -9.0<DD20<=-5.5",
+        "overall": metrics(normal_kuitto),
+        "yearly": normal_kuitto_yearly,
+    }
+
+    summary = {
         "strategy": "kuitto_pullback_auto frozen signal, 10-day next-open return",
         "goal": "Find signal-day features associated with large winners without using post-entry information.",
         "labels": {
