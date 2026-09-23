@@ -944,5 +944,14 @@
       }
     }
   },
+  "cache": {
+    "path": "results/kuitto_composite_signal_cache.parquet",
+    "signals": 209,
+    "rows": 6970,
+    "cached_offsets": [
+      -3,
+      30
+    ]
+  },
   "note": "Exploratory rule was selected on recent data. Older half is the key robustness check; current-listing universe implies survivorship bias."
 }
