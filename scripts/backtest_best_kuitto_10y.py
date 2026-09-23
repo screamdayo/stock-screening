@@ -298,7 +298,7 @@ def main():
             entry_i = i + 1
 
             # Cache entry day through +30 sessions for lightweight exit research.
-            for offset in range(0, 31):
+            for offset in range(-3, 31):
                 k = entry_i + offset
                 if k >= len(g):
                     break
@@ -452,7 +452,7 @@ def main():
             "path": "results/kuitto_composite_signal_cache.parquet",
             "signals": int(len(signal_keys)),
             "rows": int(len(cache_rows)),
-            "future_sessions": 30,
+            "cached_offsets": [-3, 30],
         },
         "note": "Exploratory rule was selected on recent data. Older half is the key robustness check; current-listing universe implies survivorship bias.",
     }
