@@ -342,7 +342,7 @@ def main():
             "n_2025": int((p["year"] == 2025).sum()),
         })
 
-    summary = {
+    # Composite three-tier Kuitto rule.\n    shallow = refined[(refined["dd20_pct"] > -7.0) & (refined["dd20_pct"] <= -5.5)].copy()\n    mid = refined[(refined["dd20_pct"] > -9.0) & (refined["dd20_pct"] <= -7.0) & (refined["ma25_slope5_pct"] >= -1.5)].copy()\n    composite = pd.concat([shallow, mid], ignore_index=True).drop_duplicates(subset=["signal_date","Code"], keep="first")\n    composite["year"] = pd.to_datetime(composite["signal_date"]).dt.year\n    composite_yearly = {str(int(y)): metrics(g) for y, g in composite.groupby("year")}\n    composite_summary = {\n        "rule": "ATR14>=3.4; -7<DD20<=-5.5 OR (-9<DD20<=-7 AND MA25_SLOPE5>=-1.5); DD20<=-9 excluded",\n        "overall": metrics(composite),\n        "yearly": composite_yearly,\n        "component_counts": {"shallow": int(len(shallow)), "mid": int(len(mid))},\n    }\n\n    summary = {
         "strategy": "kuitto_pullback_auto frozen signal, 10-day next-open return",
         "goal": "Find signal-day features associated with large winners without using post-entry information.",
         "labels": {
@@ -352,7 +352,7 @@ def main():
         "overall_10y": analyze_block(t),
         "older_5y": analyze_block(t[t["signal_date_dt"] < split]),
         "recent_5y": analyze_block(t[t["signal_date_dt"] >= split]),
-        "refined_rule_diagnostics": {"rule":"ATR14>=3.4 and DD20<=-5.5","year_compare":feature_compare,"bad_2018_2025_vs_good":bad_vs_good,"trend_filter_grid":trend_grid,"chosen_balanced_filter":chosen_summary,"diagnostic_2019_kept_vs_rejected":y2019_diag,"dd20_rebound_grid":dd_rebound_grid,"normal_kuitto_excluding_dd20_le_-9":normal_kuitto_summary,"mid_dd20_ma25_slope_grid":slope_grid_mid},
+        "refined_rule_diagnostics": {"rule":"ATR14>=3.4 and DD20<=-5.5","year_compare":feature_compare,"bad_2018_2025_vs_good":bad_vs_good,"trend_filter_grid":trend_grid,"chosen_balanced_filter":chosen_summary,"diagnostic_2019_kept_vs_rejected":y2019_diag,"dd20_rebound_grid":dd_rebound_grid,"normal_kuitto_excluding_dd20_le_-9":normal_kuitto_summary,"mid_dd20_ma25_slope_grid":slope_grid_mid,"composite_three_tier_rule":composite_summary},
         "note": "Exploratory diagnostics only; any promising filter should be frozen and re-tested out of sample before production use."
     }
 
