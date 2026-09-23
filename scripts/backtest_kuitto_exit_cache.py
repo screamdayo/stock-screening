@@ -260,6 +260,61 @@ def main():
             }
         yearly_compare_stop18[stop_label] = per_year
 
+    # Exact 16-session feature diagnostics using cached returns joined to entry features.
+    feature_path = RESULT_DIR / "kuitto_runner_features_trades.csv"
+    exact16_feature_diag = None
+    if feature_path.exists():
+        feat = pd.read_csv(feature_path)
+        feat["code"] = feat["code"].astype(str)
+        feat["signal_date"] = feat["signal_date"].astype(str)
+
+        exact_rows = []
+        for g in groups:
+            sim = simulate(g, stop_pct=None, max_hold=16, use_gakutto=False)
+            if not sim:
+                continue
+            first = g.iloc[0]
+            exact_rows.append({
+                "code": str(first["code"]),
+                "signal_date": str(first["signal_date"]),
+                "ret16": float(sim["return_pct"]),
+            })
+        exact = pd.DataFrame(exact_rows)
+        merged = exact.merge(feat, on=["code","signal_date"], how="left")
+        merged["year"] = pd.to_datetime(merged["signal_date"]).dt.year
+
+        cols = [
+            "bull_pct","ma5_decline5_pct","ma5_vs_ma25_pct","close_vs_ma5_pct",
+            "volume_ratio","ma25_slope5_pct","dd20_pct","dd60_pct","ret5_pct",
+            "ret20_pct","atr14_pct","avg_turnover20"
+        ]
+        weak_years = [2018, 2022, 2023]
+
+        def fs(part):
+            out = {"n": int(len(part))}
+            for c in cols:
+                if c not in part.columns:
+                    continue
+                x = pd.to_numeric(part[c], errors="coerce").dropna()
+                if len(x):
+                    out[c] = {
+                        "mean": round(float(x.mean()), 4),
+                        "median": round(float(x.median()), 4),
+                        "q25": round(float(x.quantile(0.25)), 4),
+                        "q75": round(float(x.quantile(0.75)), 4),
+                    }
+            return out
+
+        weak = merged[merged["year"].isin(weak_years)]
+        other = merged[~merged["year"].isin(weak_years)]
+        exact16_feature_diag = {
+            "weak_years": weak_years,
+            "weak_losses": fs(weak[weak["ret16"] < 0]),
+            "weak_wins": fs(weak[weak["ret16"] >= 0]),
+            "other_losses": fs(other[other["ret16"] < 0]),
+            "other_wins": fs(other[other["ret16"] >= 0]),
+        }
+
     out = {
         "source_cache": str(CACHE),
         "signal_count": len(groups),
@@ -268,6 +323,7 @@ def main():
         "risk_16d": {"overall": overall_risk_16, "yearly": yearly_risk},
         "emergency_stop_grid": emergency_stop_grid,
         "yearly_compare_stop18": yearly_compare_stop18,
+        "exact16_feature_diag": exact16_feature_diag,
     }
     out_path = RESULT_DIR / "kuitto_exit_cache_summary.json"
     out_path.write_text(json.dumps(out, ensure_ascii=False, indent=2), encoding="utf-8")
