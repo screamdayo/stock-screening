@@ -153,6 +153,9 @@ def main():
 
     t = pd.DataFrame(rows)
     t["signal_date_dt"] = pd.to_datetime(t["signal_date"])
+    # Market-wide rebound proxy: how many current kuitto signals fire on the same day.
+    # This uses same-day information only; no future data is involved.
+    t["same_day_count"] = t.groupby("signal_date")["code"].transform("size")
     split = pd.Timestamp(df["Date"].min()).normalize() + pd.DateOffset(years=5)
     train = t[t["signal_date_dt"] < split].copy()
     test = t[t["signal_date_dt"] >= split].copy()
@@ -162,12 +165,16 @@ def main():
     atr_q75 = float(train["atr14_pct"].quantile(0.75))
     dd20_q25 = float(train["dd20_pct"].quantile(0.25))
     turnover_q75 = float(train["avg_turnover20"].quantile(0.75))
+    crowd_q75 = float(train["same_day_count"].quantile(0.75))
 
     rules = {
         "baseline": lambda x: pd.Series(True, index=x.index),
         "atr_only": lambda x: x["atr14_pct"] >= atr_q75,
         "atr_plus_dd20": lambda x: (x["atr14_pct"] >= atr_q75) & (x["dd20_pct"] <= dd20_q25),
         "atr_plus_turnover": lambda x: (x["atr14_pct"] >= atr_q75) & (x["avg_turnover20"] >= turnover_q75),
+        "crowd_only": lambda x: x["same_day_count"] >= crowd_q75,
+        "atr_plus_crowd": lambda x: (x["atr14_pct"] >= atr_q75) & (x["same_day_count"] >= crowd_q75),
+        "atr_dd20_crowd": lambda x: (x["atr14_pct"] >= atr_q75) & (x["dd20_pct"] <= dd20_q25) & (x["same_day_count"] >= crowd_q75),
     }
 
     out = {
@@ -177,8 +184,10 @@ def main():
             "atr14_pct_q75": round(atr_q75, 6),
             "dd20_pct_q25": round(dd20_q25, 6),
             "avg_turnover20_q75_yen": round(turnover_q75, 2),
+            "same_day_count_q75": round(crowd_q75, 3),
         },
         "variants": {},
+        "same_day_count_buckets": {},
         "caveat": "Historical universe is current-Prime survivors, so survivorship bias remains. This is pseudo-OOS, not a fully clean historical-universe OOS test."
     }
 
@@ -190,7 +199,7 @@ def main():
             "test_recent5": metrics(te),
         }
 
-    RESULT_DIR.mkdir(parents=True, exist_ok=True)
+    # Descriptive crowding buckets, shown separately for train/test.\n    bucket_defs = {\n        "1": lambda x: x["same_day_count"] == 1,\n        "2-3": lambda x: x["same_day_count"].between(2, 3),\n        "4-5": lambda x: x["same_day_count"].between(4, 5),\n        "6-10": lambda x: x["same_day_count"].between(6, 10),\n        "11+": lambda x: x["same_day_count"] >= 11,\n    }\n    for bname, brule in bucket_defs.items():\n        out["same_day_count_buckets"][bname] = {\n            "train_older5": metrics(train[brule(train)]),\n            "test_recent5": metrics(test[brule(test)]),\n        }\n\n    RESULT_DIR.mkdir(parents=True, exist_ok=True)
     (RESULT_DIR / "kuitto_pseudo_oos_summary.json").write_text(
         json.dumps(out, ensure_ascii=False, indent=2), encoding="utf-8"
     )
