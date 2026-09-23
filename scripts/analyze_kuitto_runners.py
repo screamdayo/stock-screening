@@ -327,7 +327,22 @@ def main():
         "yearly": normal_kuitto_yearly,
     }
 
-    # Fine MA25-slope grid only for the -7% to -9% DD20 band.\n    mid_band = refined[(refined["dd20_pct"] > -9.0) & (refined["dd20_pct"] <= -7.0)].copy()\n    slope_grid_mid = []\n    for slope_floor in [-1.5, -1.25, -1.0, -0.75, -0.5, -0.25, 0.0, 0.25]:\n        p = mid_band[mid_band["ma25_slope5_pct"] >= slope_floor].copy()\n        yearly = {str(int(y)): metrics(g) for y, g in p.groupby("year")}\n        slope_grid_mid.append({\n            "ma25_slope5_min": slope_floor,\n            "overall": metrics(p),\n            "yearly": yearly,\n            "n_2018": int((p["year"] == 2018).sum()),\n            "n_2019": int((p["year"] == 2019).sum()),\n            "n_2025": int((p["year"] == 2025).sum()),\n        })\n\n    summary = {
+    # Fine MA25-slope grid only for the -7% to -9% DD20 band.
+    mid_band = refined[(refined["dd20_pct"] > -9.0) & (refined["dd20_pct"] <= -7.0)].copy()
+    slope_grid_mid = []
+    for slope_floor in [-1.5, -1.25, -1.0, -0.75, -0.5, -0.25, 0.0, 0.25]:
+        p = mid_band[mid_band["ma25_slope5_pct"] >= slope_floor].copy()
+        yearly = {str(int(y)): metrics(g) for y, g in p.groupby("year")}
+        slope_grid_mid.append({
+            "ma25_slope5_min": slope_floor,
+            "overall": metrics(p),
+            "yearly": yearly,
+            "n_2018": int((p["year"] == 2018).sum()),
+            "n_2019": int((p["year"] == 2019).sum()),
+            "n_2025": int((p["year"] == 2025).sum()),
+        })
+
+    summary = {
         "strategy": "kuitto_pullback_auto frozen signal, 10-day next-open return",
         "goal": "Find signal-day features associated with large winners without using post-entry information.",
         "labels": {
