@@ -592,5 +592,93 @@
         "stop_gap": 13
       }
     }
-  ]
+  ],
+  "risk_16d": {
+    "overall": {
+      "n": 204,
+      "max_drawdown_pct": -46.75,
+      "max_losing_streak": 9,
+      "compounded_return_pct": 254728.07,
+      "worst_trade_pct": -21.985
+    },
+    "yearly": {
+      "2016": {
+        "n": 3,
+        "max_drawdown_pct": 0.0,
+        "max_losing_streak": 0,
+        "year_compounded_return_pct": 135.22,
+        "worst_trade_pct": 2.529
+      },
+      "2017": {
+        "n": 14,
+        "max_drawdown_pct": -20.83,
+        "max_losing_streak": 3,
+        "year_compounded_return_pct": 61.7,
+        "worst_trade_pct": -9.192
+      },
+      "2018": {
+        "n": 25,
+        "max_drawdown_pct": -39.73,
+        "max_losing_streak": 8,
+        "year_compounded_return_pct": -23.88,
+        "worst_trade_pct": -19.425
+      },
+      "2019": {
+        "n": 23,
+        "max_drawdown_pct": -15.88,
+        "max_losing_streak": 2,
+        "year_compounded_return_pct": 293.47,
+        "worst_trade_pct": -15.876
+      },
+      "2020": {
+        "n": 32,
+        "max_drawdown_pct": -18.79,
+        "max_losing_streak": 3,
+        "year_compounded_return_pct": 387.27,
+        "worst_trade_pct": -13.174
+      },
+      "2021": {
+        "n": 23,
+        "max_drawdown_pct": -32.51,
+        "max_losing_streak": 4,
+        "year_compounded_return_pct": 380.42,
+        "worst_trade_pct": -15.398
+      },
+      "2022": {
+        "n": 23,
+        "max_drawdown_pct": -40.92,
+        "max_losing_streak": 8,
+        "year_compounded_return_pct": -8.19,
+        "worst_trade_pct": -21.985
+      },
+      "2023": {
+        "n": 12,
+        "max_drawdown_pct": -42.0,
+        "max_losing_streak": 5,
+        "year_compounded_return_pct": 29.83,
+        "worst_trade_pct": -19.083
+      },
+      "2024": {
+        "n": 16,
+        "max_drawdown_pct": -12.65,
+        "max_losing_streak": 2,
+        "year_compounded_return_pct": 57.05,
+        "worst_trade_pct": -12.34
+      },
+      "2025": {
+        "n": 14,
+        "max_drawdown_pct": -8.68,
+        "max_losing_streak": 2,
+        "year_compounded_return_pct": 54.85,
+        "worst_trade_pct": -10.976
+      },
+      "2026": {
+        "n": 19,
+        "max_drawdown_pct": -11.62,
+        "max_losing_streak": 1,
+        "year_compounded_return_pct": 229.63,
+        "worst_trade_pct": -11.616
+      }
+    }
+  }
 }
