@@ -109,11 +109,74 @@ def main():
                     "exit_reasons": part["exit_reason"].value_counts().to_dict() if not part.empty else {},
                 })
 
+    # Risk stats for the chosen 16-session fixed exit.
+    risk_rows = []
+    for g in groups:
+        sim = simulate(g, stop_pct=None, max_hold=16, use_gakutto=False)
+        if not sim:
+            continue
+        entry_row = g[g["offset"] == 0]
+        if entry_row.empty:
+            continue
+        risk_rows.append({
+            "entry_date": str(entry_row.iloc[0]["entry_date"]),
+            "return_pct": float(sim["return_pct"]),
+        })
+
+    risk_df = pd.DataFrame(risk_rows)
+    risk_df["entry_date_dt"] = pd.to_datetime(risk_df["entry_date"])
+
+    yearly_risk = {}
+    for year, part in risk_df.groupby(risk_df["entry_date_dt"].dt.year):
+        part = part.sort_values("entry_date_dt").reset_index(drop=True)
+        equity = (1 + part["return_pct"] / 100.0).cumprod()
+        running_peak = equity.cummax()
+        dd = equity / running_peak - 1
+
+        max_losing_streak = 0
+        cur_losing_streak = 0
+        for r in part["return_pct"]:
+            if r < 0:
+                cur_losing_streak += 1
+                max_losing_streak = max(max_losing_streak, cur_losing_streak)
+            else:
+                cur_losing_streak = 0
+
+        yearly_risk[str(int(year))] = {
+            "n": int(len(part)),
+            "max_drawdown_pct": round(float(dd.min() * 100), 2) if len(dd) else 0.0,
+            "max_losing_streak": int(max_losing_streak),
+            "year_compounded_return_pct": round(float((equity.iloc[-1] - 1) * 100), 2) if len(equity) else 0.0,
+            "worst_trade_pct": round(float(part["return_pct"].min()), 3) if len(part) else None,
+        }
+
+    all_part = risk_df.sort_values("entry_date_dt").reset_index(drop=True)
+    all_equity = (1 + all_part["return_pct"] / 100.0).cumprod()
+    all_peak = all_equity.cummax()
+    all_dd = all_equity / all_peak - 1
+    max_losing_streak_all = 0
+    cur_losing_streak = 0
+    for r in all_part["return_pct"]:
+        if r < 0:
+            cur_losing_streak += 1
+            max_losing_streak_all = max(max_losing_streak_all, cur_losing_streak)
+        else:
+            cur_losing_streak = 0
+
+    overall_risk_16 = {
+        "n": int(len(all_part)),
+        "max_drawdown_pct": round(float(all_dd.min() * 100), 2) if len(all_dd) else 0.0,
+        "max_losing_streak": int(max_losing_streak_all),
+        "compounded_return_pct": round(float((all_equity.iloc[-1] - 1) * 100), 2) if len(all_equity) else 0.0,
+        "worst_trade_pct": round(float(all_part["return_pct"].min()), 3) if len(all_part) else None,
+    }
+
     out = {
         "source_cache": str(CACHE),
         "signal_count": len(groups),
         "fixed_hold_grid": fixed_holds,
         "exit_grid": exit_grid,
+        "risk_16d": {"overall": overall_risk_16, "yearly": yearly_risk},
     }
     out_path = RESULT_DIR / "kuitto_exit_cache_summary.json"
     out_path.write_text(json.dumps(out, ensure_ascii=False, indent=2), encoding="utf-8")
