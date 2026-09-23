@@ -262,7 +262,7 @@ def main():
                 "yearly": yearly,
             })
 
-    summary = {
+    # Yearly stats for chosen balanced refined filter.\n    chosen = refined[(refined["ma25_slope5_pct"] >= -1.5) & (refined["ret20_pct"] <= -1.0)].copy()\n    chosen_yearly = {str(int(y)): metrics(g) for y, g in chosen.groupby("year")}\n    chosen_summary = {\n        "rule": "ATR14>=3.4, DD20<=-5.5, MA25_SLOPE5>=-1.5, RET20<=-1.0",\n        "overall": metrics(chosen),\n        "yearly": chosen_yearly,\n    }\n\n    summary = {
         "strategy": "kuitto_pullback_auto frozen signal, 10-day next-open return",
         "goal": "Find signal-day features associated with large winners without using post-entry information.",
         "labels": {
@@ -272,7 +272,7 @@ def main():
         "overall_10y": analyze_block(t),
         "older_5y": analyze_block(t[t["signal_date_dt"] < split]),
         "recent_5y": analyze_block(t[t["signal_date_dt"] >= split]),
-        "refined_rule_diagnostics": {"rule":"ATR14>=3.4 and DD20<=-5.5","year_compare":feature_compare,"bad_2018_2025_vs_good":bad_vs_good,"trend_filter_grid":trend_grid},
+        "refined_rule_diagnostics": {"rule":"ATR14>=3.4 and DD20<=-5.5","year_compare":feature_compare,"bad_2018_2025_vs_good":bad_vs_good,"trend_filter_grid":trend_grid,"chosen_balanced_filter":chosen_summary},
         "note": "Exploratory diagnostics only; any promising filter should be frozen and re-tested out of sample before production use."
     }
 
