@@ -204,7 +204,7 @@ def notify(results, rescue_results=None, primary_results=None):
 
 
 def notify_kuitto_variants(refined_results, elite_results):
-    """Kuitto 204 / 59 are separate shadow strategies; notify only when either fires."""
+    """Show Kuitto 204 once, marking the subset that also qualifies for Kuitto 59."""
     refined_results = refined_results or []
     elite_results = elite_results or []
     if not refined_results and not elite_results:
@@ -212,9 +212,12 @@ def notify_kuitto_variants(refined_results, elite_results):
         return
 
     today = datetime.now().strftime("%Y/%m/%d")
+    elite_codes = {str(r.get("code")) for r in elite_results}
 
     def _line(r):
+        code = str(r.get("code"))
         label = _stock_label(r)
+        prefix = "🟣 **59該当** " if code in elite_codes else "🔵 "
         parts = []
         decline = r.get("ma5_prior5d_decline_pct")
         close_gap = r.get("close_vs_ma5_pct")
@@ -238,26 +241,24 @@ def notify_kuitto_variants(refined_results, elite_results):
             when = f"（{bd}営業日後 / {ed}）" if bd is not None else f"（{ed}）"
             earnings_note = f"\n   ⚠️ **10営業日以内に決算あり** {when}"
         detail = " / ".join(parts)
-        return f"• **{label}**" + (f" — {detail}" if detail else "") + earnings_note
+        return f"{prefix}**{label}**" + (f" — {detail}" if detail else "") + earnings_note
 
-    sections = []
-    if refined_results:
-        sections.append(
-            f"🔵 **くいっと204：{len(refined_results)}件**\n"
-            f"3段階ルール / フォワード出口16営業日固定\n"
-            + "\n".join(_line(r) for r in refined_results)
-        )
-    if elite_results:
-        sections.append(
-            f"🟣 **くいっと59：{len(elite_results)}件**\n"
-            f"204条件 + MA5直前5日≤-4% + 終値/MA5≥+2% / 出口16営業日固定\n"
-            + "\n".join(_line(r) for r in elite_results)
-        )
+    # 59 is a strict subset of 204 by definition. In case of unexpected mismatch,
+    # append any 59-only codes so no signal is silently hidden.
+    refined_by_code = {str(r.get("code")): r for r in refined_results}
+    display_results = list(refined_results)
+    for r in elite_results:
+        if str(r.get("code")) not in refined_by_code:
+            display_results.append(r)
 
     msg = (
         f"🧪 **別戦略シグナル {today}**\n"
-        f"⚠️ 現行くいっとの本番候補とは別枠。フォワード比較用。\n\n"
-        + "\n\n".join(sections)
+        f"⚠️ 現行くいっとの本番候補とは別枠。フォワード比較用。\n"
+        f"🔵 **くいっと204：{len(refined_results)}件** / "
+        f"🟣 **そのうち59該当：{len(elite_results)}件**\n"
+        f"59条件：204条件 + MA5直前5日≤-4% + 終値/MA5≥+2%\n"
+        f"出口検証：204 / 59ともに16営業日固定\n\n"
+        + "\n".join(_line(r) for r in display_results)
     )
     _post_long(msg)
 
