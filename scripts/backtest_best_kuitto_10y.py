@@ -282,36 +282,53 @@ def simulate_trade_variant(g, signal_i, stop_pct, max_hold_sessions, use_gakutto
 def main():
     df = load_archive()
     trades = []
+    signal_keys = []
+    cache_rows = []
 
+    # Single full-universe scan: identify composite signals once and cache 30 future sessions.
     for code, group in df.groupby("Code", sort=True):
         g = prepare(group)
         if len(g) <= MA_LONG + 1:
             continue
-
         for i in range(MA_LONG, len(g) - 1):
-            if is_entry_signal(g, i) and passes_composite_refined_rule(g, i):
-                t = simulate_trade(g, i)
-                if t:
-                    entry_i = i + 1
-                    fixed_exit_i = entry_i + 10
-                    if fixed_exit_i < len(g):
-                        fixed_exit = float(g["O"].iloc[fixed_exit_i])
-                        if np.isfinite(fixed_exit) and fixed_exit > 0:
-                            t["fixed10_return_pct"] = (fixed_exit / t["entry_price"] - 1) * 100
-                        else:
-                            t["fixed10_return_pct"] = np.nan
+            if not (is_entry_signal(g, i) and passes_composite_refined_rule(g, i)):
+                continue
+
+            signal_keys.append((g, i))
+            entry_i = i + 1
+
+            # Cache entry day through +30 sessions for lightweight exit research.
+            for offset in range(0, 31):
+                k = entry_i + offset
+                if k >= len(g):
+                    break
+                cache_rows.append({
+                    "code": str(g["Code"].iloc[k]),
+                    "signal_date": str(pd.Timestamp(g["Date"].iloc[i]).date()),
+                    "entry_date": str(pd.Timestamp(g["Date"].iloc[entry_i]).date()),
+                    "offset": offset,
+                    "date": str(pd.Timestamp(g["Date"].iloc[k]).date()),
+                    "O": float(g["O"].iloc[k]),
+                    "H": float(g["H"].iloc[k]),
+                    "L": float(g["L"].iloc[k]),
+                    "C": float(g["C"].iloc[k]),
+                    "MA5": float(g["MA5"].iloc[k]) if pd.notna(g["MA5"].iloc[k]) else np.nan,
+                })
+
+            t = simulate_trade(g, i)
+            if t:
+                fixed_exit_i = entry_i + 10
+                if fixed_exit_i < len(g):
+                    fixed_exit = float(g["O"].iloc[fixed_exit_i])
+                    if np.isfinite(fixed_exit) and fixed_exit > 0:
+                        t["fixed10_return_pct"] = (fixed_exit / t["entry_price"] - 1) * 100
                     else:
                         t["fixed10_return_pct"] = np.nan
-                    trades.append(t)
+                else:
+                    t["fixed10_return_pct"] = np.nan
+                trades.append(t)
 
-    # Exit grid on the same composite entry signals.
-    signal_keys = []
-    for code, group in df.groupby("Code", sort=True):
-        g = prepare(group)
-        for i in range(MA_LONG, len(g) - 1):
-            if is_entry_signal(g, i) and passes_composite_refined_rule(g, i):
-                signal_keys.append((g, i))
-
+    # Exit grid from the already-found signal list; no extra universe scan.
     exit_grid = []
     for stop_pct in [-3.0, -4.0, -5.0, -6.0, -7.0]:
         for max_hold in [10, 15]:
@@ -331,15 +348,9 @@ def main():
                 })
 
     fixed_hold_grid = []
-    signal_keys_fixed = []
-    for code, group in df.groupby("Code", sort=True):
-        g = prepare(group)
-        for i in range(MA_LONG, len(g) - 1):
-            if is_entry_signal(g, i) and passes_composite_refined_rule(g, i):
-                signal_keys_fixed.append((g, i))
     for hold in [10, 12, 14, 16, 18, 20, 25, 30]:
         vals = []
-        for g, i in signal_keys_fixed:
+        for g, i in signal_keys:
             entry_i = i + 1
             exit_i = entry_i + hold
             if exit_i >= len(g):
@@ -354,13 +365,13 @@ def main():
         part = pd.DataFrame(vals)
         fixed_hold_grid.append({
             "hold_sessions": hold,
-            "metrics": metrics(part) if not part.empty else {"n":0},
+            "metrics": metrics(part) if not part.empty else {"n": 0},
         })
 
     fixed_hold_yearly_compare = {}
     for hold in [14, 16]:
         rows = []
-        for g, i in signal_keys_fixed:
+        for g, i in signal_keys:
             entry_i = i + 1
             exit_i = entry_i + hold
             if exit_i >= len(g):
@@ -437,14 +448,22 @@ def main():
         "exit_grid": exit_grid,
         "fixed_hold_grid": fixed_hold_grid,
         "fixed_hold_yearly_compare": fixed_hold_yearly_compare,
+        "cache": {
+            "path": "results/kuitto_composite_signal_cache.parquet",
+            "signals": int(len(signal_keys)),
+            "rows": int(len(cache_rows)),
+            "future_sessions": 30,
+        },
         "note": "Exploratory rule was selected on recent data. Older half is the key robustness check; current-listing universe implies survivorship bias.",
     }
 
     RESULT_DIR.mkdir(parents=True, exist_ok=True)
     out_csv = RESULT_DIR / "best_kuitto_10y_trades.csv"
     out_json = RESULT_DIR / "best_kuitto_10y_summary.json"
+    out_cache = RESULT_DIR / "kuitto_composite_signal_cache.parquet"
 
     tdf.drop(columns=["entry_date_dt"]).to_csv(out_csv, index=False)
+    pd.DataFrame(cache_rows).to_parquet(out_cache, index=False)
     out_json.write_text(json.dumps(summary, ensure_ascii=False, indent=2), encoding="utf-8")
 
     print(json.dumps(summary, ensure_ascii=False, indent=2))
