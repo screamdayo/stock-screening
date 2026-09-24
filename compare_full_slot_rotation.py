@@ -6,11 +6,15 @@ import config, download
 from compare_real_allocation import load_or_build_trades, qty_for, INITIAL_CAPITAL, MAX_POSITIONS, LOT
 from run_backtest_ranking import _merge_day_candidates, _release_is_before_entry
 
-MODES = {
-    "baseline": "入れ替えなし",
-    "max_profit": "含み益最大を売る",
-    "weakest_momentum": "勢い最弱を売る",
-    "weakest_momentum_profit_only": "勢い最弱かつ含み益プラスだけ売る",
+VARIANTS = {
+    "baseline": {"label":"入れ替えなし","min_profit":None,"max_rank":None},
+    "profit_any": {"label":"含み益>0なら入れ替え","min_profit":0.0,"max_rank":None},
+    "profit_3": {"label":"含み益+3%以上","min_profit":3.0,"max_rank":None},
+    "profit_5": {"label":"含み益+5%以上","min_profit":5.0,"max_rank":None},
+    "profit_7": {"label":"含み益+7%以上","min_profit":7.0,"max_rank":None},
+    "profit_10": {"label":"含み益+10%以上","min_profit":10.0,"max_rank":None},
+    "profit_5_rank1": {"label":"含み益+5%以上×新候補1位だけ","min_profit":5.0,"max_rank":1},
+    "profit_5_rank2": {"label":"含み益+5%以上×新候補2位以内","min_profit":5.0,"max_rank":2},
 }
 
 def build_market_maps():
@@ -46,26 +50,18 @@ def close_position(p, px, d, reason):
     q["pnl_pct_actual"]=round((px/float(p["entry_price"])-1)*100,4)
     return proceeds,q
 
-def pick_victim(positions, d, mode, open_map, momentum_map):
+def pick_victim(positions, d, min_profit, open_map):
     rows=[]
     for p in positions:
         code=str(p["code"])
         px=open_map.get((code,d))
         if px is None: continue
         upct=(px/float(p["entry_price"])-1)*100
-        mom=momentum_map.get((code,d),999.0)
-        rows.append((p,px,upct,mom))
-    if mode=="max_profit":
-        rows=[r for r in rows if r[2]>0]
-        return max(rows,key=lambda r:r[2]) if rows else None
-    if mode=="weakest_momentum":
-        return min(rows,key=lambda r:r[3]) if rows else None
-    if mode=="weakest_momentum_profit_only":
-        rows=[r for r in rows if r[2]>0]
-        return min(rows,key=lambda r:r[3]) if rows else None
-    return None
+        if upct >= min_profit:
+            rows.append((p,px,upct))
+    return max(rows,key=lambda r:r[2]) if rows else None
 
-def simulate(a,b,mode,open_map,momentum_map):
+def simulate(a,b,variant,open_map,momentum_map):
     by_a={}; by_b={}; dates=set()
     for tr in a:
         d=pd.Timestamp(tr["entry_date"]); by_a.setdefault(d,[]).append(tr); dates.add(d)
@@ -85,21 +81,23 @@ def simulate(a,b,mode,open_map,momentum_map):
         positions=remain
         candidates,_,_,_=_merge_day_candidates(by_a.get(d,[]),by_b.get(d,[]),"balanced_rank")
         rotated_today=False
-        for tr in candidates:
+        for rank_idx,tr in enumerate(candidates, start=1):
             if any(str(p["code"])==str(tr["code"]) for p in positions):
                 skipped_dup+=1; continue
 
             if len(positions)>=MAX_POSITIONS:
-                if mode=="baseline" or rotated_today:
+                rule=VARIANTS[variant]
+                if variant=="baseline" or rotated_today or (rule["max_rank"] is not None and rank_idx>rule["max_rank"]):
                     skipped_slots+=1; continue
-                victim=pick_victim(positions,d,mode,open_map,momentum_map)
+                victim=pick_victim(positions,d,rule["min_profit"],open_map)
                 if victim is None:
                     skipped_slots+=1; continue
-                old,old_px,old_upct,old_mom=victim
-                proceeds,q=close_position(old,old_px,d,f"rotation_{mode}")
+                old,old_px,old_upct=victim
+                old_mom=momentum_map.get((str(old["code"]),d),999.0)
+                proceeds,q=close_position(old,old_px,d,f"rotation_{variant}")
                 positions.remove(old); cash+=proceeds; done.append(q)
                 rotations.append({
-                    "date":str(d.date()),"mode":mode,
+                    "date":str(d.date()),"mode":variant,
                     "sold_code":str(old["code"]),"sold_unrealized_pct":old_upct,
                     "sold_prev_ma5_slope_pct":old_mom,
                     "replacement_code":str(tr["code"]),
@@ -122,7 +120,7 @@ def simulate(a,b,mode,open_map,momentum_map):
     gains=sum(float(x["pnl_yen"]) for x in done if float(x["pnl_yen"])>0)
     losses=-sum(float(x["pnl_yen"]) for x in done if float(x["pnl_yen"])<0)
     return {
-        "label":MODES[mode],"ending_capital":round(cash,0),
+        "label":VARIANTS[variant]["label"],"ending_capital":round(cash,0),
         "profit_yen":round(cash-INITIAL_CAPITAL,0),
         "return_pct":round((cash/INITIAL_CAPITAL-1)*100,2),
         "entries":entries,"closed":len(done),"rotations":len(rotations),
@@ -136,13 +134,13 @@ def main():
     a,b=load_or_build_trades()
     open_map,momentum_map=build_market_maps()
     report={"settings":{"capital":INITIAL_CAPITAL,"max_positions":MAX_POSITIONS,"sizing":"equal_slots","rotation_limit":"1 per day","momentum":"previous-day MA5 slope"},"results":{}}
-    lines=["満枠時 入れ替え3方式比較（100万円・最大8枠・均等配分）",""]
+    lines=["満枠時 入れ替え条件比較（100万円・最大8枠・均等配分）",""]
     all_rots=[]
-    for mode in MODES:
-        s,rots,done=simulate(a,b,mode,open_map,momentum_map)
-        report["results"][mode]=s
+    for variant in VARIANTS:
+        s,rots,done=simulate(a,b,variant,open_map,momentum_map)
+        report["results"][variant]=s
         all_rots.extend(rots)
-        pd.DataFrame(done).to_csv(f"output/full_slot_{mode}_trades.csv",index=False,encoding="utf-8-sig")
+        pd.DataFrame(done).to_csv(f"output/full_slot_{variant}_trades.csv",index=False,encoding="utf-8-sig")
         lines.append(f"{s['label']}: 最終 {s['ending_capital']:,.0f}円 / 損益 {s['profit_yen']:+,.0f}円 / 収益率 {s['return_pct']:+.2f}% / PF {s['profit_factor_yen']} / 入れ替え {s['rotations']}回 / 満枠見送り {s['skipped_slots']}")
     pd.DataFrame(all_rots).to_csv("output/full_slot_rotations.csv",index=False,encoding="utf-8-sig")
     Path("output/full_slot_rotation_comparison.json").write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding="utf-8")
