@@ -4,7 +4,8 @@ import pandas as pd
 import config, download
 from strategies import registry
 from run_backtest_ranking import (
-    _build_strategy_trades, _merge_day_candidates, A_CUT_PCT, B_CUT_PCT
+    _build_strategy_trades, _merge_day_candidates, _release_is_before_entry,
+    A_CUT_PCT, B_CUT_PCT
 )
 
 INITIAL_CAPITAL=1_000_000
@@ -55,7 +56,7 @@ def simulate(a,b,mode):
     for d in sorted(dates):
         remain=[]
         for p in positions:
-            if pd.Timestamp(p["exit_date"]) <= d:
+            if _release_is_before_entry(p, d):
                 proceeds=p["qty"]*float(p["exit_price"])
                 cash += proceeds
                 p["pnl_yen"]=round(proceeds-p["cost"],2)
@@ -131,6 +132,36 @@ def main():
                      f"収益率 {s['return_pct']:+.2f}% / {s['entries']}件 / 勝率 {s['win_rate_pct']:.2f}% / "
                      f"PF {s['profit_factor_yen']} / 平均投入 {s['avg_investment_yen']:,.0f}円 / "
                      f"資金不足見送り {s['skipped_cash']} / 8枠満杯見送り {s['skipped_slots']}")
+    # 20万円 vs 20.5万円の差分を直接分解
+    t200=pd.DataFrame(simulate(a,b,"target200k")[0])
+    t205=pd.DataFrame(simulate(a,b,"target205k")[0])
+    key=["entry_date","code"]
+    a200=t200.set_index(key)
+    a205=t205.set_index(key)
+    k200=set(a200.index); k205=set(a205.index)
+    only200=k200-k205; only205=k205-k200; common=k200&k205
+    pnl_only200=sum(float(a200.loc[k,"pnl_yen"]) for k in only200)
+    pnl_only205=sum(float(a205.loc[k,"pnl_yen"]) for k in only205)
+    qty_delta_pnl=0.0
+    qty_changed=0
+    for k in common:
+        r200=a200.loc[k]; r205=a205.loc[k]
+        if hasattr(r200,"iloc") and getattr(r200,"ndim",1)>1: r200=r200.iloc[0]
+        if hasattr(r205,"iloc") and getattr(r205,"ndim",1)>1: r205=r205.iloc[0]
+        qdiff=float(r200["qty"])-float(r205["qty"])
+        if qdiff:
+            qty_changed+=1
+            qty_delta_pnl += qdiff*(float(r200["exit_price"])-float(r200["entry_price"]))
+    lines += [
+      "",
+      "20万円 vs 20.5万円 差分分解",
+      f"20万円だけで買えた取引: {len(only200)}件 / 合計損益 {pnl_only200:+,.0f}円",
+      f"20.5万円だけで買えた取引: {len(only205)}件 / 合計損益 {pnl_only205:+,.0f}円",
+      f"共通取引で株数が違う: {qty_changed}件 / 20万円側の株数差による損益差 {qty_delta_pnl:+,.0f}円",
+      f"差分取引の純寄与: {(pnl_only200-pnl_only205):+,.0f}円",
+    ]
+    pd.DataFrame([dict(a200.loc[k])|{"entry_date":k[0],"code":k[1]} for k in only200]).to_csv("output/only_target200k.csv",index=False,encoding="utf-8-sig")
+    pd.DataFrame([dict(a205.loc[k])|{"entry_date":k[0],"code":k[1]} for k in only205]).to_csv("output/only_target205k.csv",index=False,encoding="utf-8-sig")
     with open("output/real_allocation_comparison.json","w",encoding="utf-8") as f: json.dump(out,f,ensure_ascii=False,indent=2)
     with open("output/real_allocation_comparison.txt","w",encoding="utf-8") as f: f.write("\n".join(lines))
     print("\n".join(lines))
