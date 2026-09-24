@@ -60,6 +60,17 @@ jobs:
           key: backtest-price-cache-v1-${{ github.run_id }}
           restore-keys: |
             backtest-price-cache-v1-
+
+      - name: 資金配分候補キャッシュの復元
+        if: (github.event_name == 'workflow_dispatch' && github.event.inputs.mode == 'real-allocation') || (github.event_name == 'issues' && startsWith(github.event.issue.title, '[real-allocation-trigger]'))
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            output/real_allocation_candidates_A.csv
+            output/real_allocation_candidates_B.csv
+          key: real-allocation-candidates-v1-${{ hashFiles('strategies/**/*.py', 'run_backtest_ranking.py', 'config.py') }}
+          restore-keys: |
+            real-allocation-candidates-v1-
       - name: 通常バックテスト実行
         if: github.event_name == 'workflow_dispatch' && github.event.inputs.mode == 'normal'
         env: {DISCORD_WEBHOOK_URL: "${{ secrets.DISCORD_WEBHOOK_URL }}", JQUANTS_API_KEY: "${{ secrets.JQUANTS_API_KEY }}"}
@@ -124,6 +135,15 @@ jobs:
           elif [[ "${{ github.event.issue.title }}" == \[gc-backtest-trigger\]* ]]; then title='ゴールデンクロス 5年バックテスト結果'; file='output/gc_comparison.txt'; elif [[ "${{ github.event.issue.title }}" == \[real-allocation-trigger\]* ]]; then title='100万円・実資金配分比較結果'; file='output/real_allocation_comparison.txt'; else exit 0; fi
           { echo "## $title"; echo '```text'; cat "$file"; echo '```'; } > /tmp/result.md
           gh issue comment "${{ github.event.issue.number }}" --repo "${{ github.repository }}" --body-file /tmp/result.md
+      - name: 資金配分候補キャッシュの保存
+        if: always() && ((github.event_name == 'workflow_dispatch' && github.event.inputs.mode == 'real-allocation') || (github.event_name == 'issues' && startsWith(github.event.issue.title, '[real-allocation-trigger]')))
+        uses: actions/cache/save@v4
+        with:
+          path: |
+            output/real_allocation_candidates_A.csv
+            output/real_allocation_candidates_B.csv
+          key: real-allocation-candidates-v1-${{ hashFiles('strategies/**/*.py', 'run_backtest_ranking.py', 'config.py') }}-${{ github.run_id }}
+
       - name: 株価データキャッシュの保存
         if: always()
         uses: actions/cache/save@v4
