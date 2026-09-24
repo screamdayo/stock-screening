@@ -5170,7 +5170,7 @@
       "gap_pass": true,
       "ma25_rank": 2,
       "rule_selected": true,
-      "actual_bought": null,
+      "actual_bought": true,
       "entry_date": "2026-09-24",
       "entry_open": 4240.0,
       "next_open_gap_pct": 0.355,
