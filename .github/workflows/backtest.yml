@@ -62,6 +62,15 @@ jobs:
           restore-keys: |
             backtest-price-cache-v1-
 
+      - name: 満枠入れ替え判定キャッシュの復元
+        if: (github.event_name == 'workflow_dispatch' && github.event.inputs.mode == 'full-slot-rotation') || (github.event_name == 'issues' && startsWith(github.event.issue.title, '[full-slot-rotation-trigger]'))
+        uses: actions/cache/restore@v4
+        with:
+          path: output/full_slot_market_map.csv
+          key: full-slot-market-map-v1-${{ hashFiles('compare_full_slot_rotation.py', 'config.py') }}
+          restore-keys: |
+            full-slot-market-map-v1-
+
       - name: 資金配分候補キャッシュの復元
         if: (github.event_name == 'workflow_dispatch' && (github.event.inputs.mode == 'real-allocation' || github.event.inputs.mode == 'full-slot-rotation')) || (github.event_name == 'issues' && (startsWith(github.event.issue.title, '[real-allocation-trigger]') || startsWith(github.event.issue.title, '[full-slot-rotation-trigger]')))
         uses: actions/cache/restore@v4
@@ -142,6 +151,13 @@ jobs:
           elif [[ "${{ github.event.issue.title }}" == \[full-slot-rotation-trigger\]* ]]; then title='満枠時 入れ替え3方式比較結果'; file='output/full_slot_rotation_comparison.txt'; else exit 0; fi
           { echo "## $title"; echo '```text'; cat "$file"; echo '```'; } > /tmp/result.md
           gh issue comment "${{ github.event.issue.number }}" --repo "${{ github.repository }}" --body-file /tmp/result.md
+      - name: 満枠入れ替え判定キャッシュの保存
+        if: always() && ((github.event_name == 'workflow_dispatch' && github.event.inputs.mode == 'full-slot-rotation') || (github.event_name == 'issues' && startsWith(github.event.issue.title, '[full-slot-rotation-trigger]')))
+        uses: actions/cache/save@v4
+        with:
+          path: output/full_slot_market_map.csv
+          key: full-slot-market-map-v1-${{ hashFiles('compare_full_slot_rotation.py', 'config.py') }}-${{ github.run_id }}
+
       - name: 資金配分候補キャッシュの保存
         if: always() && ((github.event_name == 'workflow_dispatch' && (github.event.inputs.mode == 'real-allocation' || github.event.inputs.mode == 'full-slot-rotation')) || (github.event_name == 'issues' && (startsWith(github.event.issue.title, '[real-allocation-trigger]') || startsWith(github.event.issue.title, '[full-slot-rotation-trigger]'))))
         uses: actions/cache/save@v4
