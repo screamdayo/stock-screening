@@ -89,14 +89,29 @@ def simulate(a,b,mode):
       "skipped_active_duplicate":skipped_dup
     }
 
-def main():
+def load_or_build_trades():
+    """候補/出口計算は重いので一度CSV化し、配分比較では再利用する。"""
+    os.makedirs("output",exist_ok=True)
+    a_cache="output/real_allocation_candidates_A.csv"
+    b_cache="output/real_allocation_candidates_B.csv"
+    if os.path.exists(a_cache) and os.path.exists(b_cache):
+        a=pd.read_csv(a_cache).to_dict("records")
+        b=pd.read_csv(b_cache).to_dict("records")
+        print(f"候補キャッシュ使用: A={len(a)} / B={len(b)}")
+        return a,b
     strategy=registry.get_strategy("ma5_breakout")
     target_codes=download.get_target_codes()
     cache=f"backtest_prices_{config.TARGET_MARKET}_{config.BACKTEST_YEARS}y.csv"
     price_df=download.get_price_history_incremental(cache_filename=cache,years=config.BACKTEST_YEARS)
     signals,by_code=strategy(price_df,target_codes)
     a=_build_strategy_trades(signals,by_code,"A"); b=_build_strategy_trades(signals,by_code,"B")
-    os.makedirs("output",exist_ok=True)
+    pd.DataFrame(a).to_csv(a_cache,index=False)
+    pd.DataFrame(b).to_csv(b_cache,index=False)
+    print(f"候補キャッシュ作成: A={len(a)} / B={len(b)}")
+    return a,b
+
+def main():
+    a,b=load_or_build_trades()
     out={"settings":{"capital":INITIAL_CAPITAL,"lot":LOT,"max_positions":MAX_POSITIONS,
       "ranking":"balanced A/B production rank","A_cut_pct":A_CUT_PCT,"B_cut_pct":B_CUT_PCT},
       "results":{}}
