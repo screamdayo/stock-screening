@@ -18,26 +18,39 @@ VARIANTS = {
 }
 
 def build_market_maps():
+    os.makedirs("output", exist_ok=True)
+    map_cache="output/full_slot_market_map.csv"
+    if os.path.exists(map_cache):
+        m=pd.read_csv(map_cache, dtype={"code":str})
+        m["date"]=pd.to_datetime(m["date"])
+        open_map={(r.code,pd.Timestamp(r.date)):float(r.open) for r in m.itertuples()}
+        momentum_map={(r.code,pd.Timestamp(r.date)):float(r.prev_ma5_slope) for r in m.itertuples()}
+        print(f"市場判定キャッシュ使用: {len(m):,} rows")
+        return open_map, momentum_map
+
     cache=f"backtest_prices_{config.TARGET_MARKET}_{config.BACKTEST_YEARS}y.csv"
     df=download.get_price_history_incremental(cache_filename=cache, years=config.BACKTEST_YEARS).copy()
     df["Code"]=df["Code"].astype(str)
     df["Date"]=pd.to_datetime(df["Date"])
     if "O" not in df.columns and "Open" in df.columns: df["O"]=df["Open"]
     if "C" not in df.columns and "Close" in df.columns: df["C"]=df["Close"]
-    open_map={}
-    momentum_map={}
+    rows=[]
     for code,g in df.groupby("Code"):
         g=g.sort_values("Date").copy()
         g["MA5"]=g["C"].rolling(5).mean()
         g["MA5_SLOPE"]=g["MA5"].pct_change()*100
         for i,row in enumerate(g.itertuples()):
             d=pd.Timestamp(row.Date)
-            open_map[(str(code),d)]=float(row.O)
-            # entry open時点で確定している前営業日のMA5傾きだけを使う
+            prev_slope=999.0
             if i>0:
-                prev=g.iloc[i-1]
-                slope=prev["MA5_SLOPE"]
-                momentum_map[(str(code),d)] = float(slope) if pd.notna(slope) else 999.0
+                slope=g.iloc[i-1]["MA5_SLOPE"]
+                prev_slope=float(slope) if pd.notna(slope) else 999.0
+            rows.append({"code":str(code),"date":d,"open":float(row.O),"prev_ma5_slope":prev_slope})
+    m=pd.DataFrame(rows)
+    m.to_csv(map_cache,index=False)
+    print(f"市場判定キャッシュ作成: {len(m):,} rows")
+    open_map={(r.code,pd.Timestamp(r.date)):float(r.open) for r in m.itertuples()}
+    momentum_map={(r.code,pd.Timestamp(r.date)):float(r.prev_ma5_slope) for r in m.itertuples()}
     return open_map, momentum_map
 
 def close_position(p, px, d, reason):
