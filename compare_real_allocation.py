@@ -12,7 +12,10 @@ MAX_POSITIONS=8
 LOT=100
 MODES=[
  ("fixed100","100株固定"),
+ ("target150k","1銘柄15万円目安"),
+ ("target175k","1銘柄17.5万円目安"),
  ("target200k","1銘柄20万円目安"),
+ ("target225k","1銘柄22.5万円目安"),
  ("target250k","1銘柄25万円目安"),
  ("equal_slots","現金÷残り枠で均等"),
 ]
@@ -21,7 +24,10 @@ def qty_for(mode, price, cash, free_slots):
     lot_cost=price*LOT
     if lot_cost>cash: return 0
     if mode=="fixed100": return LOT
-    if mode=="target200k": target=200_000
+    if mode=="target150k": target=150_000
+    elif mode=="target175k": target=175_000
+    elif mode=="target200k": target=200_000
+    elif mode=="target225k": target=225_000
     elif mode=="target250k": target=250_000
     elif mode=="equal_slots": target=cash/max(1,free_slots)
     else: raise ValueError(mode)
