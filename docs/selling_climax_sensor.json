@@ -1,9 +1,9 @@
 {
   "active": false,
-  "signal_date": "2026-09-18T00:00:00",
-  "topix_return_pct": -0.074,
+  "signal_date": "2026-09-24T00:00:00",
+  "topix_return_pct": -0.387,
   "topix_return_threshold_pct": -2.0,
-  "topix_dd20_pct": -2.169,
+  "topix_dd20_pct": -2.548,
   "topix_dd20_threshold_pct": -15.0,
   "coarse_reversal_count": 0,
   "anchor_count": 0,
@@ -39,9 +39,9 @@
     "pinch_date": null,
     "business_days_since_selling": null,
     "confirmed_after_business_days": null,
-    "updated_through": "2026-09-18",
+    "updated_through": "2026-09-24",
     "max_wait_business_days": 30,
     "label": "待機中"
   },
-  "generated_at": "2026-09-23T12:52:21"
+  "generated_at": "2026-09-24T07:16:41"
 }
