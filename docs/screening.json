@@ -1,6 +1,32 @@
 {
-  "generated_at": "2026-09-24T12:50:22",
+  "generated_at": "2026-09-25T08:55:24",
   "strategy": "ma5_breakout",
-  "count": 0,
-  "items": []
+  "count": 1,
+  "items": [
+    {
+      "code": "7453",
+      "close": 4050.0,
+      "open": 3952.0,
+      "ma_short_today": 3970.2,
+      "ma_short_prev": 3960.8,
+      "ma_long_today": 4160.7,
+      "signal_type": "kuitto_pullback_auto",
+      "signal_label": "くいっと押し目版",
+      "auto_filtered": true,
+      "screening_bucket": "auto",
+      "bull_candle_pct": 2.48,
+      "ma5_prior5d_decline_pct": -2.217,
+      "ma5_vs_ma25_pct": -4.578,
+      "close_vs_ma5_pct": 2.01,
+      "volume_ratio": 1.332,
+      "avg_turnover_20": 10937968395.0,
+      "atr14_pct": 2.869,
+      "dd20_pct": -7.429,
+      "runner_score": 2.0,
+      "name": "良品計画",
+      "earnings_within_10bd": false,
+      "earnings_date": null,
+      "earnings_business_days": null
+    }
+  ]
 }
