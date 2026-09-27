@@ -66,6 +66,31 @@ def main():
         if not rr: continue
         s=summarize(rr); report["scores"][str(score)]=s
         lines.append(f"{score}/4: シグナル {s['signals']} / 買えた {s['gap_pass']} / 見送り {s['gap_skip']} / 完了 {s['completed']} / 勝率 {s['win_rate_pct']}% / 平均 {s['avg_return_pct']:+.3f}% / 中央値 {s['median_return_pct']:+.3f}% / PF {s['profit_factor']}")
+    two=[r for r in rows if int(r.get("runner_score",0))==2]
+    atr2=[]
+    combo2=[]
+    other2=[]
+    for r in two:
+        atr=r.get("atr14_pct")
+        dd=r.get("dd20_pct")
+        turn=r.get("avg_turnover_20")
+        atr_hit=pd.notna(atr) and float(atr)>=strat.RUNNER_ATR14_MIN
+        dd_hit=pd.notna(dd) and float(dd)<=strat.RUNNER_DD20_MAX
+        turn_hit=pd.notna(turn) and float(turn)>=strat.RUNNER_TURNOVER20_MIN
+        if atr_hit and not dd_hit and not turn_hit:
+            atr2.append(r)
+        elif (not atr_hit) and dd_hit and turn_hit:
+            combo2.append(r)
+        else:
+            other2.append(r)
+
+    report["score2_breakdown"]={}
+    lines += ["","2/4 内訳"]
+    for name, rr in [("ATRのみ2点",atr2),("DD20+売買代金",combo2),("その他",other2)]:
+        s=summarize(rr)
+        report["score2_breakdown"][name]=s
+        lines.append(f"{name}: シグナル {s['signals']} / 買えた {s['gap_pass']} / 完了 {s['completed']} / 勝率 {s['win_rate_pct']}% / 平均 {s['avg_return_pct']:+.3f}% / 中央値 {s['median_return_pct']:+.3f}% / PF {s['profit_factor']}")
+
     Path("output/kuitto_score_comparison.json").write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding="utf-8")
     text="\n".join(lines)
     Path("output/kuitto_score_comparison.txt").write_text(text,encoding="utf-8")
