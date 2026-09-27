@@ -22,12 +22,28 @@ def load_trades():
       out.append({"code":str(r["code"]),"score":s,"gap":gap,"entry":entry,"exit":exitp,"ma":ma,"ed":ed,"xd":xd})
   return out
 
-def market_open_map():
-  cache=f"backtest_prices_{config.TARGET_MARKET}_{config.BACKTEST_YEARS}y.csv"
-  df=download.get_price_history_incremental(cache_filename=cache,years=config.BACKTEST_YEARS).copy()
-  df["Code"]=df["Code"].astype(str); df["Date"]=pd.to_datetime(df["Date"])
-  if "O" not in df.columns and "Open" in df.columns: df["O"]=df["Open"]
-  return {(str(r.Code),pd.Timestamp(r.Date)):float(r.O) for r in df[["Code","Date","O"]].dropna().itertuples(index=False)}
+OPEN_CACHE = {}
+
+def get_open(code, d):
+  key=(str(code),pd.Timestamp(d))
+  if key in OPEN_CACHE: return OPEN_CACHE[key]
+  ds=pd.Timestamp(d).strftime("%Y%m%d")
+  rows=download._get_bars_for_code(str(code),from_date=ds,to_date=ds)
+  if not rows:
+    OPEN_CACHE[key]=None
+    return None
+  df=download._finalize_df(rows)
+  if df.empty:
+    OPEN_CACHE[key]=None
+    return None
+  df["Date"]=pd.to_datetime(df["Date"])
+  hit=df[df["Date"]==pd.Timestamp(d)]
+  if hit.empty:
+    OPEN_CACHE[key]=None
+    return None
+  px=float(hit.iloc[0]["O"])
+  OPEN_CACHE[key]=px
+  return px
 
 def stronger(new,old,mode):
   if new["score"]>old["score"]: return True
@@ -37,7 +53,7 @@ def stronger(new,old,mode):
 def weakest(pos):
   return min(pos,key=lambda p:(p["score"],-abs(p["ma"]),p["ed"],p["code"]))
 
-def simulate(trades,open_map,mode):
+def simulate(trades,mode):
   by={}
   dates=set()
   for t in trades:
@@ -62,7 +78,7 @@ def simulate(trades,open_map,mode):
         v=weakest(pos)
         if not stronger(x,v,mode):
           skips_slot+=1; continue
-        px=open_map.get((v["code"],d))
+        px=get_open(v["code"],d)
         if px is None:
           skips_slot+=1; continue
         cash += px*LOT
@@ -91,11 +107,10 @@ def simulate(trades,open_map,mode):
 
 def main():
   tr=load_trades()
-  om=market_open_map()
   modes=[("none","入れ替えなし"),("score","新候補のscoreが高い時だけ"),("score_ma","score高い or 同scoreでMA25に近い")]
   lines=["くいっと8枠 入れ替え比較","100万円 / 100株 / 最大8枠 / 現行スコア別gap / 1日最大1回入れ替え / 入替売却は当日始値 / 手数料税金なし",""]
   for mode,label in modes:
-    s,rots=simulate(tr,om,mode)
+    s,rots=simulate(tr,mode)
     lines.append(f"{label}: 最終 {s['final']:,.0f}円 / 累積 {s['ret']:+.2f}% / CAGR {s['cagr']:+.2f}% / PF {s['pf']:.3f} / 買付{s['buys']} / 入替{s['rot']} / 枠見送り{s['slots']} / 資金見送り{s['cashskip']} / DD参考{s['maxdd']:.2f}%")
     if rots:
       pd.DataFrame(rots,columns=["date","sold_code","sold_score","sold_ma_gap","sold_pnl_pct","new_code","new_score","new_ma_gap"]).to_csv(f"output/kuitto_rotation_{mode}.csv",index=False,encoding="utf-8-sig")
