@@ -1,0 +1,43 @@
+name: くいっと固定キャッシュ作成
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: write
+  issues: write
+  actions: read
+
+jobs:
+  seed:
+    if: startsWith(github.event.issue.title, '[seed-kuitto-cache]')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: 保存済みアーティファクトから固定CSVを取得
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p data /tmp/kuitto-artifact
+          gh api repos/${{ github.repository }}/actions/artifacts/10922528685/zip > /tmp/kuitto.zip
+          unzip -q /tmp/kuitto.zip -d /tmp/kuitto-artifact
+          test -s /tmp/kuitto-artifact/output/kuitto_score_trades.csv
+          cp /tmp/kuitto-artifact/output/kuitto_score_trades.csv data/kuitto_score_trades.csv
+          echo "rows=$(($(wc -l < data/kuitto_score_trades.csv)-1))"
+          echo "bytes=$(wc -c < data/kuitto_score_trades.csv)"
+      - name: 固定CSVをリポジトリへ保存
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/kuitto_score_trades.csv
+          if git diff --cached --quiet; then
+            echo "既に同一CSVが保存済み"
+          else
+            git commit -m "Persist kuitto score trade cache"
+            git push
+          fi
+      - name: Issueへ完了通知
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh issue comment "${{ github.event.issue.number }}" --repo "${{ github.repository }}" --body "固定キャッシュ data/kuitto_score_trades.csv を保存しました。"
