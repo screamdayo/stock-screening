@@ -16,15 +16,22 @@ from logger import get_logger
 logger = get_logger(__name__)
 
 FORWARD_TEST_START = pd.Timestamp("2026-09-09")
-RULE_EFFECTIVE_FROM = pd.Timestamp("2026-09-16")
-RULE_VERSION = "kuitto_v2_2026-09-16_liquidity500m"
+RULE_EFFECTIVE_FROM = pd.Timestamp("2026-09-27")
+RULE_VERSION = "kuitto_v3_2026-09-27_score_gap_shadow_rescue"
 LOG_PATH = Path("docs/forward_test_log.json")
 RULES_PATH = Path("docs/forward_test_rules.json")
 HOLDINGS_PATH = Path("holdings.json")
 
 VOLUME_RATIO_MIN = 1.25
 AVG_TURNOVER_20_MIN = 500_000_000
-MAX_ENTRY_GAP_PCT = 0.5
+LEGACY_MAX_ENTRY_GAP_PCT = 0.5
+SCORE_GAP_CAP_PCT = {0: None, 1: 0.0, 2: 0.25, 3: 0.0, 4: 1.0}
+RUNNER_ATR14_MIN = 2.917505
+RUNNER_DD20_MAX = -5.855856
+RUNNER_TURNOVER20_MIN = 828_434_090
+RESCUE_SHADOW_ATR14_MIN = 3.10
+RESCUE_SHADOW_DD20_MAX = -6.10
+RESCUE_SHADOW_GAP_MAX_PCT = 0.75
 MAX_DAILY_BUYS = 5
 STOP_LOSS_PCT = 5.0
 MAX_HOLD_DAYS = 15
@@ -62,13 +69,19 @@ PINCH_RULE_SNAPSHOT = {
 
 RULE_SNAPSHOT = {
     "version": RULE_VERSION,
-    "effective_from": "2026-09-16",
+    "effective_from": "2026-09-27",
     "entry": {
         "signal": "kuitto_pullback_auto base shape",
         "volume_ratio_min": VOLUME_RATIO_MIN,
         "avg_turnover_20_min_yen": AVG_TURNOVER_20_MIN,
         "avg_turnover_20_definition": "20-day mean of close x volume",
-        "next_open_gap_max_pct": MAX_ENTRY_GAP_PCT,
+        "next_open_gap_by_runner_score_pct": SCORE_GAP_CAP_PCT,
+        "shadow_rescue": {
+            "buy_rule": False,
+            "atr14_min_pct": RESCUE_SHADOW_ATR14_MIN,
+            "dd20_max_pct": RESCUE_SHADOW_DD20_MAX,
+            "next_open_gap_max_pct": RESCUE_SHADOW_GAP_MAX_PCT,
+        },
         "daily_max": MAX_DAILY_BUYS,
         "ranking": "abs(MA5/MA25 gap) ascending when selecting top 5",
         "sector_limit": None,
@@ -107,6 +120,14 @@ def _prepare(group):
     g["MA25"] = g["C"].rolling(25).mean()
     g["turnover"] = g["C"] * g["Vo"]
     g["avg_turnover_20"] = g["turnover"].rolling(20).mean()
+    g["high20"] = g["C"].rolling(20).max()
+    g["dd20_pct"] = (g["C"] / g["high20"] - 1) * 100
+    tr = pd.concat([
+        g["H"] - g["L"],
+        (g["H"] - g["C"].shift(1)).abs(),
+        (g["L"] - g["C"].shift(1)).abs(),
+    ], axis=1).max(axis=1)
+    g["atr14_pct"] = tr.rolling(14).mean() / g["C"] * 100
     return g
 
 
@@ -141,6 +162,15 @@ def _base_features(g, i):
     if pd.notna(prev_v) and pd.notna(today_v) and float(prev_v) > 0:
         volume_ratio = float(today_v) / float(prev_v)
     avg_turnover_20 = g.avg_turnover_20.iloc[i]
+    atr14_pct = g.atr14_pct.iloc[i]
+    dd20_pct = g.dd20_pct.iloc[i]
+    runner_score = 0
+    if pd.notna(atr14_pct) and float(atr14_pct) >= RUNNER_ATR14_MIN:
+        runner_score += 2
+    if pd.notna(dd20_pct) and float(dd20_pct) <= RUNNER_DD20_MAX:
+        runner_score += 1
+    if pd.notna(avg_turnover_20) and float(avg_turnover_20) >= RUNNER_TURNOVER20_MIN:
+        runner_score += 1
     return {
         "bull_candle_pct": round(float(bull), 3),
         "ma5_prior5d_decline_pct": round(float(decline), 3),
@@ -148,6 +178,9 @@ def _base_features(g, i):
         "close_vs_ma5_pct": round(float(close_ma5), 3),
         "volume_ratio": round(float(volume_ratio), 3) if volume_ratio is not None else None,
         "avg_turnover_20": round(float(avg_turnover_20), 3) if pd.notna(avg_turnover_20) else None,
+        "atr14_pct": round(float(atr14_pct), 3) if pd.notna(atr14_pct) else None,
+        "dd20_pct": round(float(dd20_pct), 3) if pd.notna(dd20_pct) else None,
+        "runner_score": runner_score,
     }
 
 
@@ -180,7 +213,25 @@ def _update_future(row, g, signal_idx):
     row["entry_date"] = g.Date.iloc[ent].strftime("%Y-%m-%d")
     row["entry_open"] = round(entry, 3)
     row["next_open_gap_pct"] = round((entry / signal_close - 1) * 100, 3)
-    row["gap_pass"] = row["next_open_gap_pct"] <= MAX_ENTRY_GAP_PCT
+    if row.get("rule_version") == RULE_VERSION:
+        score = int(row.get("runner_score") or 0)
+        cap = SCORE_GAP_CAP_PCT.get(score, LEGACY_MAX_ENTRY_GAP_PCT)
+        row["gap_cap_pct"] = cap
+        row["gap_pass"] = True if cap is None else row["next_open_gap_pct"] <= cap
+        atr = row.get("atr14_pct")
+        dd20 = row.get("dd20_pct")
+        row["shadow_rescue_hit"] = bool(
+            not row["gap_pass"]
+            and cap is not None
+            and cap < RESCUE_SHADOW_GAP_MAX_PCT
+            and atr is not None and float(atr) >= RESCUE_SHADOW_ATR14_MIN
+            and dd20 is not None and float(dd20) <= RESCUE_SHADOW_DD20_MAX
+            and row["next_open_gap_pct"] <= RESCUE_SHADOW_GAP_MAX_PCT
+        )
+    else:
+        row["gap_cap_pct"] = LEGACY_MAX_ENTRY_GAP_PCT
+        row["gap_pass"] = row["next_open_gap_pct"] <= LEGACY_MAX_ENTRY_GAP_PCT
+        row["shadow_rescue_hit"] = False
 
     available_end = len(g) - 1
     for days in (5, 10, 15):
@@ -495,6 +546,8 @@ def update_forward_test(price_df, code_to_name=None, gc_results=None, pinch_sens
                 "volume_pass": bool(volume_pass),
                 "liquidity_pass": bool(liquidity_pass),
                 "gap_pass": None,
+                "gap_cap_pct": None,
+                "shadow_rescue_hit": None,
                 "ma25_rank": None,
                 "rule_selected": None,
                 "actual_bought": None,
