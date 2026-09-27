@@ -1,0 +1,17 @@
+name: くいっと救済条件細刻み
+on:
+  issues:
+    types: [opened]
+permissions:
+  contents: read
+  issues: write
+jobs:
+  analyze:
+    if: startsWith(github.event.issue.title, '[kuitto-rescue-finegrid]')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: python compare_kuitto_rescue_finegrid.py
+      - env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh issue comment "${{ github.event.issue.number }}" --repo "${{ github.repository }}" --body-file output/kuitto_rescue_finegrid.txt
