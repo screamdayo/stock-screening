@@ -35,7 +35,7 @@ for minscore in [1,2,3,4]:
         if not st or st["n"]<10: continue
         cands.append((st["pf"],st["avg"],st["n"],st["big"],minscore,atrcut,ddcut,gmax,st["wr"]))
 
-cands.sort(reverse=True)
+cands.sort(key=lambda x:(x[0],x[1],x[2],x[3]), reverse=True)
 lines=[f"除外群 rescue grid / total rejected {len(rows)}","上位は PF優先、最低10件",""]
 for pf,avg,n,big,ms,atr,dd,gm,wr in cands[:30]:
   lines.append(f"score>={ms}, ATR>={atr if atr is not None else '-'}, DD20<={dd if dd is not None else '-'}, gap<={gm}%: n {n} / big10 {big} / win {wr:.1f}% / avg {avg:+.3f}% / PF {pf:.3f}")
