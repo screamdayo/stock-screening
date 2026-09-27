@@ -1,0 +1,17 @@
+name: くいっと除外救済グリッド
+on:
+  issues:
+    types: [opened]
+permissions:
+  contents: read
+  issues: write
+jobs:
+  analyze:
+    if: startsWith(github.event.issue.title, '[kuitto-rescue-grid]')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: python compare_kuitto_rejected_rescue_grid.py
+      - env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh issue comment "${{ github.event.issue.number }}" --repo "${{ github.repository }}" --body-file output/kuitto_rejected_rescue_grid.txt
