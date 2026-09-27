@@ -6,6 +6,12 @@ import config, download
 from strategies import kuitto_pullback_auto as strat
 from forward_test import _prepare, _update_future
 
+def fmt_pct(v):
+    return "-" if v is None or pd.isna(v) else f"{float(v):+.3f}%"
+
+def fmt_num(v):
+    return "-" if v is None or pd.isna(v) else str(v)
+
 def summarize(rows):
     done=[r for r in rows if r.get("gap_pass") is True and r.get("exit_pnl_pct") is not None]
     wins=[r for r in done if float(r["exit_pnl_pct"])>0]
@@ -96,7 +102,8 @@ def main():
     for name, rr in [("ATRのみ2点",atr2),("DD20+売買代金",combo2),("その他",other2)]:
         s=summarize(rr)
         report["score2_breakdown"][name]=s
-        lines.append(f"{name}: シグナル {s['signals']} / 買えた {s['gap_pass']} / 完了 {s['completed']} / 勝率 {s['win_rate_pct']}% / 平均 {s['avg_return_pct']:+.3f}% / 中央値 {s['median_return_pct']:+.3f}% / PF {s['profit_factor']}")
+        win="-" if s["win_rate_pct"] is None else f'{s["win_rate_pct"]}%'
+        lines.append(f"{name}: シグナル {s['signals']} / 買えた {s['gap_pass']} / 完了 {s['completed']} / 勝率 {win} / 平均 {fmt_pct(s['avg_return_pct'])} / 中央値 {fmt_pct(s['median_return_pct'])} / PF {fmt_num(s['profit_factor'])}")
 
     Path("output/kuitto_score_comparison.json").write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding="utf-8")
     text="\n".join(lines)
