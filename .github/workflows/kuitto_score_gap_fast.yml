@@ -1,0 +1,25 @@
+name: くいっとスコア×ギャップ高速検証
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  analyze:
+    if: startsWith(github.event.issue.title, '[kuitto-score-gap-fast]')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: 固定CSVでスコア×ギャップ分析
+        run: python compare_kuitto_score_gap_fast.py
+      - name: Issueへ結果投稿
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          echo "## スコア × 翌朝ギャップ 高速検証" > /tmp/result.md
+          cat output/kuitto_score_gap_matrix.txt >> /tmp/result.md
+          gh issue comment "${{ github.event.issue.number }}" --repo "${{ github.repository }}" --body-file /tmp/result.md
