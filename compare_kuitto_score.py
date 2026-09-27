@@ -37,35 +37,18 @@ def _as_bool(v):
     return str(v).strip().lower() in ("true", "1", "yes")
 
 def load_or_build_rows():
-    candidates=[Path("data/kuitto_score_trades.csv"), Path("output/kuitto_score_trades.csv")]
-    trade_cache=next((p for p in candidates if p.exists() and p.stat().st_size > 0), None)
-    if trade_cache is not None:
-        print(f"CACHE HIT: 完成済みトレードを使用: {trade_cache} ({trade_cache.stat().st_size} bytes)")
-        df=pd.read_csv(trade_cache)
-        rows=df.to_dict("records")
-        for r in rows:
-            if "gap_pass" in r:
-                r["gap_pass"]=_as_bool(r["gap_pass"])
-        return rows
-
-    print("CACHE MISS: 完成済みトレードなし。5年分を初回計算します。")
     trade_cache=Path("data/kuitto_score_trades.csv")
-    trade_cache.parent.mkdir(parents=True,exist_ok=True)
-    targets=download.get_target_codes()
-    cache=f"backtest_prices_{config.TARGET_MARKET}_{config.BACKTEST_YEARS}y.csv"
-    price_df=download.get_price_history_incremental(cache_filename=cache,years=config.BACKTEST_YEARS)
-    signals,groups=strat.find_signals(price_df,targets)
-    rows=[]
-    for s in signals:
-        g=_prepare(groups[s["code"]])
-        r=dict(s)
-        _update_future(r,g,int(s["signal_idx"]))
-        rows.append(r)
-    df=pd.DataFrame(rows)
-    df.to_csv(trade_cache,index=False,encoding="utf-8-sig")
-    Path("output").mkdir(exist_ok=True)
-    df.to_csv("output/kuitto_score_trades.csv",index=False,encoding="utf-8-sig")
-    print(f"CACHE BUILT: {trade_cache} ({trade_cache.stat().st_size} bytes)")
+    if not trade_cache.exists() or trade_cache.stat().st_size == 0:
+        raise RuntimeError(
+            "固定キャッシュ data/kuitto_score_trades.csv がありません。"
+            "この検証では5年再計算を行いません。seed_kuitto_cache を先に実行してください。"
+        )
+    print(f"FIXED CACHE HIT: {trade_cache} ({trade_cache.stat().st_size} bytes)")
+    df=pd.read_csv(trade_cache)
+    rows=df.to_dict("records")
+    for r in rows:
+        if "gap_pass" in r:
+            r["gap_pass"]=_as_bool(r["gap_pass"])
     return rows
 
 def main():
