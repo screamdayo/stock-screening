@@ -1,0 +1,17 @@
+name: Kuitto production rule syntax check
+on:
+  issues:
+    types: [opened]
+permissions:
+  contents: read
+  issues: write
+jobs:
+  check:
+    if: startsWith(github.event.issue.title, '[kuitto-prod-check]')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: python -m py_compile notifier.py forward_test.py strategies/kuitto_pullback_auto.py main.py
+      - env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh issue comment "${{ github.event.issue.number }}" --repo "${{ github.repository }}" --body "✅ production rule syntax check passed"
