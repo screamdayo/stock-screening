@@ -1,0 +1,17 @@
+name: くいっと100万円8枠資金制約
+on:
+  issues:
+    types: [opened]
+permissions:
+  contents: read
+  issues: write
+jobs:
+  analyze:
+    if: startsWith(github.event.issue.title, '[kuitto-capital-1m]')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: python compare_kuitto_capital_1m_8slots.py
+      - env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh issue comment "${{ github.event.issue.number }}" --repo "${{ github.repository }}" --body-file output/kuitto_capital_1m_8slots.txt
