@@ -23,8 +23,25 @@ def summarize(rows):
         "profit_factor":round(gp/gl,3) if gl else None,
     }
 
-def main():
-    os.makedirs("output",exist_ok=True)
+def _as_bool(v):
+    if isinstance(v, bool):
+        return v
+    if pd.isna(v):
+        return None
+    return str(v).strip().lower() in ("true", "1", "yes")
+
+def load_or_build_rows():
+    trade_cache=Path("output/kuitto_score_trades.csv")
+    if trade_cache.exists() and trade_cache.stat().st_size > 0:
+        print(f"完成済みトレードキャッシュを使用: {trade_cache}")
+        df=pd.read_csv(trade_cache)
+        rows=df.to_dict("records")
+        for r in rows:
+            if "gap_pass" in r:
+                r["gap_pass"]=_as_bool(r["gap_pass"])
+        return rows
+
+    print("完成済みトレードキャッシュなし。5年分を初回計算します。")
     targets=download.get_target_codes()
     cache=f"backtest_prices_{config.TARGET_MARKET}_{config.BACKTEST_YEARS}y.csv"
     price_df=download.get_price_history_incremental(cache_filename=cache,years=config.BACKTEST_YEARS)
@@ -35,6 +52,12 @@ def main():
         r=dict(s)
         _update_future(r,g,int(s["signal_idx"]))
         rows.append(r)
+    pd.DataFrame(rows).to_csv(trade_cache,index=False,encoding="utf-8-sig")
+    return rows
+
+def main():
+    os.makedirs("output",exist_ok=True)
+    rows=load_or_build_rows()
 
     report={"years":config.BACKTEST_YEARS,"rule":"kuitto_pullback_auto + next open gap <= +0.5% + -5% stop / strict gakutto / max15","scores":{}}
     lines=[f"くいっと押し目版 伸びスコア別成績（{config.BACKTEST_YEARS}年）","翌朝 +0.5%以内のみ買い / 現行出口",""]
