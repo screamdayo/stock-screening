@@ -82,6 +82,14 @@ jobs:
           key: real-allocation-candidates-v1-${{ hashFiles('strategies/**/*.py', 'run_backtest_ranking.py', 'config.py') }}
           restore-keys: |
             real-allocation-candidates-v1-
+
+      - name: くいっとスコア完成トレードキャッシュの復元
+        id: kuitto-score-cache
+        if: (github.event_name == 'workflow_dispatch' && github.event.inputs.mode == 'kuitto-score') || (github.event_name == 'issues' && startsWith(github.event.issue.title, '[kuitto-score-trigger]'))
+        uses: actions/cache/restore@v4
+        with:
+          path: output/kuitto_score_trades.csv
+          key: kuitto-score-trades-v1-${{ hashFiles('strategies/kuitto_pullback_auto.py', 'forward_test.py', 'config.py', 'download.py') }}
       - name: 通常バックテスト実行
         if: github.event_name == 'workflow_dispatch' && github.event.inputs.mode == 'normal'
         env: {DISCORD_WEBHOOK_URL: "${{ secrets.DISCORD_WEBHOOK_URL }}", JQUANTS_API_KEY: "${{ secrets.JQUANTS_API_KEY }}"}
@@ -173,6 +181,13 @@ jobs:
             output/real_allocation_candidates_A.csv
             output/real_allocation_candidates_B.csv
           key: real-allocation-candidates-v1-${{ hashFiles('strategies/**/*.py', 'run_backtest_ranking.py', 'config.py') }}-${{ github.run_id }}
+
+      - name: くいっとスコア完成トレードキャッシュの保存
+        if: always() && steps.kuitto-score-cache.outcome == 'success' && steps.kuitto-score-cache.outputs.cache-hit != 'true' && ((github.event_name == 'workflow_dispatch' && github.event.inputs.mode == 'kuitto-score') || (github.event_name == 'issues' && startsWith(github.event.issue.title, '[kuitto-score-trigger]')))
+        uses: actions/cache/save@v4
+        with:
+          path: output/kuitto_score_trades.csv
+          key: kuitto-score-trades-v1-${{ hashFiles('strategies/kuitto_pullback_auto.py', 'forward_test.py', 'config.py', 'download.py') }}
 
       - name: 株価データキャッシュの保存
         if: always()
