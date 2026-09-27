@@ -1,0 +1,24 @@
+name: くいっと翌朝ギャップ高速検証
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  gap:
+    if: startsWith(github.event.issue.title, '[kuitto-gap-fast]')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: 固定CSVで閾値比較
+        run: python compare_kuitto_gap_fast.py
+      - name: Issueへ結果投稿
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          { echo "## 翌朝ギャップ上限 高速検証"; echo '>>> '; cat output/kuitto_gap_comparison.txt; } > /tmp/result.md
+          gh issue comment "${{ github.event.issue.number }}" --repo "${{ github.repository }}" --body-file /tmp/result.md
