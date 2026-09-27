@@ -31,9 +31,10 @@ def _as_bool(v):
     return str(v).strip().lower() in ("true", "1", "yes")
 
 def load_or_build_rows():
-    trade_cache=Path("output/kuitto_score_trades.csv")
-    if trade_cache.exists() and trade_cache.stat().st_size > 0:
-        print(f"完成済みトレードキャッシュを使用: {trade_cache}")
+    candidates=[Path("data/kuitto_score_trades.csv"), Path("output/kuitto_score_trades.csv")]
+    trade_cache=next((p for p in candidates if p.exists() and p.stat().st_size > 0), None)
+    if trade_cache is not None:
+        print(f"CACHE HIT: 完成済みトレードを使用: {trade_cache} ({trade_cache.stat().st_size} bytes)")
         df=pd.read_csv(trade_cache)
         rows=df.to_dict("records")
         for r in rows:
@@ -41,7 +42,9 @@ def load_or_build_rows():
                 r["gap_pass"]=_as_bool(r["gap_pass"])
         return rows
 
-    print("完成済みトレードキャッシュなし。5年分を初回計算します。")
+    print("CACHE MISS: 完成済みトレードなし。5年分を初回計算します。")
+    trade_cache=Path("data/kuitto_score_trades.csv")
+    trade_cache.parent.mkdir(parents=True,exist_ok=True)
     targets=download.get_target_codes()
     cache=f"backtest_prices_{config.TARGET_MARKET}_{config.BACKTEST_YEARS}y.csv"
     price_df=download.get_price_history_incremental(cache_filename=cache,years=config.BACKTEST_YEARS)
@@ -52,7 +55,11 @@ def load_or_build_rows():
         r=dict(s)
         _update_future(r,g,int(s["signal_idx"]))
         rows.append(r)
-    pd.DataFrame(rows).to_csv(trade_cache,index=False,encoding="utf-8-sig")
+    df=pd.DataFrame(rows)
+    df.to_csv(trade_cache,index=False,encoding="utf-8-sig")
+    Path("output").mkdir(exist_ok=True)
+    df.to_csv("output/kuitto_score_trades.csv",index=False,encoding="utf-8-sig")
+    print(f"CACHE BUILT: {trade_cache} ({trade_cache.stat().st_size} bytes)")
     return rows
 
 def main():
