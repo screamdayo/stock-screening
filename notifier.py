@@ -17,8 +17,28 @@ SCREENING_VIEW_URL = "https://screamdayo.github.io/stock-screening/screening.htm
 GC_SCREENING_VIEW_URL = "https://screamdayo.github.io/stock-screening/gc.html"
 PINCH_SENSOR_VIEW_URL = "https://screamdayo.github.io/stock-screening/pinch.html"
 SELLING_CLIMAX_VIEW_URL = "https://screamdayo.github.io/stock-screening/selling_climax.html"
-NEXT_OPEN_GAP_MAX_PCT = 0.5
+SCORE_GAP_CAP_PCT = {0: None, 1: 0.0, 2: 0.25, 3: 0.0, 4: 1.0}
+RESCUE_SHADOW_ATR14_MIN = 3.10
+RESCUE_SHADOW_DD20_MAX = -6.10
+RESCUE_SHADOW_GAP_MAX_PCT = 0.75
 STOP_LOSS_PCT = 5.0
+
+def _entry_gap_cap_pct(score):
+    try:
+        return SCORE_GAP_CAP_PCT.get(int(score), 0.5)
+    except (TypeError, ValueError):
+        return 0.5
+
+def _is_rescue_shadow(item):
+    atr = item.get("atr14_pct")
+    dd20 = item.get("dd20_pct")
+    cap = _entry_gap_cap_pct(item.get("runner_score"))
+    return (
+        cap is not None
+        and cap < RESCUE_SHADOW_GAP_MAX_PCT
+        and atr is not None and float(atr) >= RESCUE_SHADOW_ATR14_MIN
+        and dd20 is not None and float(dd20) <= RESCUE_SHADOW_DD20_MAX
+    )
 
 
 def _stock_label(item):
@@ -124,18 +144,34 @@ def notify(results, rescue_results=None, primary_results=None):
                 earnings_note = f"\n   ⚠️ **10営業日以内に決算あり** {when}"
             lines.append(f"🟢 {label}{suffix}{earnings_note}")
             if close is not None:
-                theoretical_max_open = float(close) * (1 + NEXT_OPEN_GAP_MAX_PCT / 100)
-                max_open = _floor_to_valid_tick(theoretical_max_open)
-                theoretical_stop = max_open * (1 - STOP_LOSS_PCT / 100)
-                stop_at_max_open = _floor_to_valid_tick(theoretical_stop)
-                lines.append(
-                    f"   ↳ 翌朝寄指 **{_fmt_yen(max_open)}以下なら買い** / 超えたら見送り "
-                    f"（理論上限 {_fmt_yen(theoretical_max_open)} → 呼値切下げ）"
-                )
-                lines.append(
-                    f"   🛑 損切り **実際の買値 × 0.95** "
-                    f"（参考：寄指上限で買った場合 **{_fmt_yen(stop_at_max_open)}**）"
-                )
+                cap_pct = _entry_gap_cap_pct(score)
+                if cap_pct is None:
+                    lines.append("   ↳ 翌朝 **ギャップ制限なしで寄り買い候補**")
+                    stop_ref = _floor_to_valid_tick(float(close) * (1 - STOP_LOSS_PCT / 100))
+                    lines.append(
+                        f"   🛑 損切り **実際の買値 × 0.95** "
+                        f"（前日終値基準の参考値 **{_fmt_yen(stop_ref)}**）"
+                    )
+                else:
+                    theoretical_max_open = float(close) * (1 + cap_pct / 100)
+                    max_open = _floor_to_valid_tick(theoretical_max_open)
+                    theoretical_stop = max_open * (1 - STOP_LOSS_PCT / 100)
+                    stop_at_max_open = _floor_to_valid_tick(theoretical_stop)
+                    lines.append(
+                        f"   ↳ 翌朝寄指 **{_fmt_yen(max_open)}以下なら買い** / 超えたら見送り "
+                        f"（score {score}/4 上限 +{cap_pct:.2f}%）"
+                    )
+                    lines.append(
+                        f"   🛑 損切り **実際の買値 × 0.95** "
+                        f"（参考：寄指上限で買った場合 **{_fmt_yen(stop_at_max_open)}**）"
+                    )
+                    if _is_rescue_shadow(r):
+                        shadow_theoretical = float(close) * (1 + RESCUE_SHADOW_GAP_MAX_PCT / 100)
+                        shadow_open = _floor_to_valid_tick(shadow_theoretical)
+                        lines.append(
+                            f"   🧪 **救済観測のみ**：通常上限超過〜{_fmt_yen(shadow_open)} "
+                            f"（+{RESCUE_SHADOW_GAP_MAX_PCT:.2f}%）で寄った場合は買わずに記録"
+                        )
 
         remaining = len(display_results) - 20
         if remaining > 0:
@@ -145,7 +181,8 @@ def notify(results, rescue_results=None, primary_results=None):
         msg = (
             f"📊 **くいっと押し目版 {today}**\n"
             f"🤖 **目視判定なし / 出来高1.25倍以上 / 自動通過 {len(results)}件**\n"
-            f"🌅 **翌朝ルール：前日終値比 +{NEXT_OPEN_GAP_MAX_PCT:.1f}%以内で寄れば買い、超えたら見送り**\n"
+            f"🌅 **翌朝ルール：伸びスコア別ギャップ上限（0/4=制限なし・1/4=0%・2/4=+0.25%・3/4=0%・4/4=+1.0%）**\n"
+            f"🧪 **救済条件は買い判定に使わず、ATR≥3.10%・DD20≤-6.10%・gap≤+0.75%を影で記録**\n"
             f"💴 **注文価格は呼値に合わせて安全側へ切り下げ表示**\n"
             f"🛑 **損切り：実際の買値から -{STOP_LOSS_PCT:.0f}%**"
             f"{order_note}\n"
