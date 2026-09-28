@@ -111,7 +111,7 @@ def notify(results, rescue_results=None, primary_results=None):
         )
 
         lines = []
-        for r in display_results[:20]:
+        for r in display_results:
             label = _stock_label(r)
             decline = r.get("ma5_prior5d_decline_pct")
             gap = r.get("ma5_vs_ma25_pct")
@@ -172,10 +172,6 @@ def notify(results, rescue_results=None, primary_results=None):
                             f"   🧪 **救済観測のみ**：通常上限超過〜{_fmt_yen(shadow_open)} "
                             f"（+{RESCUE_SHADOW_GAP_MAX_PCT:.2f}%）で寄った場合は買わずに記録"
                         )
-
-        remaining = len(display_results) - 20
-        if remaining > 0:
-            lines.append(f"…他{remaining}件")
 
         order_note = "\n⭐ **伸びスコア順 → 同点はMA25に近い順**"
         msg = (
