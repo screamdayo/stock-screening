@@ -90,6 +90,39 @@
         "exit": "open after 41 trading days from entry",
         "stop_loss": null
       }
+    },
+    {
+      "version": "kuitto_v3_2026-09-27_score_gap_shadow_rescue",
+      "effective_from": "2026-09-27",
+      "entry": {
+        "signal": "kuitto_pullback_auto base shape",
+        "volume_ratio_min": 1.25,
+        "avg_turnover_20_min_yen": 500000000,
+        "avg_turnover_20_definition": "20-day mean of close x volume",
+        "next_open_gap_by_runner_score_pct": {
+          "0": null,
+          "1": 0.0,
+          "2": 0.25,
+          "3": 0.0,
+          "4": 1.0
+        },
+        "shadow_rescue": {
+          "buy_rule": false,
+          "atr14_min_pct": 3.1,
+          "dd20_max_pct": -6.1,
+          "next_open_gap_max_pct": 0.75
+        },
+        "daily_max": 5,
+        "ranking": "abs(MA5/MA25 gap) ascending when selecting top 5",
+        "sector_limit": null
+      },
+      "exit": {
+        "stop_loss_pct": 5.0,
+        "stop_fill": "if open <= stop: open, elif low <= stop: stop price",
+        "gakutto": "strict gakutto detected at close -> next trading-day open",
+        "max_hold_days": 15,
+        "max_hold_exit": "15th trading-day close alert -> next trading-day open"
+      }
     }
   ]
 }

@@ -21,15 +21,17 @@
       "entry_open": 3430.0,
       "next_open_gap_pct": -1.01,
       "return_5d_pct": -3.061,
-      "return_10d_pct": null,
+      "return_10d_pct": 0.437,
       "return_15d_pct": null,
-      "mfe_pct": 0.875,
+      "mfe_pct": 3.499,
       "mae_pct": -6.56,
       "exit_date": "2026-09-11",
       "exit_price": 3250.0,
       "exit_reason": "stop_gap_open",
       "exit_pnl_pct": -5.248,
-      "hold_days": 2
+      "hold_days": 2,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -51,15 +53,17 @@
       "entry_open": 3516.0,
       "next_open_gap_pct": -0.986,
       "return_5d_pct": 11.348,
-      "return_10d_pct": null,
+      "return_10d_pct": 20.137,
       "return_15d_pct": null,
-      "mfe_pct": 22.184,
+      "mfe_pct": 23.891,
       "mae_pct": -0.683,
       "exit_date": null,
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -81,7 +85,7 @@
       "entry_open": 1376.0,
       "next_open_gap_pct": -0.578,
       "return_5d_pct": 1.817,
-      "return_10d_pct": null,
+      "return_10d_pct": 2.326,
       "return_15d_pct": null,
       "mfe_pct": 5.015,
       "mae_pct": -1.526,
@@ -89,7 +93,9 @@
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -111,7 +117,7 @@
       "entry_open": 4820.0,
       "next_open_gap_pct": -0.823,
       "return_5d_pct": -1.141,
-      "return_10d_pct": null,
+      "return_10d_pct": -0.519,
       "return_15d_pct": null,
       "mfe_pct": 2.905,
       "mae_pct": -3.631,
@@ -119,7 +125,9 @@
       "exit_price": 4680.0,
       "exit_reason": "strict_gakutto_next_open",
       "exit_pnl_pct": -2.905,
-      "hold_days": 3
+      "hold_days": 3,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -141,7 +149,7 @@
       "entry_open": 7886.0,
       "next_open_gap_pct": -1.45,
       "return_5d_pct": 3.221,
-      "return_10d_pct": null,
+      "return_10d_pct": 4.311,
       "return_15d_pct": null,
       "mfe_pct": 6.15,
       "mae_pct": -2.308,
@@ -149,7 +157,9 @@
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -171,7 +181,7 @@
       "entry_open": 3253.0,
       "next_open_gap_pct": -1.663,
       "return_5d_pct": 3.013,
-      "return_10d_pct": null,
+      "return_10d_pct": 1.506,
       "return_15d_pct": null,
       "mfe_pct": 3.904,
       "mae_pct": -2.674,
@@ -179,7 +189,9 @@
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -201,7 +213,7 @@
       "entry_open": 2191.0,
       "next_open_gap_pct": -1.262,
       "return_5d_pct": 6.025,
-      "return_10d_pct": null,
+      "return_10d_pct": 9.402,
       "return_15d_pct": null,
       "mfe_pct": 10.863,
       "mae_pct": 0.0,
@@ -209,7 +221,9 @@
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -231,7 +245,7 @@
       "entry_open": 4652.0,
       "next_open_gap_pct": -2.901,
       "return_5d_pct": 3.289,
-      "return_10d_pct": null,
+      "return_10d_pct": 4.514,
       "return_15d_pct": null,
       "mfe_pct": 7.868,
       "mae_pct": -0.322,
@@ -239,7 +253,9 @@
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -261,7 +277,7 @@
       "entry_open": 5637.0,
       "next_open_gap_pct": 0.035,
       "return_5d_pct": 1.401,
-      "return_10d_pct": null,
+      "return_10d_pct": 0.426,
       "return_15d_pct": null,
       "mfe_pct": 3.69,
       "mae_pct": -4.151,
@@ -269,7 +285,9 @@
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -291,15 +309,17 @@
       "entry_open": 3303.0,
       "next_open_gap_pct": -0.811,
       "return_5d_pct": 1.998,
-      "return_10d_pct": null,
+      "return_10d_pct": 3.573,
       "return_15d_pct": null,
-      "mfe_pct": 4.36,
+      "mfe_pct": 6.6,
       "mae_pct": -3.361,
       "exit_date": null,
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -321,7 +341,7 @@
       "entry_open": 2240.0,
       "next_open_gap_pct": -0.929,
       "return_5d_pct": -0.313,
-      "return_10d_pct": null,
+      "return_10d_pct": -1.741,
       "return_15d_pct": null,
       "mfe_pct": 1.607,
       "mae_pct": -4.955,
@@ -329,7 +349,9 @@
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -351,7 +373,7 @@
       "entry_open": 3315.0,
       "next_open_gap_pct": -0.301,
       "return_5d_pct": -1.056,
-      "return_10d_pct": null,
+      "return_10d_pct": 3.499,
       "return_15d_pct": null,
       "mfe_pct": 5.46,
       "mae_pct": -3.409,
@@ -359,7 +381,9 @@
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -381,15 +405,17 @@
       "entry_open": 1878.0,
       "next_open_gap_pct": 0.0,
       "return_5d_pct": 1.864,
-      "return_10d_pct": null,
+      "return_10d_pct": 6.709,
       "return_15d_pct": null,
-      "mfe_pct": 3.94,
+      "mfe_pct": 7.242,
       "mae_pct": -2.343,
       "exit_date": null,
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -411,15 +437,17 @@
       "entry_open": 3570.0,
       "next_open_gap_pct": -0.418,
       "return_5d_pct": -0.56,
-      "return_10d_pct": null,
+      "return_10d_pct": 3.782,
       "return_15d_pct": null,
-      "mfe_pct": 3.501,
+      "mfe_pct": 4.762,
       "mae_pct": -2.661,
       "exit_date": null,
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -441,15 +469,17 @@
       "entry_open": 2828.0,
       "next_open_gap_pct": 0.892,
       "return_5d_pct": 2.051,
-      "return_10d_pct": null,
+      "return_10d_pct": 4.632,
       "return_15d_pct": null,
-      "mfe_pct": 7.496,
+      "mfe_pct": 7.85,
       "mae_pct": -3.041,
       "exit_date": null,
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -471,15 +501,17 @@
       "entry_open": 6490.0,
       "next_open_gap_pct": -0.46,
       "return_5d_pct": 0.0,
-      "return_10d_pct": null,
+      "return_10d_pct": 3.082,
       "return_15d_pct": null,
-      "mfe_pct": 4.777,
+      "mfe_pct": 5.085,
       "mae_pct": -4.622,
       "exit_date": null,
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -501,7 +533,7 @@
       "entry_open": 3262.0,
       "next_open_gap_pct": -1.361,
       "return_5d_pct": -2.115,
-      "return_10d_pct": null,
+      "return_10d_pct": -2.483,
       "return_15d_pct": null,
       "mfe_pct": 0.613,
       "mae_pct": -3.28,
@@ -509,7 +541,9 @@
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -531,7 +565,7 @@
       "entry_open": 897.0,
       "next_open_gap_pct": -0.333,
       "return_5d_pct": -1.784,
-      "return_10d_pct": null,
+      "return_10d_pct": -6.8,
       "return_15d_pct": null,
       "mfe_pct": 1.895,
       "mae_pct": -6.912,
@@ -539,7 +573,9 @@
       "exit_price": 852.15,
       "exit_reason": "stop_loss",
       "exit_pnl_pct": -5.0,
-      "hold_days": 4
+      "hold_days": 4,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -569,7 +605,9 @@
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -599,7 +637,9 @@
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -629,7 +669,9 @@
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -659,7 +701,9 @@
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -689,7 +733,9 @@
       "exit_price": 1453.0,
       "exit_reason": "strict_gakutto_next_open",
       "exit_pnl_pct": -1.224,
-      "hold_days": 8
+      "hold_days": 8,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -713,13 +759,15 @@
       "return_5d_pct": 6.462,
       "return_10d_pct": null,
       "return_15d_pct": null,
-      "mfe_pct": 8.615,
+      "mfe_pct": 10.014,
       "mae_pct": 0.0,
       "exit_date": null,
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -749,7 +797,9 @@
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -779,7 +829,9 @@
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -809,7 +861,9 @@
       "exit_price": 47.0,
       "exit_reason": "strict_gakutto_next_open",
       "exit_pnl_pct": 0.0,
-      "hold_days": 3
+      "hold_days": 3,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -833,13 +887,15 @@
       "return_5d_pct": 7.48,
       "return_10d_pct": null,
       "return_15d_pct": null,
-      "mfe_pct": 15.748,
+      "mfe_pct": 25.197,
       "mae_pct": -0.262,
       "exit_date": null,
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -864,12 +920,14 @@
       "return_10d_pct": null,
       "return_15d_pct": null,
       "mfe_pct": 7.893,
-      "mae_pct": -6.776,
+      "mae_pct": -8.898,
       "exit_date": "2026-09-14",
       "exit_price": 2525.0,
       "exit_reason": "stop_gap_open",
       "exit_pnl_pct": -5.994,
-      "hold_days": 2
+      "hold_days": 2,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -899,7 +957,9 @@
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -929,7 +989,9 @@
       "exit_price": 3660.0,
       "exit_reason": "strict_gakutto_next_open",
       "exit_pnl_pct": 0.137,
-      "hold_days": 6
+      "hold_days": 6,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -959,7 +1021,9 @@
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -983,13 +1047,15 @@
       "return_5d_pct": 4.289,
       "return_10d_pct": null,
       "return_15d_pct": null,
-      "mfe_pct": 5.52,
+      "mfe_pct": 5.563,
       "mae_pct": -0.552,
       "exit_date": null,
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -1019,7 +1085,9 @@
       "exit_price": 2595.0,
       "exit_reason": "strict_gakutto_next_open",
       "exit_pnl_pct": 3.551,
-      "hold_days": 7
+      "hold_days": 7,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -1049,7 +1117,9 @@
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -1074,12 +1144,14 @@
       "return_10d_pct": null,
       "return_15d_pct": null,
       "mfe_pct": 4.834,
-      "mae_pct": -1.281,
+      "mae_pct": -1.689,
       "exit_date": "2026-09-25",
       "exit_price": 1728.0,
       "exit_reason": "strict_gakutto_next_open",
       "exit_pnl_pct": 0.641,
-      "hold_days": 7
+      "hold_days": 7,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -1109,7 +1181,9 @@
       "exit_price": 1910.0,
       "exit_reason": "strict_gakutto_next_open",
       "exit_pnl_pct": -0.831,
-      "hold_days": 6
+      "hold_days": 6,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -1133,13 +1207,15 @@
       "return_5d_pct": 4.28,
       "return_10d_pct": null,
       "return_15d_pct": null,
-      "mfe_pct": 5.68,
+      "mfe_pct": 5.96,
       "mae_pct": -0.16,
       "exit_date": null,
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -1163,13 +1239,15 @@
       "return_5d_pct": 4.674,
       "return_10d_pct": null,
       "return_15d_pct": null,
-      "mfe_pct": 7.932,
+      "mfe_pct": 10.057,
       "mae_pct": 0.0,
       "exit_date": "2026-09-25",
       "exit_price": 7310.0,
       "exit_reason": "strict_gakutto_next_open",
       "exit_pnl_pct": 3.541,
-      "hold_days": 7
+      "hold_days": 7,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -1199,7 +1277,9 @@
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -1223,13 +1303,15 @@
       "return_5d_pct": 0.948,
       "return_10d_pct": null,
       "return_15d_pct": null,
-      "mfe_pct": 1.895,
+      "mfe_pct": 2.045,
       "mae_pct": -0.798,
       "exit_date": null,
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -1259,7 +1341,9 @@
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -1289,7 +1373,9 @@
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -1319,7 +1405,9 @@
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -1349,7 +1437,9 @@
       "exit_price": 3827.55,
       "exit_reason": "stop_loss",
       "exit_pnl_pct": -5.0,
-      "hold_days": 4
+      "hold_days": 4,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -1374,12 +1464,14 @@
       "return_10d_pct": null,
       "return_15d_pct": null,
       "mfe_pct": 1.761,
-      "mae_pct": -2.264,
+      "mae_pct": -3.145,
       "exit_date": "2026-09-25",
       "exit_price": 3915.0,
       "exit_reason": "strict_gakutto_next_open",
       "exit_pnl_pct": -1.509,
-      "hold_days": 6
+      "hold_days": 6,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -1404,12 +1496,14 @@
       "return_10d_pct": null,
       "return_15d_pct": null,
       "mfe_pct": 0.283,
-      "mae_pct": -3.024,
+      "mae_pct": -4.579,
       "exit_date": null,
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -1434,12 +1528,14 @@
       "return_10d_pct": null,
       "return_15d_pct": null,
       "mfe_pct": 2.484,
-      "mae_pct": -0.124,
+      "mae_pct": -0.745,
       "exit_date": null,
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -1469,7 +1565,9 @@
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -1499,7 +1597,9 @@
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -1529,7 +1629,9 @@
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -1554,12 +1656,14 @@
       "return_10d_pct": null,
       "return_15d_pct": null,
       "mfe_pct": 1.174,
-      "mae_pct": -1.643,
+      "mae_pct": -1.878,
       "exit_date": null,
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -1584,12 +1688,14 @@
       "return_10d_pct": null,
       "return_15d_pct": null,
       "mfe_pct": 7.317,
-      "mae_pct": -0.271,
-      "exit_date": null,
-      "exit_price": null,
-      "exit_reason": null,
-      "exit_pnl_pct": null,
-      "hold_days": null
+      "mae_pct": -1.084,
+      "exit_date": "2026-09-28",
+      "exit_price": 370.0,
+      "exit_reason": "strict_gakutto_next_open",
+      "exit_pnl_pct": 0.271,
+      "hold_days": 7,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -1619,7 +1725,9 @@
       "exit_price": 931.0,
       "exit_reason": "strict_gakutto_next_open",
       "exit_pnl_pct": -1.168,
-      "hold_days": 6
+      "hold_days": 6,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -1649,7 +1757,9 @@
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -1679,7 +1789,9 @@
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -1709,7 +1821,9 @@
       "exit_price": 1425.0,
       "exit_reason": "strict_gakutto_next_open",
       "exit_pnl_pct": -0.419,
-      "hold_days": 6
+      "hold_days": 6,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -1733,13 +1847,15 @@
       "return_5d_pct": 1.277,
       "return_10d_pct": null,
       "return_15d_pct": null,
-      "mfe_pct": 2.234,
+      "mfe_pct": 2.872,
       "mae_pct": -0.319,
       "exit_date": null,
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -1769,7 +1885,9 @@
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -1793,13 +1911,15 @@
       "return_5d_pct": 1.86,
       "return_10d_pct": null,
       "return_15d_pct": null,
-      "mfe_pct": 3.577,
+      "mfe_pct": 4.292,
       "mae_pct": -1.001,
       "exit_date": null,
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -1829,7 +1949,9 @@
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -1855,11 +1977,13 @@
       "return_15d_pct": null,
       "mfe_pct": 2.93,
       "mae_pct": -0.586,
-      "exit_date": null,
-      "exit_price": null,
-      "exit_reason": null,
-      "exit_pnl_pct": null,
-      "hold_days": null
+      "exit_date": "2026-09-28",
+      "exit_price": 1900.0,
+      "exit_reason": "strict_gakutto_next_open",
+      "exit_pnl_pct": 1.225,
+      "hold_days": 7,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -1884,12 +2008,14 @@
       "return_10d_pct": null,
       "return_15d_pct": null,
       "mfe_pct": 0.459,
-      "mae_pct": -3.999,
+      "mae_pct": -4.269,
       "exit_date": "2026-09-25",
       "exit_price": 3569.0,
       "exit_reason": "strict_gakutto_next_open",
       "exit_pnl_pct": -3.567,
-      "hold_days": 6
+      "hold_days": 6,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -1919,7 +2045,9 @@
       "exit_price": 107.35,
       "exit_reason": "stop_loss",
       "exit_pnl_pct": -5.0,
-      "hold_days": 2
+      "hold_days": 2,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -1949,7 +2077,9 @@
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -1979,7 +2109,9 @@
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -2003,13 +2135,15 @@
       "return_5d_pct": 0.791,
       "return_10d_pct": null,
       "return_15d_pct": null,
-      "mfe_pct": 3.557,
+      "mfe_pct": 4.348,
       "mae_pct": -0.395,
       "exit_date": null,
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -2033,13 +2167,15 @@
       "return_5d_pct": 1.506,
       "return_10d_pct": null,
       "return_15d_pct": null,
-      "mfe_pct": 2.202,
+      "mfe_pct": 2.317,
       "mae_pct": -0.232,
       "exit_date": null,
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -2063,13 +2199,15 @@
       "return_5d_pct": 1.395,
       "return_10d_pct": null,
       "return_15d_pct": null,
-      "mfe_pct": 3.349,
+      "mfe_pct": 3.721,
       "mae_pct": -0.837,
       "exit_date": null,
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -2094,12 +2232,14 @@
       "return_10d_pct": null,
       "return_15d_pct": null,
       "mfe_pct": 0.393,
-      "mae_pct": -2.556,
+      "mae_pct": -2.989,
       "exit_date": "2026-09-25",
       "exit_price": 1252.5,
       "exit_reason": "strict_gakutto_next_open",
       "exit_pnl_pct": -1.494,
-      "hold_days": 6
+      "hold_days": 6,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -2129,7 +2269,9 @@
       "exit_price": 1480.0,
       "exit_reason": "strict_gakutto_next_open",
       "exit_pnl_pct": -0.202,
-      "hold_days": 6
+      "hold_days": 6,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -2159,7 +2301,9 @@
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -2184,12 +2328,14 @@
       "return_10d_pct": null,
       "return_15d_pct": null,
       "mfe_pct": 3.415,
-      "mae_pct": -1.227,
+      "mae_pct": -1.281,
       "exit_date": null,
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -2213,13 +2359,15 @@
       "return_5d_pct": 2.536,
       "return_10d_pct": null,
       "return_15d_pct": null,
-      "mfe_pct": 4.596,
+      "mfe_pct": 4.913,
       "mae_pct": 0.0,
       "exit_date": null,
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -2243,13 +2391,15 @@
       "return_5d_pct": -0.082,
       "return_10d_pct": null,
       "return_15d_pct": null,
-      "mfe_pct": 1.637,
+      "mfe_pct": 1.718,
       "mae_pct": -0.655,
       "exit_date": "2026-09-25",
       "exit_price": 1214.0,
       "exit_reason": "strict_gakutto_next_open",
       "exit_pnl_pct": -0.655,
-      "hold_days": 6
+      "hold_days": 6,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -2279,7 +2429,9 @@
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -2303,13 +2455,15 @@
       "return_5d_pct": 10.49,
       "return_10d_pct": null,
       "return_15d_pct": null,
-      "mfe_pct": 12.511,
+      "mfe_pct": 12.597,
       "mae_pct": -0.258,
       "exit_date": null,
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -2339,7 +2493,9 @@
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -2369,7 +2525,9 @@
       "exit_price": 687.8,
       "exit_reason": "stop_loss",
       "exit_pnl_pct": -5.0,
-      "hold_days": 6
+      "hold_days": 6,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -2399,7 +2557,9 @@
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -2429,7 +2589,9 @@
       "exit_price": 2471.0,
       "exit_reason": "strict_gakutto_next_open",
       "exit_pnl_pct": 0.488,
-      "hold_days": 6
+      "hold_days": 6,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -2459,7 +2621,9 @@
       "exit_price": 1886.0,
       "exit_reason": "strict_gakutto_next_open",
       "exit_pnl_pct": -2.758,
-      "hold_days": 5
+      "hold_days": 5,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -2489,7 +2653,9 @@
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -2519,7 +2685,9 @@
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -2549,7 +2717,9 @@
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -2574,12 +2744,14 @@
       "return_10d_pct": null,
       "return_15d_pct": null,
       "mfe_pct": 2.323,
-      "mae_pct": -0.323,
+      "mae_pct": -1.032,
       "exit_date": null,
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -2609,7 +2781,9 @@
       "exit_price": 4130.0,
       "exit_reason": "strict_gakutto_next_open",
       "exit_pnl_pct": 0.978,
-      "hold_days": 6
+      "hold_days": 6,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -2639,7 +2813,9 @@
       "exit_price": 3685.0,
       "exit_reason": "strict_gakutto_next_open",
       "exit_pnl_pct": -1.365,
-      "hold_days": 6
+      "hold_days": 6,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -2664,12 +2840,14 @@
       "return_10d_pct": null,
       "return_15d_pct": null,
       "mfe_pct": 1.347,
-      "mae_pct": -1.664,
-      "exit_date": null,
-      "exit_price": null,
-      "exit_reason": null,
-      "exit_pnl_pct": null,
-      "hold_days": null
+      "mae_pct": -2.826,
+      "exit_date": "2026-09-28",
+      "exit_price": 1889.0,
+      "exit_reason": "strict_gakutto_next_open",
+      "exit_pnl_pct": -0.211,
+      "hold_days": 7,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -2693,13 +2871,15 @@
       "return_5d_pct": -0.024,
       "return_10d_pct": null,
       "return_15d_pct": null,
-      "mfe_pct": 5.443,
+      "mfe_pct": 6.459,
       "mae_pct": -2.536,
       "exit_date": null,
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -2723,13 +2903,15 @@
       "return_5d_pct": -0.321,
       "return_10d_pct": null,
       "return_15d_pct": null,
-      "mfe_pct": 4.655,
+      "mfe_pct": 6.742,
       "mae_pct": -2.408,
       "exit_date": "2026-09-25",
       "exit_price": 3140.0,
       "exit_reason": "strict_gakutto_next_open",
       "exit_pnl_pct": 0.803,
-      "hold_days": 6
+      "hold_days": 6,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -2759,7 +2941,9 @@
       "exit_price": 6816.0,
       "exit_reason": "strict_gakutto_next_open",
       "exit_pnl_pct": -2.35,
-      "hold_days": 6
+      "hold_days": 6,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -2783,13 +2967,15 @@
       "return_5d_pct": 0.554,
       "return_10d_pct": null,
       "return_15d_pct": null,
-      "mfe_pct": 5.074,
+      "mfe_pct": 6.273,
       "mae_pct": -0.923,
       "exit_date": null,
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -2815,11 +3001,13 @@
       "return_15d_pct": null,
       "mfe_pct": 3.246,
       "mae_pct": -0.28,
-      "exit_date": null,
-      "exit_price": null,
-      "exit_reason": null,
-      "exit_pnl_pct": null,
-      "hold_days": null
+      "exit_date": "2026-09-28",
+      "exit_price": 1812.0,
+      "exit_reason": "strict_gakutto_next_open",
+      "exit_pnl_pct": 1.399,
+      "hold_days": 7,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -2849,7 +3037,9 @@
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -2873,13 +3063,15 @@
       "return_5d_pct": 2.385,
       "return_10d_pct": null,
       "return_15d_pct": null,
-      "mfe_pct": 4.259,
+      "mfe_pct": 4.94,
       "mae_pct": 0.0,
       "exit_date": null,
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -2909,7 +3101,9 @@
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -2933,13 +3127,15 @@
       "return_5d_pct": 2.038,
       "return_10d_pct": null,
       "return_15d_pct": null,
-      "mfe_pct": 3.547,
+      "mfe_pct": 4.679,
       "mae_pct": -0.453,
       "exit_date": null,
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -2969,7 +3165,9 @@
       "exit_price": 2973.5,
       "exit_reason": "strict_gakutto_next_open",
       "exit_pnl_pct": -2.091,
-      "hold_days": 6
+      "hold_days": 6,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -2999,7 +3197,9 @@
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -3023,13 +3223,15 @@
       "return_5d_pct": 1.546,
       "return_10d_pct": null,
       "return_15d_pct": null,
-      "mfe_pct": 2.216,
+      "mfe_pct": 2.829,
       "mae_pct": -1.137,
       "exit_date": null,
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -3053,13 +3255,15 @@
       "return_5d_pct": -0.442,
       "return_10d_pct": null,
       "return_15d_pct": null,
-      "mfe_pct": 0.153,
+      "mfe_pct": 1.6,
       "mae_pct": -2.604,
       "exit_date": null,
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -3089,7 +3293,9 @@
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -3113,13 +3319,15 @@
       "return_5d_pct": 0.75,
       "return_10d_pct": null,
       "return_15d_pct": null,
-      "mfe_pct": 3.468,
+      "mfe_pct": 3.936,
       "mae_pct": -1.218,
       "exit_date": null,
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -3149,7 +3357,9 @@
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -3173,13 +3383,15 @@
       "return_5d_pct": 1.519,
       "return_10d_pct": null,
       "return_15d_pct": null,
-      "mfe_pct": 1.661,
+      "mfe_pct": 2.468,
       "mae_pct": 0.0,
       "exit_date": null,
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -3203,13 +3415,15 @@
       "return_5d_pct": 6.58,
       "return_10d_pct": null,
       "return_15d_pct": null,
-      "mfe_pct": 6.58,
+      "mfe_pct": 6.923,
       "mae_pct": 0.0,
       "exit_date": null,
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -3239,7 +3453,9 @@
       "exit_price": 2374.0,
       "exit_reason": "strict_gakutto_next_open",
       "exit_pnl_pct": 1.496,
-      "hold_days": 3
+      "hold_days": 3,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -3269,7 +3485,9 @@
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -3299,7 +3517,9 @@
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -3329,7 +3549,9 @@
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -3353,13 +3575,15 @@
       "return_5d_pct": 2.246,
       "return_10d_pct": null,
       "return_15d_pct": null,
-      "mfe_pct": 2.696,
+      "mfe_pct": 2.953,
       "mae_pct": 0.0,
       "exit_date": null,
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -3383,13 +3607,15 @@
       "return_5d_pct": 2.914,
       "return_10d_pct": null,
       "return_15d_pct": null,
-      "mfe_pct": 3.221,
+      "mfe_pct": 3.451,
       "mae_pct": -0.115,
       "exit_date": null,
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -3419,7 +3645,9 @@
       "exit_price": 534.0,
       "exit_reason": "strict_gakutto_next_open",
       "exit_pnl_pct": -2.555,
-      "hold_days": 5
+      "hold_days": 5,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -3443,13 +3671,15 @@
       "return_5d_pct": 8.377,
       "return_10d_pct": null,
       "return_15d_pct": null,
-      "mfe_pct": 9.293,
+      "mfe_pct": 9.961,
       "mae_pct": -0.018,
       "exit_date": null,
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -3473,13 +3703,15 @@
       "return_5d_pct": 6.304,
       "return_10d_pct": null,
       "return_15d_pct": null,
-      "mfe_pct": 7.45,
+      "mfe_pct": 7.593,
       "mae_pct": 0.0,
       "exit_date": null,
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -3504,12 +3736,14 @@
       "return_10d_pct": null,
       "return_15d_pct": null,
       "mfe_pct": 1.393,
-      "mae_pct": -0.929,
-      "exit_date": null,
-      "exit_price": null,
-      "exit_reason": null,
-      "exit_pnl_pct": null,
-      "hold_days": null
+      "mae_pct": -1.238,
+      "exit_date": "2026-09-28",
+      "exit_price": 643.0,
+      "exit_reason": "strict_gakutto_next_open",
+      "exit_pnl_pct": -0.464,
+      "hold_days": 6,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -3533,13 +3767,15 @@
       "return_5d_pct": 2.381,
       "return_10d_pct": null,
       "return_15d_pct": null,
-      "mfe_pct": 2.585,
+      "mfe_pct": 2.789,
       "mae_pct": -0.068,
       "exit_date": null,
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -3569,7 +3805,9 @@
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -3593,13 +3831,15 @@
       "return_5d_pct": 6.783,
       "return_10d_pct": null,
       "return_15d_pct": null,
-      "mfe_pct": 8.087,
+      "mfe_pct": 32.87,
       "mae_pct": -0.087,
       "exit_date": null,
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -3629,7 +3869,9 @@
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -3653,13 +3895,15 @@
       "return_5d_pct": 6.872,
       "return_10d_pct": null,
       "return_15d_pct": null,
-      "mfe_pct": 7.709,
+      "mfe_pct": 7.877,
       "mae_pct": 0.0,
       "exit_date": null,
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -3683,13 +3927,15 @@
       "return_5d_pct": 5.296,
       "return_10d_pct": null,
       "return_15d_pct": null,
-      "mfe_pct": 5.919,
+      "mfe_pct": 6.231,
       "mae_pct": 0.0,
       "exit_date": null,
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -3713,13 +3959,15 @@
       "return_5d_pct": 9.939,
       "return_10d_pct": null,
       "return_15d_pct": null,
-      "mfe_pct": 10.345,
+      "mfe_pct": 17.647,
       "mae_pct": -0.101,
       "exit_date": null,
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -3749,7 +3997,9 @@
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -3779,7 +4029,9 @@
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -3803,13 +4055,15 @@
       "return_5d_pct": 3.906,
       "return_10d_pct": null,
       "return_15d_pct": null,
-      "mfe_pct": 3.906,
+      "mfe_pct": 6.63,
       "mae_pct": -0.817,
       "exit_date": null,
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v1_2026-09-09",
@@ -3833,13 +4087,15 @@
       "return_5d_pct": 11.399,
       "return_10d_pct": null,
       "return_15d_pct": null,
-      "mfe_pct": 11.995,
+      "mfe_pct": 13.275,
       "mae_pct": -0.625,
       "exit_date": null,
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v2_2026-09-16_liquidity500m",
@@ -3862,7 +4118,7 @@
       "entry_date": "2026-09-17",
       "entry_open": 3910.0,
       "next_open_gap_pct": 0.256,
-      "return_5d_pct": null,
+      "return_5d_pct": 0.512,
       "return_10d_pct": null,
       "return_15d_pct": null,
       "mfe_pct": 1.535,
@@ -3871,7 +4127,9 @@
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v2_2026-09-16_liquidity500m",
@@ -3888,22 +4146,24 @@
       "volume_pass": true,
       "liquidity_pass": false,
       "gap_pass": true,
-      "ma25_rank": null,
-      "rule_selected": null,
+      "ma25_rank": 2,
+      "rule_selected": true,
       "actual_bought": null,
       "entry_date": "2026-09-17",
       "entry_open": 5060.0,
       "next_open_gap_pct": -0.197,
-      "return_5d_pct": null,
+      "return_5d_pct": 5.929,
       "return_10d_pct": null,
       "return_15d_pct": null,
-      "mfe_pct": 6.917,
+      "mfe_pct": 8.3,
       "mae_pct": 0.0,
       "exit_date": null,
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v2_2026-09-16_liquidity500m",
@@ -3926,16 +4186,18 @@
       "entry_date": "2026-09-17",
       "entry_open": 2564.0,
       "next_open_gap_pct": -0.427,
-      "return_5d_pct": null,
+      "return_5d_pct": 0.819,
       "return_10d_pct": null,
       "return_15d_pct": null,
-      "mfe_pct": 2.184,
+      "mfe_pct": 2.925,
       "mae_pct": -0.351,
       "exit_date": null,
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v2_2026-09-16_liquidity500m",
@@ -3958,7 +4220,7 @@
       "entry_date": "2026-09-17",
       "entry_open": 1266.0,
       "next_open_gap_pct": 1.118,
-      "return_5d_pct": null,
+      "return_5d_pct": -3.555,
       "return_10d_pct": null,
       "return_15d_pct": null,
       "mfe_pct": 0.395,
@@ -3967,7 +4229,9 @@
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v2_2026-09-16_liquidity500m",
@@ -3990,7 +4254,7 @@
       "entry_date": "2026-09-17",
       "entry_open": 1635.0,
       "next_open_gap_pct": 0.184,
-      "return_5d_pct": null,
+      "return_5d_pct": -0.306,
       "return_10d_pct": null,
       "return_15d_pct": null,
       "mfe_pct": 1.59,
@@ -3999,7 +4263,9 @@
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v2_2026-09-16_liquidity500m",
@@ -4022,7 +4288,7 @@
       "entry_date": "2026-09-17",
       "entry_open": 353.0,
       "next_open_gap_pct": 0.284,
-      "return_5d_pct": null,
+      "return_5d_pct": -0.85,
       "return_10d_pct": null,
       "return_15d_pct": null,
       "mfe_pct": 2.266,
@@ -4031,7 +4297,9 @@
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v2_2026-09-16_liquidity500m",
@@ -4054,16 +4322,18 @@
       "entry_date": "2026-09-17",
       "entry_open": 2200.0,
       "next_open_gap_pct": 0.091,
-      "return_5d_pct": null,
+      "return_5d_pct": -4.955,
       "return_10d_pct": null,
       "return_15d_pct": null,
       "mfe_pct": 2.023,
-      "mae_pct": -3.591,
+      "mae_pct": -4.955,
       "exit_date": null,
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v2_2026-09-16_liquidity500m",
@@ -4086,16 +4356,18 @@
       "entry_date": "2026-09-17",
       "entry_open": 435.0,
       "next_open_gap_pct": 0.462,
-      "return_5d_pct": null,
+      "return_5d_pct": 2.069,
       "return_10d_pct": null,
       "return_15d_pct": null,
-      "mfe_pct": 4.368,
+      "mfe_pct": 4.598,
       "mae_pct": -0.69,
       "exit_date": null,
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v2_2026-09-16_liquidity500m",
@@ -4112,13 +4384,13 @@
       "volume_pass": true,
       "liquidity_pass": false,
       "gap_pass": true,
-      "ma25_rank": null,
-      "rule_selected": null,
+      "ma25_rank": 3,
+      "rule_selected": true,
       "actual_bought": null,
       "entry_date": "2026-09-17",
       "entry_open": 1395.0,
       "next_open_gap_pct": 0.0,
-      "return_5d_pct": null,
+      "return_5d_pct": 3.082,
       "return_10d_pct": null,
       "return_15d_pct": null,
       "mfe_pct": 5.591,
@@ -4127,7 +4399,9 @@
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v2_2026-09-16_liquidity500m",
@@ -4150,16 +4424,18 @@
       "entry_date": "2026-09-17",
       "entry_open": 3035.0,
       "next_open_gap_pct": 1.234,
-      "return_5d_pct": null,
+      "return_5d_pct": -2.01,
       "return_10d_pct": null,
       "return_15d_pct": null,
       "mfe_pct": 0.165,
-      "mae_pct": -1.647,
+      "mae_pct": -2.306,
       "exit_date": null,
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v2_2026-09-16_liquidity500m",
@@ -4182,16 +4458,18 @@
       "entry_date": "2026-09-17",
       "entry_open": 2170.0,
       "next_open_gap_pct": 1.024,
-      "return_5d_pct": null,
+      "return_5d_pct": 4.885,
       "return_10d_pct": null,
       "return_15d_pct": null,
-      "mfe_pct": 8.018,
+      "mfe_pct": 8.664,
       "mae_pct": -3.641,
       "exit_date": null,
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v2_2026-09-16_liquidity500m",
@@ -4214,7 +4492,7 @@
       "entry_date": "2026-09-17",
       "entry_open": 522.0,
       "next_open_gap_pct": -0.571,
-      "return_5d_pct": null,
+      "return_5d_pct": 0.192,
       "return_10d_pct": null,
       "return_15d_pct": null,
       "mfe_pct": 1.533,
@@ -4223,7 +4501,9 @@
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v2_2026-09-16_liquidity500m",
@@ -4246,16 +4526,18 @@
       "entry_date": "2026-09-17",
       "entry_open": 5846.0,
       "next_open_gap_pct": 2.4,
-      "return_5d_pct": null,
+      "return_5d_pct": 2.566,
       "return_10d_pct": null,
       "return_15d_pct": null,
-      "mfe_pct": 3.661,
+      "mfe_pct": 3.729,
       "mae_pct": -0.975,
       "exit_date": null,
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v2_2026-09-16_liquidity500m",
@@ -4278,7 +4560,7 @@
       "entry_date": "2026-09-17",
       "entry_open": 1949.0,
       "next_open_gap_pct": 1.299,
-      "return_5d_pct": null,
+      "return_5d_pct": 9.21,
       "return_10d_pct": null,
       "return_15d_pct": null,
       "mfe_pct": 18.009,
@@ -4287,7 +4569,9 @@
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v2_2026-09-16_liquidity500m",
@@ -4304,22 +4588,24 @@
       "volume_pass": true,
       "liquidity_pass": false,
       "gap_pass": true,
-      "ma25_rank": null,
-      "rule_selected": null,
+      "ma25_rank": 5,
+      "rule_selected": true,
       "actual_bought": null,
       "entry_date": "2026-09-17",
       "entry_open": 1930.0,
       "next_open_gap_pct": 0.416,
-      "return_5d_pct": null,
+      "return_5d_pct": -0.363,
       "return_10d_pct": null,
       "return_15d_pct": null,
       "mfe_pct": 4.508,
-      "mae_pct": -0.622,
+      "mae_pct": -0.725,
       "exit_date": null,
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v2_2026-09-16_liquidity500m",
@@ -4342,16 +4628,18 @@
       "entry_date": "2026-09-17",
       "entry_open": 3265.0,
       "next_open_gap_pct": 0.153,
-      "return_5d_pct": null,
+      "return_5d_pct": 4.288,
       "return_10d_pct": null,
       "return_15d_pct": null,
-      "mfe_pct": 3.063,
+      "mfe_pct": 5.207,
       "mae_pct": -1.072,
       "exit_date": null,
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v2_2026-09-16_liquidity500m",
@@ -4368,22 +4656,24 @@
       "volume_pass": true,
       "liquidity_pass": true,
       "gap_pass": true,
-      "ma25_rank": 2,
+      "ma25_rank": 4,
       "rule_selected": true,
       "actual_bought": null,
       "entry_date": "2026-09-17",
       "entry_open": 1885.5,
       "next_open_gap_pct": 0.08,
-      "return_5d_pct": null,
+      "return_5d_pct": 0.796,
       "return_10d_pct": null,
       "return_15d_pct": null,
-      "mfe_pct": 0.902,
+      "mfe_pct": 1.671,
       "mae_pct": -2.97,
       "exit_date": null,
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v2_2026-09-16_liquidity500m",
@@ -4406,16 +4696,18 @@
       "entry_date": "2026-09-17",
       "entry_open": 2486.0,
       "next_open_gap_pct": 0.363,
-      "return_5d_pct": null,
+      "return_5d_pct": 2.011,
       "return_10d_pct": null,
       "return_15d_pct": null,
-      "mfe_pct": 1.931,
+      "mfe_pct": 2.333,
       "mae_pct": -0.362,
       "exit_date": null,
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v2_2026-09-16_liquidity500m",
@@ -4438,16 +4730,18 @@
       "entry_date": "2026-09-17",
       "entry_open": 2671.0,
       "next_open_gap_pct": -0.261,
-      "return_5d_pct": null,
+      "return_5d_pct": 0.749,
       "return_10d_pct": null,
       "return_15d_pct": null,
-      "mfe_pct": 1.273,
+      "mfe_pct": 1.348,
       "mae_pct": -1.235,
       "exit_date": null,
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v2_2026-09-16_liquidity500m",
@@ -4474,12 +4768,14 @@
       "return_10d_pct": null,
       "return_15d_pct": null,
       "mfe_pct": 0.207,
-      "mae_pct": -1.837,
+      "mae_pct": -2.07,
       "exit_date": null,
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v2_2026-09-16_liquidity500m",
@@ -4511,7 +4807,9 @@
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v2_2026-09-16_liquidity500m",
@@ -4537,13 +4835,15 @@
       "return_5d_pct": null,
       "return_10d_pct": null,
       "return_15d_pct": null,
-      "mfe_pct": 0.532,
+      "mfe_pct": 1.099,
       "mae_pct": -1.985,
       "exit_date": null,
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v2_2026-09-16_liquidity500m",
@@ -4560,8 +4860,8 @@
       "volume_pass": true,
       "liquidity_pass": false,
       "gap_pass": true,
-      "ma25_rank": null,
-      "rule_selected": null,
+      "ma25_rank": 3,
+      "rule_selected": true,
       "actual_bought": null,
       "entry_date": "2026-09-18",
       "entry_open": 3990.0,
@@ -4569,13 +4869,15 @@
       "return_5d_pct": null,
       "return_10d_pct": null,
       "return_15d_pct": null,
-      "mfe_pct": 1.629,
+      "mfe_pct": 1.754,
       "mae_pct": -2.506,
       "exit_date": null,
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v2_2026-09-16_liquidity500m",
@@ -4601,13 +4903,15 @@
       "return_5d_pct": null,
       "return_10d_pct": null,
       "return_15d_pct": null,
-      "mfe_pct": 0.0,
+      "mfe_pct": 1.17,
       "mae_pct": -2.692,
       "exit_date": null,
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v2_2026-09-16_liquidity500m",
@@ -4634,12 +4938,14 @@
       "return_10d_pct": null,
       "return_15d_pct": null,
       "mfe_pct": 1.126,
-      "mae_pct": -1.363,
+      "mae_pct": -1.778,
       "exit_date": null,
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v2_2026-09-16_liquidity500m",
@@ -4671,7 +4977,9 @@
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v2_2026-09-16_liquidity500m",
@@ -4688,8 +4996,8 @@
       "volume_pass": true,
       "liquidity_pass": false,
       "gap_pass": true,
-      "ma25_rank": null,
-      "rule_selected": null,
+      "ma25_rank": 7,
+      "rule_selected": false,
       "actual_bought": null,
       "entry_date": "2026-09-18",
       "entry_open": 2882.0,
@@ -4703,7 +5011,9 @@
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v2_2026-09-16_liquidity500m",
@@ -4730,12 +5040,14 @@
       "return_10d_pct": null,
       "return_15d_pct": null,
       "mfe_pct": 0.415,
-      "mae_pct": -2.566,
+      "mae_pct": -3.698,
       "exit_date": "2026-09-25",
       "exit_price": 2600.0,
       "exit_reason": "strict_gakutto_next_open",
       "exit_pnl_pct": -1.887,
-      "hold_days": 3
+      "hold_days": 3,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v2_2026-09-16_liquidity500m",
@@ -4752,8 +5064,8 @@
       "volume_pass": true,
       "liquidity_pass": false,
       "gap_pass": true,
-      "ma25_rank": null,
-      "rule_selected": null,
+      "ma25_rank": 5,
+      "rule_selected": true,
       "actual_bought": null,
       "entry_date": "2026-09-18",
       "entry_open": 2758.0,
@@ -4767,7 +5079,9 @@
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v2_2026-09-16_liquidity500m",
@@ -4794,12 +5108,14 @@
       "return_10d_pct": null,
       "return_15d_pct": null,
       "mfe_pct": 1.552,
-      "mae_pct": -1.567,
-      "exit_date": null,
-      "exit_price": null,
-      "exit_reason": null,
-      "exit_pnl_pct": null,
-      "hold_days": null
+      "mae_pct": -5.045,
+      "exit_date": "2026-09-28",
+      "exit_price": 6365.0,
+      "exit_reason": "stop_loss",
+      "exit_pnl_pct": -5.0,
+      "hold_days": 4,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v2_2026-09-16_liquidity500m",
@@ -4825,13 +5141,15 @@
       "return_5d_pct": null,
       "return_10d_pct": null,
       "return_15d_pct": null,
-      "mfe_pct": 0.199,
+      "mfe_pct": 1.225,
       "mae_pct": -1.538,
       "exit_date": null,
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v2_2026-09-16_liquidity500m",
@@ -4858,12 +5176,14 @@
       "return_10d_pct": null,
       "return_15d_pct": null,
       "mfe_pct": 3.505,
-      "mae_pct": -1.02,
+      "mae_pct": -1.083,
       "exit_date": "2026-09-25",
       "exit_price": 1571.0,
       "exit_reason": "strict_gakutto_next_open",
       "exit_pnl_pct": 0.127,
-      "hold_days": 3
+      "hold_days": 3,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v2_2026-09-16_liquidity500m",
@@ -4880,8 +5200,8 @@
       "volume_pass": true,
       "liquidity_pass": false,
       "gap_pass": true,
-      "ma25_rank": null,
-      "rule_selected": null,
+      "ma25_rank": 4,
+      "rule_selected": true,
       "actual_bought": null,
       "entry_date": "2026-09-18",
       "entry_open": 4005.0,
@@ -4889,13 +5209,15 @@
       "return_5d_pct": null,
       "return_10d_pct": null,
       "return_15d_pct": null,
-      "mfe_pct": 5.618,
+      "mfe_pct": 6.242,
       "mae_pct": -1.248,
       "exit_date": null,
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v2_2026-09-16_liquidity500m",
@@ -4927,7 +5249,9 @@
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v2_2026-09-16_liquidity500m",
@@ -4944,8 +5268,8 @@
       "volume_pass": true,
       "liquidity_pass": true,
       "gap_pass": true,
-      "ma25_rank": 3,
-      "rule_selected": true,
+      "ma25_rank": 6,
+      "rule_selected": false,
       "actual_bought": null,
       "entry_date": "2026-09-18",
       "entry_open": 1000.0,
@@ -4954,12 +5278,14 @@
       "return_10d_pct": null,
       "return_15d_pct": null,
       "mfe_pct": 0.3,
-      "mae_pct": -2.3,
+      "mae_pct": -2.7,
       "exit_date": "2026-09-25",
       "exit_price": 984.0,
       "exit_reason": "strict_gakutto_next_open",
       "exit_pnl_pct": -1.6,
-      "hold_days": 3
+      "hold_days": 3,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v2_2026-09-16_liquidity500m",
@@ -4976,8 +5302,8 @@
       "volume_pass": true,
       "liquidity_pass": true,
       "gap_pass": true,
-      "ma25_rank": 4,
-      "rule_selected": true,
+      "ma25_rank": 8,
+      "rule_selected": false,
       "actual_bought": null,
       "entry_date": "2026-09-18",
       "entry_open": 3234.0,
@@ -4985,13 +5311,15 @@
       "return_5d_pct": null,
       "return_10d_pct": null,
       "return_15d_pct": null,
-      "mfe_pct": 1.33,
+      "mfe_pct": 2.288,
       "mae_pct": -2.072,
       "exit_date": null,
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v2_2026-09-16_liquidity500m",
@@ -5023,7 +5351,9 @@
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v2_2026-09-16_liquidity500m",
@@ -5050,12 +5380,14 @@
       "return_10d_pct": null,
       "return_15d_pct": null,
       "mfe_pct": 0.067,
-      "mae_pct": -2.759,
+      "mae_pct": -4.441,
       "exit_date": null,
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v2_2026-09-16_liquidity500m",
@@ -5081,13 +5413,15 @@
       "return_5d_pct": null,
       "return_10d_pct": null,
       "return_15d_pct": null,
-      "mfe_pct": 3.929,
+      "mfe_pct": 10.988,
       "mae_pct": -1.657,
       "exit_date": null,
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v2_2026-09-16_liquidity500m",
@@ -5113,13 +5447,15 @@
       "return_5d_pct": null,
       "return_10d_pct": null,
       "return_15d_pct": null,
-      "mfe_pct": 1.294,
+      "mfe_pct": 2.199,
       "mae_pct": -1.94,
       "exit_date": null,
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v2_2026-09-16_liquidity500m",
@@ -5145,13 +5481,15 @@
       "return_5d_pct": null,
       "return_10d_pct": null,
       "return_15d_pct": null,
-      "mfe_pct": 1.798,
+      "mfe_pct": 2.602,
       "mae_pct": -0.946,
       "exit_date": null,
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v2_2026-09-16_liquidity500m",
@@ -5178,12 +5516,14 @@
       "return_10d_pct": null,
       "return_15d_pct": null,
       "mfe_pct": 0.472,
-      "mae_pct": -2.712,
+      "mae_pct": -3.184,
       "exit_date": null,
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v2_2026-09-16_liquidity500m",
@@ -5215,7 +5555,9 @@
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v2_2026-09-16_liquidity500m",
@@ -5247,7 +5589,9 @@
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v2_2026-09-16_liquidity500m",
@@ -5274,12 +5618,14 @@
       "return_10d_pct": null,
       "return_15d_pct": null,
       "mfe_pct": 1.731,
-      "mae_pct": -5.481,
+      "mae_pct": -7.404,
       "exit_date": "2026-09-25",
       "exit_price": 9880.0,
       "exit_reason": "stop_loss",
       "exit_pnl_pct": -5.0,
-      "hold_days": 2
+      "hold_days": 2,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v2_2026-09-16_liquidity500m",
@@ -5305,13 +5651,15 @@
       "return_5d_pct": null,
       "return_10d_pct": null,
       "return_15d_pct": null,
-      "mfe_pct": 4.528,
+      "mfe_pct": 6.45,
       "mae_pct": -2.218,
       "exit_date": null,
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "rule_version": "kuitto_v2_2026-09-16_liquidity500m",
@@ -5343,7 +5691,9 @@
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "strategy": "kuitto_pullback_auto",
@@ -5370,13 +5720,15 @@
       "return_5d_pct": null,
       "return_10d_pct": null,
       "return_15d_pct": null,
-      "mfe_pct": 4.456,
+      "mfe_pct": 5.796,
       "mae_pct": -0.369,
       "exit_date": null,
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "strategy": "kuitto_pullback_auto",
@@ -5404,12 +5756,14 @@
       "return_10d_pct": null,
       "return_15d_pct": null,
       "mfe_pct": 0.0,
-      "mae_pct": -2.339,
+      "mae_pct": -4.678,
       "exit_date": null,
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     },
     {
       "strategy": "kuitto_pullback_auto",
@@ -5426,24 +5780,26 @@
       "avg_turnover_20": 10937968395.0,
       "volume_pass": true,
       "liquidity_pass": true,
-      "gap_pass": null,
-      "ma25_rank": null,
-      "rule_selected": null,
+      "gap_pass": true,
+      "ma25_rank": 1,
+      "rule_selected": true,
       "actual_bought": null,
-      "entry_date": null,
-      "entry_open": null,
-      "next_open_gap_pct": null,
+      "entry_date": "2026-09-28",
+      "entry_open": 4065.0,
+      "next_open_gap_pct": 0.37,
       "return_5d_pct": null,
       "return_10d_pct": null,
       "return_15d_pct": null,
-      "mfe_pct": null,
-      "mae_pct": null,
+      "mfe_pct": 1.156,
+      "mae_pct": -1.205,
       "exit_date": null,
       "exit_price": null,
       "exit_reason": null,
       "exit_pnl_pct": null,
-      "hold_days": null
+      "hold_days": null,
+      "gap_cap_pct": 0.5,
+      "shadow_rescue_hit": false
     }
   ],
-  "updated_through": "2026-09-25"
+  "updated_through": "2026-09-28"
 }
