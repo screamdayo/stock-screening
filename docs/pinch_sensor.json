@@ -1,7 +1,7 @@
 {
   "active": false,
   "signal_date": "2026-09-28T00:00:00",
-  "universe_n": 1547,
+  "universe_n": 1544,
   "coarse_reversal_count": 0,
   "reversal_rate_pct": 0.0,
   "reversal_rate_threshold_pct": 1.0,
@@ -43,5 +43,5 @@
     "max_wait_business_days": 30,
     "label": "待機中"
   },
-  "generated_at": "2026-09-28T07:27:39"
+  "generated_at": "2026-09-28T15:21:24"
 }
