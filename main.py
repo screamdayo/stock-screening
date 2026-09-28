@@ -34,6 +34,7 @@ import pinch_to_chance
 import selling_climax
 import crash_cycle
 import kuitto_variants_forward
+import kuitto_rsi_macd_research
 from strategies import registry
 from logger import get_logger
 
@@ -140,6 +141,9 @@ def run():
         kuitto_204_results,
         kuitto_59_results,
     )
+
+    logger.info("RSI×MACD研究候補ログ更新中（通知なし）...")
+    kuitto_rsi_macd_research.update(price_df, code_to_name)
 
     logger.info("統合フォワード検証ログ更新中（くいっと / GC / ピンチ / セリクラ）...")
     forward_test.update_forward_test(
