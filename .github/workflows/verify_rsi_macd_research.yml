@@ -1,0 +1,21 @@
+name: Verify RSI MACD Research Log
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'kuitto_rsi_macd_research.py'
+      - 'main.py'
+      - '.github/workflows/screening.yml'
+      - '.github/workflows/verify_rsi_macd_research.yml'
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.11"}
+      - run: pip install pandas numpy
+      - run: python -m py_compile kuitto_rsi_macd_research.py main.py
+      - run: |
+          grep -q "kuitto_rsi_macd_research_log.json" .github/workflows/screening.yml
+          grep -q "kuitto_rsi_macd_research_rules.json" .github/workflows/screening.yml
