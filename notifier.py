@@ -104,6 +104,8 @@ def notify(results, rescue_results=None, primary_results=None):
         display_results = list(results)
         display_results.sort(
             key=lambda r: (
+                -int(bool(r.get("ultra_winner"))),
+                -int(bool(r.get("strong_winner"))),
                 -int(bool(r.get("winner_filter"))),
                 -int(r.get("runner_score") or 0),
                 abs(r.get("ma5_vs_ma25_pct", float("inf"))),
@@ -143,7 +145,19 @@ def notify(results, rescue_results=None, primary_results=None):
                 bd = r.get("earnings_business_days")
                 when = f"（{bd}営業日後 / {ed}）" if bd is not None else f"（{ed}）"
                 earnings_note = f"\n   ⚠️ **10営業日以内に決算あり** {when}"
-            winner_prefix = "🔥 **本命** " if r.get("winner_filter") else "🟢 "
+            if r.get("ultra_winner"):
+                winner_prefix = "🔥🔥 **超強本命** "
+            elif r.get("strong_winner"):
+                winner_prefix = "🔥 **強本命** "
+            elif r.get("winner_filter"):
+                winner_prefix = "⭐ **本命** "
+            else:
+                winner_prefix = "🟢 "
+            if r.get("ma25_slope5_pct") is not None:
+                detail.append(f"MA25傾き {r['ma25_slope5_pct']:+.2f}%")
+            if r.get("rel20_vs_topix_pct") is not None:
+                detail.append(f"rel20 {r['rel20_vs_topix_pct']:+.2f}%")
+            suffix = f" — {' / '.join(detail)}" if detail else ""
             lines.append(f"{winner_prefix}{label}{suffix}{earnings_note}")
             if close is not None:
                 cap_pct = _entry_gap_cap_pct(score)
@@ -176,10 +190,13 @@ def notify(results, rescue_results=None, primary_results=None):
                         )
 
         winner_count = sum(1 for r in results if r.get("winner_filter"))
-        order_note = "\n⭐ **本命（ATR≥3.0% & DD20≤-5.5%）→ 伸びスコア順 → 同点はMA25に近い順**"
+        strong_count = sum(1 for r in results if r.get("strong_winner"))
+        ultra_count = sum(1 for r in results if r.get("ultra_winner"))
+        order_note = "\n⭐ **超強本命 → 強本命 → 本命 → 伸びスコア順**"
         msg = (
             f"📊 **くいっと押し目版 {today}**\n"
-            f"🔥 **本命 {winner_count}件**（ATR≥3.0% & DD20≤-5.5%）\n"
+            f"🔥🔥 **超強本命 {ultra_count}件** / 🔥 **強本命 {strong_count}件** / ⭐ **本命 {winner_count}件**\n"
+            f"超強本命：本命 + 個別MA25傾き≥-1.5% + TOPIX悪ゾーン除外 + rel20 0〜+4%除外\n"
             f"🤖 **目視判定なし / 出来高1.25倍以上 / 自動通過 {len(results)}件**\n"
             f"🌅 **翌朝ルール：伸びスコア別ギャップ上限（0/4=制限なし・1/4=0%・2/4=+0.25%・3/4=0%・4/4=+1.0%）**\n"
             f"🧪 **救済条件は買い判定に使わず、ATR≥3.10%・DD20≤-6.10%・gap≤+0.75%を影で記録**\n"
