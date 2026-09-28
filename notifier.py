@@ -100,10 +100,11 @@ def notify(results, rescue_results=None, primary_results=None):
 
     # 目視撤廃後の自動くいっと通知。
     if results and all(r.get("auto_filtered") for r in results) and not rescue_results and not primary_results:
-        # 伸びスコアを最優先し、同点なら従来どおりMA5がMA25に近い順で表示する。
+        # 最終検証で固定した本命条件を最優先。その中で伸びスコア→MA25近接順。
         display_results = list(results)
         display_results.sort(
             key=lambda r: (
+                -int(bool(r.get("winner_filter"))),
                 -int(r.get("runner_score") or 0),
                 abs(r.get("ma5_vs_ma25_pct", float("inf"))),
                 str(r.get("code") or ""),
@@ -142,7 +143,8 @@ def notify(results, rescue_results=None, primary_results=None):
                 bd = r.get("earnings_business_days")
                 when = f"（{bd}営業日後 / {ed}）" if bd is not None else f"（{ed}）"
                 earnings_note = f"\n   ⚠️ **10営業日以内に決算あり** {when}"
-            lines.append(f"🟢 {label}{suffix}{earnings_note}")
+            winner_prefix = "🔥 **本命** " if r.get("winner_filter") else "🟢 "
+            lines.append(f"{winner_prefix}{label}{suffix}{earnings_note}")
             if close is not None:
                 cap_pct = _entry_gap_cap_pct(score)
                 if cap_pct is None:
@@ -173,9 +175,11 @@ def notify(results, rescue_results=None, primary_results=None):
                             f"（+{RESCUE_SHADOW_GAP_MAX_PCT:.2f}%）で寄った場合は買わずに記録"
                         )
 
-        order_note = "\n⭐ **伸びスコア順 → 同点はMA25に近い順**"
+        winner_count = sum(1 for r in results if r.get("winner_filter"))
+        order_note = "\n⭐ **本命（ATR≥3.0% & DD20≤-5.5%）→ 伸びスコア順 → 同点はMA25に近い順**"
         msg = (
             f"📊 **くいっと押し目版 {today}**\n"
+            f"🔥 **本命 {winner_count}件**（ATR≥3.0% & DD20≤-5.5%）\n"
             f"🤖 **目視判定なし / 出来高1.25倍以上 / 自動通過 {len(results)}件**\n"
             f"🌅 **翌朝ルール：伸びスコア別ギャップ上限（0/4=制限なし・1/4=0%・2/4=+0.25%・3/4=0%・4/4=+1.0%）**\n"
             f"🧪 **救済条件は買い判定に使わず、ATR≥3.10%・DD20≤-6.10%・gap≤+0.75%を影で記録**\n"
