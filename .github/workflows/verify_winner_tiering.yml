@@ -1,0 +1,24 @@
+name: Verify Winner Tiering
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'winner_tiering.py'
+      - 'main.py'
+      - 'export_docs_prices.py'
+      - 'notifier.py'
+      - 'docs/screening.html'
+      - '.github/workflows/verify_winner_tiering.yml'
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.11"}
+      - run: python -m py_compile winner_tiering.py main.py export_docs_prices.py notifier.py
+      - run: |
+          grep -q "ultra_winner" docs/screening.html
+          grep -q "strong_winner" docs/screening.html
+          grep -q "rel20_vs_topix_pct" docs/screening.html
+          grep -q "超強本命" notifier.py
