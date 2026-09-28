@@ -29,6 +29,7 @@ import sell_monitor
 import forward_test
 import market_breadth
 import earnings_warning
+import winner_tiering
 import pinch_to_chance
 import selling_climax
 import crash_cycle
@@ -76,6 +77,7 @@ def run():
 
     logger.info("自動スクリーニング中...")
     results = screener_fn(price_df, target_codes)
+    winner_tiering.apply_tiers(results, price_df)
 
     logger.info("GC強ブレイクを別枠スクリーニング中...")
     gc_results = gc_screener_fn(price_df, target_codes)
