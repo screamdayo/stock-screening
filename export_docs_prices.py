@@ -12,6 +12,7 @@ from datetime import datetime
 
 import config
 import download
+import winner_tiering
 from strategies import registry
 from logger import get_logger
 
@@ -166,6 +167,7 @@ def run():
     screener_fn = registry.get_latest_screener(config.ACTIVE_STRATEGY)
     gc_screener_fn = registry.get_latest_screener("gc_strong_breakout")
     results = screener_fn(price_df, target_codes)
+    winner_tiering.apply_tiers(results, price_df)
     gc_results = gc_screener_fn(price_df, target_codes)
 
     # 単独エクスポート時もセンサー状態を生成する。
