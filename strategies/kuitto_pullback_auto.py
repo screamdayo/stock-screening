@@ -6,6 +6,7 @@
 2026-09-16以降は、5年バックテストで成績と年別安定性が改善した
 20日平均売買代金5億円以上の流動性フィルターも適用する。
 2026-09-21以降は候補を除外せず、疑似OOSで有効だった特徴を「伸びスコア」として付与する。
+2026-09-28以降は最終対決で残った ATR14>=3.0% かつ DD20<=-5.5% を「本命」フラグとして付与し、通常候補は残す。
 
 条件:
 - 直近2日までMA5が下向き/横ばい
@@ -17,6 +18,7 @@
 - 当日出来高: 前日比1.25倍以上
 - 2026-09-16以降: 20日平均売買代金（終値×出来高）5億円以上
 - 伸びスコア: ATR14>=2.92% を2点、DD20<=-5.86%を1点、20日平均売買代金>=8.28億円を1点
+- 本命フラグ: ATR14>=3.0% かつ DD20<=-5.5%
 
 売買の良し悪しを人のA/B/skipで選別せず、条件通過銘柄をそのまま扱う。
 """
@@ -48,6 +50,8 @@ LIQUIDITY_EFFECTIVE_DATE = pd.Timestamp("2026-09-16")
 RUNNER_ATR14_MIN = 2.917505
 RUNNER_DD20_MAX = -5.855856
 RUNNER_TURNOVER20_MIN = 828_434_090
+WINNER_ATR14_MIN = 3.0
+WINNER_DD20_MAX = -5.5
 
 
 def _prepare(group):
@@ -134,6 +138,10 @@ def _features(g, idx):
 
     atr14_pct = r["ATR14_PCT"]
     dd20_pct = r["DD20_PCT"]
+    winner_filter = (
+        pd.notna(atr14_pct) and float(atr14_pct) >= WINNER_ATR14_MIN
+        and pd.notna(dd20_pct) and float(dd20_pct) <= WINNER_DD20_MAX
+    )
     runner_score = 0
     if pd.notna(atr14_pct) and float(atr14_pct) >= RUNNER_ATR14_MIN:
         runner_score += 2
@@ -152,6 +160,7 @@ def _features(g, idx):
         "atr14_pct": float(atr14_pct) if pd.notna(atr14_pct) else None,
         "dd20_pct": float(dd20_pct) if pd.notna(dd20_pct) else None,
         "runner_score": runner_score,
+        "winner_filter": bool(winner_filter),
     }
 
 
