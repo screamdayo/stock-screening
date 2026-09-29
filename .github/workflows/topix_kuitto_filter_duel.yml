@@ -1,0 +1,49 @@
+name: TOPIX Kuitto Filter Duel
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'scripts/analyze_topix_kuitto_filter_duel.py'
+      - '.github/workflows/topix_kuitto_filter_duel.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/checkout@v4
+        with:
+          repository: screamdayo/stock-screening-data
+          token: ${{ secrets.STOCK_SCREENING_DATA_TOKEN }}
+          path: .private-data
+          sparse-checkout: |
+            data/topix
+          sparse-checkout-cone-mode: false
+
+      - run: |
+          mkdir -p data
+          ln -sfn "$GITHUB_WORKSPACE/.private-data/data/topix" data/topix
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - run: pip install pandas pyarrow numpy
+      - run: python scripts/analyze_topix_kuitto_filter_duel.py
+
+      - run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add results/topix_kuitto_filter_duel.json
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "Run TOPIX Kuitto filter duel"
+          git pull --rebase origin main
+          git push
