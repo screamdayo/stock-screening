@@ -134,6 +134,7 @@ def load_signals():
 def prepare(g):
     g = g.dropna(subset=["O", "H", "L", "C"]).sort_values("Date").reset_index(drop=True).copy()
     g["MA5"] = g["C"].rolling(5).mean()
+    g.attrs["date_to_i"] = {pd.Timestamp(d).normalize(): i for i, d in enumerate(g["Date"])}
     return g
 
 
@@ -186,7 +187,7 @@ def exit_record(g, sig, entry_i, exit_i, exit_price, reason, entry_price, gakutt
 
 
 def simulate(g, sig, ctx_map, rescue_spec=None, delay=0):
-    date_to_i = {pd.Timestamp(d).normalize(): i for i, d in enumerate(g["Date"])}
+    date_to_i = g.attrs["date_to_i"]
     signal_i = date_to_i.get(pd.Timestamp(sig["signal_date"]).normalize())
     if signal_i is None:
         return None
@@ -307,8 +308,7 @@ def recovery_stats(base, prepared, ctx_map, spec, delay):
         g = prepared.get(str(r.code))
         if g is None:
             continue
-        date_to_i = {pd.Timestamp(x).normalize(): i for i, x in enumerate(g["Date"])}
-        gi = date_to_i.get(d)
+        gi = g.attrs["date_to_i"].get(d)
         if gi is None:
             continue
         base_exit_i = gi + 1
