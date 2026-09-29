@@ -36,6 +36,7 @@ import selling_climax
 import crash_cycle
 import kuitto_variants_forward
 import kuitto_rsi_macd_research
+import topix_kuitto_policy
 from strategies import registry
 from logger import get_logger
 
@@ -90,6 +91,9 @@ def run():
     logger.info("くいっと204 / くいっと59 を影スクリーニング中（記録のみ）...")
     kuitto_204_results = kuitto_204_fn(price_df, target_codes)
     kuitto_59_results = kuitto_59_fn(price_df, target_codes)
+
+    logger.info("TOPIXくいっと運用ポリシー判定中...")
+    topix_kuitto_policy.apply(results, price_df, kuitto_204_results)
 
     for r in results:
         r["name"] = code_to_name.get(r["code"], "")
