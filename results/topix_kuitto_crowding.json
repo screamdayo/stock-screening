@@ -26,244 +26,626 @@
   },
   "tests": {
     "core": {
-      "topix_kuitto_days": 0,
-      "day_frequency_pct": 0.0,
+      "topix_kuitto_days": 128,
+      "day_frequency_pct": 5.34,
       "event_day": {
-        "mean_signal_count": null,
-        "median_signal_count": null,
-        "any_signal_day_pct": null
+        "mean_signal_count": 9.477,
+        "median_signal_count": 6.0,
+        "any_signal_day_pct": 93.75
       },
       "non_event_day": {
-        "mean_signal_count": 2.439,
+        "mean_signal_count": 2.042,
         "median_signal_count": 1.0,
-        "any_signal_day_pct": 62.83
+        "any_signal_day_pct": 61.08
       },
-      "event_vs_non_event_mean_ratio": null,
+      "event_vs_non_event_mean_ratio": 4.641,
       "lead_lag": [
         {
           "offset_sessions": -3,
-          "n_event_windows": 0,
-          "mean_signal_count": null,
-          "median_signal_count": null,
-          "relative_to_overall_mean": null
+          "n_event_windows": 128,
+          "mean_signal_count": 1.867,
+          "median_signal_count": 1.0,
+          "relative_to_overall_mean": 0.766
         },
         {
           "offset_sessions": -2,
-          "n_event_windows": 0,
-          "mean_signal_count": null,
-          "median_signal_count": null,
-          "relative_to_overall_mean": null
+          "n_event_windows": 128,
+          "mean_signal_count": 2.32,
+          "median_signal_count": 1.0,
+          "relative_to_overall_mean": 0.951
         },
         {
           "offset_sessions": -1,
-          "n_event_windows": 0,
-          "mean_signal_count": null,
-          "median_signal_count": null,
-          "relative_to_overall_mean": null
+          "n_event_windows": 128,
+          "mean_signal_count": 2.594,
+          "median_signal_count": 2.0,
+          "relative_to_overall_mean": 1.063
         },
         {
           "offset_sessions": 0,
-          "n_event_windows": 0,
-          "mean_signal_count": null,
-          "median_signal_count": null,
-          "relative_to_overall_mean": null
+          "n_event_windows": 128,
+          "mean_signal_count": 9.477,
+          "median_signal_count": 6.0,
+          "relative_to_overall_mean": 3.886
         },
         {
           "offset_sessions": 1,
-          "n_event_windows": 0,
-          "mean_signal_count": null,
-          "median_signal_count": null,
-          "relative_to_overall_mean": null
+          "n_event_windows": 128,
+          "mean_signal_count": 3.531,
+          "median_signal_count": 2.0,
+          "relative_to_overall_mean": 1.448
         },
         {
           "offset_sessions": 2,
-          "n_event_windows": 0,
-          "mean_signal_count": null,
-          "median_signal_count": null,
-          "relative_to_overall_mean": null
+          "n_event_windows": 128,
+          "mean_signal_count": 3.211,
+          "median_signal_count": 2.0,
+          "relative_to_overall_mean": 1.317
         },
         {
           "offset_sessions": 3,
-          "n_event_windows": 0,
-          "mean_signal_count": null,
-          "median_signal_count": null,
-          "relative_to_overall_mean": null
+          "n_event_windows": 128,
+          "mean_signal_count": 2.383,
+          "median_signal_count": 1.0,
+          "relative_to_overall_mean": 0.977
         }
       ],
       "trade_metrics_on_event_day": {
-        "n": 0
+        "n": 1213,
+        "win_rate_pct": 42.95,
+        "avg_ret10_pct": -0.28,
+        "median_ret10_pct": -0.865,
+        "p5_plus_pct": 15.33,
+        "p10_plus_pct": 4.53,
+        "profit_factor": 0.884
       },
       "trade_metrics_other_days": {
-        "n": 5846,
-        "win_rate_pct": 50.12,
-        "avg_ret10_pct": 0.443,
-        "median_ret10_pct": 0.067,
-        "p5_plus_pct": 19.71,
-        "p10_plus_pct": 6.26,
-        "profit_factor": 1.201
+        "n": 4633,
+        "win_rate_pct": 52.0,
+        "avg_ret10_pct": 0.632,
+        "median_ret10_pct": 0.321,
+        "p5_plus_pct": 20.85,
+        "p10_plus_pct": 6.71,
+        "profit_factor": 1.295
       },
-      "yearly": [],
-      "event_dates_top20_by_signal_count": []
+      "yearly": [
+        {
+          "year": 2016,
+          "topix_kuitto_days": 1,
+          "event_mean_signal_count": 1.0,
+          "non_event_mean_signal_count": 1.7,
+          "ratio": 0.588
+        },
+        {
+          "year": 2017,
+          "topix_kuitto_days": 8,
+          "event_mean_signal_count": 11.125,
+          "non_event_mean_signal_count": 2.025,
+          "ratio": 5.494
+        },
+        {
+          "year": 2018,
+          "topix_kuitto_days": 8,
+          "event_mean_signal_count": 9.875,
+          "non_event_mean_signal_count": 2.532,
+          "ratio": 3.901
+        },
+        {
+          "year": 2019,
+          "topix_kuitto_days": 16,
+          "event_mean_signal_count": 11.875,
+          "non_event_mean_signal_count": 1.898,
+          "ratio": 6.257
+        },
+        {
+          "year": 2020,
+          "topix_kuitto_days": 14,
+          "event_mean_signal_count": 8.0,
+          "non_event_mean_signal_count": 2.07,
+          "ratio": 3.865
+        },
+        {
+          "year": 2021,
+          "topix_kuitto_days": 15,
+          "event_mean_signal_count": 7.8,
+          "non_event_mean_signal_count": 2.1,
+          "ratio": 3.714
+        },
+        {
+          "year": 2022,
+          "topix_kuitto_days": 12,
+          "event_mean_signal_count": 15.0,
+          "non_event_mean_signal_count": 2.022,
+          "ratio": 7.42
+        },
+        {
+          "year": 2023,
+          "topix_kuitto_days": 13,
+          "event_mean_signal_count": 8.923,
+          "non_event_mean_signal_count": 2.043,
+          "ratio": 4.368
+        },
+        {
+          "year": 2024,
+          "topix_kuitto_days": 15,
+          "event_mean_signal_count": 11.6,
+          "non_event_mean_signal_count": 2.204,
+          "ratio": 5.262
+        },
+        {
+          "year": 2025,
+          "topix_kuitto_days": 16,
+          "event_mean_signal_count": 5.812,
+          "non_event_mean_signal_count": 1.696,
+          "ratio": 3.427
+        },
+        {
+          "year": 2026,
+          "topix_kuitto_days": 10,
+          "event_mean_signal_count": 6.2,
+          "non_event_mean_signal_count": 1.769,
+          "ratio": 3.505
+        }
+      ],
+      "event_dates_top20_by_signal_count": [
+        {
+          "date": "2024-07-31",
+          "signal_count": 73
+        },
+        {
+          "date": "2017-01-04",
+          "signal_count": 61
+        },
+        {
+          "date": "2022-10-04",
+          "signal_count": 40
+        },
+        {
+          "date": "2022-09-08",
+          "signal_count": 39
+        },
+        {
+          "date": "2020-07-06",
+          "signal_count": 38
+        },
+        {
+          "date": "2019-03-15",
+          "signal_count": 36
+        },
+        {
+          "date": "2019-08-30",
+          "signal_count": 32
+        },
+        {
+          "date": "2024-04-24",
+          "signal_count": 31
+        },
+        {
+          "date": "2023-08-10",
+          "signal_count": 29
+        },
+        {
+          "date": "2025-10-20",
+          "signal_count": 27
+        },
+        {
+          "date": "2019-04-01",
+          "signal_count": 25
+        },
+        {
+          "date": "2019-04-15",
+          "signal_count": 23
+        },
+        {
+          "date": "2022-12-09",
+          "signal_count": 23
+        },
+        {
+          "date": "2021-12-07",
+          "signal_count": 20
+        },
+        {
+          "date": "2023-12-15",
+          "signal_count": 20
+        },
+        {
+          "date": "2019-07-23",
+          "signal_count": 19
+        },
+        {
+          "date": "2022-06-24",
+          "signal_count": 18
+        },
+        {
+          "date": "2018-01-04",
+          "signal_count": 17
+        },
+        {
+          "date": "2020-12-29",
+          "signal_count": 17
+        },
+        {
+          "date": "2021-08-24",
+          "signal_count": 17
+        }
+      ]
     },
     "core_below25": {
-      "topix_kuitto_days": 0,
-      "day_frequency_pct": 0.0,
+      "topix_kuitto_days": 68,
+      "day_frequency_pct": 2.84,
       "event_day": {
-        "mean_signal_count": null,
-        "median_signal_count": null,
-        "any_signal_day_pct": null
+        "mean_signal_count": 11.735,
+        "median_signal_count": 7.0,
+        "any_signal_day_pct": 97.06
       },
       "non_event_day": {
-        "mean_signal_count": 2.439,
+        "mean_signal_count": 2.167,
         "median_signal_count": 1.0,
-        "any_signal_day_pct": 62.83
+        "any_signal_day_pct": 61.83
       },
-      "event_vs_non_event_mean_ratio": null,
+      "event_vs_non_event_mean_ratio": 5.414,
       "lead_lag": [
         {
           "offset_sessions": -3,
-          "n_event_windows": 0,
-          "mean_signal_count": null,
-          "median_signal_count": null,
-          "relative_to_overall_mean": null
+          "n_event_windows": 68,
+          "mean_signal_count": 2.353,
+          "median_signal_count": 1.0,
+          "relative_to_overall_mean": 0.965
         },
         {
           "offset_sessions": -2,
-          "n_event_windows": 0,
-          "mean_signal_count": null,
-          "median_signal_count": null,
-          "relative_to_overall_mean": null
+          "n_event_windows": 68,
+          "mean_signal_count": 3.265,
+          "median_signal_count": 1.0,
+          "relative_to_overall_mean": 1.339
         },
         {
           "offset_sessions": -1,
-          "n_event_windows": 0,
-          "mean_signal_count": null,
-          "median_signal_count": null,
-          "relative_to_overall_mean": null
+          "n_event_windows": 68,
+          "mean_signal_count": 3.191,
+          "median_signal_count": 3.0,
+          "relative_to_overall_mean": 1.308
         },
         {
           "offset_sessions": 0,
-          "n_event_windows": 0,
-          "mean_signal_count": null,
-          "median_signal_count": null,
-          "relative_to_overall_mean": null
+          "n_event_windows": 68,
+          "mean_signal_count": 11.735,
+          "median_signal_count": 7.0,
+          "relative_to_overall_mean": 4.812
         },
         {
           "offset_sessions": 1,
-          "n_event_windows": 0,
-          "mean_signal_count": null,
-          "median_signal_count": null,
-          "relative_to_overall_mean": null
+          "n_event_windows": 68,
+          "mean_signal_count": 4.044,
+          "median_signal_count": 2.0,
+          "relative_to_overall_mean": 1.658
         },
         {
           "offset_sessions": 2,
-          "n_event_windows": 0,
-          "mean_signal_count": null,
-          "median_signal_count": null,
-          "relative_to_overall_mean": null
+          "n_event_windows": 68,
+          "mean_signal_count": 3.206,
+          "median_signal_count": 2.0,
+          "relative_to_overall_mean": 1.314
         },
         {
           "offset_sessions": 3,
-          "n_event_windows": 0,
-          "mean_signal_count": null,
-          "median_signal_count": null,
-          "relative_to_overall_mean": null
+          "n_event_windows": 68,
+          "mean_signal_count": 1.912,
+          "median_signal_count": 1.0,
+          "relative_to_overall_mean": 0.784
         }
       ],
       "trade_metrics_on_event_day": {
-        "n": 0
+        "n": 798,
+        "win_rate_pct": 44.24,
+        "avg_ret10_pct": -0.382,
+        "median_ret10_pct": -0.526,
+        "p5_plus_pct": 15.66,
+        "p10_plus_pct": 4.51,
+        "profit_factor": 0.849
       },
       "trade_metrics_other_days": {
-        "n": 5846,
-        "win_rate_pct": 50.12,
-        "avg_ret10_pct": 0.443,
-        "median_ret10_pct": 0.067,
-        "p5_plus_pct": 19.71,
-        "p10_plus_pct": 6.26,
-        "profit_factor": 1.201
+        "n": 5048,
+        "win_rate_pct": 51.05,
+        "avg_ret10_pct": 0.574,
+        "median_ret10_pct": 0.218,
+        "p5_plus_pct": 20.34,
+        "p10_plus_pct": 6.54,
+        "profit_factor": 1.266
       },
-      "yearly": [],
-      "event_dates_top20_by_signal_count": []
+      "yearly": [
+        {
+          "year": 2016,
+          "topix_kuitto_days": 1,
+          "event_mean_signal_count": 1.0,
+          "non_event_mean_signal_count": 1.7,
+          "ratio": 0.588
+        },
+        {
+          "year": 2017,
+          "topix_kuitto_days": 1,
+          "event_mean_signal_count": 7.0,
+          "non_event_mean_signal_count": 2.301,
+          "ratio": 3.042
+        },
+        {
+          "year": 2018,
+          "topix_kuitto_days": 6,
+          "event_mean_signal_count": 9.833,
+          "non_event_mean_signal_count": 2.594,
+          "ratio": 3.791
+        },
+        {
+          "year": 2019,
+          "topix_kuitto_days": 10,
+          "event_mean_signal_count": 13.9,
+          "non_event_mean_signal_count": 2.069,
+          "ratio": 6.717
+        },
+        {
+          "year": 2020,
+          "topix_kuitto_days": 8,
+          "event_mean_signal_count": 9.25,
+          "non_event_mean_signal_count": 2.179,
+          "ratio": 4.246
+        },
+        {
+          "year": 2021,
+          "topix_kuitto_days": 9,
+          "event_mean_signal_count": 9.222,
+          "non_event_mean_signal_count": 2.191,
+          "ratio": 4.21
+        },
+        {
+          "year": 2022,
+          "topix_kuitto_days": 10,
+          "event_mean_signal_count": 17.0,
+          "non_event_mean_signal_count": 2.047,
+          "ratio": 8.305
+        },
+        {
+          "year": 2023,
+          "topix_kuitto_days": 7,
+          "event_mean_signal_count": 10.286,
+          "non_event_mean_signal_count": 2.176,
+          "ratio": 4.727
+        },
+        {
+          "year": 2024,
+          "topix_kuitto_days": 10,
+          "event_mean_signal_count": 15.6,
+          "non_event_mean_signal_count": 2.234,
+          "ratio": 6.983
+        },
+        {
+          "year": 2025,
+          "topix_kuitto_days": 3,
+          "event_mean_signal_count": 6.333,
+          "non_event_mean_signal_count": 1.913,
+          "ratio": 3.312
+        },
+        {
+          "year": 2026,
+          "topix_kuitto_days": 3,
+          "event_mean_signal_count": 6.0,
+          "non_event_mean_signal_count": 1.974,
+          "ratio": 3.039
+        }
+      ],
+      "event_dates_top20_by_signal_count": [
+        {
+          "date": "2024-07-31",
+          "signal_count": 73
+        },
+        {
+          "date": "2022-10-04",
+          "signal_count": 40
+        },
+        {
+          "date": "2022-09-08",
+          "signal_count": 39
+        },
+        {
+          "date": "2020-07-06",
+          "signal_count": 38
+        },
+        {
+          "date": "2019-03-15",
+          "signal_count": 36
+        },
+        {
+          "date": "2019-08-30",
+          "signal_count": 32
+        },
+        {
+          "date": "2024-04-24",
+          "signal_count": 31
+        },
+        {
+          "date": "2019-04-01",
+          "signal_count": 25
+        },
+        {
+          "date": "2022-12-09",
+          "signal_count": 23
+        },
+        {
+          "date": "2021-12-07",
+          "signal_count": 20
+        },
+        {
+          "date": "2023-12-15",
+          "signal_count": 20
+        },
+        {
+          "date": "2019-07-23",
+          "signal_count": 19
+        },
+        {
+          "date": "2022-06-24",
+          "signal_count": 18
+        },
+        {
+          "date": "2021-08-24",
+          "signal_count": 17
+        },
+        {
+          "date": "2018-06-04",
+          "signal_count": 16
+        },
+        {
+          "date": "2022-05-06",
+          "signal_count": 16
+        },
+        {
+          "date": "2023-04-12",
+          "signal_count": 16
+        },
+        {
+          "date": "2023-08-23",
+          "signal_count": 16
+        },
+        {
+          "date": "2020-07-15",
+          "signal_count": 14
+        },
+        {
+          "date": "2021-04-28",
+          "signal_count": 14
+        }
+      ]
     },
     "pullback_shape": {
-      "topix_kuitto_days": 0,
-      "day_frequency_pct": 0.0,
+      "topix_kuitto_days": 4,
+      "day_frequency_pct": 0.17,
       "event_day": {
-        "mean_signal_count": null,
-        "median_signal_count": null,
-        "any_signal_day_pct": null
+        "mean_signal_count": 31.25,
+        "median_signal_count": 23.0,
+        "any_signal_day_pct": 100.0
       },
       "non_event_day": {
-        "mean_signal_count": 2.439,
+        "mean_signal_count": 2.391,
         "median_signal_count": 1.0,
-        "any_signal_day_pct": 62.83
+        "any_signal_day_pct": 62.77
       },
-      "event_vs_non_event_mean_ratio": null,
+      "event_vs_non_event_mean_ratio": 13.071,
       "lead_lag": [
         {
           "offset_sessions": -3,
-          "n_event_windows": 0,
-          "mean_signal_count": null,
-          "median_signal_count": null,
-          "relative_to_overall_mean": null
+          "n_event_windows": 4,
+          "mean_signal_count": 3.25,
+          "median_signal_count": 3.5,
+          "relative_to_overall_mean": 1.333
         },
         {
           "offset_sessions": -2,
-          "n_event_windows": 0,
-          "mean_signal_count": null,
-          "median_signal_count": null,
-          "relative_to_overall_mean": null
+          "n_event_windows": 4,
+          "mean_signal_count": 6.25,
+          "median_signal_count": 1.5,
+          "relative_to_overall_mean": 2.563
         },
         {
           "offset_sessions": -1,
-          "n_event_windows": 0,
-          "mean_signal_count": null,
-          "median_signal_count": null,
-          "relative_to_overall_mean": null
+          "n_event_windows": 4,
+          "mean_signal_count": 5.75,
+          "median_signal_count": 5.5,
+          "relative_to_overall_mean": 2.358
         },
         {
           "offset_sessions": 0,
-          "n_event_windows": 0,
-          "mean_signal_count": null,
-          "median_signal_count": null,
-          "relative_to_overall_mean": null
+          "n_event_windows": 4,
+          "mean_signal_count": 31.25,
+          "median_signal_count": 23.0,
+          "relative_to_overall_mean": 12.813
         },
         {
           "offset_sessions": 1,
-          "n_event_windows": 0,
-          "mean_signal_count": null,
-          "median_signal_count": null,
-          "relative_to_overall_mean": null
+          "n_event_windows": 4,
+          "mean_signal_count": 0.5,
+          "median_signal_count": 0.5,
+          "relative_to_overall_mean": 0.205
         },
         {
           "offset_sessions": 2,
-          "n_event_windows": 0,
-          "mean_signal_count": null,
-          "median_signal_count": null,
-          "relative_to_overall_mean": null
+          "n_event_windows": 4,
+          "mean_signal_count": 0.75,
+          "median_signal_count": 0.5,
+          "relative_to_overall_mean": 0.308
         },
         {
           "offset_sessions": 3,
-          "n_event_windows": 0,
-          "mean_signal_count": null,
-          "median_signal_count": null,
-          "relative_to_overall_mean": null
+          "n_event_windows": 4,
+          "mean_signal_count": 1.25,
+          "median_signal_count": 1.0,
+          "relative_to_overall_mean": 0.513
         }
       ],
       "trade_metrics_on_event_day": {
-        "n": 0
+        "n": 125,
+        "win_rate_pct": 27.2,
+        "avg_ret10_pct": -3.001,
+        "median_ret10_pct": -2.514,
+        "p5_plus_pct": 4.0,
+        "p10_plus_pct": 1.6,
+        "profit_factor": 0.211
       },
       "trade_metrics_other_days": {
-        "n": 5846,
-        "win_rate_pct": 50.12,
-        "avg_ret10_pct": 0.443,
-        "median_ret10_pct": 0.067,
-        "p5_plus_pct": 19.71,
-        "p10_plus_pct": 6.26,
-        "profit_factor": 1.201
+        "n": 5721,
+        "win_rate_pct": 50.62,
+        "avg_ret10_pct": 0.518,
+        "median_ret10_pct": 0.137,
+        "p5_plus_pct": 20.05,
+        "p10_plus_pct": 6.36,
+        "profit_factor": 1.239
       },
-      "yearly": [],
-      "event_dates_top20_by_signal_count": []
+      "yearly": [
+        {
+          "year": 2021,
+          "topix_kuitto_days": 1,
+          "event_mean_signal_count": 6.0,
+          "non_event_mean_signal_count": 2.434,
+          "ratio": 2.465
+        },
+        {
+          "year": 2022,
+          "topix_kuitto_days": 1,
+          "event_mean_signal_count": 40.0,
+          "non_event_mean_signal_count": 2.506,
+          "ratio": 15.961
+        },
+        {
+          "year": 2024,
+          "topix_kuitto_days": 1,
+          "event_mean_signal_count": 73.0,
+          "non_event_mean_signal_count": 2.492,
+          "ratio": 29.296
+        },
+        {
+          "year": 2026,
+          "topix_kuitto_days": 1,
+          "event_mean_signal_count": 6.0,
+          "non_event_mean_signal_count": 2.026,
+          "ratio": 2.962
+        }
+      ],
+      "event_dates_top20_by_signal_count": [
+        {
+          "date": "2024-07-31",
+          "signal_count": 73
+        },
+        {
+          "date": "2022-10-04",
+          "signal_count": 40
+        },
+        {
+          "date": "2021-10-11",
+          "signal_count": 6
+        },
+        {
+          "date": "2026-06-15",
+          "signal_count": 6
+        }
+      ]
     }
   }
 }
