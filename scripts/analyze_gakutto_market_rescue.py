@@ -37,62 +37,71 @@ def norm_code(v):
     return s
 
 
-def load_archive():
+def load_archive_and_market(needed_codes):
     paths = sorted(BATCH_DIR.glob("batch_*.parquet"))
     if not paths:
         raise RuntimeError("No archive batches found")
 
-    frames = []
+    price_frames = []
+    breadth_parts = []
     want = [
         "Code", "Date", "O", "H", "L", "C", "Vo",
         "AdjO", "AdjH", "AdjL", "AdjC", "AdjVo", "ArchiveMarket",
     ]
+
     for p in paths:
         z = pd.read_parquet(p)
-        cols = [c for c in want if c in z.columns]
-        frames.append(z[cols].copy())
+        cols = [x for x in want if x in z.columns]
+        z = z[cols].copy()
 
-    df = pd.concat(frames, ignore_index=True)
-    if "ArchiveMarket" in df.columns:
-        df = df[df["ArchiveMarket"] == "プライム"].copy()
+        if "ArchiveMarket" in z.columns:
+            z = z[z["ArchiveMarket"] == "プライム"].copy()
 
-    for raw, adj in [("O", "AdjO"), ("H", "AdjH"), ("L", "AdjL"), ("C", "AdjC"), ("Vo", "AdjVo")]:
-        if adj in df.columns:
-            if raw in df.columns:
-                df[raw] = df[adj].where(df[adj].notna(), df[raw])
-            else:
-                df[raw] = df[adj]
+        for raw, adj in [("O", "AdjO"), ("H", "AdjH"), ("L", "AdjL"), ("C", "AdjC"), ("Vo", "AdjVo")]:
+            if adj in z.columns:
+                if raw in z.columns:
+                    z[raw] = z[adj].where(z[adj].notna(), z[raw])
+                else:
+                    z[raw] = z[adj]
 
-    for c in ["O", "H", "L", "C", "Vo"]:
-        df[c] = pd.to_numeric(df[c], errors="coerce")
+        for x in ["O", "H", "L", "C", "Vo"]:
+            z[x] = pd.to_numeric(z[x], errors="coerce")
+        z["Code"] = z["Code"].map(norm_code)
+        z["Date"] = pd.to_datetime(z["Date"], errors="coerce")
+        z = z.dropna(subset=["Code", "Date", "C"])
+        z = z.drop_duplicates(["Code", "Date"], keep="last").sort_values(["Code", "Date"])
 
-    df["Code"] = df["Code"].map(norm_code)
-    df["Date"] = pd.to_datetime(df["Date"], errors="coerce")
-    df = df.dropna(subset=["Code", "Date", "C"])
-    df = df.drop_duplicates(["Code", "Date"], keep="last")
-    return df.sort_values(["Code", "Date"]).reset_index(drop=True)
+        # Compute breadth inside each code batch, then only retain daily aggregates.
+        b = z[["Code", "Date", "C"]].copy()
+        b["prev_close"] = b.groupby("Code")["C"].shift(1)
+        b = b[b["prev_close"].notna() & (b["prev_close"] > 0)].copy()
+        b["ret1"] = (b["C"] / b["prev_close"] - 1) * 100
+        b["decline"] = (b["ret1"] < 0).astype(int)
+        b["advance"] = (b["ret1"] > 0).astype(int)
+        part = b.groupby("Date", as_index=False).agg(
+            declines=("decline", "sum"),
+            advances=("advance", "sum"),
+            comparable=("ret1", "count"),
+            ret_sum=("ret1", "sum"),
+        )
+        breadth_parts.append(part)
 
+        q = z[z["Code"].isin(needed_codes)][["Code", "Date", "O", "H", "L", "C", "Vo"]].copy()
+        if not q.empty:
+            price_frames.append(q)
 
-def build_market_context(df):
-    b = df[["Code", "Date", "C"]].copy()
-    b = b.dropna(subset=["C"]).sort_values(["Code", "Date"])
-    b["prev_close"] = b.groupby("Code")["C"].shift(1)
-    b = b[b["prev_close"].notna() & (b["prev_close"] > 0)].copy()
-    b["ret1"] = (b["C"] / b["prev_close"] - 1) * 100
+    if not price_frames:
+        raise RuntimeError("No price rows matched signal codes")
 
-    rows = []
-    for d, g in b.groupby("Date", sort=True):
-        r = pd.to_numeric(g["ret1"], errors="coerce").dropna()
-        if r.empty:
-            continue
-        rows.append({
-            "date": pd.Timestamp(d),
-            "decline_pct": float((r < 0).mean() * 100),
-            "advance_pct": float((r > 0).mean() * 100),
-            "equal_weight_mean_pct": float(r.mean()),
-            "comparable": int(len(r)),
-        })
-    breadth = pd.DataFrame(rows)
+    prices = pd.concat(price_frames, ignore_index=True)
+    prices = prices.drop_duplicates(["Code", "Date"], keep="last").sort_values(["Code", "Date"]).reset_index(drop=True)
+
+    bp = pd.concat(breadth_parts, ignore_index=True)
+    breadth = bp.groupby("Date", as_index=False)[["declines", "advances", "comparable", "ret_sum"]].sum()
+    breadth["decline_pct"] = breadth["declines"] / breadth["comparable"] * 100
+    breadth["advance_pct"] = breadth["advances"] / breadth["comparable"] * 100
+    breadth["equal_weight_mean_pct"] = breadth["ret_sum"] / breadth["comparable"]
+    breadth = breadth.rename(columns={"Date": "date"})
 
     tx = pd.read_parquet(TOPIX_PATH).copy()
     tx["date"] = pd.to_datetime(tx["Date"], errors="coerce")
@@ -101,8 +110,8 @@ def build_market_context(df):
     tx["topix_ret1_pct"] = tx["close"].pct_change() * 100
 
     ctx = breadth.merge(tx[["date", "topix_ret1_pct"]], on="date", how="left")
-    return ctx.sort_values("date").reset_index(drop=True)
-
+    ctx = ctx.sort_values("date").reset_index(drop=True)
+    return prices, ctx
 
 def load_signals():
     s = pd.read_csv(SIGNALS_PATH, dtype={"code": str})
@@ -348,8 +357,8 @@ def split_metrics(df):
 
 def main():
     signals = load_signals()
-    archive = load_archive()
-    ctx = build_market_context(archive)
+    needed = set(signals["code"].astype(str))
+    archive, ctx = load_archive_and_market(needed)
     ctx_map = {
         pd.Timestamp(r.date).normalize(): {
             "topix_ret1_pct": r.topix_ret1_pct,
@@ -361,7 +370,6 @@ def main():
         for r in ctx.itertuples(index=False)
     }
 
-    needed = set(signals["code"].astype(str))
     prepared = {}
     for code, g in archive[archive["Code"].isin(needed)].groupby("Code", sort=False):
         prepared[str(code)] = prepare(g)
