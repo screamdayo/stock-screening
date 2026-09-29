@@ -1,0 +1,31 @@
+name: Validate Bad Market Tailwind
+
+on:
+  push:
+    paths:
+      - 'topix_kuitto_policy.py'
+      - 'notifier.py'
+      - 'docs/screening.html'
+      - '.github/workflows/validate_bad_market_tailwind.yml'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Python syntax
+        run: python -m py_compile topix_kuitto_policy.py notifier.py
+      - name: Screening JavaScript syntax
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          s=Path("docs/screening.html").read_text(encoding="utf-8")
+          blocks=re.findall(r"<script>(.*?)</script>",s,flags=re.S)
+          if not blocks: raise SystemExit("inline script not found")
+          Path("/tmp/screening.js").write_text("\n".join(blocks),encoding="utf-8")
+          PY
+          node --check /tmp/screening.js
