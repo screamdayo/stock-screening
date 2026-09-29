@@ -7,6 +7,8 @@
 - TOPIXくいっと + 非本命: 警戒 / 原則見送り
 - TOPIXくいっと + 本命: 通常候補
 - TOPIXくいっと + 204: 最優先
+- TOPIX -0.5%〜0% かつ MA5下向き: 地合い逆行追い風
+  （本命なら優先表示）
 """
 
 from datetime import timedelta
@@ -42,6 +44,8 @@ def _fetch_topix_daily(latest_date):
         .reset_index(drop=True)
     )
     d["MA5"] = d["C"].rolling(5).mean()
+    d["RET1_PCT"] = d["C"].pct_change() * 100
+    d["MA5_DOWN"] = d["MA5"] < d["MA5"].shift(1)
     return d
 
 
@@ -80,14 +84,25 @@ def _latest_kuitto_state(latest_date):
             and d["C"].iloc[i] > d["O"].iloc[i]
         )
 
+    ret1 = float(d["RET1_PCT"].iloc[i]) if pd.notna(d["RET1_PCT"].iloc[i]) else None
+    ma5_down = bool(d["MA5_DOWN"].iloc[i]) if pd.notna(d["MA5_DOWN"].iloc[i]) else False
+    soft_bad_tailwind = bool(
+        ret1 is not None
+        and -0.5 < ret1 < 0.0
+        and ma5_down
+    )
+
     return {
         "available": True,
         "active": active,
         "date": d["Date"].iloc[i].strftime("%Y-%m-%d"),
         "open": round(float(d["O"].iloc[i]), 3),
         "close": round(float(d["C"].iloc[i]), 3),
+        "ret1_pct": round(ret1, 3) if ret1 is not None else None,
         "ma5": round(float(d["MA5"].iloc[i]), 3),
         "ma5_prev": round(float(d["MA5"].iloc[i - 1]), 3),
+        "ma5_down": ma5_down,
+        "soft_bad_tailwind": soft_bad_tailwind,
         "reason": "TOPIXくいっと発動" if active else "TOPIXくいっと非発動",
     }
 
@@ -127,6 +142,11 @@ def apply(results, price_df, kuitto_204_results=None):
         r["topix_kuitto_priority"] = bool(state.get("active") and is_204)
         r["topix_kuitto_caution"] = bool(state.get("active") and not winner)
 
+        r["topix_soft_bad_tailwind"] = bool(state.get("soft_bad_tailwind"))
+        r["topix_soft_bad_winner"] = bool(state.get("soft_bad_tailwind") and winner)
+        r["topix_ret1_pct"] = state.get("ret1_pct")
+        r["topix_ma5_down"] = bool(state.get("ma5_down"))
+
         if r["topix_kuitto_priority"]:
             r["topix_kuitto_policy"] = "priority_204"
             r["topix_kuitto_action"] = "最優先"
@@ -136,15 +156,23 @@ def apply(results, price_df, kuitto_204_results=None):
         elif state.get("active") and winner:
             r["topix_kuitto_policy"] = "winner_keep"
             r["topix_kuitto_action"] = "本命・通常候補"
+        elif r["topix_soft_bad_winner"]:
+            r["topix_kuitto_policy"] = "soft_bad_winner_tailwind"
+            r["topix_kuitto_action"] = "逆行追い風・本命優先"
+        elif r["topix_soft_bad_tailwind"]:
+            r["topix_kuitto_policy"] = "soft_bad_tailwind"
+            r["topix_kuitto_action"] = "逆行追い風"
         else:
             r["topix_kuitto_policy"] = "normal"
             r["topix_kuitto_action"] = "通常"
 
     logger.info(
-        "TOPIXくいっと運用: %s / 最優先204=%d / 本命継続=%d / 警戒見送り=%d",
+        "TOPIX地合い運用: くいっと=%s / 逆行追い風=%s / 最優先204=%d / 本命継続=%d / 警戒見送り=%d / 逆行追い風本命=%d",
         "発動" if state.get("active") else ("非発動" if state.get("available") else "判定不可"),
+        "発動" if state.get("soft_bad_tailwind") else "非発動",
         sum(bool(r.get("topix_kuitto_priority")) for r in results),
         sum(bool(r.get("topix_kuitto_active") and r.get("winner_filter") and not r.get("topix_kuitto_priority")) for r in results),
         sum(bool(r.get("topix_kuitto_caution")) for r in results),
+        sum(bool(r.get("topix_soft_bad_winner")) for r in results),
     )
     return state
