@@ -104,6 +104,8 @@ def notify(results, rescue_results=None, primary_results=None):
         display_results = list(results)
         display_results.sort(
             key=lambda r: (
+                -int(bool(r.get("topix_kuitto_priority"))),
+                int(bool(r.get("topix_kuitto_caution"))),
                 -int(bool(r.get("ultra_winner"))),
                 -int(bool(r.get("strong_winner"))),
                 -int(bool(r.get("winner_filter"))),
@@ -145,7 +147,11 @@ def notify(results, rescue_results=None, primary_results=None):
                 bd = r.get("earnings_business_days")
                 when = f"（{bd}営業日後 / {ed}）" if bd is not None else f"（{ed}）"
                 earnings_note = f"\n   ⚠️ **10営業日以内に決算あり** {when}"
-            if r.get("ultra_winner"):
+            if r.get("topix_kuitto_priority"):
+                winner_prefix = "🏆 **TOPIXくいっと最優先（204）** "
+            elif r.get("topix_kuitto_caution"):
+                winner_prefix = "⚠️ **TOPIXくいっと警戒・原則見送り** "
+            elif r.get("ultra_winner"):
                 winner_prefix = "🔥🔥 **超強本命** "
             elif r.get("strong_winner"):
                 winner_prefix = "🔥 **強本命** "
@@ -159,6 +165,13 @@ def notify(results, rescue_results=None, primary_results=None):
                 detail.append(f"rel20 {r['rel20_vs_topix_pct']:+.2f}%")
             suffix = f" — {' / '.join(detail)}" if detail else ""
             lines.append(f"{winner_prefix}{label}{suffix}{earnings_note}")
+            if r.get("topix_kuitto_caution"):
+                lines.append(
+                    "   ↳ ⚠️ **原則見送り**（TOPIXくいっと日に大量発生する非本命群。記録は継続）"
+                )
+                continue
+            if r.get("topix_kuitto_active") and r.get("winner_filter") and not r.get("topix_kuitto_priority"):
+                lines.append("   ↳ 🌊 **TOPIXくいっと日でも本命条件通過：通常候補として継続**")
             if close is not None:
                 cap_pct = _entry_gap_cap_pct(score)
                 if cap_pct is None:
@@ -192,10 +205,22 @@ def notify(results, rescue_results=None, primary_results=None):
         winner_count = sum(1 for r in results if r.get("winner_filter"))
         strong_count = sum(1 for r in results if r.get("strong_winner"))
         ultra_count = sum(1 for r in results if r.get("ultra_winner"))
-        order_note = "\n⭐ **超強本命 → 強本命 → 本命 → 伸びスコア順**"
+        topix_active = any(r.get("topix_kuitto_active") for r in results)
+        priority_count = sum(1 for r in results if r.get("topix_kuitto_priority"))
+        caution_count = sum(1 for r in results if r.get("topix_kuitto_caution"))
+        if topix_active:
+            topix_note = (
+                f"\n🌊 **TOPIXくいっと発動**：🏆204最優先 {priority_count}件 / "
+                f"⚠️非本命・原則見送り {caution_count}件"
+            )
+            order_note = "\n⭐ **TOPIX最優先204 → 本命群 → 警戒非本命**"
+        else:
+            topix_note = ""
+            order_note = "\n⭐ **超強本命 → 強本命 → 本命 → 伸びスコア順**"
         msg = (
             f"📊 **くいっと押し目版 {today}**\n"
-            f"🔥🔥 **超強本命 {ultra_count}件** / 🔥 **強本命 {strong_count}件** / ⭐ **本命 {winner_count}件**\n"
+            f"🔥🔥 **超強本命 {ultra_count}件** / 🔥 **強本命 {strong_count}件** / ⭐ **本命 {winner_count}件**"
+            f"{topix_note}\n"
             f"超強本命：本命 + 個別MA25傾き≥-1.5% + TOPIX悪ゾーン除外 + rel20 0〜+4%除外\n"
             f"🤖 **目視判定なし / 出来高1.25倍以上 / 自動通過 {len(results)}件**\n"
             f"🌅 **翌朝ルール：伸びスコア別ギャップ上限（0/4=制限なし・1/4=0%・2/4=+0.25%・3/4=0%・4/4=+1.0%）**\n"
