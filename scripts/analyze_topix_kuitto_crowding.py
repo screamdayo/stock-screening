@@ -40,11 +40,11 @@ def main():
     tx["close_vs_ma5_pct"] = (tx["C"] / tx["MA5"] - 1) * 100
     tx["ma5_decline5_pct"] = (tx["MA5"].shift(1) / tx["MA5"].shift(6) - 1) * 100
 
-    s1 = tx["MA5"] <= tx["MA5"].shift(1)
-    s2 = tx["MA5"].shift(1) <= tx["MA5"].shift(2)
+    prev_slope1_down_flat = tx["MA5"].shift(1) <= tx["MA5"].shift(2)
+    prev_slope2_down_flat = tx["MA5"].shift(2) <= tx["MA5"].shift(3)
     turn = tx["MA5"] > tx["MA5"].shift(1)
     bullish = tx["C"] > tx["O"]
-    core = s1 & s2 & turn & bullish
+    core = prev_slope1_down_flat & prev_slope2_down_flat & turn & bullish
 
     tx["topix_core"] = core
     tx["topix_core_below25"] = core & (tx["ma5_vs_ma25_pct"] <= 0)
