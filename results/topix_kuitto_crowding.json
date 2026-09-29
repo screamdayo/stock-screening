@@ -1,0 +1,269 @@
+{
+  "period": {
+    "start": "2016-11-01",
+    "end": "2026-08-25",
+    "trading_days": 2397
+  },
+  "individual_kuitto": {
+    "definition": "frozen kuitto_pullback_auto signals used by kuitto_runner_features_trades.csv",
+    "signals": 5846,
+    "overall_daily_mean": 2.439,
+    "overall_any_signal_day_pct": 62.83,
+    "overall_trade_metrics": {
+      "n": 5846,
+      "win_rate_pct": 50.12,
+      "avg_ret10_pct": 0.443,
+      "median_ret10_pct": 0.067,
+      "p5_plus_pct": 19.71,
+      "p10_plus_pct": 6.26,
+      "profit_factor": 1.201
+    }
+  },
+  "topix_definitions": {
+    "core": "MA5 prior two slopes down/flat -> first upturn today, and TOPIX bullish candle",
+    "core_below25": "core + MA5 <= MA25",
+    "pullback_shape": "core + individual Kuitto price-shape thresholds; volume omitted because TOPIX index has no volume"
+  },
+  "tests": {
+    "core": {
+      "topix_kuitto_days": 0,
+      "day_frequency_pct": 0.0,
+      "event_day": {
+        "mean_signal_count": null,
+        "median_signal_count": null,
+        "any_signal_day_pct": null
+      },
+      "non_event_day": {
+        "mean_signal_count": 2.439,
+        "median_signal_count": 1.0,
+        "any_signal_day_pct": 62.83
+      },
+      "event_vs_non_event_mean_ratio": null,
+      "lead_lag": [
+        {
+          "offset_sessions": -3,
+          "n_event_windows": 0,
+          "mean_signal_count": null,
+          "median_signal_count": null,
+          "relative_to_overall_mean": null
+        },
+        {
+          "offset_sessions": -2,
+          "n_event_windows": 0,
+          "mean_signal_count": null,
+          "median_signal_count": null,
+          "relative_to_overall_mean": null
+        },
+        {
+          "offset_sessions": -1,
+          "n_event_windows": 0,
+          "mean_signal_count": null,
+          "median_signal_count": null,
+          "relative_to_overall_mean": null
+        },
+        {
+          "offset_sessions": 0,
+          "n_event_windows": 0,
+          "mean_signal_count": null,
+          "median_signal_count": null,
+          "relative_to_overall_mean": null
+        },
+        {
+          "offset_sessions": 1,
+          "n_event_windows": 0,
+          "mean_signal_count": null,
+          "median_signal_count": null,
+          "relative_to_overall_mean": null
+        },
+        {
+          "offset_sessions": 2,
+          "n_event_windows": 0,
+          "mean_signal_count": null,
+          "median_signal_count": null,
+          "relative_to_overall_mean": null
+        },
+        {
+          "offset_sessions": 3,
+          "n_event_windows": 0,
+          "mean_signal_count": null,
+          "median_signal_count": null,
+          "relative_to_overall_mean": null
+        }
+      ],
+      "trade_metrics_on_event_day": {
+        "n": 0
+      },
+      "trade_metrics_other_days": {
+        "n": 5846,
+        "win_rate_pct": 50.12,
+        "avg_ret10_pct": 0.443,
+        "median_ret10_pct": 0.067,
+        "p5_plus_pct": 19.71,
+        "p10_plus_pct": 6.26,
+        "profit_factor": 1.201
+      },
+      "yearly": [],
+      "event_dates_top20_by_signal_count": []
+    },
+    "core_below25": {
+      "topix_kuitto_days": 0,
+      "day_frequency_pct": 0.0,
+      "event_day": {
+        "mean_signal_count": null,
+        "median_signal_count": null,
+        "any_signal_day_pct": null
+      },
+      "non_event_day": {
+        "mean_signal_count": 2.439,
+        "median_signal_count": 1.0,
+        "any_signal_day_pct": 62.83
+      },
+      "event_vs_non_event_mean_ratio": null,
+      "lead_lag": [
+        {
+          "offset_sessions": -3,
+          "n_event_windows": 0,
+          "mean_signal_count": null,
+          "median_signal_count": null,
+          "relative_to_overall_mean": null
+        },
+        {
+          "offset_sessions": -2,
+          "n_event_windows": 0,
+          "mean_signal_count": null,
+          "median_signal_count": null,
+          "relative_to_overall_mean": null
+        },
+        {
+          "offset_sessions": -1,
+          "n_event_windows": 0,
+          "mean_signal_count": null,
+          "median_signal_count": null,
+          "relative_to_overall_mean": null
+        },
+        {
+          "offset_sessions": 0,
+          "n_event_windows": 0,
+          "mean_signal_count": null,
+          "median_signal_count": null,
+          "relative_to_overall_mean": null
+        },
+        {
+          "offset_sessions": 1,
+          "n_event_windows": 0,
+          "mean_signal_count": null,
+          "median_signal_count": null,
+          "relative_to_overall_mean": null
+        },
+        {
+          "offset_sessions": 2,
+          "n_event_windows": 0,
+          "mean_signal_count": null,
+          "median_signal_count": null,
+          "relative_to_overall_mean": null
+        },
+        {
+          "offset_sessions": 3,
+          "n_event_windows": 0,
+          "mean_signal_count": null,
+          "median_signal_count": null,
+          "relative_to_overall_mean": null
+        }
+      ],
+      "trade_metrics_on_event_day": {
+        "n": 0
+      },
+      "trade_metrics_other_days": {
+        "n": 5846,
+        "win_rate_pct": 50.12,
+        "avg_ret10_pct": 0.443,
+        "median_ret10_pct": 0.067,
+        "p5_plus_pct": 19.71,
+        "p10_plus_pct": 6.26,
+        "profit_factor": 1.201
+      },
+      "yearly": [],
+      "event_dates_top20_by_signal_count": []
+    },
+    "pullback_shape": {
+      "topix_kuitto_days": 0,
+      "day_frequency_pct": 0.0,
+      "event_day": {
+        "mean_signal_count": null,
+        "median_signal_count": null,
+        "any_signal_day_pct": null
+      },
+      "non_event_day": {
+        "mean_signal_count": 2.439,
+        "median_signal_count": 1.0,
+        "any_signal_day_pct": 62.83
+      },
+      "event_vs_non_event_mean_ratio": null,
+      "lead_lag": [
+        {
+          "offset_sessions": -3,
+          "n_event_windows": 0,
+          "mean_signal_count": null,
+          "median_signal_count": null,
+          "relative_to_overall_mean": null
+        },
+        {
+          "offset_sessions": -2,
+          "n_event_windows": 0,
+          "mean_signal_count": null,
+          "median_signal_count": null,
+          "relative_to_overall_mean": null
+        },
+        {
+          "offset_sessions": -1,
+          "n_event_windows": 0,
+          "mean_signal_count": null,
+          "median_signal_count": null,
+          "relative_to_overall_mean": null
+        },
+        {
+          "offset_sessions": 0,
+          "n_event_windows": 0,
+          "mean_signal_count": null,
+          "median_signal_count": null,
+          "relative_to_overall_mean": null
+        },
+        {
+          "offset_sessions": 1,
+          "n_event_windows": 0,
+          "mean_signal_count": null,
+          "median_signal_count": null,
+          "relative_to_overall_mean": null
+        },
+        {
+          "offset_sessions": 2,
+          "n_event_windows": 0,
+          "mean_signal_count": null,
+          "median_signal_count": null,
+          "relative_to_overall_mean": null
+        },
+        {
+          "offset_sessions": 3,
+          "n_event_windows": 0,
+          "mean_signal_count": null,
+          "median_signal_count": null,
+          "relative_to_overall_mean": null
+        }
+      ],
+      "trade_metrics_on_event_day": {
+        "n": 0
+      },
+      "trade_metrics_other_days": {
+        "n": 5846,
+        "win_rate_pct": 50.12,
+        "avg_ret10_pct": 0.443,
+        "median_ret10_pct": 0.067,
+        "p5_plus_pct": 19.71,
+        "p10_plus_pct": 6.26,
+        "profit_factor": 1.201
+      },
+      "yearly": [],
+      "event_dates_top20_by_signal_count": []
+    }
+  }
+}
