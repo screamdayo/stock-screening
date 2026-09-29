@@ -108,7 +108,9 @@ def notify(results, rescue_results=None, primary_results=None):
                 int(bool(r.get("topix_kuitto_caution"))),
                 -int(bool(r.get("ultra_winner"))),
                 -int(bool(r.get("strong_winner"))),
+                -int(bool(r.get("topix_soft_bad_winner"))),
                 -int(bool(r.get("winner_filter"))),
+                -int(bool(r.get("topix_soft_bad_tailwind"))),
                 -int(r.get("runner_score") or 0),
                 abs(r.get("ma5_vs_ma25_pct", float("inf"))),
                 str(r.get("code") or ""),
@@ -165,6 +167,17 @@ def notify(results, rescue_results=None, primary_results=None):
                 detail.append(f"rel20 {r['rel20_vs_topix_pct']:+.2f}%")
             suffix = f" — {' / '.join(detail)}" if detail else ""
             lines.append(f"{winner_prefix}{label}{suffix}{earnings_note}")
+            if r.get("topix_soft_bad_tailwind"):
+                txret = r.get("topix_ret1_pct")
+                txret_text = f"{txret:+.2f}%" if txret is not None else "下落"
+                if r.get("topix_soft_bad_winner"):
+                    lines.append(
+                        f"   ↳ 🌊⭐ **地合い逆行追い風・本命優先**（TOPIX {txret_text} / MA5↓）"
+                    )
+                else:
+                    lines.append(
+                        f"   ↳ 🌊 **地合い逆行追い風**（TOPIX {txret_text} / MA5↓）"
+                    )
             if r.get("topix_kuitto_caution"):
                 lines.append(
                     "   ↳ ⚠️ **原則見送り**（TOPIXくいっと日に大量発生する非本命群。記録は継続）"
@@ -208,12 +221,23 @@ def notify(results, rescue_results=None, primary_results=None):
         topix_active = any(r.get("topix_kuitto_active") for r in results)
         priority_count = sum(1 for r in results if r.get("topix_kuitto_priority"))
         caution_count = sum(1 for r in results if r.get("topix_kuitto_caution"))
+        tailwind_count = sum(1 for r in results if r.get("topix_soft_bad_tailwind"))
+        tailwind_winner_count = sum(1 for r in results if r.get("topix_soft_bad_winner"))
+        tailwind_active = tailwind_count > 0
         if topix_active:
             topix_note = (
                 f"\n🌊 **TOPIXくいっと発動**：🏆204最優先 {priority_count}件 / "
                 f"⚠️非本命・原則見送り {caution_count}件"
             )
             order_note = "\n⭐ **TOPIX最優先204 → 本命群 → 警戒非本命**"
+        elif tailwind_active:
+            txret = next((r.get("topix_ret1_pct") for r in results if r.get("topix_soft_bad_tailwind")), None)
+            txret_text = f"{txret:+.2f}%" if txret is not None else "0〜-0.5%"
+            topix_note = (
+                f"\n🌊 **地合い逆行追い風**：TOPIX {txret_text} / MA5↓ / "
+                f"本命 {tailwind_winner_count}件・全候補 {tailwind_count}件"
+            )
+            order_note = "\n⭐ **超強本命 → 強本命 → 逆行追い風本命 → 本命 → 逆行追い風 → 伸びスコア順**"
         else:
             topix_note = ""
             order_note = "\n⭐ **超強本命 → 強本命 → 本命 → 伸びスコア順**"
