@@ -26,6 +26,7 @@ import download
 import notifier
 import export_docs_prices
 import sell_monitor
+import gakutto_market_rescue_shadow
 import forward_test
 import market_breadth
 import earnings_warning
@@ -75,6 +76,9 @@ def run():
         notifier.notify_sell_signals(sell_alerts)
     else:
         logger.info("売りルール成立なし")
+
+    logger.info("全面安×がくっと影ログ更新中...")
+    gakutto_market_rescue_shadow.update(price_df, sell_alerts, code_to_name)
 
     logger.info("自動スクリーニング中...")
     results = screener_fn(price_df, target_codes)
