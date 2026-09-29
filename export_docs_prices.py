@@ -13,6 +13,7 @@ from datetime import datetime
 import config
 import download
 import winner_tiering
+import topix_kuitto_policy
 from strategies import registry
 from logger import get_logger
 
@@ -166,9 +167,12 @@ def run():
 
     screener_fn = registry.get_latest_screener(config.ACTIVE_STRATEGY)
     gc_screener_fn = registry.get_latest_screener("gc_strong_breakout")
+    kuitto_204_fn = registry.get_latest_screener("kuitto_refined_204")
     results = screener_fn(price_df, target_codes)
     winner_tiering.apply_tiers(results, price_df)
     gc_results = gc_screener_fn(price_df, target_codes)
+    kuitto_204_results = kuitto_204_fn(price_df, target_codes)
+    topix_kuitto_policy.apply(results, price_df, kuitto_204_results)
 
     # 単独エクスポート時もセンサー状態を生成する。
     import pinch_to_chance
