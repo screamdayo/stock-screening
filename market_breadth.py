@@ -34,7 +34,10 @@ def _save_json(path, data):
 
 
 def _candidate_counts(price_df):
-    """Return candidate counts by signal date under two definitions.
+    """Return candidate counts by signal date under three definitions.
+
+    pre_liquidity_count ignores only the 20-day average turnover >= 500m yen
+    filter.  All other production kuitto conditions are unchanged.
 
     production_rule_count reproduces the strategy's date-effective rule: the
     liquidity filter starts on 2026-09-16.
@@ -44,18 +47,28 @@ def _candidate_counts(price_df):
     series used for the breadth correlation analysis.
     """
     target_codes = set(price_df["Code"].astype(str).unique())
-    signals, _ = kuitto_pullback_auto.find_signals(price_df, target_codes)
+    production_signals, _ = kuitto_pullback_auto.find_signals(
+        price_df, target_codes, apply_liquidity=True
+    )
+    raw_signals, _ = kuitto_pullback_auto.find_signals(
+        price_df, target_codes, apply_liquidity=False
+    )
     production = {}
     current = {}
+    pre_liquidity = {}
 
-    for s in signals:
+    for s in production_signals:
         date_str = pd.Timestamp(s["signal_date"]).strftime("%Y-%m-%d")
         production[date_str] = production.get(date_str, 0) + 1
+
+    for s in raw_signals:
+        date_str = pd.Timestamp(s["signal_date"]).strftime("%Y-%m-%d")
+        pre_liquidity[date_str] = pre_liquidity.get(date_str, 0) + 1
         turnover = s.get("avg_turnover_20")
         if turnover is not None and float(turnover) >= kuitto_pullback_auto.AVG_TURNOVER_20_MIN:
             current[date_str] = current.get(date_str, 0) + 1
 
-    return production, current
+    return production, current, pre_liquidity
 
 
 def _correlation_summary(days):
@@ -106,7 +119,7 @@ def update_market_breadth(price_df):
     source["Code"] = source["Code"].astype(str)
     source["Date"] = pd.to_datetime(source["Date"], errors="coerce")
 
-    production_counts, current_counts = _candidate_counts(source)
+    production_counts, current_counts, pre_liquidity_counts = _candidate_counts(source)
 
     df = source[["Code", "Date", "C"]].copy()
     df["C"] = pd.to_numeric(df["C"], errors="coerce")
@@ -144,8 +157,14 @@ def update_market_breadth(price_df):
             "advance_decline_ratio": round(advances / declines, 3) if declines else None,
             "equal_weight_mean_return_pct": round(float(r.mean()), 3),
             "equal_weight_median_return_pct": round(float(r.median()), 3),
+            "pre_liquidity_count": int(pre_liquidity_counts.get(date_str, 0)),
             "production_rule_count": int(production_counts.get(date_str, 0)),
             "current_rule_count": int(current_counts.get(date_str, 0)),
+            "liquidity_excluded_count": max(
+                0,
+                int(pre_liquidity_counts.get(date_str, 0))
+                - int(current_counts.get(date_str, 0)),
+            ),
         })
 
     payload = {
@@ -154,8 +173,8 @@ def update_market_breadth(price_df):
         "universe": "production Prime universe after excluded-code filtering",
         "definition": "today close versus previous available close for each comparable stock",
         "candidate_count_definition": (
-            "current_rule_count applies the 2026-09-16 full kuitto rule including "
-            "20-day average turnover >= 500m yen to every historical date; "
+            "pre_liquidity_count ignores only the 20-day average turnover >= 500m yen filter; "
+            "current_rule_count applies that liquidity filter to every historical date; "
             "production_rule_count preserves the date-effective production rule"
         ),
         "days": days,
@@ -163,9 +182,13 @@ def update_market_breadth(price_df):
         "updated_through": days[-1]["date"] if days else None,
     }
     _save_json(LOG_PATH, payload)
+    latest = days[-1] if days else None
     logger.info(
-        "Market breadth/candidate log updated: %s days (through %s), corr=%s",
+        "Market breadth/candidate log updated: %s days (through %s), corr=%s, pre=%s, post=%s",
         len(days),
         payload.get("updated_through"),
         payload["analysis"].get("pearson_candidate_vs_advance_pct"),
+        latest.get("pre_liquidity_count") if latest else None,
+        latest.get("current_rule_count") if latest else None,
     )
+    return latest
