@@ -81,7 +81,7 @@ def _prepare(group):
     return g
 
 
-def _features(g, idx):
+def _features(g, idx, apply_liquidity=True):
     if idx < MA_LONG or idx >= len(g):
         return None
 
@@ -132,7 +132,7 @@ def _features(g, idx):
 
     avg_turnover_20 = r["AVG_TURNOVER_20"]
     signal_date = pd.Timestamp(g["Date"].iloc[idx])
-    if signal_date >= LIQUIDITY_EFFECTIVE_DATE:
+    if apply_liquidity and signal_date >= LIQUIDITY_EFFECTIVE_DATE:
         if pd.isna(avg_turnover_20) or float(avg_turnover_20) < AVG_TURNOVER_20_MIN:
             return None
 
@@ -164,7 +164,7 @@ def _features(g, idx):
     }
 
 
-def find_signals(price_df, target_codes):
+def find_signals(price_df, target_codes, apply_liquidity=True):
     signals = []
     price_data_by_code = {}
     df = price_df[price_df["Code"].isin(target_codes)].copy()
@@ -177,7 +177,7 @@ def find_signals(price_df, target_codes):
             continue
         price_data_by_code[code] = g
         for idx in range(MA_LONG, len(g)):
-            f = _features(g, idx)
+            f = _features(g, idx, apply_liquidity=apply_liquidity)
             if not f:
                 continue
             signals.append({
@@ -196,7 +196,7 @@ def find_signals(price_df, target_codes):
     return signals, price_data_by_code
 
 
-def find_latest_signals(price_df, target_codes):
+def find_latest_signals(price_df, target_codes, apply_liquidity=True):
     results = []
     df = price_df[price_df["Code"].isin(target_codes)].copy()
     if df.empty:
@@ -210,7 +210,7 @@ def find_latest_signals(price_df, target_codes):
         if len(g) <= MA_LONG:
             continue
         idx = len(g) - 1
-        f = _features(g, idx)
+        f = _features(g, idx, apply_liquidity=apply_liquidity)
         if not f:
             continue
         r = g.iloc[idx]
