@@ -93,7 +93,27 @@ def _fmt_yen(price):
     return f"{p:,.1f}円"
 
 
-def notify(results, rescue_results=None, primary_results=None):
+def _candidate_count_note(candidate_stats, displayed_count):
+    if not candidate_stats:
+        return ""
+    pre = int(candidate_stats.get("pre_liquidity_count") or 0)
+    post = int(candidate_stats.get("current_rule_count") or displayed_count or 0)
+    excluded = max(0, pre - post)
+    if pre == 1:
+        state = " / 🧍 孤立くいっと"
+    elif 2 <= pre <= 5:
+        state = " / 🟢 基礎シグナル2〜5件"
+    elif pre >= 6:
+        state = " / ⚠️ 基礎シグナル大量発生"
+    else:
+        state = ""
+    return (
+        f"\n🔎 **基礎シグナル {pre}件 → 5億円フィルター後 {post}件 "
+        f"（除外 {excluded}件）**{state}"
+    )
+
+
+def notify(results, rescue_results=None, primary_results=None, candidate_stats=None):
     today = datetime.now().strftime("%Y/%m/%d")
     rescue_results = rescue_results or []
     primary_results = primary_results or []
@@ -241,12 +261,14 @@ def notify(results, rescue_results=None, primary_results=None):
         else:
             topix_note = ""
             order_note = "\n⭐ **超強本命 → 強本命 → 本命 → 伸びスコア順**"
+        count_note = _candidate_count_note(candidate_stats, len(results))
         msg = (
             f"📊 **くいっと押し目版 {today}**\n"
             f"🔥🔥 **超強本命 {ultra_count}件** / 🔥 **強本命 {strong_count}件** / ⭐ **本命 {winner_count}件**"
             f"{topix_note}\n"
             f"超強本命：本命 + 個別MA25傾き≥-1.5% + TOPIX悪ゾーン除外 + rel20 0〜+4%除外\n"
-            f"🤖 **目視判定なし / 出来高1.25倍以上 / 自動通過 {len(results)}件**\n"
+            f"🤖 **目視判定なし / 出来高1.25倍以上 / 自動通過 {len(results)}件**"
+            f"{count_note}\n"
             f"🌅 **翌朝ルール：伸びスコア別ギャップ上限（0/4=制限なし・1/4=0%・2/4=+0.25%・3/4=0%・4/4=+1.0%）**\n"
             f"🧪 **救済条件は買い判定に使わず、ATR≥3.10%・DD20≤-6.10%・gap≤+0.75%を影で記録**\n"
             f"💴 **注文価格は呼値に合わせて安全側へ切り下げ表示**\n"
@@ -259,9 +281,11 @@ def notify(results, rescue_results=None, primary_results=None):
         return
 
     if not results and not rescue_results and not primary_results:
+        count_note = _candidate_count_note(candidate_stats, 0)
         _post(
             f"📊 **くいっと押し目版 {today}**\n"
-            f"🤖 目視判定なし / 出来高1.25倍以上 / 本日の該当銘柄なし\n{SCREENING_VIEW_URL}"
+            f"🤖 目視判定なし / 出来高1.25倍以上 / 本日の該当銘柄なし"
+            f"{count_note}\n{SCREENING_VIEW_URL}"
         )
         return
 
