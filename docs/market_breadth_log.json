@@ -1152,16 +1152,30 @@
       "equal_weight_median_return_pct": -1.922,
       "production_rule_count": 0,
       "current_rule_count": 0
+    },
+    {
+      "date": "2026-09-30",
+      "advances": 1125,
+      "declines": 366,
+      "unchanged": 53,
+      "comparable": 1544,
+      "advance_pct": 72.86,
+      "decline_pct": 23.7,
+      "advance_decline_ratio": 3.074,
+      "equal_weight_mean_return_pct": 0.84,
+      "equal_weight_median_return_pct": 0.691,
+      "production_rule_count": 1,
+      "current_rule_count": 1
     }
   ],
   "analysis": {
-    "n_days": 82,
-    "pearson_candidate_vs_advance_pct": 0.2,
+    "n_days": 83,
+    "pearson_candidate_vs_advance_pct": 0.197,
     "days_with_5plus_candidates": 4,
     "avg_advance_pct_on_5plus_days": 41.94,
-    "avg_advance_pct_on_under5_days": 51.24,
-    "avg_candidates_when_advance_pct_60plus": 1.85,
+    "avg_advance_pct_on_under5_days": 51.51,
+    "avg_candidates_when_advance_pct_60plus": 1.82,
     "avg_candidates_when_advance_pct_under40": 1.24
   },
-  "updated_through": "2026-09-29"
+  "updated_through": "2026-09-30"
 }

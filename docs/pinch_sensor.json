@@ -1,19 +1,19 @@
 {
   "active": false,
-  "signal_date": "2026-09-29T00:00:00",
+  "signal_date": "2026-09-30T00:00:00",
   "universe_n": 1544,
   "coarse_reversal_count": 4,
   "reversal_rate_pct": 0.259,
   "reversal_rate_threshold_pct": 1.0,
-  "topix_return_pct": -1.723,
+  "topix_return_pct": 1.671,
   "topix_return_threshold_pct": 3.0,
-  "topix_low": 4024.55,
-  "topix_prev_low": 4112.0,
-  "topix_low_up": false,
+  "topix_low": 4052.89,
+  "topix_prev_low": 4024.55,
+  "topix_low_up": true,
   "market_conditions": {
     "reversal_rate_ok": false,
     "topix_return_ok": false,
-    "topix_low_up_ok": false
+    "topix_low_up_ok": true
   },
   "entry_rule": "翌営業日寄り",
   "exit_rule": "41営業日目の寄り",
@@ -39,9 +39,9 @@
     "pinch_date": null,
     "business_days_since_selling": null,
     "confirmed_after_business_days": null,
-    "updated_through": "2026-09-29",
+    "updated_through": "2026-09-30",
     "max_wait_business_days": 30,
     "label": "待機中"
   },
-  "generated_at": "2026-09-29T14:07:25"
+  "generated_at": "2026-09-30T07:25:11"
 }

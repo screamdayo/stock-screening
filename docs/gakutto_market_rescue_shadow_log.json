@@ -28,9 +28,9 @@
       "declines": 1350,
       "comparable": 1544,
       "condition_hit": true,
-      "normal_exit_date": null,
-      "normal_exit_open": null,
-      "normal_exit_trade_return_pct": null,
+      "normal_exit_date": "2026-09-30",
+      "normal_exit_open": 1360.0,
+      "normal_exit_trade_return_pct": -1.163,
       "shadow_delays": {}
     },
     {
@@ -48,9 +48,9 @@
       "declines": 1350,
       "comparable": 1544,
       "condition_hit": true,
-      "normal_exit_date": null,
-      "normal_exit_open": null,
-      "normal_exit_trade_return_pct": null,
+      "normal_exit_date": "2026-09-30",
+      "normal_exit_open": 3412.0,
+      "normal_exit_trade_return_pct": 4.024,
       "shadow_delays": {}
     },
     {
@@ -68,29 +68,9 @@
       "declines": 1350,
       "comparable": 1544,
       "condition_hit": true,
-      "normal_exit_date": null,
-      "normal_exit_open": null,
-      "normal_exit_trade_return_pct": null,
-      "shadow_delays": {}
-    },
-    {
-      "code": "7818",
-      "name": "トランザクション",
-      "buy_date": "2026-09-11",
-      "buy_price": 1160,
-      "signal_date": "2026-09-29",
-      "signal_close": 1203,
-      "hold_days_at_signal": 10,
-      "reason": "strict_gakutto",
-      "production_action": "翌営業日始値で売却",
-      "topix_return_pct": -1.723,
-      "decline_pct": 87.44,
-      "declines": 1350,
-      "comparable": 1544,
-      "condition_hit": true,
-      "normal_exit_date": null,
-      "normal_exit_open": null,
-      "normal_exit_trade_return_pct": null,
+      "normal_exit_date": "2026-09-30",
+      "normal_exit_open": 3838.0,
+      "normal_exit_trade_return_pct": 7.357,
       "shadow_delays": {}
     },
     {
@@ -108,11 +88,31 @@
       "declines": 1350,
       "comparable": 1544,
       "condition_hit": true,
-      "normal_exit_date": null,
-      "normal_exit_open": null,
-      "normal_exit_trade_return_pct": null,
+      "normal_exit_date": "2026-09-30",
+      "normal_exit_open": 4065.0,
+      "normal_exit_trade_return_pct": -4.127,
+      "shadow_delays": {}
+    },
+    {
+      "code": "7818",
+      "name": "トランザクション",
+      "buy_date": "2026-09-11",
+      "buy_price": 1160,
+      "signal_date": "2026-09-29",
+      "signal_close": 1203,
+      "hold_days_at_signal": 10,
+      "reason": "strict_gakutto",
+      "production_action": "翌営業日始値で売却",
+      "topix_return_pct": -1.723,
+      "decline_pct": 87.44,
+      "declines": 1350,
+      "comparable": 1544,
+      "condition_hit": true,
+      "normal_exit_date": "2026-09-30",
+      "normal_exit_open": 1203.0,
+      "normal_exit_trade_return_pct": 3.707,
       "shadow_delays": {}
     }
   ],
-  "updated_through": "2026-09-29"
+  "updated_through": "2026-09-30"
 }
