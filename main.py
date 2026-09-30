@@ -117,7 +117,7 @@ def run():
     logger.info(f"くいっと59（記録のみ）: {len(kuitto_59_results)}件")
 
     logger.info("市場地合いログ更新中...")
-    market_breadth.update_market_breadth(price_df)
+    candidate_stats = market_breadth.update_market_breadth(price_df)
 
     logger.info("売り尽くしセンサー判定中...")
     selling_sensor = selling_climax.evaluate(price_df, target_codes)
@@ -163,7 +163,7 @@ def run():
     )
 
     logger.info("Discord通知中...")
-    notifier.notify(results)
+    notifier.notify(results, candidate_stats=candidate_stats)
     notifier.notify_gc_strong_breakout(gc_results)
     notifier.notify_kuitto_variants(kuitto_204_results, kuitto_59_results)
     notifier.notify_selling_climax(selling_sensor)
