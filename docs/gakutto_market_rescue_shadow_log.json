@@ -31,7 +31,14 @@
       "normal_exit_date": "2026-09-30",
       "normal_exit_open": 1360.0,
       "normal_exit_trade_return_pct": -1.163,
-      "shadow_delays": {}
+      "shadow_delays": {
+        "1": {
+          "date": "2026-10-01",
+          "open": 1369.0,
+          "edge_vs_normal_exit_pct": 0.662,
+          "trade_return_pct": -0.509
+        }
+      }
     },
     {
       "code": "3774",
@@ -51,7 +58,14 @@
       "normal_exit_date": "2026-09-30",
       "normal_exit_open": 3412.0,
       "normal_exit_trade_return_pct": 4.024,
-      "shadow_delays": {}
+      "shadow_delays": {
+        "1": {
+          "date": "2026-10-01",
+          "open": 3431.0,
+          "edge_vs_normal_exit_pct": 0.557,
+          "trade_return_pct": 4.604
+        }
+      }
     },
     {
       "code": "5105",
@@ -71,7 +85,14 @@
       "normal_exit_date": "2026-09-30",
       "normal_exit_open": 3838.0,
       "normal_exit_trade_return_pct": 7.357,
-      "shadow_delays": {}
+      "shadow_delays": {
+        "1": {
+          "date": "2026-10-01",
+          "open": 3861.0,
+          "edge_vs_normal_exit_pct": 0.599,
+          "trade_return_pct": 8.0
+        }
+      }
     },
     {
       "code": "5715",
@@ -91,7 +112,14 @@
       "normal_exit_date": "2026-09-30",
       "normal_exit_open": 4065.0,
       "normal_exit_trade_return_pct": -4.127,
-      "shadow_delays": {}
+      "shadow_delays": {
+        "1": {
+          "date": "2026-10-01",
+          "open": 4100.0,
+          "edge_vs_normal_exit_pct": 0.861,
+          "trade_return_pct": -3.302
+        }
+      }
     },
     {
       "code": "7818",
@@ -111,8 +139,15 @@
       "normal_exit_date": "2026-09-30",
       "normal_exit_open": 1203.0,
       "normal_exit_trade_return_pct": 3.707,
-      "shadow_delays": {}
+      "shadow_delays": {
+        "1": {
+          "date": "2026-10-01",
+          "open": 1190.0,
+          "edge_vs_normal_exit_pct": -1.081,
+          "trade_return_pct": 2.586
+        }
+      }
     }
   ],
-  "updated_through": "2026-09-30"
+  "updated_through": "2026-10-01"
 }
