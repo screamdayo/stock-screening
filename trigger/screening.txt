@@ -1,2 +1,1 @@
-2026-09-30 16:xx JST manual file-trigger test
-2026-09-30 candidate-count refresh
+2026-10-01 17:04 JST manual ChatGPT trigger
