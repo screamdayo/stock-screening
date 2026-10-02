@@ -130,12 +130,12 @@
       "return_5d_pct": null,
       "return_10d_pct": null,
       "return_16d_pct": null,
-      "mfe_16d_pct": 0.11,
+      "mfe_16d_pct": 0.826,
       "mae_16d_pct": -3.526,
       "exit_date": null,
       "exit_price": null,
       "exit_pnl_pct": null
     }
   ],
-  "updated_at": "2026-10-01"
+  "updated_at": "2026-10-02"
 }
