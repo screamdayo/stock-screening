@@ -37,7 +37,7 @@ jobs:
           if not isinstance(incoming, list):
               raise SystemExit('履歴データが配列ではありません')
 
-          allowed_ratings = {'A', 'B', 'skip'}
+          allowed_ratings = {'A', 'B', 'skip', 'watch'}
           cleaned = []
           for x in incoming:
               if not isinstance(x, dict):
