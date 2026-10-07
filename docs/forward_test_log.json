@@ -6621,7 +6621,7 @@
       "shadow_rescue_hit": false,
       "ma25_rank": 2,
       "rule_selected": true,
-      "actual_bought": null,
+      "actual_bought": true,
       "entry_date": "2026-10-07",
       "entry_open": 8345.0,
       "next_open_gap_pct": -0.867,
