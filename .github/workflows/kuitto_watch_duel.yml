@@ -1,0 +1,18 @@
+name: Kuitto Watch Duel
+on:
+  push:
+    paths: ['scripts/analyze_kuitto_watch_duel.py']
+  workflow_dispatch:
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - run: pip install pandas pyarrow numpy
+      - run: python scripts/analyze_kuitto_watch_duel.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: kuitto-watch-duel
+          path: results/kuitto_watch_duel.json
