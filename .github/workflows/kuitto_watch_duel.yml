@@ -3,8 +3,11 @@ on:
   push:
     paths: ['scripts/analyze_kuitto_watch_duel.py', '.github/workflows/kuitto_watch_duel.yml']
   workflow_dispatch:
+  issues:
+    types: [opened]
 jobs:
   run:
+    if: github.event_name != 'issues' || startsWith(github.event.issue.title, '[kuitto-watch-duel]')
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
