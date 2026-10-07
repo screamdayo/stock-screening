@@ -52,11 +52,21 @@ d=load(); out={"normal":[],"watch1":[],"watch2":[]}
 features=[]
 for code,z in d.groupby("Code"):
     g=prep(z)
-    for i in range(25,len(g)-13):
-        if normal(g,i):
+    bull=(g.C/g.O-1)*100
+    gap=(g.MA5/g.MA25-1)*100
+    dec=(g.MA5.shift(1)/g.MA5.shift(6)-1)*100
+    quality=bull.between(1.5,3.5) & gap.between(-5,0) & dec.between(-5.5,-2) & ((g.C/g.MA5-1)*100<=4) & (g.ATR14>=3.4) & (g.DD20<=-5.5)
+    down=g.MA5<=g.MA5.shift(1)
+    prior=down.shift(1,fill_value=False) & down.shift(2,fill_value=False)
+    normal_mask=quality & prior & (g.MA5>g.MA5.shift(1)) & (g.Vo/g.Vo.shift(1)>=1.25)
+    seed_mask=quality & prior & down
+    candidates=np.flatnonzero((normal_mask | seed_mask).to_numpy())
+    for i in candidates:
+        if i<25 or i>=len(g)-13: continue
+        if normal_mask.iloc[i]:
             e=i+1; x=i+11
             out["normal"].append({"year":g.Date.iloc[i].year,"ret10":(g.O.iloc[x]/g.O.iloc[e]-1)*100})
-        if seed(g,i):
+        if seed_mask.iloc[i]:
             for lag,key in [(1,"watch1"),(2,"watch2")]:
                 j=i+lag
                 if j>=len(g)-11: continue
