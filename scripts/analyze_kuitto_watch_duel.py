@@ -22,7 +22,7 @@ def prep(g):
     g=g.dropna(subset=["O","H","L","C"]).copy().reset_index(drop=True)
     g["MA5"]=g.C.rolling(5).mean(); g["MA25"]=g.C.rolling(25).mean()
     g["ATR14"]=pd.concat([(g.H-g.L),(g.H-g.C.shift()).abs(),(g.L-g.C.shift()).abs()],axis=1).max(axis=1).rolling(14).mean()/g.C*100
-    g["DD20"]=g.C/g.C.rolling(20).max()*100-100
+    g["DD20"]=g.C/g.C.rolling(20).max()*100-100\n    g["MA25S5"]=(g.MA25/g.MA25.shift(5)-1)*100\n    g["RET20"]=(g.C/g.C.shift(20)-1)*100
     return g
 
 def common(g,i):
@@ -46,7 +46,7 @@ def metric(rows):
     x=pd.Series([r["ret10"] for r in rows]); gp=x[x>0].sum(); gl=-x[x<0].sum()
     return {"n":len(x),"win":round((x>0).mean()*100,2),"avg":round(x.mean(),3),"med":round(x.median(),3),"pf":round(gp/gl,3) if gl else None,"p5":round((x>=5).mean()*100,2),"p10":round((x>=10).mean()*100,2)}
 
-d=load(); out={"normal":[],"watch1":[],"watch2":[]}
+d=load(); out={"normal":[],"watch1":[],"watch2":[]}\nfeatures=[]
 for code,z in d.groupby("Code"):
     g=prep(z)
     for i in range(25,len(g)-13):
@@ -59,7 +59,7 @@ for code,z in d.groupby("Code"):
                 if j>=len(g)-11: continue
                 if g.MA5.iloc[j]>g.MA5.iloc[j-1] and all(g.MA5.iloc[k]<=g.MA5.iloc[k-1] for k in range(i+1,j)):
                     e=j+1; x=e+10
-                    out[key].append({"year":g.Date.iloc[j].year,"ret10":(g.O.iloc[x]/g.O.iloc[e]-1)*100})
+                    ret=(g.O.iloc[x]/g.O.iloc[e]-1)*100\n                    out[key].append({"year":g.Date.iloc[j].year,"ret10":ret})\n                    if key=="watch1":\n                        features.append({"ret10":ret,"bull":(g.C.iloc[i]/g.O.iloc[i]-1)*100,"vol_seed":g.Vo.iloc[i]/g.Vo.iloc[i-1],"vol_confirm":g.Vo.iloc[j]/g.Vo.iloc[j-1],"ma5_slope_seed":(g.MA5.iloc[i]/g.MA5.iloc[i-1]-1)*100,"ma5_slope_confirm":(g.MA5.iloc[j]/g.MA5.iloc[j-1]-1)*100,"dd20":g.DD20.iloc[i],"ma25s5":g.MA25S5.iloc[i],"ret20":g.RET20.iloc[i],"close_ma5":(g.C.iloc[i]/g.MA5.iloc[i]-1)*100})
                     break
 res={}
 for k,v in out.items():
