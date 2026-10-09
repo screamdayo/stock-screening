@@ -23,7 +23,7 @@
       "return_10d_pct": -7.075,
       "return_16d_pct": null,
       "mfe_16d_pct": 0.472,
-      "mae_16d_pct": -9.67,
+      "mae_16d_pct": -11.557,
       "exit_date": null,
       "exit_price": null,
       "exit_pnl_pct": null
@@ -77,7 +77,7 @@
       "return_10d_pct": -7.075,
       "return_16d_pct": null,
       "mfe_16d_pct": 0.472,
-      "mae_16d_pct": -9.67,
+      "mae_16d_pct": -11.557,
       "exit_date": null,
       "exit_price": null,
       "exit_pnl_pct": null
@@ -137,5 +137,5 @@
       "exit_pnl_pct": null
     }
   ],
-  "updated_at": "2026-10-08"
+  "updated_at": "2026-10-09"
 }

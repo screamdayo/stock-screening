@@ -1428,16 +1428,32 @@
       "production_rule_count": 0,
       "current_rule_count": 0,
       "liquidity_excluded_count": 3
+    },
+    {
+      "date": "2026-10-09",
+      "advances": 1193,
+      "declines": 328,
+      "unchanged": 25,
+      "comparable": 1546,
+      "advance_pct": 77.17,
+      "decline_pct": 21.22,
+      "advance_decline_ratio": 3.637,
+      "equal_weight_mean_return_pct": 0.953,
+      "equal_weight_median_return_pct": 0.794,
+      "pre_liquidity_count": 12,
+      "production_rule_count": 4,
+      "current_rule_count": 4,
+      "liquidity_excluded_count": 8
     }
   ],
   "analysis": {
-    "n_days": 89,
-    "pearson_candidate_vs_advance_pct": 0.216,
+    "n_days": 90,
+    "pearson_candidate_vs_advance_pct": 0.237,
     "days_with_5plus_candidates": 4,
     "avg_advance_pct_on_5plus_days": 41.94,
-    "avg_advance_pct_on_under5_days": 50.78,
-    "avg_candidates_when_advance_pct_60plus": 1.86,
+    "avg_advance_pct_on_under5_days": 51.09,
+    "avg_candidates_when_advance_pct_60plus": 1.93,
     "avg_candidates_when_advance_pct_under40": 1.21
   },
-  "updated_through": "2026-10-08"
+  "updated_through": "2026-10-09"
 }
