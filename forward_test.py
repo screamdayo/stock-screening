@@ -12,12 +12,15 @@ from pathlib import Path
 import pandas as pd
 
 from logger import get_logger
+from kuitto_order_policy import SCORE_STOP_LOSS_PCT, preset_stop
 
 logger = get_logger(__name__)
 
 FORWARD_TEST_START = pd.Timestamp("2026-09-09")
-RULE_EFFECTIVE_FROM = pd.Timestamp("2026-09-27")
-RULE_VERSION = "kuitto_v3_2026-09-27_score_gap_shadow_rescue"
+RULE_EFFECTIVE_FROM = pd.Timestamp("2026-10-14")
+PREVIOUS_SCORE_RULE_VERSION = "kuitto_v3_2026-09-27_score_gap_shadow_rescue"
+RULE_VERSION = "kuitto_v4_2026-10-14_preset_stop_score0_5_others7"
+SCORE_RULE_VERSIONS = (PREVIOUS_SCORE_RULE_VERSION, RULE_VERSION)
 LOG_PATH = Path("docs/forward_test_log.json")
 RULES_PATH = Path("docs/forward_test_rules.json")
 HOLDINGS_PATH = Path("holdings.json")
@@ -69,7 +72,7 @@ PINCH_RULE_SNAPSHOT = {
 
 RULE_SNAPSHOT = {
     "version": RULE_VERSION,
-    "effective_from": "2026-09-27",
+    "effective_from": "2026-10-14",
     "entry": {
         "signal": "kuitto_pullback_auto base shape",
         "volume_ratio_min": VOLUME_RATIO_MIN,
@@ -87,7 +90,9 @@ RULE_SNAPSHOT = {
         "sector_limit": None,
     },
     "exit": {
-        "stop_loss_pct": STOP_LOSS_PCT,
+        "stop_loss_pct_by_runner_score": SCORE_STOP_LOSS_PCT,
+        "stop_reference": "score 0: signal close; scores 1-4: tick-floored entry limit",
+        "stop_rounding": "floor to valid tick before entry; no adjustment to actual fill",
         "stop_fill": "if open <= stop: open, elif low <= stop: stop price",
         "gakutto": "strict gakutto detected at close -> next trading-day open",
         "max_hold_days": MAX_HOLD_DAYS,
@@ -213,7 +218,7 @@ def _update_future(row, g, signal_idx):
     row["entry_date"] = g.Date.iloc[ent].strftime("%Y-%m-%d")
     row["entry_open"] = round(entry, 3)
     row["next_open_gap_pct"] = round((entry / signal_close - 1) * 100, 3)
-    if row.get("rule_version") == RULE_VERSION:
+    if row.get("rule_version") in SCORE_RULE_VERSIONS:
         score = int(row.get("runner_score") or 0)
         cap = SCORE_GAP_CAP_PCT.get(score, LEGACY_MAX_ENTRY_GAP_PCT)
         row["gap_cap_pct"] = cap
@@ -247,7 +252,14 @@ def _update_future(row, g, signal_idx):
     if row.get("exit_date"):
         return
 
-    stop = entry * (1 - STOP_LOSS_PCT / 100)
+    if row.get("rule_version") == RULE_VERSION:
+        reference, stop_pct, stop = preset_stop(signal_close, int(row.get("runner_score") or 0))
+        row["stop_reference_price"] = reference
+        row["stop_loss_pct"] = stop_pct
+        row["stop_price"] = stop
+        row["effective_stop_from_entry_pct"] = _pct(stop, entry)
+    else:
+        stop = entry * (1 - STOP_LOSS_PCT / 100)
     pending_gakutto = False
     max_j = min(ent + MAX_HOLD_DAYS - 1, available_end)
 
@@ -280,7 +292,7 @@ def _update_future(row, g, signal_idx):
                 "exit_date": g.Date.iloc[j].strftime("%Y-%m-%d"),
                 "exit_price": round(stop, 3),
                 "exit_reason": "stop_loss",
-                "exit_pnl_pct": round(-STOP_LOSS_PCT, 3),
+                "exit_pnl_pct": _pct(stop, entry),
                 "hold_days": j - ent + 1,
             })
             return
@@ -458,7 +470,7 @@ def _append_selling_rows(rows, keyed, selling_sensor, code_to_name):
 def _row_passes_entry_filters(row):
     if not row.get("volume_pass") or not row.get("gap_pass"):
         return False
-    if row.get("rule_version") == RULE_VERSION:
+    if row.get("rule_version") in SCORE_RULE_VERSIONS:
         return bool(row.get("liquidity_pass"))
     return True
 
@@ -521,7 +533,7 @@ def update_forward_test(price_df, code_to_name=None, gc_results=None, pinch_sens
     for code, group in price_df.groupby("Code"):
         groups[str(code)] = _prepare(group)
 
-    # New rule version begins 2026-09-16; older rows are preserved unchanged.
+    # Only append the new version from its effective date; preserve older rows.
     for code, g in groups.items():
         for i in range(25, len(g)):
             signal_date = g.Date.iloc[i]

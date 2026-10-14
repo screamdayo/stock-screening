@@ -10,6 +10,7 @@ from datetime import datetime
 
 import config
 from logger import get_logger
+from kuitto_order_policy import preset_stop
 
 logger = get_logger(__name__)
 
@@ -21,7 +22,6 @@ SCORE_GAP_CAP_PCT = {0: None, 1: 0.0, 2: 0.25, 3: 0.0, 4: 1.0}
 RESCUE_SHADOW_ATR14_MIN = 3.10
 RESCUE_SHADOW_DD20_MAX = -6.10
 RESCUE_SHADOW_GAP_MAX_PCT = 0.75
-STOP_LOSS_PCT = 5.0
 
 def _entry_gap_cap_pct(score):
     try:
@@ -209,23 +209,22 @@ def notify(results, rescue_results=None, primary_results=None, candidate_stats=N
                 cap_pct = _entry_gap_cap_pct(score)
                 if cap_pct is None:
                     lines.append("   ↳ 翌朝 **ギャップ制限なしで寄り買い候補**")
-                    stop_ref = _floor_to_valid_tick(float(close) * (1 - STOP_LOSS_PCT / 100))
+                    _, stop_pct, stop_ref = preset_stop(close, score)
                     lines.append(
-                        f"   🛑 損切り **実際の買値 × 0.95** "
-                        f"（前日終値基準の参考値 **{_fmt_yen(stop_ref)}**）"
+                        f"   🛑 事前設定の損切り **{_fmt_yen(stop_ref)}** "
+                        f"（score 0：前日終値の -{stop_pct:.0f}%）"
                     )
                 else:
                     theoretical_max_open = float(close) * (1 + cap_pct / 100)
                     max_open = _floor_to_valid_tick(theoretical_max_open)
-                    theoretical_stop = max_open * (1 - STOP_LOSS_PCT / 100)
-                    stop_at_max_open = _floor_to_valid_tick(theoretical_stop)
+                    _, stop_pct, stop_at_max_open = preset_stop(close, score)
                     lines.append(
                         f"   ↳ 翌朝寄指 **{_fmt_yen(max_open)}以下なら買い** / 超えたら見送り "
                         f"（score {score}/4 上限 +{cap_pct:.2f}%）"
                     )
                     lines.append(
-                        f"   🛑 損切り **実際の買値 × 0.95** "
-                        f"（参考：寄指上限で買った場合 **{_fmt_yen(stop_at_max_open)}**）"
+                        f"   🛑 事前設定の損切り **{_fmt_yen(stop_at_max_open)}** "
+                        f"（寄指上限の -{stop_pct:.0f}% / 約定後の修正不要）"
                     )
                     if _is_rescue_shadow(r):
                         shadow_theoretical = float(close) * (1 + RESCUE_SHADOW_GAP_MAX_PCT / 100)
@@ -272,7 +271,7 @@ def notify(results, rescue_results=None, primary_results=None, candidate_stats=N
             f"🌅 **翌朝ルール：伸びスコア別ギャップ上限（0/4=制限なし・1/4=0%・2/4=+0.25%・3/4=0%・4/4=+1.0%）**\n"
             f"🧪 **救済条件は買い判定に使わず、ATR≥3.10%・DD20≤-6.10%・gap≤+0.75%を影で記録**\n"
             f"💴 **注文価格は呼値に合わせて安全側へ切り下げ表示**\n"
-            f"🛑 **損切り：実際の買値から -{STOP_LOSS_PCT:.0f}%**"
+            f"🛑 **事前設定の損切り：score 0＝前日終値 -5% / score 1〜4＝寄指上限 -7%**"
             f"{order_note}\n"
             + "\n".join(lines)
             + f"\n\n📈 **チャート**\n{SCREENING_VIEW_URL}"
