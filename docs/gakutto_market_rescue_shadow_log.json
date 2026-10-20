@@ -237,7 +237,27 @@
           "trade_return_pct": 4.655
         }
       }
+    },
+    {
+      "code": "5715",
+      "name": "古河機械金属",
+      "buy_date": "2026-09-24",
+      "buy_price": 4240.0,
+      "signal_date": "2026-10-20",
+      "signal_close": 3645.0,
+      "hold_days_at_signal": 18,
+      "reason": "strict_gakutto",
+      "production_action": "翌営業日始値で売却",
+      "topix_return_pct": -1.433,
+      "decline_pct": 76.083,
+      "declines": 1177,
+      "comparable": 1547,
+      "condition_hit": true,
+      "normal_exit_date": null,
+      "normal_exit_open": null,
+      "normal_exit_trade_return_pct": null,
+      "shadow_delays": {}
     }
   ],
-  "updated_through": "2026-10-15"
+  "updated_through": "2026-10-20"
 }
