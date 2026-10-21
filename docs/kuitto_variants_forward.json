@@ -154,15 +154,15 @@
       "ma25_slope5_pct": 0.098,
       "entry_date": "2026-10-14",
       "entry_open": 1393.0,
-      "return_5d_pct": null,
+      "return_5d_pct": 0.718,
       "return_10d_pct": null,
       "return_16d_pct": null,
-      "mfe_16d_pct": 3.877,
+      "mfe_16d_pct": 4.164,
       "mae_16d_pct": -4.451,
       "exit_date": null,
       "exit_price": null,
       "exit_pnl_pct": null
     }
   ],
-  "updated_at": "2026-10-20"
+  "updated_at": "2026-10-21"
 }
