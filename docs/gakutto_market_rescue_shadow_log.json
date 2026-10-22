@@ -256,8 +256,15 @@
       "normal_exit_date": "2026-10-21",
       "normal_exit_open": 3735.0,
       "normal_exit_trade_return_pct": -11.91,
-      "shadow_delays": {}
+      "shadow_delays": {
+        "1": {
+          "date": "2026-10-22",
+          "open": 3700.0,
+          "edge_vs_normal_exit_pct": -0.937,
+          "trade_return_pct": -12.736
+        }
+      }
     }
   ],
-  "updated_through": "2026-10-21"
+  "updated_through": "2026-10-22"
 }
