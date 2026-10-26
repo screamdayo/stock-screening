@@ -129,12 +129,12 @@
       "entry_open": 3630.0,
       "return_5d_pct": 2.672,
       "return_10d_pct": -13.636,
-      "return_16d_pct": null,
+      "return_16d_pct": -22.865,
       "mfe_16d_pct": 9.394,
       "mae_16d_pct": -25.813,
-      "exit_date": null,
-      "exit_price": null,
-      "exit_pnl_pct": null
+      "exit_date": "2026-10-26",
+      "exit_price": 2800.0,
+      "exit_pnl_pct": -22.865
     },
     {
       "strategy": "kuitto_refined_204",
@@ -164,5 +164,5 @@
       "exit_pnl_pct": null
     }
   ],
-  "updated_at": "2026-10-23"
+  "updated_at": "2026-10-26"
 }
