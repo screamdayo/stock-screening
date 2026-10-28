@@ -155,7 +155,7 @@
       "entry_date": "2026-10-14",
       "entry_open": 1393.0,
       "return_5d_pct": 0.718,
-      "return_10d_pct": null,
+      "return_10d_pct": 3.733,
       "return_16d_pct": null,
       "mfe_16d_pct": 7.322,
       "mae_16d_pct": -4.451,
@@ -179,17 +179,17 @@
       "atr14_pct": 4.251,
       "dd20_pct": -5.756,
       "ma25_slope5_pct": 1.2,
-      "entry_date": null,
-      "entry_open": null,
+      "entry_date": "2026-10-28",
+      "entry_open": 3590.0,
       "return_5d_pct": null,
       "return_10d_pct": null,
       "return_16d_pct": null,
-      "mfe_16d_pct": null,
-      "mae_16d_pct": null,
+      "mfe_16d_pct": 1.811,
+      "mae_16d_pct": -1.532,
       "exit_date": null,
       "exit_price": null,
       "exit_pnl_pct": null
     }
   ],
-  "updated_at": "2026-10-27"
+  "updated_at": "2026-10-28"
 }
