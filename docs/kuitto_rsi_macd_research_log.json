@@ -1,5 +1,32 @@
 {
   "started_at": "2026-09-29",
-  "items": [],
-  "updated_through": "2026-10-30"
+  "items": [
+    {
+      "strategy": "kuitto_relaxed_rsi_macd_research",
+      "rule_version": "relaxed1_rsi35_macddeep_v1_2026-09-29",
+      "code": "3580",
+      "name": "小松マテーレ",
+      "signal_date": "2026-11-02",
+      "signal_close": 688.0,
+      "ma5_prior5d_decline_pct": -2.418,
+      "ma5_vs_ma25_pct": -3.33,
+      "close_vs_ma5_pct": 1.445,
+      "bull_candle_pct": 2.229,
+      "volume_ratio": 2.95,
+      "rsi14": 40.64,
+      "macd": -14.330531,
+      "macd_signal": -14.757042,
+      "macd_pct": -2.0829,
+      "macd_cross_within3": true,
+      "entry_date": null,
+      "entry_open": null,
+      "next_open_gap_pct": null,
+      "return_5d_pct": null,
+      "return_10d_pct": null,
+      "return_15d_pct": null,
+      "mfe_15d_pct": null,
+      "mae_15d_pct": null
+    }
+  ],
+  "updated_through": "2026-11-02"
 }
