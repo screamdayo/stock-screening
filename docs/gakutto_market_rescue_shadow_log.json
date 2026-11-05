@@ -274,9 +274,15 @@
           "open": 3700.0,
           "edge_vs_normal_exit_pct": -0.937,
           "trade_return_pct": -12.736
+        },
+        "10": {
+          "date": "2026-11-05",
+          "open": 3505.0,
+          "edge_vs_normal_exit_pct": -6.158,
+          "trade_return_pct": -17.335
         }
       }
     }
   ],
-  "updated_through": "2026-10-28"
+  "updated_through": "2026-11-05"
 }
