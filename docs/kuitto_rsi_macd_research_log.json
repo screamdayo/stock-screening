@@ -25,7 +25,7 @@
       "return_10d_pct": null,
       "return_15d_pct": null,
       "mfe_15d_pct": 0.866,
-      "mae_15d_pct": -5.195
+      "mae_15d_pct": -8.225
     },
     {
       "strategy": "kuitto_relaxed_rsi_macd_research",
@@ -44,14 +44,14 @@
       "macd_signal": -41.493642,
       "macd_pct": -2.2595,
       "macd_cross_within3": true,
-      "entry_date": null,
-      "entry_open": null,
-      "next_open_gap_pct": null,
+      "entry_date": "2026-11-06",
+      "entry_open": 1536.0,
+      "next_open_gap_pct": -5.593,
       "return_5d_pct": null,
       "return_10d_pct": null,
       "return_15d_pct": null,
-      "mfe_15d_pct": null,
-      "mae_15d_pct": null
+      "mfe_15d_pct": 0.911,
+      "mae_15d_pct": -3.385
     },
     {
       "strategy": "kuitto_relaxed_rsi_macd_research",
@@ -70,14 +70,14 @@
       "macd_signal": -71.176268,
       "macd_pct": -2.8965,
       "macd_cross_within3": true,
-      "entry_date": null,
-      "entry_open": null,
-      "next_open_gap_pct": null,
+      "entry_date": "2026-11-06",
+      "entry_open": 2232.0,
+      "next_open_gap_pct": -4.288,
       "return_5d_pct": null,
       "return_10d_pct": null,
       "return_15d_pct": null,
-      "mfe_15d_pct": null,
-      "mae_15d_pct": null
+      "mfe_15d_pct": 0.717,
+      "mae_15d_pct": -2.106
     },
     {
       "strategy": "kuitto_relaxed_rsi_macd_research",
@@ -96,14 +96,14 @@
       "macd_signal": -35.337988,
       "macd_pct": -1.9699,
       "macd_cross_within3": true,
-      "entry_date": null,
-      "entry_open": null,
-      "next_open_gap_pct": null,
+      "entry_date": "2026-11-06",
+      "entry_open": 1492.0,
+      "next_open_gap_pct": -2.611,
       "return_5d_pct": null,
       "return_10d_pct": null,
       "return_15d_pct": null,
-      "mfe_15d_pct": null,
-      "mae_15d_pct": null
+      "mfe_15d_pct": 0.335,
+      "mae_15d_pct": -3.016
     },
     {
       "strategy": "kuitto_relaxed_rsi_macd_research",
@@ -122,15 +122,15 @@
       "macd_signal": -14.603801,
       "macd_pct": -2.0412,
       "macd_cross_within3": true,
-      "entry_date": null,
-      "entry_open": null,
-      "next_open_gap_pct": null,
+      "entry_date": "2026-11-06",
+      "entry_open": 665.0,
+      "next_open_gap_pct": -2.062,
       "return_5d_pct": null,
       "return_10d_pct": null,
       "return_15d_pct": null,
-      "mfe_15d_pct": null,
-      "mae_15d_pct": null
+      "mfe_15d_pct": 0.902,
+      "mae_15d_pct": -0.752
     }
   ],
-  "updated_through": "2026-11-05"
+  "updated_through": "2026-11-06"
 }
