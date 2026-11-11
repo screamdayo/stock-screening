@@ -50,7 +50,7 @@
       "return_5d_pct": null,
       "return_10d_pct": null,
       "return_15d_pct": null,
-      "mfe_15d_pct": 5.99,
+      "mfe_15d_pct": 11.914,
       "mae_15d_pct": -3.385
     },
     {
@@ -76,7 +76,7 @@
       "return_5d_pct": null,
       "return_10d_pct": null,
       "return_15d_pct": null,
-      "mfe_15d_pct": 1.344,
+      "mfe_15d_pct": 1.703,
       "mae_15d_pct": -2.106
     },
     {
@@ -102,7 +102,7 @@
       "return_5d_pct": null,
       "return_10d_pct": null,
       "return_15d_pct": null,
-      "mfe_15d_pct": 0.938,
+      "mfe_15d_pct": 1.81,
       "mae_15d_pct": -3.016
     },
     {
@@ -129,8 +129,8 @@
       "return_10d_pct": null,
       "return_15d_pct": null,
       "mfe_15d_pct": 2.105,
-      "mae_15d_pct": -0.752
+      "mae_15d_pct": -1.955
     }
   ],
-  "updated_through": "2026-11-10"
+  "updated_through": "2026-11-11"
 }
