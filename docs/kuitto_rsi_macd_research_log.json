@@ -102,7 +102,7 @@
       "return_5d_pct": 3.083,
       "return_10d_pct": null,
       "return_15d_pct": null,
-      "mfe_15d_pct": 3.552,
+      "mfe_15d_pct": 4.155,
       "mae_15d_pct": -3.016
     },
     {
@@ -132,5 +132,5 @@
       "mae_15d_pct": -1.955
     }
   ],
-  "updated_through": "2026-11-12"
+  "updated_through": "2026-11-13"
 }
