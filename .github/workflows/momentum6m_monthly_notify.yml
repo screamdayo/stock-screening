@@ -11,6 +11,7 @@ on:
         type: boolean
         default: true
   push:
+    branches: [main] # ブランチへのプッシュでは通知しない
     paths:
       - 'trigger/momentum6m_notify.txt'
 
