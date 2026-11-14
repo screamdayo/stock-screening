@@ -579,6 +579,65 @@ def notify_pinch_to_chance(sensor):
     )
     _post_long(msg)
 
+def notify_momentum6m(report):
+    """月次モメンタム6Mの候補レポート（非公開データ側で生成）を結果だけ通知する。発注はしない。"""
+    reason_labels = {
+        "volume_surge": "出来高急増",
+        "volume_history_short": "出来高履歴不足",
+        "heavy_short_interest": "信用売り残多",
+    }
+    candidates = report.get("candidates") or []
+    month = str(report.get("signal_month") or "")
+    try:
+        year, mon = month.split("-")
+        month_label = f"{year}年{int(mon)}月分"
+    except ValueError:
+        month_label = month or "対象月不明"
+    day = str(report.get("signal_date") or "")[:10].replace("-", "/")
+
+    def _line(r, with_order):
+        text = (
+            f"**#{r.get('rank', '?')} {_stock_label(r)}** — "
+            f"6か月 {float(r.get('momentum_126_sessions_pct', 0)):+.1f}% / "
+            f"終値 {_fmt_yen(r.get('signal_close_yen', 0))}"
+        )
+        if with_order:
+            shares = int(r.get("shares_at_200k_cap") or 0)
+            text += f" / **{shares}株**" if shares else " / ⚠️ 1枠20万円では100株買えません"
+        return text
+
+    sections = []
+    top = candidates[:5]
+    if top:
+        sections.append("🏆 **優先5枠**\n" + "\n".join(_line(r, True) for r in top))
+    else:
+        sections.append("候補なし")
+    refs = candidates[5:10]
+    if refs:
+        sections.append("👀 **参考：6〜10位**（買い注文の対象外）\n" + "\n".join(_line(r, False) for r in refs))
+    excluded = [
+        r for r in (report.get("excluded_high_momentum") or [])
+        if int(r.get("raw_rank") or 99) <= 20
+    ]
+    if excluded:
+        rows = []
+        for r in excluded[:8]:
+            why = "・".join(reason_labels.get(x, str(x)) for x in (r.get("excluded_by") or []))
+            rows.append(f"▫️ {_stock_label(r)} {float(r.get('momentum_126_sessions_pct', 0)):+.1f}%（{why}）")
+        sections.append("🚫 **上位20位内で除外**\n" + "\n".join(rows))
+    short = report.get("short_interest_filter")
+    if short is not None and not short.get("applied"):
+        sections.append("⚠️ 信用残データが古いか欠けているため、信用売り残フィルターは未適用")
+
+    msg = (
+        f"📊 **月次モメンタム6M {month_label}**（基準日 {day}）\n"
+        f"🟢 入口：**翌営業日に基準日終値で指値**（約定しなければ見送り）\n"
+        f"🔴 出口：**翌月末の次の営業日の寄り**\n\n"
+        + "\n\n".join(sections)
+    )
+    _post_long(msg)
+
+
 def notify_sell_signals(alerts):
     if not alerts:
         return
