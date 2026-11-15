@@ -1,0 +1,1183 @@
+{
+  "verdict": "NOT ADOPTED (2026-11). Over 10 years including delisted issues, 'cheap + improving quarterly OP' does not raise the share of stocks that double and its excess return is ~0 for 2016-12..2021-11; the strong result of the earlier 5-year study came from the 2021-12+ value rally. What holds in every year is fewer large losses: cheap stocks fall 30%+ far less often. Cheap minus expensive was negative in 2017-2019 (Prime clearly).",
+  "method": "- Month-end formation, 12-month forward price return (no dividends). An issue delisted inside the\n  window is closed at its last traded price, so delisted issues are not dropped (no survivor bias).\n- Market at formation from the snapshot of that month: TSE 1st -> Prime, TSE 2nd / JASDAQ Standard ->\n  Standard, Mothers / JASDAQ Growth -> Growth. Only common stock (product category 011, 4-char codes).\n- Universe: price >= 100 yen; 20-day median turnover >= 10M yen (Standard + Growth) or 100M (Prime).\n- B/P: last fiscal-year BPS (split-adjusted to the formation date) / raw close; the latest disclosure\n  must be <= 200 days old. Quarterly OP yoy: stand-alone quarter vs the same quarter a year earlier\n  (both positive base). Disclosures at/after 15:00 count from the next day.\n- Rule: B/P rank >= 60th percentile and quarterly OP yoy rank >= 70th percentile within the month.",
+  "formation_months": [
+    "2016-11",
+    "2025-10"
+  ],
+  "note": "q_op_yoy needs the same quarter a year earlier, so the rule has picks from about 2017-11 only.",
+  "standard_growth": {
+    "rule": {
+      "periods": {
+        "all": {
+          "universe": {
+            "n": 80032,
+            "per_month": 741,
+            "doubled_pct": 4.9,
+            "fell_30_pct": 22.0,
+            "mean_pct": 5.6,
+            "median_pct": -4.6,
+            "delisted_in_window_pct": 2.5
+          },
+          "rule": {
+            "n": 5645,
+            "per_month": 57,
+            "doubled_pct": 5.7,
+            "fell_30_pct": 9.6,
+            "mean_pct": 15.8,
+            "median_pct": 3.8,
+            "delisted_in_window_pct": 2.7,
+            "excess_vs_universe_pct": 6.5,
+            "t_overlap_adjusted": 1.4
+          }
+        },
+        "2016-12_to_2021-11": {
+          "universe": {
+            "n": 38119,
+            "per_month": 625,
+            "doubled_pct": 5.2,
+            "fell_30_pct": 28.4,
+            "mean_pct": 1.2,
+            "median_pct": -11.7,
+            "delisted_in_window_pct": 1.8
+          },
+          "rule": {
+            "n": 2052,
+            "per_month": 39,
+            "doubled_pct": 3.9,
+            "fell_30_pct": 19.4,
+            "mean_pct": 2.8,
+            "median_pct": -8.2,
+            "delisted_in_window_pct": 1.9,
+            "excess_vs_universe_pct": 0.3,
+            "t_overlap_adjusted": 0.0
+          }
+        },
+        "2021-12_onwards": {
+          "universe": {
+            "n": 41913,
+            "per_month": 892,
+            "doubled_pct": 4.7,
+            "fell_30_pct": 16.2,
+            "mean_pct": 9.6,
+            "median_pct": 0.0,
+            "delisted_in_window_pct": 3.2
+          },
+          "rule": {
+            "n": 3593,
+            "per_month": 76,
+            "doubled_pct": 6.7,
+            "fell_30_pct": 4.0,
+            "mean_pct": 23.3,
+            "median_pct": 10.1,
+            "delisted_in_window_pct": 3.1,
+            "excess_vs_universe_pct": 13.3,
+            "t_overlap_adjusted": 2.4
+          }
+        }
+      },
+      "yearly": {
+        "2018": {
+          "universe": {
+            "n": 8315,
+            "per_month": 693,
+            "doubled_pct": 2.8,
+            "fell_30_pct": 37.3,
+            "mean_pct": -11.7,
+            "median_pct": -20.9,
+            "delisted_in_window_pct": 1.9
+          },
+          "rule": {
+            "n": 424,
+            "per_month": 35,
+            "doubled_pct": 2.8,
+            "fell_30_pct": 32.8,
+            "mean_pct": -8.0,
+            "median_pct": -17.6,
+            "delisted_in_window_pct": 1.2,
+            "excess_vs_universe_pct": -0.9,
+            "t_overlap_adjusted": -0.2
+          }
+        },
+        "2019": {
+          "universe": {
+            "n": 6681,
+            "per_month": 557,
+            "doubled_pct": 5.9,
+            "fell_30_pct": 29.3,
+            "mean_pct": 2.9,
+            "median_pct": -12.9,
+            "delisted_in_window_pct": 1.6
+          },
+          "rule": {
+            "n": 489,
+            "per_month": 41,
+            "doubled_pct": 3.3,
+            "fell_30_pct": 24.1,
+            "mean_pct": 0.3,
+            "median_pct": -13.7,
+            "delisted_in_window_pct": 1.8,
+            "excess_vs_universe_pct": -2.6,
+            "t_overlap_adjusted": -0.2
+          }
+        },
+        "2020": {
+          "universe": {
+            "n": 7973,
+            "per_month": 664,
+            "doubled_pct": 8.7,
+            "fell_30_pct": 15.9,
+            "mean_pct": 19.4,
+            "median_pct": 3.6,
+            "delisted_in_window_pct": 2.1
+          },
+          "rule": {
+            "n": 620,
+            "per_month": 52,
+            "doubled_pct": 7.6,
+            "fell_30_pct": 7.9,
+            "mean_pct": 21.8,
+            "median_pct": 9.9,
+            "delisted_in_window_pct": 2.1,
+            "excess_vs_universe_pct": 2.4,
+            "t_overlap_adjusted": 0.2
+          }
+        },
+        "2021": {
+          "universe": {
+            "n": 7825,
+            "per_month": 652,
+            "doubled_pct": 1.5,
+            "fell_30_pct": 37.2,
+            "mean_pct": -15.6,
+            "median_pct": -20.8,
+            "delisted_in_window_pct": 2.2
+          },
+          "rule": {
+            "n": 557,
+            "per_month": 46,
+            "doubled_pct": 1.4,
+            "fell_30_pct": 18.0,
+            "mean_pct": -8.1,
+            "median_pct": -13.2,
+            "delisted_in_window_pct": 2.7,
+            "excess_vs_universe_pct": 7.5,
+            "t_overlap_adjusted": 1.3
+          }
+        },
+        "2022": {
+          "universe": {
+            "n": 8220,
+            "per_month": 685,
+            "doubled_pct": 5.3,
+            "fell_30_pct": 14.4,
+            "mean_pct": 12.8,
+            "median_pct": 2.2,
+            "delisted_in_window_pct": 2.1
+          },
+          "rule": {
+            "n": 702,
+            "per_month": 58,
+            "doubled_pct": 6.0,
+            "fell_30_pct": 2.4,
+            "mean_pct": 20.8,
+            "median_pct": 10.2,
+            "delisted_in_window_pct": 3.0,
+            "excess_vs_universe_pct": 7.7,
+            "t_overlap_adjusted": 1.2
+          }
+        },
+        "2023": {
+          "universe": {
+            "n": 11033,
+            "per_month": 919,
+            "doubled_pct": 3.0,
+            "fell_30_pct": 21.5,
+            "mean_pct": 1.2,
+            "median_pct": -4.8,
+            "delisted_in_window_pct": 2.6
+          },
+          "rule": {
+            "n": 968,
+            "per_month": 81,
+            "doubled_pct": 4.0,
+            "fell_30_pct": 6.4,
+            "mean_pct": 18.9,
+            "median_pct": 5.1,
+            "delisted_in_window_pct": 2.4,
+            "excess_vs_universe_pct": 17.5,
+            "t_overlap_adjusted": 1.3
+          }
+        },
+        "2024": {
+          "universe": {
+            "n": 12426,
+            "per_month": 1036,
+            "doubled_pct": 4.5,
+            "fell_30_pct": 12.9,
+            "mean_pct": 10.3,
+            "median_pct": 0.2,
+            "delisted_in_window_pct": 3.3
+          },
+          "rule": {
+            "n": 1045,
+            "per_month": 87,
+            "doubled_pct": 4.7,
+            "fell_30_pct": 4.5,
+            "mean_pct": 16.5,
+            "median_pct": 7.0,
+            "delisted_in_window_pct": 2.9,
+            "excess_vs_universe_pct": 7.0,
+            "t_overlap_adjusted": 1.0
+          }
+        },
+        "2025": {
+          "universe": {
+            "n": 9567,
+            "per_month": 957,
+            "doubled_pct": 6.5,
+            "fell_30_pct": 15.2,
+            "mean_pct": 17.0,
+            "median_pct": 4.4,
+            "delisted_in_window_pct": 4.7
+          },
+          "rule": {
+            "n": 832,
+            "per_month": 83,
+            "doubled_pct": 13.0,
+            "fell_30_pct": 1.1,
+            "mean_pct": 40.5,
+            "median_pct": 21.1,
+            "delisted_in_window_pct": 4.4,
+            "excess_vs_universe_pct": 23.3,
+            "t_overlap_adjusted": 3.0
+          }
+        }
+      },
+      "sensitivity": {
+        "bp_ge0.5_qop_ge0.6": {
+          "all": {
+            "n": 9418,
+            "per_month": 94,
+            "doubled_pct": 5.2,
+            "fell_30_pct": 10.5,
+            "mean_pct": 14.2,
+            "median_pct": 3.0,
+            "delisted_in_window_pct": 2.7,
+            "excess_vs_universe_pct": 6.2,
+            "t_overlap_adjusted": 1.1
+          },
+          "2016-12_to_2021-11": {
+            "n": 3505,
+            "per_month": 66,
+            "doubled_pct": 3.6,
+            "fell_30_pct": 20.1,
+            "mean_pct": 1.7,
+            "median_pct": -9.0,
+            "delisted_in_window_pct": 1.7,
+            "excess_vs_universe_pct": 1.4,
+            "t_overlap_adjusted": 0.1
+          }
+        },
+        "bp_ge0.5_qop_ge0.7": {
+          "all": {
+            "n": 7079,
+            "per_month": 71,
+            "doubled_pct": 5.7,
+            "fell_30_pct": 10.9,
+            "mean_pct": 15.0,
+            "median_pct": 2.9,
+            "delisted_in_window_pct": 2.6,
+            "excess_vs_universe_pct": 6.6,
+            "t_overlap_adjusted": 1.2
+          },
+          "2016-12_to_2021-11": {
+            "n": 2594,
+            "per_month": 49,
+            "doubled_pct": 3.9,
+            "fell_30_pct": 20.7,
+            "mean_pct": 2.5,
+            "median_pct": -8.5,
+            "delisted_in_window_pct": 1.8,
+            "excess_vs_universe_pct": 1.8,
+            "t_overlap_adjusted": 0.2
+          }
+        },
+        "bp_ge0.5_qop_ge0.8": {
+          "all": {
+            "n": 4781,
+            "per_month": 48,
+            "doubled_pct": 6.0,
+            "fell_30_pct": 11.7,
+            "mean_pct": 14.7,
+            "median_pct": 2.3,
+            "delisted_in_window_pct": 2.8,
+            "excess_vs_universe_pct": 6.6,
+            "t_overlap_adjusted": 1.1
+          },
+          "2016-12_to_2021-11": {
+            "n": 1758,
+            "per_month": 33,
+            "doubled_pct": 3.9,
+            "fell_30_pct": 21.2,
+            "mean_pct": 1.8,
+            "median_pct": -9.5,
+            "delisted_in_window_pct": 2.0,
+            "excess_vs_universe_pct": 1.9,
+            "t_overlap_adjusted": 0.2
+          }
+        },
+        "bp_ge0.6_qop_ge0.6": {
+          "all": {
+            "n": 7549,
+            "per_month": 76,
+            "doubled_pct": 5.2,
+            "fell_30_pct": 9.1,
+            "mean_pct": 15.1,
+            "median_pct": 4.1,
+            "delisted_in_window_pct": 2.8,
+            "excess_vs_universe_pct": 5.9,
+            "t_overlap_adjusted": 1.4
+          },
+          "2016-12_to_2021-11": {
+            "n": 2774,
+            "per_month": 53,
+            "doubled_pct": 3.6,
+            "fell_30_pct": 18.5,
+            "mean_pct": 2.1,
+            "median_pct": -8.6,
+            "delisted_in_window_pct": 1.9,
+            "excess_vs_universe_pct": -0.3,
+            "t_overlap_adjusted": -0.1
+          }
+        },
+        "bp_ge0.6_qop_ge0.7": {
+          "all": {
+            "n": 5645,
+            "per_month": 57,
+            "doubled_pct": 5.7,
+            "fell_30_pct": 9.6,
+            "mean_pct": 15.8,
+            "median_pct": 3.8,
+            "delisted_in_window_pct": 2.7,
+            "excess_vs_universe_pct": 6.5,
+            "t_overlap_adjusted": 1.4
+          },
+          "2016-12_to_2021-11": {
+            "n": 2052,
+            "per_month": 39,
+            "doubled_pct": 3.9,
+            "fell_30_pct": 19.4,
+            "mean_pct": 2.8,
+            "median_pct": -8.2,
+            "delisted_in_window_pct": 1.9,
+            "excess_vs_universe_pct": 0.3,
+            "t_overlap_adjusted": 0.0
+          }
+        },
+        "bp_ge0.6_qop_ge0.8": {
+          "all": {
+            "n": 3822,
+            "per_month": 39,
+            "doubled_pct": 6.1,
+            "fell_30_pct": 10.3,
+            "mean_pct": 15.7,
+            "median_pct": 3.1,
+            "delisted_in_window_pct": 2.9,
+            "excess_vs_universe_pct": 6.5,
+            "t_overlap_adjusted": 1.3
+          },
+          "2016-12_to_2021-11": {
+            "n": 1400,
+            "per_month": 27,
+            "doubled_pct": 4.1,
+            "fell_30_pct": 20.0,
+            "mean_pct": 2.3,
+            "median_pct": -9.4,
+            "delisted_in_window_pct": 2.5,
+            "excess_vs_universe_pct": 0.4,
+            "t_overlap_adjusted": 0.1
+          }
+        },
+        "bp_ge0.7_qop_ge0.6": {
+          "all": {
+            "n": 5668,
+            "per_month": 57,
+            "doubled_pct": 4.8,
+            "fell_30_pct": 8.1,
+            "mean_pct": 14.9,
+            "median_pct": 4.8,
+            "delisted_in_window_pct": 2.6,
+            "excess_vs_universe_pct": 5.8,
+            "t_overlap_adjusted": 1.3
+          },
+          "2016-12_to_2021-11": {
+            "n": 2102,
+            "per_month": 40,
+            "doubled_pct": 3.2,
+            "fell_30_pct": 16.9,
+            "mean_pct": 1.4,
+            "median_pct": -8.3,
+            "delisted_in_window_pct": 2.2,
+            "excess_vs_universe_pct": -0.7,
+            "t_overlap_adjusted": -0.1
+          }
+        },
+        "bp_ge0.7_qop_ge0.7": {
+          "all": {
+            "n": 4260,
+            "per_month": 43,
+            "doubled_pct": 5.3,
+            "fell_30_pct": 8.4,
+            "mean_pct": 15.5,
+            "median_pct": 4.7,
+            "delisted_in_window_pct": 2.6,
+            "excess_vs_universe_pct": 6.3,
+            "t_overlap_adjusted": 1.3
+          },
+          "2016-12_to_2021-11": {
+            "n": 1563,
+            "per_month": 30,
+            "doubled_pct": 3.6,
+            "fell_30_pct": 17.3,
+            "mean_pct": 2.2,
+            "median_pct": -7.5,
+            "delisted_in_window_pct": 2.1,
+            "excess_vs_universe_pct": -0.1,
+            "t_overlap_adjusted": -0.0
+          }
+        },
+        "bp_ge0.7_qop_ge0.8": {
+          "all": {
+            "n": 2896,
+            "per_month": 29,
+            "doubled_pct": 5.9,
+            "fell_30_pct": 8.9,
+            "mean_pct": 15.8,
+            "median_pct": 4.6,
+            "delisted_in_window_pct": 2.7,
+            "excess_vs_universe_pct": 6.4,
+            "t_overlap_adjusted": 1.2
+          },
+          "2016-12_to_2021-11": {
+            "n": 1073,
+            "per_month": 21,
+            "doubled_pct": 3.8,
+            "fell_30_pct": 17.8,
+            "mean_pct": 2.0,
+            "median_pct": -8.2,
+            "delisted_in_window_pct": 2.6,
+            "excess_vs_universe_pct": -0.4,
+            "t_overlap_adjusted": -0.1
+          }
+        },
+        "bp_ge0.8_qop_ge0.6": {
+          "all": {
+            "n": 3705,
+            "per_month": 37,
+            "doubled_pct": 4.8,
+            "fell_30_pct": 7.3,
+            "mean_pct": 16.3,
+            "median_pct": 6.5,
+            "delisted_in_window_pct": 2.5,
+            "excess_vs_universe_pct": 6.0,
+            "t_overlap_adjusted": 1.0
+          },
+          "2016-12_to_2021-11": {
+            "n": 1408,
+            "per_month": 27,
+            "doubled_pct": 2.3,
+            "fell_30_pct": 15.7,
+            "mean_pct": 0.0,
+            "median_pct": -8.5,
+            "delisted_in_window_pct": 1.9,
+            "excess_vs_universe_pct": -3.9,
+            "t_overlap_adjusted": -0.5
+          }
+        },
+        "bp_ge0.8_qop_ge0.7": {
+          "all": {
+            "n": 2785,
+            "per_month": 28,
+            "doubled_pct": 5.4,
+            "fell_30_pct": 7.4,
+            "mean_pct": 17.3,
+            "median_pct": 6.6,
+            "delisted_in_window_pct": 2.3,
+            "excess_vs_universe_pct": 6.7,
+            "t_overlap_adjusted": 1.1
+          },
+          "2016-12_to_2021-11": {
+            "n": 1047,
+            "per_month": 20,
+            "doubled_pct": 2.5,
+            "fell_30_pct": 15.5,
+            "mean_pct": 0.2,
+            "median_pct": -7.5,
+            "delisted_in_window_pct": 1.7,
+            "excess_vs_universe_pct": -3.8,
+            "t_overlap_adjusted": -0.5
+          }
+        },
+        "bp_ge0.8_qop_ge0.8": {
+          "all": {
+            "n": 1913,
+            "per_month": 19,
+            "doubled_pct": 5.9,
+            "fell_30_pct": 7.7,
+            "mean_pct": 17.7,
+            "median_pct": 6.8,
+            "delisted_in_window_pct": 2.6,
+            "excess_vs_universe_pct": 7.1,
+            "t_overlap_adjusted": 1.1
+          },
+          "2016-12_to_2021-11": {
+            "n": 712,
+            "per_month": 14,
+            "doubled_pct": 2.8,
+            "fell_30_pct": 15.6,
+            "mean_pct": 0.5,
+            "median_pct": -7.6,
+            "delisted_in_window_pct": 2.4,
+            "excess_vs_universe_pct": -3.6,
+            "t_overlap_adjusted": -0.5
+          }
+        }
+      }
+    },
+    "value_quintiles": {
+      "quintile_mean_pct_q5_cheapest": {
+        "Q1": -2.1,
+        "Q2": 3.2,
+        "Q3": 5.5,
+        "Q4": 9.2,
+        "Q5": 12.2
+      },
+      "quintile_fell_30_pct": {
+        "Q1": 37.2,
+        "Q2": 28.9,
+        "Q3": 21.7,
+        "Q4": 14.3,
+        "Q5": 10.3
+      },
+      "cheap_minus_expensive_by_formation_year": {
+        "2017": -1.8,
+        "2018": 1.0,
+        "2019": -4.9,
+        "2020": 14.9,
+        "2021": 28.7,
+        "2022": 16.1,
+        "2023": 31.8,
+        "2024": 10.3,
+        "2025": 36.6
+      },
+      "cheap_minus_expensive_2016-12_to_2021-11": {
+        "mean": 7.5,
+        "months_positive_pct": 58.6
+      },
+      "cheap_minus_expensive_2021-12_onwards": {
+        "mean": 22.9,
+        "months_positive_pct": 89.1
+      }
+    },
+    "by_market": {
+      "Standard": {
+        "universe": {
+          "n": 49494,
+          "per_month": 458,
+          "doubled_pct": 4.2,
+          "fell_30_pct": 15.9,
+          "mean_pct": 8.0,
+          "median_pct": -0.8,
+          "delisted_in_window_pct": 2.9
+        }
+      },
+      "Growth": {
+        "universe": {
+          "n": 30538,
+          "per_month": 283,
+          "doubled_pct": 6.2,
+          "fell_30_pct": 31.9,
+          "mean_pct": 1.7,
+          "median_pct": -13.7,
+          "delisted_in_window_pct": 1.8
+        }
+      }
+    }
+  },
+  "prime": {
+    "rule": {
+      "periods": {
+        "all": {
+          "universe": {
+            "n": 119953,
+            "per_month": 1111,
+            "doubled_pct": 2.8,
+            "fell_30_pct": 9.7,
+            "mean_pct": 9.6,
+            "median_pct": 2.7,
+            "delisted_in_window_pct": 1.6
+          },
+          "rule": {
+            "n": 8400,
+            "per_month": 86,
+            "doubled_pct": 2.5,
+            "fell_30_pct": 6.3,
+            "mean_pct": 12.8,
+            "median_pct": 5.2,
+            "delisted_in_window_pct": 1.3,
+            "excess_vs_universe_pct": 0.7,
+            "t_overlap_adjusted": 0.2
+          }
+        },
+        "2016-12_to_2021-11": {
+          "universe": {
+            "n": 67591,
+            "per_month": 1108,
+            "doubled_pct": 2.0,
+            "fell_30_pct": 13.0,
+            "mean_pct": 3.1,
+            "median_pct": -2.7,
+            "delisted_in_window_pct": 1.3
+          },
+          "rule": {
+            "n": 3885,
+            "per_month": 76,
+            "doubled_pct": 1.2,
+            "fell_30_pct": 11.1,
+            "mean_pct": 0.2,
+            "median_pct": -5.1,
+            "delisted_in_window_pct": 1.3,
+            "excess_vs_universe_pct": -4.5,
+            "t_overlap_adjusted": -1.1
+          }
+        },
+        "2021-12_onwards": {
+          "universe": {
+            "n": 52362,
+            "per_month": 1114,
+            "doubled_pct": 3.8,
+            "fell_30_pct": 5.5,
+            "mean_pct": 18.0,
+            "median_pct": 9.8,
+            "delisted_in_window_pct": 1.9
+          },
+          "rule": {
+            "n": 4515,
+            "per_month": 96,
+            "doubled_pct": 3.7,
+            "fell_30_pct": 2.1,
+            "mean_pct": 23.6,
+            "median_pct": 15.5,
+            "delisted_in_window_pct": 1.2,
+            "excess_vs_universe_pct": 6.2,
+            "t_overlap_adjusted": 1.5
+          }
+        }
+      },
+      "yearly": {
+        "2018": {
+          "universe": {
+            "n": 14642,
+            "per_month": 1220,
+            "doubled_pct": 0.6,
+            "fell_30_pct": 21.0,
+            "mean_pct": -9.5,
+            "median_pct": -13.1,
+            "delisted_in_window_pct": 1.1
+          },
+          "rule": {
+            "n": 751,
+            "per_month": 63,
+            "doubled_pct": 0.7,
+            "fell_30_pct": 20.6,
+            "mean_pct": -10.9,
+            "median_pct": -15.5,
+            "delisted_in_window_pct": 1.5,
+            "excess_vs_universe_pct": -2.9,
+            "t_overlap_adjusted": -0.4
+          }
+        },
+        "2019": {
+          "universe": {
+            "n": 13050,
+            "per_month": 1088,
+            "doubled_pct": 1.7,
+            "fell_30_pct": 17.6,
+            "mean_pct": -1.9,
+            "median_pct": -8.2,
+            "delisted_in_window_pct": 0.9
+          },
+          "rule": {
+            "n": 1002,
+            "per_month": 84,
+            "doubled_pct": 0.5,
+            "fell_30_pct": 20.6,
+            "mean_pct": -10.0,
+            "median_pct": -13.2,
+            "delisted_in_window_pct": 0.9,
+            "excess_vs_universe_pct": -8.1,
+            "t_overlap_adjusted": -3.3
+          }
+        },
+        "2020": {
+          "universe": {
+            "n": 13766,
+            "per_month": 1147,
+            "doubled_pct": 4.6,
+            "fell_30_pct": 3.8,
+            "mean_pct": 23.6,
+            "median_pct": 15.5,
+            "delisted_in_window_pct": 1.9
+          },
+          "rule": {
+            "n": 984,
+            "per_month": 82,
+            "doubled_pct": 3.4,
+            "fell_30_pct": 1.0,
+            "mean_pct": 20.2,
+            "median_pct": 11.9,
+            "delisted_in_window_pct": 1.3,
+            "excess_vs_universe_pct": -3.1,
+            "t_overlap_adjusted": -1.0
+          }
+        },
+        "2021": {
+          "universe": {
+            "n": 13989,
+            "per_month": 1166,
+            "doubled_pct": 0.7,
+            "fell_30_pct": 12.8,
+            "mean_pct": -3.4,
+            "median_pct": -5.8,
+            "delisted_in_window_pct": 1.4
+          },
+          "rule": {
+            "n": 1241,
+            "per_month": 103,
+            "doubled_pct": 0.4,
+            "fell_30_pct": 5.3,
+            "mean_pct": -0.6,
+            "median_pct": -4.3,
+            "delisted_in_window_pct": 1.5,
+            "excess_vs_universe_pct": 3.3,
+            "t_overlap_adjusted": 1.0
+          }
+        },
+        "2022": {
+          "universe": {
+            "n": 12803,
+            "per_month": 1067,
+            "doubled_pct": 1.6,
+            "fell_30_pct": 4.9,
+            "mean_pct": 14.2,
+            "median_pct": 10.6,
+            "delisted_in_window_pct": 1.2
+          },
+          "rule": {
+            "n": 1110,
+            "per_month": 92,
+            "doubled_pct": 2.7,
+            "fell_30_pct": 1.6,
+            "mean_pct": 24.0,
+            "median_pct": 18.2,
+            "delisted_in_window_pct": 0.8,
+            "excess_vs_universe_pct": 9.8,
+            "t_overlap_adjusted": 3.4
+          }
+        },
+        "2023": {
+          "universe": {
+            "n": 13779,
+            "per_month": 1148,
+            "doubled_pct": 2.7,
+            "fell_30_pct": 6.6,
+            "mean_pct": 15.6,
+            "median_pct": 9.7,
+            "delisted_in_window_pct": 1.4
+          },
+          "rule": {
+            "n": 1109,
+            "per_month": 92,
+            "doubled_pct": 2.3,
+            "fell_30_pct": 2.4,
+            "mean_pct": 20.5,
+            "median_pct": 16.0,
+            "delisted_in_window_pct": 0.6,
+            "excess_vs_universe_pct": 5.0,
+            "t_overlap_adjusted": 0.9
+          }
+        },
+        "2024": {
+          "universe": {
+            "n": 14059,
+            "per_month": 1172,
+            "doubled_pct": 2.6,
+            "fell_30_pct": 6.1,
+            "mean_pct": 11.6,
+            "median_pct": 4.5,
+            "delisted_in_window_pct": 2.1
+          },
+          "rule": {
+            "n": 1335,
+            "per_month": 111,
+            "doubled_pct": 1.9,
+            "fell_30_pct": 3.4,
+            "mean_pct": 11.6,
+            "median_pct": 5.4,
+            "delisted_in_window_pct": 0.6,
+            "excess_vs_universe_pct": 0.9,
+            "t_overlap_adjusted": 0.1
+          }
+        },
+        "2025": {
+          "universe": {
+            "n": 10626,
+            "per_month": 1063,
+            "doubled_pct": 9.8,
+            "fell_30_pct": 3.1,
+            "mean_pct": 36.5,
+            "median_pct": 20.2,
+            "delisted_in_window_pct": 3.5
+          },
+          "rule": {
+            "n": 864,
+            "per_month": 86,
+            "doubled_pct": 9.8,
+            "fell_30_pct": 0.1,
+            "mean_pct": 48.4,
+            "median_pct": 31.7,
+            "delisted_in_window_pct": 3.7,
+            "excess_vs_universe_pct": 10.0,
+            "t_overlap_adjusted": 0.8
+          }
+        }
+      },
+      "sensitivity": {
+        "bp_ge0.5_qop_ge0.6": {
+          "all": {
+            "n": 14364,
+            "per_month": 145,
+            "doubled_pct": 2.5,
+            "fell_30_pct": 6.2,
+            "mean_pct": 12.3,
+            "median_pct": 5.3,
+            "delisted_in_window_pct": 1.3,
+            "excess_vs_universe_pct": -0.3,
+            "t_overlap_adjusted": -0.1
+          },
+          "2016-12_to_2021-11": {
+            "n": 6719,
+            "per_month": 129,
+            "doubled_pct": 1.1,
+            "fell_30_pct": 10.9,
+            "mean_pct": 0.2,
+            "median_pct": -5.0,
+            "delisted_in_window_pct": 1.3,
+            "excess_vs_universe_pct": -5.1,
+            "t_overlap_adjusted": -1.4
+          }
+        },
+        "bp_ge0.5_qop_ge0.7": {
+          "all": {
+            "n": 11048,
+            "per_month": 113,
+            "doubled_pct": 2.7,
+            "fell_30_pct": 6.4,
+            "mean_pct": 12.6,
+            "median_pct": 5.0,
+            "delisted_in_window_pct": 1.4,
+            "excess_vs_universe_pct": 0.1,
+            "t_overlap_adjusted": 0.0
+          },
+          "2016-12_to_2021-11": {
+            "n": 5069,
+            "per_month": 99,
+            "doubled_pct": 1.3,
+            "fell_30_pct": 11.4,
+            "mean_pct": 0.3,
+            "median_pct": -5.1,
+            "delisted_in_window_pct": 1.4,
+            "excess_vs_universe_pct": -4.8,
+            "t_overlap_adjusted": -1.3
+          }
+        },
+        "bp_ge0.5_qop_ge0.8": {
+          "all": {
+            "n": 7691,
+            "per_month": 80,
+            "doubled_pct": 2.9,
+            "fell_30_pct": 6.9,
+            "mean_pct": 12.2,
+            "median_pct": 3.6,
+            "delisted_in_window_pct": 1.5,
+            "excess_vs_universe_pct": -0.1,
+            "t_overlap_adjusted": -0.0
+          },
+          "2016-12_to_2021-11": {
+            "n": 3543,
+            "per_month": 72,
+            "doubled_pct": 1.4,
+            "fell_30_pct": 12.0,
+            "mean_pct": -0.4,
+            "median_pct": -6.3,
+            "delisted_in_window_pct": 1.4,
+            "excess_vs_universe_pct": -5.2,
+            "t_overlap_adjusted": -1.3
+          }
+        },
+        "bp_ge0.6_qop_ge0.6": {
+          "all": {
+            "n": 10797,
+            "per_month": 109,
+            "doubled_pct": 2.4,
+            "fell_30_pct": 6.1,
+            "mean_pct": 12.5,
+            "median_pct": 5.6,
+            "delisted_in_window_pct": 1.2,
+            "excess_vs_universe_pct": 0.4,
+            "t_overlap_adjusted": 0.1
+          },
+          "2016-12_to_2021-11": {
+            "n": 5108,
+            "per_month": 98,
+            "doubled_pct": 1.0,
+            "fell_30_pct": 10.7,
+            "mean_pct": 0.1,
+            "median_pct": -4.9,
+            "delisted_in_window_pct": 1.2,
+            "excess_vs_universe_pct": -4.8,
+            "t_overlap_adjusted": -1.2
+          }
+        },
+        "bp_ge0.6_qop_ge0.7": {
+          "all": {
+            "n": 8400,
+            "per_month": 86,
+            "doubled_pct": 2.5,
+            "fell_30_pct": 6.3,
+            "mean_pct": 12.8,
+            "median_pct": 5.2,
+            "delisted_in_window_pct": 1.3,
+            "excess_vs_universe_pct": 0.7,
+            "t_overlap_adjusted": 0.2
+          },
+          "2016-12_to_2021-11": {
+            "n": 3885,
+            "per_month": 76,
+            "doubled_pct": 1.2,
+            "fell_30_pct": 11.1,
+            "mean_pct": 0.2,
+            "median_pct": -5.1,
+            "delisted_in_window_pct": 1.3,
+            "excess_vs_universe_pct": -4.5,
+            "t_overlap_adjusted": -1.1
+          }
+        },
+        "bp_ge0.6_qop_ge0.8": {
+          "all": {
+            "n": 5867,
+            "per_month": 61,
+            "doubled_pct": 2.8,
+            "fell_30_pct": 6.9,
+            "mean_pct": 12.6,
+            "median_pct": 3.8,
+            "delisted_in_window_pct": 1.3,
+            "excess_vs_universe_pct": 0.8,
+            "t_overlap_adjusted": 0.2
+          },
+          "2016-12_to_2021-11": {
+            "n": 2719,
+            "per_month": 55,
+            "doubled_pct": 1.3,
+            "fell_30_pct": 11.9,
+            "mean_pct": -0.7,
+            "median_pct": -6.4,
+            "delisted_in_window_pct": 1.1,
+            "excess_vs_universe_pct": -4.5,
+            "t_overlap_adjusted": -0.9
+          }
+        },
+        "bp_ge0.7_qop_ge0.6": {
+          "all": {
+            "n": 7291,
+            "per_month": 74,
+            "doubled_pct": 2.5,
+            "fell_30_pct": 6.1,
+            "mean_pct": 13.6,
+            "median_pct": 7.0,
+            "delisted_in_window_pct": 1.1,
+            "excess_vs_universe_pct": 1.4,
+            "t_overlap_adjusted": 0.4
+          },
+          "2016-12_to_2021-11": {
+            "n": 3410,
+            "per_month": 66,
+            "doubled_pct": 1.1,
+            "fell_30_pct": 10.6,
+            "mean_pct": 0.6,
+            "median_pct": -4.5,
+            "delisted_in_window_pct": 0.9,
+            "excess_vs_universe_pct": -4.2,
+            "t_overlap_adjusted": -1.0
+          }
+        },
+        "bp_ge0.7_qop_ge0.7": {
+          "all": {
+            "n": 5769,
+            "per_month": 59,
+            "doubled_pct": 2.5,
+            "fell_30_pct": 6.1,
+            "mean_pct": 13.8,
+            "median_pct": 6.7,
+            "delisted_in_window_pct": 1.1,
+            "excess_vs_universe_pct": 1.6,
+            "t_overlap_adjusted": 0.4
+          },
+          "2016-12_to_2021-11": {
+            "n": 2621,
+            "per_month": 51,
+            "doubled_pct": 1.4,
+            "fell_30_pct": 10.8,
+            "mean_pct": 0.9,
+            "median_pct": -4.4,
+            "delisted_in_window_pct": 1.1,
+            "excess_vs_universe_pct": -3.7,
+            "t_overlap_adjusted": -0.8
+          }
+        },
+        "bp_ge0.7_qop_ge0.8": {
+          "all": {
+            "n": 4095,
+            "per_month": 43,
+            "doubled_pct": 2.7,
+            "fell_30_pct": 6.5,
+            "mean_pct": 13.7,
+            "median_pct": 6.2,
+            "delisted_in_window_pct": 1.1,
+            "excess_vs_universe_pct": 1.8,
+            "t_overlap_adjusted": 0.4
+          },
+          "2016-12_to_2021-11": {
+            "n": 1836,
+            "per_month": 37,
+            "doubled_pct": 1.4,
+            "fell_30_pct": 11.3,
+            "mean_pct": 0.2,
+            "median_pct": -5.9,
+            "delisted_in_window_pct": 1.0,
+            "excess_vs_universe_pct": -3.3,
+            "t_overlap_adjusted": -0.6
+          }
+        },
+        "bp_ge0.8_qop_ge0.6": {
+          "all": {
+            "n": 4132,
+            "per_month": 43,
+            "doubled_pct": 2.7,
+            "fell_30_pct": 6.9,
+            "mean_pct": 14.6,
+            "median_pct": 7.9,
+            "delisted_in_window_pct": 1.0,
+            "excess_vs_universe_pct": 3.9,
+            "t_overlap_adjusted": 1.0
+          },
+          "2016-12_to_2021-11": {
+            "n": 1923,
+            "per_month": 39,
+            "doubled_pct": 1.3,
+            "fell_30_pct": 12.2,
+            "mean_pct": 1.3,
+            "median_pct": -5.0,
+            "delisted_in_window_pct": 0.8,
+            "excess_vs_universe_pct": -1.4,
+            "t_overlap_adjusted": -0.3
+          }
+        },
+        "bp_ge0.8_qop_ge0.7": {
+          "all": {
+            "n": 3345,
+            "per_month": 35,
+            "doubled_pct": 2.8,
+            "fell_30_pct": 6.8,
+            "mean_pct": 14.6,
+            "median_pct": 7.5,
+            "delisted_in_window_pct": 1.0,
+            "excess_vs_universe_pct": 4.1,
+            "t_overlap_adjusted": 1.1
+          },
+          "2016-12_to_2021-11": {
+            "n": 1525,
+            "per_month": 31,
+            "doubled_pct": 1.6,
+            "fell_30_pct": 12.1,
+            "mean_pct": 1.5,
+            "median_pct": -4.9,
+            "delisted_in_window_pct": 0.8,
+            "excess_vs_universe_pct": -1.2,
+            "t_overlap_adjusted": -0.3
+          }
+        },
+        "bp_ge0.8_qop_ge0.8": {
+          "all": {
+            "n": 2456,
+            "per_month": 27,
+            "doubled_pct": 2.6,
+            "fell_30_pct": 7.2,
+            "mean_pct": 14.3,
+            "median_pct": 7.0,
+            "delisted_in_window_pct": 1.0,
+            "excess_vs_universe_pct": 3.9,
+            "t_overlap_adjusted": 0.9
+          },
+          "2016-12_to_2021-11": {
+            "n": 1099,
+            "per_month": 24,
+            "doubled_pct": 1.5,
+            "fell_30_pct": 12.6,
+            "mean_pct": 0.6,
+            "median_pct": -6.6,
+            "delisted_in_window_pct": 0.8,
+            "excess_vs_universe_pct": -1.0,
+            "t_overlap_adjusted": -0.2
+          }
+        }
+      }
+    },
+    "value_quintiles": {
+      "quintile_mean_pct_q5_cheapest": {
+        "Q1": 5.5,
+        "Q2": 8.8,
+        "Q3": 9.8,
+        "Q4": 10.6,
+        "Q5": 15.4
+      },
+      "quintile_fell_30_pct": {
+        "Q1": 17.3,
+        "Q2": 9.6,
+        "Q3": 7.4,
+        "Q4": 6.2,
+        "Q5": 7.1
+      },
+      "cheap_minus_expensive_by_formation_year": {
+        "2017": -15.1,
+        "2018": -8.9,
+        "2019": -24.9,
+        "2020": 6.9,
+        "2021": 22.8,
+        "2022": 26.9,
+        "2023": 25.6,
+        "2024": 14.4,
+        "2025": 49.2
+      },
+      "cheap_minus_expensive_2016-12_to_2021-11": {
+        "mean": -4.1,
+        "months_positive_pct": 34.5
+      },
+      "cheap_minus_expensive_2021-12_onwards": {
+        "mean": 27.6,
+        "months_positive_pct": 95.7
+      }
+    }
+  }
+}
