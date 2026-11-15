@@ -1,0 +1,230 @@
+{
+  "verdict": "NOT ADOPTED (2026-11). Re-running the Prime swing ideas on Standard and Growth found nothing usable: the RSI(2) deep-pullback edge disappears in a 5-slot portfolio (only early sell-off signals get taken), buying relative strength or new highs underperforms, and the large earnings gap-up does not carry over. Short-term reversal dominates in these markets.",
+  "method": {
+    "source": "stock-screening-data scripts analyze_rsi2_pullback / analyze_relative_strength_down_days / analyze_earnings_gap_follow / analyze_earnings_gap_fade_check, run on current Standard / Growth listings with turnover20 >= 1e8 or >= 3e7 (local research copies; not part of either repository)",
+    "survivor_bias": "current listings only (delisted issues were archived later)",
+    "earnings_dates": "Standard / Growth earnings dates from fins_summary, which then started 2021-11, so earnings tests cover ~5 years"
+  },
+  "results": {
+    "prime_1e8": {
+      "rsi2_deep_pullback": {
+        "trades": 17646,
+        "avg_pct": 0.7952,
+        "pf": 1.437,
+        "portfolio_5_slots_cost0_cagr_median": 10.8,
+        "portfolio_5_slots_cost0_maxdd_median": -40.0,
+        "max_hold_exits": {
+          "share_pct": 3.96,
+          "avg_pct": -10.8
+        }
+      },
+      "held_up_on_topix_down_day_hold10": {
+        "days": 165,
+        "stocks_per_day": 134.7,
+        "raw_avg_pct": 1.677,
+        "excess_avg_pct": 0.307,
+        "t": 0.798,
+        "excess_older": 0.099,
+        "excess_newer": 0.485
+      },
+      "first_new_20d_high_hold10": {
+        "days": 2428,
+        "stocks_per_day": 52.3,
+        "raw_avg_pct": 0.378,
+        "excess_avg_pct": -0.058,
+        "t": -1.086,
+        "excess_older": -0.205,
+        "excess_newer": 0.083
+      },
+      "earnings_gap_ge10_body_le2_hold10": {
+        "n": 1322,
+        "win_pct": 57.6,
+        "avg_pct": 2.658,
+        "median_pct": 1.314,
+        "excess_day_avg_pct": 1.738,
+        "t": 5.25
+      },
+      "universe_after_topix_le_minus1_5_hold10": {
+        "topix_-99_to_-2": 1.659,
+        "topix_-2_to_-1.5": 1.116,
+        "topix_0_to_1": 0.273
+      }
+    },
+    "std_1e8": {
+      "rsi2_deep_pullback": {
+        "trades": 16083,
+        "avg_pct": 0.5094,
+        "pf": 1.196,
+        "portfolio_5_slots_cost0_cagr_median": -5.3,
+        "portfolio_5_slots_cost0_maxdd_median": -76.0,
+        "max_hold_exits": {
+          "share_pct": 5.32,
+          "avg_pct": -14.71
+        }
+      },
+      "held_up_on_topix_down_day_hold10": {
+        "days": 164,
+        "stocks_per_day": 32.1,
+        "raw_avg_pct": 0.065,
+        "excess_avg_pct": -0.827,
+        "t": -2.382,
+        "excess_older": -1.385,
+        "excess_newer": -0.345
+      },
+      "first_new_20d_high_hold10": {
+        "days": 2373,
+        "stocks_per_day": 7.0,
+        "raw_avg_pct": -0.923,
+        "excess_avg_pct": -0.725,
+        "t": -4.623,
+        "excess_older": -0.856,
+        "excess_newer": -0.598
+      },
+      "earnings_gap_ge10_body_le2_hold10": {
+        "n": 225,
+        "win_pct": 48.9,
+        "avg_pct": 3.024,
+        "median_pct": -0.467,
+        "excess_day_avg_pct": 0.645,
+        "t": 0.5
+      },
+      "universe_after_topix_le_minus1_5_hold10": {
+        "topix_-99_to_-2": 1.172,
+        "topix_-2_to_-1.5": 0.752,
+        "topix_0_to_1": -0.326
+      }
+    },
+    "std_3e7": {
+      "rsi2_deep_pullback": {
+        "trades": 23691,
+        "avg_pct": 0.6337,
+        "pf": 1.273,
+        "portfolio_5_slots_cost0_cagr_median": 7.0,
+        "portfolio_5_slots_cost0_maxdd_median": -73.5,
+        "max_hold_exits": {
+          "share_pct": 4.59,
+          "avg_pct": -13.04
+        }
+      },
+      "held_up_on_topix_down_day_hold10": {
+        "days": 165,
+        "stocks_per_day": 70.3,
+        "raw_avg_pct": 0.271,
+        "excess_avg_pct": -0.684,
+        "t": -3.081,
+        "excess_older": -1.005,
+        "excess_newer": -0.409
+      },
+      "first_new_20d_high_hold10": {
+        "days": 2426,
+        "stocks_per_day": 16.4,
+        "raw_avg_pct": -0.495,
+        "excess_avg_pct": -0.553,
+        "t": -5.501,
+        "excess_older": -0.575,
+        "excess_newer": -0.533
+      },
+      "earnings_gap_ge10_body_le2_hold10": {
+        "n": 482,
+        "win_pct": 53.7,
+        "avg_pct": 3.361,
+        "median_pct": 1.018,
+        "excess_day_avg_pct": 1.456,
+        "t": 1.53
+      },
+      "universe_after_topix_le_minus1_5_hold10": {
+        "topix_-99_to_-2": 1.148,
+        "topix_-2_to_-1.5": 0.785,
+        "topix_0_to_1": -0.078
+      }
+    },
+    "gro_1e8": {
+      "rsi2_deep_pullback": {
+        "trades": 8277,
+        "avg_pct": 0.4963,
+        "pf": 1.175,
+        "portfolio_5_slots_cost0_cagr_median": -13.7,
+        "portfolio_5_slots_cost0_maxdd_median": -83.5,
+        "max_hold_exits": {
+          "share_pct": 5.77,
+          "avg_pct": -16.19
+        }
+      },
+      "held_up_on_topix_down_day_hold10": {
+        "days": 163,
+        "stocks_per_day": 20.9,
+        "raw_avg_pct": 0.372,
+        "excess_avg_pct": -0.846,
+        "t": -2.266,
+        "excess_older": -0.601,
+        "excess_newer": -1.05
+      },
+      "first_new_20d_high_hold10": {
+        "days": 2132,
+        "stocks_per_day": 4.4,
+        "raw_avg_pct": -0.953,
+        "excess_avg_pct": -0.665,
+        "t": -2.751,
+        "excess_older": -0.267,
+        "excess_newer": -1.016
+      },
+      "earnings_gap_ge10_body_le2_hold10": {
+        "n": 249,
+        "win_pct": 47.4,
+        "avg_pct": 2.052,
+        "median_pct": -0.46,
+        "excess_day_avg_pct": -0.44,
+        "t": -0.36
+      },
+      "universe_after_topix_le_minus1_5_hold10": {
+        "topix_-99_to_-2": 1.674,
+        "topix_-2_to_-1.5": 0.836,
+        "topix_0_to_1": -0.471
+      }
+    },
+    "gro_3e7": {
+      "rsi2_deep_pullback": {
+        "trades": 10378,
+        "avg_pct": 0.5338,
+        "pf": 1.199,
+        "portfolio_5_slots_cost0_cagr_median": -12.4,
+        "portfolio_5_slots_cost0_maxdd_median": -80.0,
+        "max_hold_exits": {
+          "share_pct": 5.44,
+          "avg_pct": -15.57
+        }
+      },
+      "held_up_on_topix_down_day_hold10": {
+        "days": 164,
+        "stocks_per_day": 34.0,
+        "raw_avg_pct": 0.51,
+        "excess_avg_pct": -0.665,
+        "t": -1.926,
+        "excess_older": -0.892,
+        "excess_newer": -0.474
+      },
+      "first_new_20d_high_hold10": {
+        "days": 2262,
+        "stocks_per_day": 6.6,
+        "raw_avg_pct": -0.94,
+        "excess_avg_pct": -0.809,
+        "t": -4.005,
+        "excess_older": -0.311,
+        "excess_newer": -1.256
+      },
+      "earnings_gap_ge10_body_le2_hold10": {
+        "n": 385,
+        "win_pct": 47.5,
+        "avg_pct": 1.841,
+        "median_pct": -0.821,
+        "excess_day_avg_pct": -0.725,
+        "t": -0.74
+      },
+      "universe_after_topix_le_minus1_5_hold10": {
+        "topix_-99_to_-2": 1.502,
+        "topix_-2_to_-1.5": 0.959,
+        "topix_0_to_1": -0.357
+      }
+    }
+  }
+}
