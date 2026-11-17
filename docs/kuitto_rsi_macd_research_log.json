@@ -22,7 +22,7 @@
       "entry_open": 693.0,
       "next_open_gap_pct": 0.727,
       "return_5d_pct": -4.329,
-      "return_10d_pct": null,
+      "return_10d_pct": -5.051,
       "return_15d_pct": null,
       "mfe_15d_pct": 0.866,
       "mae_15d_pct": -8.225
@@ -148,15 +148,15 @@
       "macd_signal": -36.1895,
       "macd_pct": -3.4629,
       "macd_cross_within3": true,
-      "entry_date": null,
-      "entry_open": null,
-      "next_open_gap_pct": null,
+      "entry_date": "2026-11-17",
+      "entry_open": 1023.0,
+      "next_open_gap_pct": 0.098,
       "return_5d_pct": null,
       "return_10d_pct": null,
       "return_15d_pct": null,
-      "mfe_15d_pct": null,
-      "mae_15d_pct": null
+      "mfe_15d_pct": 1.369,
+      "mae_15d_pct": -0.098
     }
   ],
-  "updated_through": "2026-11-16"
+  "updated_through": "2026-11-17"
 }

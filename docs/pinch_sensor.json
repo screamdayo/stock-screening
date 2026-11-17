@@ -1,17 +1,17 @@
 {
   "active": false,
-  "signal_date": "2026-11-16T00:00:00",
+  "signal_date": "2026-11-17T00:00:00",
   "universe_n": 1545,
-  "coarse_reversal_count": 6,
-  "reversal_rate_pct": 0.388,
+  "coarse_reversal_count": 16,
+  "reversal_rate_pct": 1.036,
   "reversal_rate_threshold_pct": 1.0,
-  "topix_return_pct": -1.02,
+  "topix_return_pct": -1.573,
   "topix_return_threshold_pct": 3.0,
-  "topix_low": 3898.14,
-  "topix_prev_low": 3936.95,
+  "topix_low": 3834.79,
+  "topix_prev_low": 3898.14,
   "topix_low_up": false,
   "market_conditions": {
-    "reversal_rate_ok": false,
+    "reversal_rate_ok": true,
     "topix_return_ok": false,
     "topix_low_up_ok": false
   },
@@ -39,9 +39,9 @@
     "pinch_date": null,
     "business_days_since_selling": null,
     "confirmed_after_business_days": null,
-    "updated_through": "2026-11-16",
+    "updated_through": "2026-11-17",
     "max_wait_business_days": 30,
     "label": "待機中"
   },
-  "generated_at": "2026-11-16T17:05:47"
+  "generated_at": "2026-11-17T07:15:50"
 }
