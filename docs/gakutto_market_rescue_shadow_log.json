@@ -298,9 +298,9 @@
       "declines": 1269,
       "comparable": 1545,
       "condition_hit": true,
-      "normal_exit_date": null,
-      "normal_exit_open": null,
-      "normal_exit_trade_return_pct": null,
+      "normal_exit_date": "2026-11-18",
+      "normal_exit_open": 3933.0,
+      "normal_exit_trade_return_pct": 19.909,
       "shadow_delays": {}
     },
     {
@@ -318,9 +318,9 @@
       "declines": 1269,
       "comparable": 1545,
       "condition_hit": true,
-      "normal_exit_date": null,
-      "normal_exit_open": null,
-      "normal_exit_trade_return_pct": null,
+      "normal_exit_date": "2026-11-18",
+      "normal_exit_open": 3072.0,
+      "normal_exit_trade_return_pct": -6.994,
       "shadow_delays": {}
     },
     {
@@ -338,9 +338,9 @@
       "declines": 1269,
       "comparable": 1545,
       "condition_hit": true,
-      "normal_exit_date": null,
-      "normal_exit_open": null,
-      "normal_exit_trade_return_pct": null,
+      "normal_exit_date": "2026-11-18",
+      "normal_exit_open": 1276.0,
+      "normal_exit_trade_return_pct": 10.0,
       "shadow_delays": {}
     },
     {
@@ -358,11 +358,11 @@
       "declines": 1269,
       "comparable": 1545,
       "condition_hit": true,
-      "normal_exit_date": null,
-      "normal_exit_open": null,
-      "normal_exit_trade_return_pct": null,
+      "normal_exit_date": "2026-11-18",
+      "normal_exit_open": 1181.0,
+      "normal_exit_trade_return_pct": -83.272,
       "shadow_delays": {}
     }
   ],
-  "updated_through": "2026-11-17"
+  "updated_through": "2026-11-18"
 }
