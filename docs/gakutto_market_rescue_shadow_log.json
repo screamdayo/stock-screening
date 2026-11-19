@@ -301,7 +301,14 @@
       "normal_exit_date": "2026-11-18",
       "normal_exit_open": 3933.0,
       "normal_exit_trade_return_pct": 19.909,
-      "shadow_delays": {}
+      "shadow_delays": {
+        "1": {
+          "date": "2026-11-19",
+          "open": 3912.0,
+          "edge_vs_normal_exit_pct": -0.534,
+          "trade_return_pct": 19.268
+        }
+      }
     },
     {
       "code": "5393",
@@ -321,7 +328,14 @@
       "normal_exit_date": "2026-11-18",
       "normal_exit_open": 3072.0,
       "normal_exit_trade_return_pct": -6.994,
-      "shadow_delays": {}
+      "shadow_delays": {
+        "1": {
+          "date": "2026-11-19",
+          "open": 3050.0,
+          "edge_vs_normal_exit_pct": -0.716,
+          "trade_return_pct": -7.66
+        }
+      }
     },
     {
       "code": "7818",
@@ -341,7 +355,14 @@
       "normal_exit_date": "2026-11-18",
       "normal_exit_open": 1276.0,
       "normal_exit_trade_return_pct": 10.0,
-      "shadow_delays": {}
+      "shadow_delays": {
+        "1": {
+          "date": "2026-11-19",
+          "open": 1220.0,
+          "edge_vs_normal_exit_pct": -4.389,
+          "trade_return_pct": 5.172
+        }
+      }
     },
     {
       "code": "8360",
@@ -361,8 +382,15 @@
       "normal_exit_date": "2026-11-18",
       "normal_exit_open": 1181.0,
       "normal_exit_trade_return_pct": -83.272,
-      "shadow_delays": {}
+      "shadow_delays": {
+        "1": {
+          "date": "2026-11-19",
+          "open": 1126.0,
+          "edge_vs_normal_exit_pct": -4.657,
+          "trade_return_pct": -84.051
+        }
+      }
     }
   ],
-  "updated_through": "2026-11-18"
+  "updated_through": "2026-11-19"
 }
