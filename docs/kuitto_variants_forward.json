@@ -183,12 +183,12 @@
       "entry_open": 3590.0,
       "return_5d_pct": -13.649,
       "return_10d_pct": -16.462,
-      "return_16d_pct": null,
+      "return_16d_pct": -24.29,
       "mfe_16d_pct": 1.811,
       "mae_16d_pct": -31.393,
-      "exit_date": null,
-      "exit_price": null,
-      "exit_pnl_pct": null
+      "exit_date": "2026-11-20",
+      "exit_price": 2718.0,
+      "exit_pnl_pct": -24.29
     },
     {
       "strategy": "kuitto_refined_204",
@@ -212,7 +212,7 @@
       "return_10d_pct": null,
       "return_16d_pct": null,
       "mfe_16d_pct": 5.37,
-      "mae_16d_pct": -5.37,
+      "mae_16d_pct": -8.418,
       "exit_date": null,
       "exit_price": null,
       "exit_pnl_pct": null
@@ -239,7 +239,7 @@
       "return_10d_pct": null,
       "return_16d_pct": null,
       "mfe_16d_pct": 2.867,
-      "mae_16d_pct": -9.289,
+      "mae_16d_pct": -13.761,
       "exit_date": null,
       "exit_price": null,
       "exit_pnl_pct": null
@@ -266,11 +266,11 @@
       "return_10d_pct": null,
       "return_16d_pct": null,
       "mfe_16d_pct": 2.867,
-      "mae_16d_pct": -9.289,
+      "mae_16d_pct": -13.761,
       "exit_date": null,
       "exit_price": null,
       "exit_pnl_pct": null
     }
   ],
-  "updated_at": "2026-11-19"
+  "updated_at": "2026-11-20"
 }
