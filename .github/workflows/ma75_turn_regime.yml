@@ -1,0 +1,49 @@
+name: MA75 Turn Regime
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Checkout private J-Quants data
+        uses: actions/checkout@v4
+        with:
+          repository: screamdayo/stock-screening-data
+          token: ${{ secrets.STOCK_SCREENING_DATA_TOKEN }}
+          path: .private-data
+          sparse-checkout: |
+            data/batches
+            data/daily_updates
+            data/delisted
+            data/master_history
+            data/topix
+          sparse-checkout-cone-mode: false
+
+      - name: Mount private data
+        run: |
+          mkdir -p data
+          for d in batches daily_updates delisted master_history topix; do
+            ln -sfn "$GITHUB_WORKSPACE/.private-data/data/$d" "data/$d"
+          done
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install pandas pyarrow numpy
+      - run: python scripts/analyze_ma75_turn_regime.py
+      - name: Commit results (aggregate statistics only)
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add results/ma75_turn_regime.json
+          git diff --cached --quiet || git commit -m "MA75 turn regime research results"
+          git pull --rebase origin main
+          git push origin HEAD:main

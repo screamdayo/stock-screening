@@ -136,7 +136,7 @@ def build_trades(close, opn, slope, eligible, buy=None):
     tr = pd.DataFrame(trades, columns=["j", "signal", "entry", "exit", "p_in", "p_out", "status"])
     tr["ret"] = tr.p_out / tr.p_in - 1
     tr["days"] = tr.exit - tr.entry
-    tr["entry_date"] = close.index[tr.entry]
+    tr["entry_date"] = close.index[tr.entry.to_numpy(dtype=np.int64)]
     return tr
 
 
@@ -190,7 +190,7 @@ def build_trades_exit(close, opn, buy, eligible, down, below, trail=None, use_do
     tr = pd.DataFrame(trades, columns=["j", "signal", "entry", "exit", "p_in", "p_out", "status"])
     tr["ret"] = tr.p_out / tr.p_in - 1
     tr["days"] = tr.exit - tr.entry
-    tr["entry_date"] = close.index[tr.entry]
+    tr["entry_date"] = close.index[tr.entry.to_numpy(dtype=np.int64)]
     return tr
 
 
