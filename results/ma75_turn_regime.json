@@ -1,0 +1,977 @@
+{
+ "settings": {
+  "base": "MA75 slope20 turn-up buy / turn-down sell, next open",
+  "own_track": "share of base trades from the last 120 sessions in profit (>= 20 trades)",
+  "breadth": "share of universe closing above MA75",
+  "selection": "threshold chosen on 2016-2021 entries by excess/day, keeping >= 30% of trades",
+  "thresholds": [
+   0.3,
+   0.4,
+   0.5,
+   0.6,
+   0.7
+  ]
+ },
+ "indicator_by_year_mean": {
+  "own_track": {
+   "2016": NaN,
+   "2017": 0.531,
+   "2018": 0.358,
+   "2019": 0.34,
+   "2020": 0.434,
+   "2021": 0.448,
+   "2022": 0.348,
+   "2023": 0.514,
+   "2024": 0.451,
+   "2025": 0.508,
+   "2026": 0.451
+  },
+  "breadth": {
+   "2016": NaN,
+   "2017": 0.683,
+   "2018": 0.42,
+   "2019": 0.528,
+   "2020": 0.526,
+   "2021": 0.542,
+   "2022": 0.488,
+   "2023": 0.595,
+   "2024": 0.552,
+   "2025": 0.63,
+   "2026": 0.576
+  }
+ },
+ "base": {
+  "2016_2021": {
+   "trades": {
+    "n": 8153,
+    "mean_pct": -0.2,
+    "win_rate": 0.314,
+    "mean_days": 76.4,
+    "excess_per_day_bp": -0.31
+   },
+   "portfolio": {
+    "cagr_pct": 5.46,
+    "max_dd_pct": -45.5
+   },
+   "universe": {
+    "cagr_pct": 5.11,
+    "max_dd_pct": -41.0
+   },
+   "share_of_days_invested": 0.999
+  },
+  "2022_2026": {
+   "trades": {
+    "n": 7565,
+    "mean_pct": 5.86,
+    "win_rate": 0.393,
+    "mean_days": 88.8,
+    "excess_per_day_bp": -0.59
+   },
+   "portfolio": {
+    "cagr_pct": 12.4,
+    "max_dd_pct": -21.2
+   },
+   "universe": {
+    "cagr_pct": 12.52,
+    "max_dd_pct": -20.7
+   },
+   "share_of_days_invested": 1.0
+  },
+  "by_entry_year": {
+   "2017": {
+    "n": 1472,
+    "mean_pct": 5.29
+   },
+   "2018": {
+    "n": 1457,
+    "mean_pct": -6.92
+   },
+   "2019": {
+    "n": 2014,
+    "mean_pct": -6.36
+   },
+   "2020": {
+    "n": 1599,
+    "mean_pct": 11.64
+   },
+   "2021": {
+    "n": 1611,
+    "mean_pct": -3.19
+   },
+   "2022": {
+    "n": 1697,
+    "mean_pct": 2.05
+   },
+   "2023": {
+    "n": 1563,
+    "mean_pct": 8.08
+   },
+   "2024": {
+    "n": 1775,
+    "mean_pct": 2.02
+   },
+   "2025": {
+    "n": 1624,
+    "mean_pct": 17.97
+   },
+   "2026": {
+    "n": 906,
+    "mean_pct": -5.05
+   }
+  }
+ },
+ "filters": {
+  "own_track": {
+   "0.3": {
+    "2016_2021": {
+     "trades": {
+      "n": 6727,
+      "mean_pct": -0.04,
+      "win_rate": 0.318,
+      "mean_days": 77.4,
+      "excess_per_day_bp": -0.28
+     },
+     "portfolio": {
+      "cagr_pct": 6.68,
+      "max_dd_pct": -46.3
+     },
+     "universe": {
+      "cagr_pct": 5.11,
+      "max_dd_pct": -41.0
+     },
+     "share_of_days_invested": 0.991
+    },
+    "2022_2026": {
+     "trades": {
+      "n": 7031,
+      "mean_pct": 6.21,
+      "win_rate": 0.396,
+      "mean_days": 89.8,
+      "excess_per_day_bp": -0.49
+     },
+     "portfolio": {
+      "cagr_pct": 12.3,
+      "max_dd_pct": -21.2
+     },
+     "universe": {
+      "cagr_pct": 12.52,
+      "max_dd_pct": -20.7
+     },
+     "share_of_days_invested": 1.0
+    },
+    "by_entry_year": {
+     "2017": {
+      "n": 1444,
+      "mean_pct": 5.1
+     },
+     "2018": {
+      "n": 1074,
+      "mean_pct": -6.45
+     },
+     "2019": {
+      "n": 1266,
+      "mean_pct": -9.17
+     },
+     "2020": {
+      "n": 1434,
+      "mean_pct": 10.94
+     },
+     "2021": {
+      "n": 1509,
+      "mean_pct": -3.19
+     },
+     "2022": {
+      "n": 1216,
+      "mean_pct": 2.47
+     },
+     "2023": {
+      "n": 1563,
+      "mean_pct": 8.08
+     },
+     "2024": {
+      "n": 1744,
+      "mean_pct": 2.0
+     },
+     "2025": {
+      "n": 1609,
+      "mean_pct": 18.1
+     },
+     "2026": {
+      "n": 899,
+      "mean_pct": -5.09
+     }
+    }
+   },
+   "0.4": {
+    "2016_2021": {
+     "trades": {
+      "n": 4796,
+      "mean_pct": 1.78,
+      "win_rate": 0.355,
+      "mean_days": 82.4,
+      "excess_per_day_bp": 0.01
+     },
+     "portfolio": {
+      "cagr_pct": 5.41,
+      "max_dd_pct": -50.0
+     },
+     "universe": {
+      "cagr_pct": 5.11,
+      "max_dd_pct": -41.0
+     },
+     "share_of_days_invested": 0.991
+    },
+    "2022_2026": {
+     "trades": {
+      "n": 5323,
+      "mean_pct": 6.42,
+      "win_rate": 0.396,
+      "mean_days": 91.1,
+      "excess_per_day_bp": 0.11
+     },
+     "portfolio": {
+      "cagr_pct": 11.6,
+      "max_dd_pct": -21.2
+     },
+     "universe": {
+      "cagr_pct": 12.52,
+      "max_dd_pct": -20.7
+     },
+     "share_of_days_invested": 1.0
+    },
+    "by_entry_year": {
+     "2017": {
+      "n": 1427,
+      "mean_pct": 4.98
+     },
+     "2018": {
+      "n": 450,
+      "mean_pct": -6.25
+     },
+     "2019": {
+      "n": 548,
+      "mean_pct": -11.48
+     },
+     "2020": {
+      "n": 1279,
+      "mean_pct": 10.22
+     },
+     "2021": {
+      "n": 1092,
+      "mean_pct": -2.32
+     },
+     "2022": {
+      "n": 733,
+      "mean_pct": 3.32
+     },
+     "2023": {
+      "n": 1412,
+      "mean_pct": 7.96
+     },
+     "2024": {
+      "n": 1320,
+      "mean_pct": 1.44
+     },
+     "2025": {
+      "n": 1225,
+      "mean_pct": 17.64
+     },
+     "2026": {
+      "n": 633,
+      "mean_pct": -4.73
+     }
+    }
+   },
+   "0.5": {
+    "2016_2021": {
+     "trades": {
+      "n": 3395,
+      "mean_pct": 2.03,
+      "win_rate": 0.364,
+      "mean_days": 83.5,
+      "excess_per_day_bp": 0.22
+     },
+     "portfolio": {
+      "cagr_pct": 7.7,
+      "max_dd_pct": -50.1
+     },
+     "universe": {
+      "cagr_pct": 5.11,
+      "max_dd_pct": -41.0
+     },
+     "share_of_days_invested": 0.852
+    },
+    "2022_2026": {
+     "trades": {
+      "n": 2576,
+      "mean_pct": 6.89,
+      "win_rate": 0.413,
+      "mean_days": 95.4,
+      "excess_per_day_bp": -0.08
+     },
+     "portfolio": {
+      "cagr_pct": 10.61,
+      "max_dd_pct": -21.8
+     },
+     "universe": {
+      "cagr_pct": 12.52,
+      "max_dd_pct": -20.7
+     },
+     "share_of_days_invested": 1.0
+    },
+    "by_entry_year": {
+     "2017": {
+      "n": 1188,
+      "mean_pct": 4.46
+     },
+     "2018": {
+      "n": 76,
+      "mean_pct": -6.86
+     },
+     "2019": {
+      "n": 448,
+      "mean_pct": -12.24
+     },
+     "2020": {
+      "n": 941,
+      "mean_pct": 9.61
+     },
+     "2021": {
+      "n": 742,
+      "mean_pct": -1.96
+     },
+     "2022": {
+      "n": 62,
+      "mean_pct": -2.49
+     },
+     "2023": {
+      "n": 840,
+      "mean_pct": 7.7
+     },
+     "2024": {
+      "n": 489,
+      "mean_pct": 1.51
+     },
+     "2025": {
+      "n": 765,
+      "mean_pct": 16.38
+     },
+     "2026": {
+      "n": 420,
+      "mean_pct": -4.38
+     }
+    }
+   },
+   "0.6": {
+    "2016_2021": {
+     "trades": {
+      "n": 1017,
+      "mean_pct": -4.23,
+      "win_rate": 0.243,
+      "mean_days": 75.8,
+      "excess_per_day_bp": -0.45
+     },
+     "portfolio": {
+      "cagr_pct": 6.29,
+      "max_dd_pct": -49.5
+     },
+     "universe": {
+      "cagr_pct": 5.11,
+      "max_dd_pct": -41.0
+     },
+     "share_of_days_invested": 0.847
+    },
+    "2022_2026": {
+     "trades": {
+      "n": 979,
+      "mean_pct": 4.46,
+      "win_rate": 0.385,
+      "mean_days": 90.6,
+      "excess_per_day_bp": -2.14
+     },
+     "portfolio": {
+      "cagr_pct": 13.54,
+      "max_dd_pct": -20.1
+     },
+     "universe": {
+      "cagr_pct": 12.52,
+      "max_dd_pct": -20.7
+     },
+     "share_of_days_invested": 0.991
+    },
+    "by_entry_year": {
+     "2017": {
+      "n": 180,
+      "mean_pct": 6.33
+     },
+     "2018": {
+      "n": 52,
+      "mean_pct": -6.77
+     },
+     "2019": {
+      "n": 402,
+      "mean_pct": -14.2
+     },
+     "2020": {
+      "n": 131,
+      "mean_pct": 7.47
+     },
+     "2021": {
+      "n": 252,
+      "mean_pct": -1.43
+     },
+     "2023": {
+      "n": 361,
+      "mean_pct": 5.03
+     },
+     "2024": {
+      "n": 48,
+      "mean_pct": 2.84
+     },
+     "2025": {
+      "n": 403,
+      "mean_pct": 7.79
+     },
+     "2026": {
+      "n": 167,
+      "mean_pct": -4.32
+     }
+    }
+   },
+   "0.7": {
+    "2016_2021": {
+     "trades": {
+      "n": 37,
+      "mean_pct": 4.74,
+      "win_rate": 0.324,
+      "mean_days": 91.2,
+      "excess_per_day_bp": 1.48
+     },
+     "portfolio": {
+      "cagr_pct": 6.6,
+      "max_dd_pct": -28.1
+     },
+     "universe": {
+      "cagr_pct": 5.11,
+      "max_dd_pct": -41.0
+     },
+     "share_of_days_invested": 0.462
+    },
+    "2022_2026": {
+     "trades": {
+      "n": 20,
+      "mean_pct": 1.45,
+      "win_rate": 0.35,
+      "mean_days": 86.2,
+      "excess_per_day_bp": -5.74
+     },
+     "portfolio": {
+      "cagr_pct": 1.64,
+      "max_dd_pct": -12.6
+     },
+     "universe": {
+      "cagr_pct": 12.52,
+      "max_dd_pct": -20.7
+     },
+     "share_of_days_invested": 0.25
+    },
+    "by_entry_year": {
+     "2017": {
+      "n": 31,
+      "mean_pct": 5.88
+     },
+     "2021": {
+      "n": 6,
+      "mean_pct": -1.14
+     },
+     "2025": {
+      "n": 20,
+      "mean_pct": 1.45
+     }
+    }
+   }
+  },
+  "breadth": {
+   "0.3": {
+    "2016_2021": {
+     "trades": {
+      "n": 7688,
+      "mean_pct": -0.25,
+      "win_rate": 0.311,
+      "mean_days": 76.9,
+      "excess_per_day_bp": -0.15
+     },
+     "portfolio": {
+      "cagr_pct": 6.93,
+      "max_dd_pct": -45.4
+     },
+     "universe": {
+      "cagr_pct": 5.11,
+      "max_dd_pct": -41.0
+     },
+     "share_of_days_invested": 0.999
+    },
+    "2022_2026": {
+     "trades": {
+      "n": 7458,
+      "mean_pct": 5.91,
+      "win_rate": 0.393,
+      "mean_days": 89.0,
+      "excess_per_day_bp": -0.52
+     },
+     "portfolio": {
+      "cagr_pct": 12.49,
+      "max_dd_pct": -21.2
+     },
+     "universe": {
+      "cagr_pct": 12.52,
+      "max_dd_pct": -20.7
+     },
+     "share_of_days_invested": 1.0
+    },
+    "by_entry_year": {
+     "2017": {
+      "n": 1462,
+      "mean_pct": 5.28
+     },
+     "2018": {
+      "n": 1212,
+      "mean_pct": -7.41
+     },
+     "2019": {
+      "n": 1948,
+      "mean_pct": -6.59
+     },
+     "2020": {
+      "n": 1491,
+      "mean_pct": 11.53
+     },
+     "2021": {
+      "n": 1575,
+      "mean_pct": -3.17
+     },
+     "2022": {
+      "n": 1647,
+      "mean_pct": 2.14
+     },
+     "2023": {
+      "n": 1555,
+      "mean_pct": 8.06
+     },
+     "2024": {
+      "n": 1743,
+      "mean_pct": 1.98
+     },
+     "2025": {
+      "n": 1609,
+      "mean_pct": 18.1
+     },
+     "2026": {
+      "n": 904,
+      "mean_pct": -5.06
+     }
+    }
+   },
+   "0.4": {
+    "2016_2021": {
+     "trades": {
+      "n": 6994,
+      "mean_pct": -0.02,
+      "win_rate": 0.314,
+      "mean_days": 78.3,
+      "excess_per_day_bp": -0.23
+     },
+     "portfolio": {
+      "cagr_pct": 5.98,
+      "max_dd_pct": -48.0
+     },
+     "universe": {
+      "cagr_pct": 5.11,
+      "max_dd_pct": -41.0
+     },
+     "share_of_days_invested": 0.999
+    },
+    "2022_2026": {
+     "trades": {
+      "n": 7017,
+      "mean_pct": 6.08,
+      "win_rate": 0.394,
+      "mean_days": 89.5,
+      "excess_per_day_bp": -0.41
+     },
+     "portfolio": {
+      "cagr_pct": 12.41,
+      "max_dd_pct": -21.1
+     },
+     "universe": {
+      "cagr_pct": 12.52,
+      "max_dd_pct": -20.7
+     },
+     "share_of_days_invested": 1.0
+    },
+    "by_entry_year": {
+     "2017": {
+      "n": 1454,
+      "mean_pct": 5.13
+     },
+     "2018": {
+      "n": 853,
+      "mean_pct": -8.54
+     },
+     "2019": {
+      "n": 1763,
+      "mean_pct": -7.36
+     },
+     "2020": {
+      "n": 1475,
+      "mean_pct": 11.68
+     },
+     "2021": {
+      "n": 1449,
+      "mean_pct": -3.18
+     },
+     "2022": {
+      "n": 1375,
+      "mean_pct": 2.1
+     },
+     "2023": {
+      "n": 1502,
+      "mean_pct": 8.01
+     },
+     "2024": {
+      "n": 1672,
+      "mean_pct": 1.82
+     },
+     "2025": {
+      "n": 1585,
+      "mean_pct": 18.41
+     },
+     "2026": {
+      "n": 883,
+      "mean_pct": -5.06
+     }
+    }
+   },
+   "0.5": {
+    "2016_2021": {
+     "trades": {
+      "n": 6187,
+      "mean_pct": 0.39,
+      "win_rate": 0.324,
+      "mean_days": 80.7,
+      "excess_per_day_bp": -0.14
+     },
+     "portfolio": {
+      "cagr_pct": 6.21,
+      "max_dd_pct": -49.0
+     },
+     "universe": {
+      "cagr_pct": 5.11,
+      "max_dd_pct": -41.0
+     },
+     "share_of_days_invested": 0.999
+    },
+    "2022_2026": {
+     "trades": {
+      "n": 5774,
+      "mean_pct": 6.78,
+      "win_rate": 0.402,
+      "mean_days": 92.1,
+      "excess_per_day_bp": -0.02
+     },
+     "portfolio": {
+      "cagr_pct": 12.71,
+      "max_dd_pct": -21.4
+     },
+     "universe": {
+      "cagr_pct": 12.52,
+      "max_dd_pct": -20.7
+     },
+     "share_of_days_invested": 1.0
+    },
+    "by_entry_year": {
+     "2017": {
+      "n": 1442,
+      "mean_pct": 5.11
+     },
+     "2018": {
+      "n": 640,
+      "mean_pct": -9.3
+     },
+     "2019": {
+      "n": 1550,
+      "mean_pct": -8.01
+     },
+     "2020": {
+      "n": 1426,
+      "mean_pct": 11.74
+     },
+     "2021": {
+      "n": 1129,
+      "mean_pct": -2.91
+     },
+     "2022": {
+      "n": 942,
+      "mean_pct": 1.58
+     },
+     "2023": {
+      "n": 1374,
+      "mean_pct": 8.19
+     },
+     "2024": {
+      "n": 1306,
+      "mean_pct": 1.94
+     },
+     "2025": {
+      "n": 1434,
+      "mean_pct": 19.2
+     },
+     "2026": {
+      "n": 718,
+      "mean_pct": -5.09
+     }
+    }
+   },
+   "0.6": {
+    "2016_2021": {
+     "trades": {
+      "n": 4832,
+      "mean_pct": 1.13,
+      "win_rate": 0.338,
+      "mean_days": 83.5,
+      "excess_per_day_bp": 0.13
+     },
+     "portfolio": {
+      "cagr_pct": 6.3,
+      "max_dd_pct": -50.7
+     },
+     "universe": {
+      "cagr_pct": 5.11,
+      "max_dd_pct": -41.0
+     },
+     "share_of_days_invested": 0.999
+    },
+    "2022_2026": {
+     "trades": {
+      "n": 3824,
+      "mean_pct": 7.83,
+      "win_rate": 0.409,
+      "mean_days": 95.4,
+      "excess_per_day_bp": 0.54
+     },
+     "portfolio": {
+      "cagr_pct": 13.4,
+      "max_dd_pct": -21.9
+     },
+     "universe": {
+      "cagr_pct": 12.52,
+      "max_dd_pct": -20.7
+     },
+     "share_of_days_invested": 1.0
+    },
+    "by_entry_year": {
+     "2017": {
+      "n": 1346,
+      "mean_pct": 4.93
+     },
+     "2018": {
+      "n": 323,
+      "mean_pct": -10.5
+     },
+     "2019": {
+      "n": 1101,
+      "mean_pct": -8.94
+     },
+     "2020": {
+      "n": 1228,
+      "mean_pct": 11.58
+     },
+     "2021": {
+      "n": 834,
+      "mean_pct": -2.58
+     },
+     "2022": {
+      "n": 489,
+      "mean_pct": 1.69
+     },
+     "2023": {
+      "n": 961,
+      "mean_pct": 8.11
+     },
+     "2024": {
+      "n": 724,
+      "mean_pct": 2.4
+     },
+     "2025": {
+      "n": 1039,
+      "mean_pct": 21.6
+     },
+     "2026": {
+      "n": 611,
+      "mean_pct": -4.69
+     }
+    }
+   },
+   "0.7": {
+    "2016_2021": {
+     "trades": {
+      "n": 2842,
+      "mean_pct": 0.27,
+      "win_rate": 0.321,
+      "mean_days": 84.0,
+      "excess_per_day_bp": 0.15
+     },
+     "portfolio": {
+      "cagr_pct": 7.89,
+      "max_dd_pct": -45.8
+     },
+     "universe": {
+      "cagr_pct": 5.11,
+      "max_dd_pct": -41.0
+     },
+     "share_of_days_invested": 0.878
+    },
+    "2022_2026": {
+     "trades": {
+      "n": 2118,
+      "mean_pct": 7.65,
+      "win_rate": 0.406,
+      "mean_days": 97.6,
+      "excess_per_day_bp": 0.36
+     },
+     "portfolio": {
+      "cagr_pct": 10.92,
+      "max_dd_pct": -22.7
+     },
+     "universe": {
+      "cagr_pct": 12.52,
+      "max_dd_pct": -20.7
+     },
+     "share_of_days_invested": 1.0
+    },
+    "by_entry_year": {
+     "2017": {
+      "n": 941,
+      "mean_pct": 3.58
+     },
+     "2018": {
+      "n": 100,
+      "mean_pct": -9.25
+     },
+     "2019": {
+      "n": 652,
+      "mean_pct": -10.13
+     },
+     "2020": {
+      "n": 589,
+      "mean_pct": 12.19
+     },
+     "2021": {
+      "n": 560,
+      "mean_pct": -4.04
+     },
+     "2022": {
+      "n": 278,
+      "mean_pct": 0.33
+     },
+     "2023": {
+      "n": 401,
+      "mean_pct": 5.76
+     },
+     "2024": {
+      "n": 464,
+      "mean_pct": 2.68
+     },
+     "2025": {
+      "n": 610,
+      "mean_pct": 23.04
+     },
+     "2026": {
+      "n": 365,
+      "mean_pct": -4.12
+     }
+    }
+   }
+  }
+ },
+ "selected": {
+  "own_track": {
+   "threshold": "0.5",
+   "chosen_on_2016_2021": {
+    "trades": {
+     "n": 3395,
+     "mean_pct": 2.03,
+     "win_rate": 0.364,
+     "mean_days": 83.5,
+     "excess_per_day_bp": 0.22
+    },
+    "portfolio": {
+     "cagr_pct": 7.7,
+     "max_dd_pct": -50.1
+    },
+    "universe": {
+     "cagr_pct": 5.11,
+     "max_dd_pct": -41.0
+    },
+    "share_of_days_invested": 0.852
+   },
+   "applied_2022_2026": {
+    "trades": {
+     "n": 2576,
+     "mean_pct": 6.89,
+     "win_rate": 0.413,
+     "mean_days": 95.4,
+     "excess_per_day_bp": -0.08
+    },
+    "portfolio": {
+     "cagr_pct": 10.61,
+     "max_dd_pct": -21.8
+    },
+    "universe": {
+     "cagr_pct": 12.52,
+     "max_dd_pct": -20.7
+    },
+    "share_of_days_invested": 1.0
+   }
+  },
+  "breadth": {
+   "threshold": "0.7",
+   "chosen_on_2016_2021": {
+    "trades": {
+     "n": 2842,
+     "mean_pct": 0.27,
+     "win_rate": 0.321,
+     "mean_days": 84.0,
+     "excess_per_day_bp": 0.15
+    },
+    "portfolio": {
+     "cagr_pct": 7.89,
+     "max_dd_pct": -45.8
+    },
+    "universe": {
+     "cagr_pct": 5.11,
+     "max_dd_pct": -41.0
+    },
+    "share_of_days_invested": 0.878
+   },
+   "applied_2022_2026": {
+    "trades": {
+     "n": 2118,
+     "mean_pct": 7.65,
+     "win_rate": 0.406,
+     "mean_days": 97.6,
+     "excess_per_day_bp": 0.36
+    },
+    "portfolio": {
+     "cagr_pct": 10.92,
+     "max_dd_pct": -22.7
+    },
+    "universe": {
+     "cagr_pct": 12.52,
+     "max_dd_pct": -20.7
+    },
+    "share_of_days_invested": 1.0
+   }
+  }
+ }
+}
