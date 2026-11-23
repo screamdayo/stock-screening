@@ -1,12 +1,21 @@
-name: Momentum6M Monthly Discord Notify
+name: Momentum6M Monthly Report & Discord Notify
 
 on:
   schedule:
-    - cron: "0 22 1 * *" # 毎月2日 07:00 JST（データ側の月次レポートは1日 19:00 JST に生成）
+    - cron: "0 22 1 * *" # 毎月2日 07:00 JST（データ側の月次データ更新は1日 19:00 JST）
   workflow_dispatch:
     inputs:
       allow_stale:
         description: "対象月が前月でなくても通知する"
+        required: false
+        type: boolean
+        default: true
+      signal_month:
+        description: "対象月 YYYY-MM（空欄なら前月）"
+        required: false
+        type: string
+      notify:
+        description: "Discordに通知する（オフならレポート作成の確認だけ）"
         required: false
         type: boolean
         default: true
@@ -19,25 +28,50 @@ permissions:
   contents: read
 
 jobs:
-  notify:
+  report-and-notify:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
-      - name: Checkout the private monthly report only
+
+      - name: Checkout private J-Quants data
         uses: actions/checkout@v4
         with:
           repository: screamdayo/stock-screening-data
           token: ${{ secrets.STOCK_SCREENING_DATA_TOKEN }}
           path: .private-data
           sparse-checkout: |
-            results/momentum6m_monthly_latest.json
+            data/batches
+            data/daily_updates
+            data/margin_interest
           sparse-checkout-cone-mode: false
+
+      - name: Mount private data
+        run: |
+          mkdir -p data
+          for d in batches daily_updates margin_interest; do
+            ln -sfn "$GITHUB_WORKSPACE/.private-data/data/$d" "data/$d"
+          done
+
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-      - run: pip install requests
+      - run: pip install pandas pyarrow requests
+
+      # 候補レポートは .momentum6m/latest.json にだけ書く（コミットしない・ログは件数のみ）
+      - name: Generate monthly report
+        env:
+          JQUANTS_API_KEY: ${{ secrets.JQUANTS_API_KEY }}
+          SIGNAL_MONTH: ${{ inputs.signal_month }}
+        run: |
+          if [ -n "$SIGNAL_MONTH" ]; then
+            python scripts/momentum6m_report.py --signal-month "$SIGNAL_MONTH"
+          else
+            python scripts/momentum6m_report.py
+          fi
+
       - name: Notify Discord (result only)
+        if: github.event_name != 'workflow_dispatch' || inputs.notify
         env:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
           ALLOW_STALE: ${{ github.event_name != 'schedule' && (github.event_name == 'push' || inputs.allow_stale) }}

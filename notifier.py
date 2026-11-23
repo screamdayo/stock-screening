@@ -580,7 +580,7 @@ def notify_pinch_to_chance(sensor):
     _post_long(msg)
 
 def notify_momentum6m(report):
-    """月次モメンタム6Mの候補レポート（非公開データ側で生成）を結果だけ通知する。発注はしない。"""
+    """月次モメンタム6Mの候補レポート（scripts/momentum6m_report.py が生成）を結果だけ通知する。発注はしない。"""
     reason_labels = {
         "volume_surge": "出来高急増",
         "volume_history_short": "出来高履歴不足",
@@ -601,6 +601,8 @@ def notify_momentum6m(report):
             f"6か月 {float(r.get('momentum_126_sessions_pct', 0)):+.1f}% / "
             f"終値 {_fmt_yen(r.get('signal_close_yen', 0))}"
         )
+        if with_order and r.get("buy_limit_yen"):
+            text += f" / 指値 {_fmt_yen(r.get('buy_limit_yen'))}"
         if with_order:
             shares = int(r.get("shares_at_200k_cap") or 0)
             text += f" / **{shares}株**" if shares else " / ⚠️ 1枠20万円では100株買えません"
@@ -631,7 +633,7 @@ def notify_momentum6m(report):
 
     msg = (
         f"📊 **月次モメンタム6M {month_label}**（基準日 {day}）\n"
-        f"🟢 入口：**翌営業日に基準日終値で指値**（約定しなければ見送り）\n"
+        f"🟢 入口：**翌営業日に基準日終値＋10%で指値**（約定しなければ見送り）\n"
         f"🔴 出口：**翌月末の次の営業日の寄り**\n\n"
         + "\n\n".join(sections)
     )

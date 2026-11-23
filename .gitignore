@@ -21,3 +21,6 @@ venv/
 
 # OS関連
 .DS_Store
+# 月次モメンタム6Mの候補レポート（銘柄を含むため公開リポジトリには置かない）
+.momentum6m/
+.private-data/
