@@ -4,6 +4,8 @@ Inputs (private J-Quants archive mounted under data/, see .github/workflows/ma75
   data/batches, data/daily_updates, data/delisted, data/master_history, data/topix
 Variants (results/ma75_turn_trend_variants.json): TOPIX MA75 rising filter, and buying when the slope crosses
 +0.5/+1/+2% instead of 0; the exit is unchanged.
+Exit variants (results/ma75_turn_exit_variants.json): close below MA75, trailing stop 10/15/20% from the
+highest close since entry, and trailing stop or MA75 turn-down, for the turn-up and +2% entries.
 Output: results/ma75_turn_trend.json (aggregate statistics only; no per-issue data).
 
 Rule
@@ -32,6 +34,8 @@ DATA = ROOT / "data"
 OUT = ROOT / "results/ma75_turn_trend.json"
 OUT_VARIANTS = ROOT / "results/ma75_turn_trend_variants.json"
 THRESHOLDS = (0.005, 0.01, 0.02)
+OUT_EXITS = ROOT / "results/ma75_turn_exit_variants.json"
+TRAILS = (0.10, 0.15, 0.20)
 PRICE_COLS = ["Date", "Code", "O", "C", "Vo", "AdjO", "AdjC", "AdjFactor"]
 PRIME_NAMES = {"東証一部", "プライム"}
 MA_LEN, SLOPE_LAG = 75, 20
@@ -136,6 +140,60 @@ def build_trades(close, opn, slope, eligible, buy=None):
     return tr
 
 
+def build_trades_exit(close, opn, buy, eligible, down, below, trail=None, use_down=False, use_below=False):
+    """Same entries as build_trades; exit on the first of the enabled sell signals, at the next open.
+
+    down: MA75 slope turns down (signal day > buy signal day); below: close < MA75 (checked from the entry
+    day's close); trail: close falls trail*100% below the highest close since the entry day.
+    """
+    up, el, dn, bl = buy.to_numpy(), eligible.to_numpy(), down.to_numpy(), below.to_numpy()
+    C, O = close.to_numpy(), opn.to_numpy()
+    n = len(close)
+    trades = []
+    for j in range(C.shape[1]):
+        valid = np.flatnonzero(~np.isnan(C[:, j]))
+        if not len(valid):
+            continue
+        last = valid[-1]
+        delisted = last < n - 1 - 7
+        nxt_free = 0
+        for t in np.flatnonzero(up[:, j] & el[:, j]):
+            if t < nxt_free or t + 1 > last or np.isnan(O[t + 1, j]):
+                continue
+            e = t + 1
+            cands = []
+            if use_down:
+                k = np.flatnonzero(dn[t + 1:last + 1, j])
+                if len(k):
+                    cands.append(t + 1 + k[0])
+            if use_below:
+                k = np.flatnonzero(bl[e:last + 1, j])
+                if len(k):
+                    cands.append(e + k[0])
+            if trail is not None:
+                seg = C[e:last + 1, j]
+                peak = np.fmax.accumulate(np.where(np.isnan(seg), -np.inf, seg))
+                k = np.flatnonzero(seg < (1 - trail) * peak)
+                if len(k):
+                    cands.append(e + k[0])
+            sig = min(cands) if cands else None
+            if sig is not None and sig + 1 <= last:
+                x, px, status = sig + 1, O[sig + 1, j], "closed"
+                if np.isnan(px):
+                    px = C[sig, j]
+            elif delisted:
+                x, px, status = last, C[last, j], "delisted"
+            else:
+                x, px, status = last, C[last, j], "open"
+            trades.append((j, t, e, x, O[e, j], px, status))
+            nxt_free = x + 1
+    tr = pd.DataFrame(trades, columns=["j", "signal", "entry", "exit", "p_in", "p_out", "status"])
+    tr["ret"] = tr.p_out / tr.p_in - 1
+    tr["days"] = tr.exit - tr.entry
+    tr["entry_date"] = close.index[tr.entry]
+    return tr
+
+
 def summarize(r, days=None):
     r = r.dropna()
     if r.empty:
@@ -197,7 +255,21 @@ def tests():
     c2 = close.copy(); c2.iloc[tr.entry.iloc[0] + 5:] = np.nan
     tr2 = build_trades(c2, c2 * 1.0, slope_of(c2), pd.DataFrame(True, index=idx, columns=["A"]))
     assert tr2.status.iloc[0] == "delisted" and abs(tr2.p_out.iloc[0] - c2.A.dropna().iloc[-1]) < 1e-12
-    print("slope, turn entry/exit, no-overlap and delisting tests passed", flush=True)
+    ma = close.rolling(MA_LEN, min_periods=MA_LEN).mean()
+    buy = (s.shift(1) <= 0) & (s > 0)
+    down = (s.shift(1) > 0) & (s <= 0)
+    el = pd.DataFrame(True, index=idx, columns=["A"])
+    same = build_trades_exit(close, opn, buy, el, down, close < ma, use_down=True)
+    pd.testing.assert_frame_equal(same.drop(columns="entry_date"), tr.drop(columns="entry_date"))
+    tb = build_trades_exit(close, opn, buy, el, down, close < ma, use_below=True)
+    for r in tb[tb.status == "closed"].itertuples():
+        assert close.A.iloc[r.exit - 1] < ma.A.iloc[r.exit - 1]
+        assert (close.A.iloc[r.entry:r.exit - 1] >= ma.A.iloc[r.entry:r.exit - 1]).all()
+    tt = build_trades_exit(close, opn, buy, el, down, close < ma, trail=0.1)
+    for r in tt[tt.status == "closed"].itertuples():
+        seg = close.A.iloc[r.entry:r.exit]
+        assert seg.iloc[-1] < 0.9 * seg.max() and (seg.iloc[:-1] >= 0.9 * seg.cummax().iloc[:-1]).all()
+    print("slope, turn entry/exit, no-overlap, delisting and exit-variant tests passed", flush=True)
 
 
 def main():
@@ -283,6 +355,43 @@ def main():
                                      for k in ("cagr_pct", "max_dd_pct", "by_year_pct")}
     OUT_VARIANTS.write_text(json.dumps(vout, ensure_ascii=False, indent=1))
     print(f"wrote {OUT_VARIANTS}", flush=True)
+
+    # ---- exit variants: entries = base turn-up and slope crossing +2% ----
+    ma = close.rolling(MA_LEN, min_periods=MA_LEN).mean()
+    below = close < ma
+    down = (slope.shift(1) > 0) & (slope <= 0)
+    exits = {"ma75_turns_down": dict(use_down=True), "close_below_ma75": dict(use_below=True)}
+    for k in TRAILS:
+        exits[f"trail_{k*100:g}pct"] = dict(trail=k)
+        exits[f"trail_{k*100:g}pct_or_turn_down"] = dict(trail=k, use_down=True)
+    entries = {"turn_up": turn, "slope_cross_2pct": (slope.shift(1) <= 0.02) & (slope > 0.02)}
+    eout = {"settings": {"entries": "turn_up: MA75 slope20 crosses 0; slope_cross_2pct: crosses +2%; next open",
+                         "exits": "signal at close, next open. close_below_ma75 checked from the entry day; trail = drop "
+                                  "from the highest close since the entry day; *_or_turn_down = whichever first",
+                         "universe": out["settings"]["universe"], "period": out["settings"]["period"]},
+            "results": {}, "universe_equal_weight": vout["universe_equal_weight"]}
+    for en, buy in entries.items():
+        for ex, kw in exits.items():
+            t = build_trades_exit(close, opn, buy, universe, down, below, **kw)
+            d_ = t[t.status != "open"]
+            pf_ = portfolio(close, t, universe)
+            per_day = d_.ret.sum() / d_.days.clip(lower=1).sum()
+            eout["results"][f"{en}|{ex}"] = {
+                "trades": summarize(d_.ret, t.days),
+                "mean_after_0_5pct_cost": round((d_.ret.mean() - 0.005) * 100, 2),
+                "return_per_holding_day_pct": round(per_day * 100, 4),
+                "by_entry_year_mean_pct": {str(y): round(g.ret.mean() * 100, 2) for y, g in d_.groupby(d_.entry_date.dt.year)},
+                "portfolio": {"cagr_pct": pf_["strategy"]["cagr_pct"], "max_dd_pct": pf_["strategy"]["max_dd_pct"],
+                              "ann_vol_pct": pf_["strategy"]["ann_vol_pct"], "avg_positions": pf_["avg_positions"],
+                              "invested_share_of_days": pf_["invested_share_of_days"],
+                              "by_year_pct": pf_["strategy"]["by_year_pct"]},
+            }
+            v = eout["results"][f"{en}|{ex}"]
+            print(en, ex, v["trades"]["n"], v["trades"]["mean_pct"], v["trades"]["win_rate"], v["trades"].get("mean_days"),
+                  "perday", v["return_per_holding_day_pct"], "cagr", v["portfolio"]["cagr_pct"],
+                  "dd", v["portfolio"]["max_dd_pct"], "pos", v["portfolio"]["avg_positions"], flush=True)
+    OUT_EXITS.write_text(json.dumps(eout, ensure_ascii=False, indent=1))
+    print(f"wrote {OUT_EXITS}", flush=True)
     print(json.dumps({k: out[k] for k in ("trades_all_closed", "trades_with_cost", "by_holding_period")},
                      ensure_ascii=False, indent=1))
     pf = out["portfolio_equal_weight_all_signals"]
