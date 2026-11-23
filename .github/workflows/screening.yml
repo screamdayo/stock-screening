@@ -1,9 +1,8 @@
 name: Daily Screening
 
 on:
-  workflow_dispatch:
-  schedule:
-    - cron: '0 7 * * 1-5'  # 16:00 JST
+  workflow_dispatch: # 平日16:00 JSTにCloudflare Worker（cloudflare-stock-trigger）が起動する
+  # GitHubのscheduleは大幅に遅れて二重実行になるため廃止（2026-11-23）
   push:
     paths:
       - 'trigger/screening.txt'
