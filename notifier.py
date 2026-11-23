@@ -640,6 +640,47 @@ def notify_momentum6m(report):
     _post_long(msg)
 
 
+def notify_momentum6m_result(track):
+    """月次モメンタム6Mの確定結果（scripts/momentum6m_track.py の出力）を通知する。"""
+    ym = str(track.get("signal_month") or "")
+    month_label = f"{ym[:4]}年{int(ym[5:7])}月分" if len(ym) >= 7 else ym
+
+    def _d(s):
+        return f"{s[5:7].lstrip('0')}/{s[8:10].lstrip('0')}" if s else "?"
+
+    def _pct(v):
+        return "—" if v is None else f"{float(v):+.1f}%"
+
+    lines = []
+    for p in track.get("picks") or []:
+        label = _stock_label(p)
+        if "return_open_buy_pct" not in p:
+            lines.append(f"▫️ #{p.get('rank')} {label}：価格データなし")
+            continue
+        if p.get("filled_by_limit"):
+            head = f"{'✅' if (p.get('return_limit_pct') or 0) > 0 else '🔻'} #{p.get('rank')} {label}：**{_pct(p.get('return_limit_pct'))}**"
+            if abs((p.get("fill_yen") or 0) - (p.get("entry_open_yen") or 0)) > 1e-9:
+                head += f"（指値 {_fmt_yen(p['fill_yen'])} で約定）"
+        else:
+            head = f"➖ #{p.get('rank')} {label}：指値に届かず見送り（寄りで買えば {_pct(p.get('return_open_buy_pct'))}）"
+        notes = []
+        if p.get("shares_in_report") == 0:
+            notes.append("20万円枠では0株")
+        if p.get("status") == "stopped_trading":
+            notes.append("売却日前に売買停止・最終値で評価")
+        if p.get("split_during_hold"):
+            notes.append("保有中に株式分割あり・要確認")
+        lines.append(head + (f"（{'・'.join(notes)}）" if notes else ""))
+    msg = (
+        f"📈 **月次モメンタム6M 結果確定 {month_label}**（{_d(track.get('entry_date'))} 買い → {_d(track.get('planned_exit_date'))} 寄りで売り）\n"
+        f"5枠平均：**{_pct(track.get('portfolio_return_limit_pct'))}**（指値どおり・見送り枠は現金）"
+        f" ／ 寄りで全部買った場合 {_pct(track.get('portfolio_return_open_buy_pct'))}\n\n"
+        + "\n".join(lines)
+        + "\n\n※往復0.3%の手数料込み。株数の上限（20万円枠）は考慮していない比率ベースの成績"
+    )
+    _post_long(msg)
+
+
 def notify_sell_signals(alerts):
     if not alerts:
         return

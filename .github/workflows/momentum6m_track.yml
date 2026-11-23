@@ -1,0 +1,88 @@
+name: Momentum6M Track Results
+
+on:
+  schedule:
+    - cron: "30 22 1 * *" # 毎月2日 07:30 JST：前々月分（前月に保有して1日の寄りで売った分）の確定結果
+  workflow_dispatch:
+    inputs:
+      signal_month:
+        description: "対象のレポート月 YYYY-MM（空欄なら前々月）"
+        required: false
+        type: string
+      notify:
+        description: "確定していればDiscordに通知する"
+        required: false
+        type: boolean
+        default: true
+
+permissions:
+  contents: read # this repo is only read; results are pushed to the private repo with its own token
+
+jobs:
+  track:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Checkout private data and reports
+        uses: actions/checkout@v4
+        with:
+          repository: screamdayo/stock-screening-data
+          token: ${{ secrets.STOCK_SCREENING_DATA_TOKEN }}
+          path: .private-data
+          sparse-checkout: |
+            data/batches
+            data/daily_updates
+            results/momentum6m_signals
+            results/momentum6m_tracking
+          sparse-checkout-cone-mode: false
+
+      - name: Mount private data
+        run: |
+          mkdir -p data
+          for d in batches daily_updates; do
+            ln -sfn "$GITHUB_WORKSPACE/.private-data/data/$d" "data/$d"
+          done
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install pandas pyarrow requests
+
+      # ログには平均リターンだけ。銘柄ごとの結果はDiscordと非公開リポジトリにだけ送る
+      - name: Track results (and notify if complete)
+        env:
+          SIGNAL_MONTH: ${{ inputs.signal_month }}
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          NOTIFY: ${{ github.event_name == 'schedule' || inputs.notify }}
+        run: |
+          if [ -z "$SIGNAL_MONTH" ]; then
+            SIGNAL_MONTH=$(python -c "from datetime import date;d=date.today().replace(day=1);m=(d.year*12+d.month-1)-2;print(f'{m//12}-{m%12+1:02d}')")
+          fi
+          echo "SIGNAL_MONTH=$SIGNAL_MONTH" >> "$GITHUB_ENV"
+          if [ "$NOTIFY" = "true" ]; then
+            python scripts/momentum6m_track.py --signal-month "$SIGNAL_MONTH" --notify
+          else
+            python scripts/momentum6m_track.py --signal-month "$SIGNAL_MONTH"
+          fi
+          echo "COMPLETE=$(python -c "import json;print(str(json.load(open('.momentum6m/track.json'))['complete']).lower())")" >> "$GITHUB_ENV"
+
+      # 確定した結果だけを保存する（保有中の途中経過は残さない）
+      - name: Save confirmed result to the private repo
+        if: env.COMPLETE == 'true'
+        run: |
+          set -euo pipefail
+          cd .private-data
+          mkdir -p results/momentum6m_tracking
+          cp ../.momentum6m/track.json "results/momentum6m_tracking/${SIGNAL_MONTH}.json"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add --sparse "results/momentum6m_tracking/${SIGNAL_MONTH}.json"
+          if git diff --cached --quiet; then echo "unchanged"; exit 0; fi
+          git commit -q -m "Track Momentum6M results ${SIGNAL_MONTH}"
+          for i in 1 2 3; do
+            git pull -q --rebase origin main && git push -q origin HEAD:main && exit 0
+            sleep 5
+          done
+          exit 1
