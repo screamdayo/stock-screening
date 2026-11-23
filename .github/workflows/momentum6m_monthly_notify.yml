@@ -70,8 +70,22 @@ jobs:
             python scripts/momentum6m_report.py
           fi
 
+      - name: Notify Discord (result only)
+        if: github.event_name != 'workflow_dispatch' || inputs.notify
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          ALLOW_STALE: ${{ github.event_name != 'schedule' && (github.event_name == 'push' || inputs.allow_stale) }}
+        run: |
+          if [ "$ALLOW_STALE" = "true" ]; then
+            python scripts/notify_momentum6m.py --allow-stale
+          else
+            python scripts/notify_momentum6m.py
+          fi
+
       # 銘柄入りのレポートは公開リポジトリには置かず、非公開の stock-screening-data にだけ保存する
+      # 通知の後に実行するので、保存に失敗しても通知は止まらない（失敗は赤く表示される）
       - name: Checkout private repo for saving the report
+        if: always() && hashFiles('.momentum6m/latest.json') != ''
         uses: actions/checkout@v4
         with:
           repository: screamdayo/stock-screening-data
@@ -83,6 +97,7 @@ jobs:
           sparse-checkout-cone-mode: false
 
       - name: Save report to the private repo
+        if: always() && hashFiles('.momentum6m/latest.json') != ''
         run: |
           set -euo pipefail
           month=$(python -c "import json;print(json.load(open('.momentum6m/latest.json'))['signal_month'])")
@@ -104,15 +119,3 @@ jobs:
           done
           echo "could not push the report to stock-screening-data" >&2
           exit 1
-
-      - name: Notify Discord (result only)
-        if: github.event_name != 'workflow_dispatch' || inputs.notify
-        env:
-          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
-          ALLOW_STALE: ${{ github.event_name != 'schedule' && (github.event_name == 'push' || inputs.allow_stale) }}
-        run: |
-          if [ "$ALLOW_STALE" = "true" ]; then
-            python scripts/notify_momentum6m.py --allow-stale
-          else
-            python scripts/notify_momentum6m.py
-          fi
