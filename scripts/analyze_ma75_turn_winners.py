@@ -32,7 +32,7 @@ def at(frame, tr):
     return frame.to_numpy()[tr.signal.to_numpy(), tr.j.to_numpy()]
 
 
-def numeric_features(close, to, slope, tr):
+def numeric_features(close, to, slope, tr, raw):
     f = {}
     for n in (20, 60, 120, 250):
         f[f"ret{n}_pct"] = at(close / close.shift(n) - 1, tr) * 100
@@ -47,7 +47,7 @@ def numeric_features(close, to, slope, tr):
     f["vol60_daily_pct"] = at(r.rolling(60, min_periods=50).std(), tr) * 100
     f["turnover20_median_oku"] = at(to.rolling(20, min_periods=15).median(), tr) / 1e8
     f["turnover_ratio_20_vs_120"] = at(to.rolling(20, min_periods=15).mean() / to.rolling(120, min_periods=90).mean(), tr)
-    f["price_yen"] = at(close, tr)
+    f["price_yen_raw"] = at(raw, tr)  # unadjusted close: adjusted prices leak later splits (big winners split)
     # how long the preceding MA75 downtrend lasted (sessions since slope was last > 0 before the turn)
     pos = (slope > 0).to_numpy()
     last_pos = np.full(pos.shape, np.nan)
@@ -157,6 +157,7 @@ def main():
     close = a.pivot(index="Date", columns="Code", values="P").sort_index()
     opn = a.pivot(index="Date", columns="Code", values="PO").reindex_like(close)
     to = a.pivot(index="Date", columns="Code", values="to").reindex_like(close)
+    raw = a.pivot(index="Date", columns="Code", values="C").reindex_like(close)
     del a
     universe = prime_mask(close.index, close.columns) & (to.rolling(20, min_periods=15).median() >= LIQ_MIN_YEN) \
         & (close >= MIN_PRICE)
@@ -174,7 +175,7 @@ def main():
     exc = (1 + ret) / (idx[tr.exit.to_numpy()] / idx[tr.entry.to_numpy() - 1]) - 1
     days = tr.days.to_numpy().astype(float)
 
-    feats = {**numeric_features(close, to, slope, tr), **market_features(close, slope, tr, universe)}
+    feats = {**numeric_features(close, to, slope, tr, raw), **market_features(close, slope, tr, universe)}
     out = {"settings": {"trades": "MA75 turn-up buy / turn-down sell, closed + delisted",
                         "winner": f"top {int((1-WIN_Q)*100)}% of trade returns (>= {cut*100:.1f}%)",
                         "features": "known at the buy signal close; quintiles over all trades",
