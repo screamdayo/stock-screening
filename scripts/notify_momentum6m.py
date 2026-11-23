@@ -1,7 +1,7 @@
 """月次モメンタム6Mの結果をDiscordへ通知する（結果のみ・発注なし）。
 
 レポート本体は同じワークフローで scripts/momentum6m_report.py が .momentum6m/latest.json に作る
-（コミットしない・ログにも銘柄を出さない）。ここではそれを読んで通知するだけ。
+（公開リポジトリにはコミットせず、ログにも銘柄を出さない。保存先は非公開の stock-screening-data）。ここではそれを読んで通知するだけ。
 
     python scripts/notify_momentum6m.py                 # 前月分のレポートなら通知
     python scripts/notify_momentum6m.py --allow-stale   # 対象月が違っても通知

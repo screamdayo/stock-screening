@@ -2,8 +2,9 @@
 
 Runs in the public repository's workflow with the private J-Quants archive mounted under data/
 (batches, daily_updates, margin_interest). The report is written to .momentum6m/latest.json, which is NOT
-committed and only read by scripts/notify_momentum6m.py: the public repository and its Actions logs never
-contain the candidate names or codes (only counts are printed).
+committed here; the workflow copies it to the private stock-screening-data (results/momentum6m_signals/YYYY-MM.json
+and results/momentum6m_monthly_latest.json) and scripts/notify_momentum6m.py sends it to Discord. The public
+repository and its Actions logs never contain the candidate names or codes (only counts are printed).
 
 Entry changed on 2026-11-23: buy limit = signal close x 1.10 (was the signal close). Source:
 results/momentum6m_entry.json -- skipped gap-up names went on to large gains; +10% behaves like a market order

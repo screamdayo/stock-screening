@@ -25,7 +25,7 @@ on:
       - 'trigger/momentum6m_notify.txt'
 
 permissions:
-  contents: read
+  contents: read # this repo is only read; the report is pushed to the private repo with its own token
 
 jobs:
   report-and-notify:
@@ -69,6 +69,41 @@ jobs:
           else
             python scripts/momentum6m_report.py
           fi
+
+      # 銘柄入りのレポートは公開リポジトリには置かず、非公開の stock-screening-data にだけ保存する
+      - name: Checkout private repo for saving the report
+        uses: actions/checkout@v4
+        with:
+          repository: screamdayo/stock-screening-data
+          token: ${{ secrets.STOCK_SCREENING_DATA_TOKEN }}
+          path: .private-report
+          sparse-checkout: |
+            results/momentum6m_signals
+            results/momentum6m_monthly_latest.json
+          sparse-checkout-cone-mode: false
+
+      - name: Save report to the private repo
+        run: |
+          set -euo pipefail
+          month=$(python -c "import json;print(json.load(open('.momentum6m/latest.json'))['signal_month'])")
+          mkdir -p .private-report/results/momentum6m_signals
+          cp .momentum6m/latest.json ".private-report/results/momentum6m_signals/${month}.json"
+          cp .momentum6m/latest.json .private-report/results/momentum6m_monthly_latest.json
+          cd .private-report
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add --sparse "results/momentum6m_signals/${month}.json" results/momentum6m_monthly_latest.json
+          if git diff --cached --quiet; then
+            echo "report unchanged"
+            exit 0
+          fi
+          git commit -q -m "Save monthly Momentum6M report ${month}"
+          for i in 1 2 3; do
+            git pull -q --rebase origin main && git push -q origin HEAD:main && exit 0
+            sleep 5
+          done
+          echo "could not push the report to stock-screening-data" >&2
+          exit 1
 
       - name: Notify Discord (result only)
         if: github.event_name != 'workflow_dispatch' || inputs.notify
