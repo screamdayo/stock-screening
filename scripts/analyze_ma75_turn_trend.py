@@ -1,7 +1,9 @@
 """Research: buy when MA75 turns up (20-session comparison), sell when it turns down. 10 years, no survivor bias.
 
 Inputs (private J-Quants archive mounted under data/, see .github/workflows/ma75_turn_trend.yml):
-  data/batches, data/daily_updates, data/delisted, data/master_history
+  data/batches, data/daily_updates, data/delisted, data/master_history, data/topix
+Variants (results/ma75_turn_trend_variants.json): TOPIX MA75 rising filter, and buying when the slope crosses
++0.5/+1/+2% instead of 0; the exit is unchanged.
 Output: results/ma75_turn_trend.json (aggregate statistics only; no per-issue data).
 
 Rule
@@ -28,6 +30,8 @@ from price_adjust import normalize_code, stale_basis_multiplier
 ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT / "data"
 OUT = ROOT / "results/ma75_turn_trend.json"
+OUT_VARIANTS = ROOT / "results/ma75_turn_trend_variants.json"
+THRESHOLDS = (0.005, 0.01, 0.02)
 PRICE_COLS = ["Date", "Code", "O", "C", "Vo", "AdjO", "AdjC", "AdjFactor"]
 PRIME_NAMES = {"東証一部", "プライム"}
 MA_LEN, SLOPE_LAG = 75, 20
@@ -90,9 +94,9 @@ def slope_of(close):
     return ma / ma.shift(SLOPE_LAG) - 1
 
 
-def build_trades(close, opn, slope, eligible):
-    """Walk each issue: buy after an up-turn on an eligible day, sell after the next down-turn."""
-    up = ((slope.shift(1) <= 0) & (slope > 0)).to_numpy()
+def build_trades(close, opn, slope, eligible, buy=None):
+    """Walk each issue: buy on a buy signal on an eligible day, sell after the next MA75 down-turn."""
+    up = (((slope.shift(1) <= 0) & (slope > 0)) if buy is None else buy).to_numpy()
     down = ((slope.shift(1) > 0) & (slope <= 0)).to_numpy()
     el = eligible.to_numpy()
     C, O = close.to_numpy(), opn.to_numpy()
@@ -232,6 +236,53 @@ def main():
         "portfolio_equal_weight_all_signals": portfolio(close, tr, universe),
     }
     OUT.write_text(json.dumps(out, ensure_ascii=False, indent=1))
+
+    # ---- variants: same exit (MA75 turns down), filtered / delayed buys ----
+    tpx = pd.read_parquet(DATA / "topix/topix_daily.parquet", columns=["Date", "C"])
+    tpx["Date"] = pd.to_datetime(tpx.Date)
+    tc = pd.to_numeric(tpx.set_index("Date").C, errors="coerce").sort_index()
+    print(f"TOPIX {tc.index[0].date()}..{tc.index[-1].date()}", flush=True)
+    t_ma = tc.rolling(MA_LEN, min_periods=MA_LEN).mean()
+    t_slope = (t_ma / t_ma.shift(SLOPE_LAG) - 1).reindex(close.index)
+    if t_slope.index[-1] > tc.index[-1]:
+        print("TOPIX ends before prices: TOPIX-filtered variants cannot buy on later days", flush=True)
+    topix_up = pd.DataFrame(np.repeat((t_slope > 0).to_numpy()[:, None], close.shape[1], axis=1),
+                            index=close.index, columns=close.columns)
+    turn = (slope.shift(1) <= 0) & (slope > 0)
+    variants = {"base_turn_up": turn, "topix_ma75_up": turn & topix_up}
+    for th in THRESHOLDS:
+        cross = (slope.shift(1) <= th) & (slope > th)
+        variants[f"slope_cross_{th*100:g}pct"] = cross
+        variants[f"slope_cross_{th*100:g}pct_and_topix_up"] = cross & topix_up
+    vout = {"settings": {"exit": "MA75 slope20 crosses to <= 0, next open (same for all)",
+                         "topix_filter": "TOPIX MA75 slope20 > 0 on the signal day",
+                         "slope_cross": "stock slope20 crosses above the threshold (instead of above 0)",
+                         "universe": out["settings"]["universe"], "period": out["settings"]["period"]},
+            "variants": {}}
+    for name, buy in variants.items():
+        t = build_trades(close, opn, slope, universe, buy)
+        d_ = t[t.status != "open"]
+        tot_ = d_.ret.sum()
+        pf_ = portfolio(close, t, universe)
+        vout["variants"][name] = {
+            "trades": summarize(d_.ret, t.days),
+            "mean_after_0_5pct_cost": round((d_.ret.mean() - 0.005) * 100, 2),
+            "short_trades_le40d_share": round(float((d_.days <= 40).mean()), 3),
+            "top5pct_share_of_total": round(float(d_.ret.nlargest(max(1, len(d_) // 20)).sum() / tot_), 2) if tot_ > 0 else None,
+            "by_entry_year": {str(y): {"n": int(len(g)), "mean_pct": round(g.ret.mean() * 100, 2),
+                                       "win": round(float((g.ret > 0).mean()), 3)}
+                              for y, g in d_.groupby(d_.entry_date.dt.year)},
+            "portfolio": {"cagr_pct": pf_["strategy"]["cagr_pct"], "max_dd_pct": pf_["strategy"]["max_dd_pct"],
+                          "invested_share_of_days": pf_["invested_share_of_days"], "avg_positions": pf_["avg_positions"],
+                          "by_year_pct": pf_["strategy"]["by_year_pct"]},
+        }
+        v = vout["variants"][name]
+        print(name, v["trades"]["n"], v["trades"]["mean_pct"], v["trades"]["win_rate"], v["trades"].get("profit_factor"),
+              "cagr", v["portfolio"]["cagr_pct"], "dd", v["portfolio"]["max_dd_pct"], flush=True)
+    vout["universe_equal_weight"] = {k: out["portfolio_equal_weight_all_signals"]["universe_equal_weight"][k]
+                                     for k in ("cagr_pct", "max_dd_pct", "by_year_pct")}
+    OUT_VARIANTS.write_text(json.dumps(vout, ensure_ascii=False, indent=1))
+    print(f"wrote {OUT_VARIANTS}", flush=True)
     print(json.dumps({k: out[k] for k in ("trades_all_closed", "trades_with_cost", "by_holding_period")},
                      ensure_ascii=False, indent=1))
     pf = out["portfolio_equal_weight_all_signals"]

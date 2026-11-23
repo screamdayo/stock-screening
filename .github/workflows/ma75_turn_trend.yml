@@ -24,12 +24,13 @@ jobs:
             data/daily_updates
             data/delisted
             data/master_history
+            data/topix
           sparse-checkout-cone-mode: false
 
       - name: Mount private data
         run: |
           mkdir -p data
-          for d in batches daily_updates delisted master_history; do
+          for d in batches daily_updates delisted master_history topix; do
             ln -sfn "$GITHUB_WORKSPACE/.private-data/data/$d" "data/$d"
           done
 
@@ -42,7 +43,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add results/ma75_turn_trend.json
+          git add results/ma75_turn_trend.json results/ma75_turn_trend_variants.json
           git diff --cached --quiet || git commit -m "MA75 turn trend 10Y research results"
           git pull --rebase origin main
           git push origin HEAD:main
